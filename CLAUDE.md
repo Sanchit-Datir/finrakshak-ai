@@ -4,6 +4,17 @@ Monorepo: **React + Vite web UI** (`web/`), **Firebase Cloud Functions** backend
 shared **zod** schemas/types (`packages/shared/`). Data in **Firestore**; AI via **Gemini on
 Vertex AI**; hosted on **Firebase Hosting**. Language: **TypeScript only**.
 
+## Web prototype layout (FundTrace AI)
+
+- Spec: `docs/fundtrace-ai-ui-spec.md` is the source of truth for UI behaviour and wording.
+- `web/src/domain/` zod schemas + labels · `web/src/lib/` pure logic (checks, monitoring, graph, CSV, formatting) ·
+  `web/src/state/` store, actions (every mutation writes an audit entry), session, toasts · `web/src/components/` UI ·
+  `web/src/pages/` routes (lazy-loaded) · `web/src/demo/` synthetic seed data and sample documents.
+- Never present simulated output as real OCR/AI; keep "Simulated demo output" / "Not connected" labels until an integration exists.
+- Use status wording from `domain/labels.ts` (Routine review / Needs attention / Urgent review); never "fraud confirmed".
+- Tailwind tokens live in `web/src/styles.css`; pair every status colour with an icon and text.
+- Don't combine `hidden` with a component whose base class sets `display` (e.g. buttons) — wrap it in an element instead.
+
 ## Definition of done (run before every commit)
 
 `npm run check && npm run build` must pass: prettier, eslint (`--max-warnings 0`), `tsc`, tests.
