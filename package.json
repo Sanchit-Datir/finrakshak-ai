@@ -1,0 +1,33 @@
+{
+  "name": "fund-tracker",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/*",
+    "functions",
+    "web"
+  ],
+  "scripts": {
+    "build": "npm run build -w @fund-tracker/shared && npm run build -w functions && npm run build -w web",
+    "typecheck": "npm run build -w @fund-tracker/shared && npm run typecheck -w functions && npm run typecheck -w web",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "npm run test -w @fund-tracker/shared && npm run test -w functions && npm run test -w web",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test",
+    "emulators": "firebase emulators:start"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.0.0",
+    "firebase-tools": "^14.0.0",
+    "prettier": "^3.4.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}

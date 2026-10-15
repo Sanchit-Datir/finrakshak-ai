@@ -1,0 +1,16 @@
+node_modules/
+dist/
+lib/
+coverage/
+.env
+.env.*
+!.env.example
+*.local
+.firebase/
+firebase-debug.log*
+*-debug.log
+service-account*.json
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
