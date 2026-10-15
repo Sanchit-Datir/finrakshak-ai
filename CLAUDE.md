@@ -6,6 +6,8 @@ Vertex AI**; hosted on **Firebase Hosting**. Language: **TypeScript only**.
 
 ## Web prototype layout (FundTrace AI)
 
+- **For any web UI task, load the `fundtrace-ui` skill first** (`.claude/skills/fundtrace-ui/SKILL.md`): code map, grep anchors and recipes so you don't read large files.
+
 - Spec: `docs/fundtrace-ai-ui-spec.md` is the source of truth for UI behaviour and wording.
 - `web/src/domain/` zod schemas + labels · `web/src/lib/` pure logic (checks, monitoring, graph, CSV, formatting) ·
   `web/src/state/` store, actions (every mutation writes an audit entry), session, toasts · `web/src/components/` UI ·

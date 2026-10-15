@@ -34,6 +34,18 @@ export default tseslint.config(
     ...reactHooks.configs.flat['recommended-latest'],
   },
   { files: ['web/src/**/*.tsx'], ...jsxA11y.flatConfigs.strict },
-  { files: ['**/*.js', '**/*.config.ts'], ...tseslint.configs.disableTypeChecked },
+  {
+    files: ['**/*.js', '**/*.mjs', '**/*.config.ts'],
+    ...tseslint.configs.disableTypeChecked,
+    languageOptions: {
+      ...tseslint.configs.disableTypeChecked.languageOptions,
+      globals: { process: 'readonly', console: 'readonly' },
+    },
+    // Plain JS cannot carry type annotations.
+    rules: {
+      ...tseslint.configs.disableTypeChecked.rules,
+      '@typescript-eslint/explicit-function-return-type': 'off',
+    },
+  },
   prettier,
 );
