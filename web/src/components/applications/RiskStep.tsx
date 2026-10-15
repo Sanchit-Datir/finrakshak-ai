@@ -1,0 +1,152 @@
+import { ArrowLeft, BrainCircuit, CircleCheck, ClipboardCheck, Play, Send } from 'lucide-react';
+import { useState } from 'react';
+import { DISCLAIMERS, PRIORITY_HELP } from '../../domain/labels.js';
+import type { Application, Db } from '../../domain/schemas.js';
+import { CHECK_NAMES, reviewPriority, runChecks } from '../../lib/checks.js';
+import { recordChecksRun } from '../../state/actions.js';
+import { useFormat } from '../../state/hooks.js';
+import { useToast } from '../../state/toast.js';
+import { Button } from '../ui/Button.js';
+import { Card, CardHeader } from '../ui/Card.js';
+import { Notice } from '../ui/States.js';
+import { PriorityBadge } from '../ui/StatusBadges.js';
+import { FindingsTable } from './Findings.js';
+
+export function RiskStep({
+  app,
+  db,
+  actor,
+  onBack,
+  onSubmit,
+}: {
+  app: Application;
+  db: Db;
+  actor: string;
+  onBack: () => void;
+  onSubmit: () => void;
+}): React.JSX.Element {
+  const f = useFormat();
+  const toast = useToast();
+  const [ran, setRan] = useState(app.checksRunAt !== null);
+  const findings = runChecks(app, db);
+  const priority = reviewPriority(app, db);
+  const run = (): void => {
+    recordChecksRun(
+      app.id,
+      actor,
+      `${CHECK_NAMES.length} deterministic checks; ${findings.length} finding(s)`,
+    );
+    setRan(true);
+    toast.push({
+      tone: 'success',
+      title: 'Checks completed',
+      detail: `${findings.length} finding(s) to review. Gemini analysis was not run (not connected).`,
+    });
+  };
+  return (
+    <div className="space-y-5">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card>
+          <CardHeader
+            title={
+              <span className="flex items-center gap-2">
+                <ClipboardCheck className="text-teal size-5" aria-hidden /> Configured checks
+              </span>
+            }
+            subtitle="Deterministic rules that run in your browser on this application’s saved data and reviewed document fields."
+          />
+          <ul className="grid grid-cols-1 gap-1 px-5 pb-4 text-sm sm:grid-cols-2">
+            {CHECK_NAMES.map((n) => (
+              <li key={n} className="flex items-center gap-2">
+                <CircleCheck className={ran ? 'text-ok size-4' : 'text-line size-4'} aria-hidden />
+                {n}
+                <span className="sr-only">{ran ? '(ran)' : '(not run)'}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="border-line flex flex-wrap items-center gap-3 border-t px-5 py-3">
+            <Button variant="primary" icon={Play} onClick={run}>
+              {ran ? 'Re-run checks' : 'Run checks'}
+            </Button>
+            {app.checksRunAt !== null && (
+              <span className="text-muted text-xs">Last run {f.dateTime(app.checksRunAt)}</span>
+            )}
+          </div>
+        </Card>
+        <Card>
+          <CardHeader
+            title={
+              <span className="flex items-center gap-2">
+                <BrainCircuit className="text-muted size-5" aria-hidden /> AI-assisted document
+                analysis
+              </span>
+            }
+            subtitle="Gemini on Vertex AI (server-side)"
+          />
+          <div className="px-5 pb-5">
+            <Notice tone="warn" title="Not connected — no AI analysis ran">
+              The Gemini integration is not configured in this prototype, so no document was sent to
+              an AI model and no AI result is shown anywhere for this application.
+            </Notice>
+          </div>
+        </Card>
+      </div>
+
+      {ran && (
+        <>
+          <Card>
+            <CardHeader
+              title="Review priority"
+              actions={<PriorityBadge priority={priority} />}
+              subtitle={priority === null ? 'Run checks to calculate.' : PRIORITY_HELP[priority]}
+            />
+            <p className="text-muted px-5 pb-4 text-xs">
+              Priority is the highest priority among unresolved findings. It is a label for triage,
+              not a score or probability.
+            </p>
+          </Card>
+          <Card>
+            <CardHeader
+              title="Findings"
+              subtitle="Select a finding to see evidence, benign explanations and verification steps."
+            />
+            <FindingsTable app={app} findings={findings} actor={actor} />
+          </Card>
+        </>
+      )}
+
+      <Card className="p-5">
+        <h3 className="mb-2 text-sm font-semibold">Limitations</h3>
+        <ul className="text-muted list-disc space-y-0.5 pl-5 text-xs">
+          {DISCLAIMERS.map((d) => (
+            <li key={d}>{d}</li>
+          ))}
+          <li>
+            Checks only see documents and fields recorded in this workspace. Unreviewed fields are
+            reported, not trusted.
+          </li>
+          <li>
+            Nothing here approves or declines an application. Decisions remain with authorised
+            staff.
+          </li>
+        </ul>
+      </Card>
+
+      <div className="flex flex-wrap gap-2">
+        <Button icon={ArrowLeft} onClick={onBack}>
+          Previous step
+        </Button>
+        <Button
+          variant="primary"
+          icon={Send}
+          className="ml-auto"
+          disabled={!ran}
+          onClick={onSubmit}
+          title={ran ? undefined : 'Run checks first'}
+        >
+          Submit for review
+        </Button>
+      </div>
+    </div>
+  );
+}

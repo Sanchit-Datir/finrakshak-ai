@@ -1,0 +1,120 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource/noto-sans-devanagari/400.css';
+@import '@fontsource/noto-sans-devanagari/600.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens (FundTrace AI spec §3). Components must use these semantic
+ * tokens, never raw hex values. Dark theme overrides the same names below.
+ */
+@theme {
+  --font-sans: 'Inter Variable', 'Noto Sans Devanagari', ui-sans-serif, system-ui, sans-serif;
+  --font-deva: 'Noto Sans Devanagari', 'Inter Variable', ui-sans-serif, sans-serif;
+
+  --color-navy: #12324a;
+  --color-navy-deep: #0b253b;
+  --color-primary: #2563eb;
+  --color-primary-strong: #1d4ed8;
+  --color-primary-soft: #e8f0fe;
+  --color-teal: #0d9488;
+  --color-teal-strong: #0f766e;
+
+  --color-canvas: #f4f7fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #f8fafc;
+  --color-line: #dce5ef;
+  --color-ink: #172b3a;
+  --color-muted: #627487;
+
+  /* Status: always paired with an icon + text label in UI. */
+  --color-ok: #0f766e;
+  --color-ok-soft: #e6f6f4;
+  --color-warn: #b45309;
+  --color-warn-soft: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fee2e2;
+  --color-info: #1d4ed8;
+  --color-info-soft: #e8f0fe;
+  --color-violet: #6d28d9;
+  --color-violet-soft: #ede9fe;
+  --color-neutral: #475569;
+  --color-neutral-soft: #eef2f6;
+
+  --radius-card: 14px;
+  --shadow-card: 0 1px 2px rgb(15 35 55 / 0.05), 0 1px 3px rgb(15 35 55 / 0.04);
+  --shadow-pop: 0 10px 30px rgb(15 35 55 / 0.16);
+}
+
+.dark {
+  --color-canvas: #0b1724;
+  --color-surface: #11212f;
+  --color-surface-2: #152839;
+  --color-line: #24384b;
+  --color-ink: #e6edf4;
+  --color-muted: #9fb0c1;
+  --color-primary: #60a5fa;
+  --color-primary-strong: #93c5fd;
+  --color-primary-soft: #16304d;
+  --color-ok: #5eead4;
+  --color-ok-soft: #0f3532;
+  --color-warn: #fbbf24;
+  --color-warn-soft: #3a2a0c;
+  --color-danger: #fca5a5;
+  --color-danger-soft: #3d1717;
+  --color-info: #93c5fd;
+  --color-info-soft: #16304d;
+  --color-violet: #c4b5fd;
+  --color-violet-soft: #2a2050;
+  --color-neutral: #cbd5e1;
+  --color-neutral-soft: #1e3043;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-size: 15px;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  [lang='mr'],
+  .font-deva {
+    font-family: var(--font-deva);
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility card {
+  @apply bg-surface border-line rounded-card border;
+  box-shadow: var(--shadow-card);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}
