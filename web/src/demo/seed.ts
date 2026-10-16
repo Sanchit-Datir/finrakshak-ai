@@ -1800,6 +1800,59 @@ export function createDemoDb(now: Date = new Date()): Db {
     ),
   );
 
+  // TEST loan for the "clean borrower, sudden enforcement" public-records scenario
+  // (e2e/scenarios/jai-corp-sudden-enforcement). Real borrower; made-up loan values.
+  entities.push(
+    ent(
+      'c-jaicorp',
+      'company',
+      'Jai Corp Limited',
+      'TEST borrower — public-records scenario',
+      null,
+      'b-jaicorp',
+    ),
+    account('a-jaicorp', 'c-jaicorp', 'XXXX 0401'),
+    ent('loan:L-2024-0401', 'loan', 'L-2024-0401', 'Term loan (TEST loan)', null, 'b-jaicorp'),
+  );
+  borrowers.push({
+    ...borrower(
+      'b-jaicorp',
+      'c-jaicorp',
+      'Jai Corp Limited',
+      'Jai Corp Limited',
+      'private_limited',
+      'br-shirur',
+      'CIN L17120MH1985PLC036500',
+      930,
+    ),
+    registrationNo: 'L17120MH1985PLC036500',
+  });
+  loans.push({
+    id: 'L-2024-0401',
+    applicationId: null,
+    borrowerId: 'b-jaicorp',
+    product: 'msme_term',
+    amountMinor: rupees(50_000_000),
+    disbursedAt: '2024-04-01T05:30:00.000Z',
+    purpose: 'Term loan (TEST loan for the public-records scenario)',
+    monitoringDays: 90,
+    accountEntityId: 'a-jaicorp',
+    dataSource: 'TEST loan — real borrower name, made-up loan values (public-records scenario)',
+    lastUpdated: ago(0, 7),
+    branchId: 'br-shirur',
+  });
+  relationships.push(
+    rel(
+      'c-jaicorp',
+      'loan:L-2024-0401',
+      'borrower_for',
+      'verified',
+      'Loan ledger (L-2024-0401)',
+      930,
+      'Borrower on L-2024-0401',
+    ),
+  );
+
   // ---------- Alert states (others default to New) ----------
   const st = (
     status: AlertState['status'],

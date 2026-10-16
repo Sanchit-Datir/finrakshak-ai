@@ -20,6 +20,7 @@ Both runners save screenshots to `screenshots/<id>/`.
 | ---------------------------------------------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
 | [`maheep-trade-credit-chain`](maheep-trade-credit-chain/README.md)                       | Loan application        | The applicant's largest customer is in liquidation at the end of a chain of four unpaid debts (IBBI)                                               | Urgent review                                |
 | [`advantage-overseas-post-disbursement`](advantage-overseas-post-disbursement/README.md) | Post-disbursement watch | TEST loan `L-2023-0601` (demo loan book): after disbursement the borrower is taken to insolvency, then liquidation, then ED search and attachments | 6 alerts raised automatically, Urgent review |
+| [`jai-corp-sudden-enforcement`](jai-corp-sudden-enforcement/README.md)                   | Post-disbursement watch | TEST loan `L-2024-0401` (demo loan book): a clean, listed borrower faces an ED attachment of ₹230 crore after disbursement                         | 1 alert raised automatically, Urgent review  |
 
 ## Run
 
@@ -28,7 +29,8 @@ npm run build -w @fund-tracker/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # publishes the public-records graph used by the check
 npm run e2e                          # builds the web app, starts vite preview, runs all scenarios
 npm run e2e -- -g maheep             # one scenario, by id
-npm run e2e -- -g advantage          # the post-disbursement scenario
+npm run e2e -- -g advantage          # post-disbursement: escalating records
+npm run e2e -- -g jai-corp           # post-disbursement: sudden enforcement
 ```
 
 ## Add a scenario

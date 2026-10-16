@@ -5,6 +5,12 @@ shared **zod** schemas/types (`packages/shared/`), and the public-source **data 
 outputs in `data/` — read `ingest/README.md` and `data/README.md` before changing either). Data in **Firestore**; AI via **Gemini on
 Vertex AI**; hosted on **Firebase Hosting**. Language: **TypeScript only**.
 
+## Session handoff
+
+**Start every session by reading `docs/SESSION_NOTES.md`.** It records the current state, the owner's
+working rules (ask before committing; no PR; never change source data) and open decisions. Update it
+before the session ends.
+
 ## Web prototype layout (FundTrace AI)
 
 - **For any web UI task, load the `fundtrace-ui` skill first** (`.claude/skills/fundtrace-ui/SKILL.md`): code map, grep anchors and recipes so you don't read large files.
