@@ -76,8 +76,8 @@ async function runScenario(page: Page, s: LoanScenario): Promise<void> {
       .screenshot({ path: `${shots}/1-receivables-form.png` });
     await page.getByRole('button', { name: /Continue to risk analysis/ }).click();
   });
-  await test.step('Run the public-records check', async () => {
-    await page.getByRole('button', { name: 'Run public-records check' }).click();
+  await test.step('Run checks (also runs the public-records check)', async () => {
+    await page.getByRole('button', { name: /^(Run checks|Re-run checks)$/ }).click();
     await expectChain(page, s.expect);
     if (s.expect.impact !== undefined) {
       const impact = page.getByRole('region', { name: 'Impact on receivables' });
@@ -92,8 +92,7 @@ async function runScenario(page: Page, s: LoanScenario): Promise<void> {
       .screenshot({ path: `${shots}/2-public-records.png` });
     await page.setViewportSize({ width: 1440, height: 900 });
   });
-  await test.step('Run checks: review priority and finding', async () => {
-    await page.getByRole('button', { name: /^(Run checks|Re-run checks)$/ }).click();
+  await test.step('Review priority and finding', async () => {
     const priorityCard = page
       .getByRole('heading', { name: 'Review priority' })
       .locator('xpath=../..');
