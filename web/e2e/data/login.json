@@ -1,0 +1,37 @@
+{
+  "formCases": [
+    {
+      "name": "both fields empty",
+      "userId": "",
+      "password": "",
+      "expectErrors": ["Enter your employee ID or work email.", "Enter your password."],
+      "expectNotConnectedNotice": false
+    },
+    {
+      "name": "password missing",
+      "userId": "EMP-20417",
+      "password": "",
+      "expectErrors": ["Enter your password."],
+      "expectNotConnectedNotice": false
+    },
+    {
+      "name": "whitespace-only ID",
+      "userId": "   ",
+      "password": "anything",
+      "expectErrors": ["Enter your employee ID or work email."],
+      "expectNotConnectedNotice": false
+    },
+    {
+      "name": "both filled shows the not-connected notice",
+      "userId": "rahul.kulkarni@demo.bank",
+      "password": "not-a-real-password",
+      "expectErrors": [],
+      "expectNotConnectedNotice": true
+    }
+  ],
+  "demoRoles": [
+    { "role": "branch_officer", "expectName": "Rahul Kulkarni" },
+    { "role": "branch_manager", "expectName": "Anjali Patil" },
+    { "role": "risk_analyst", "expectName": "Neha Joshi" }
+  ]
+}

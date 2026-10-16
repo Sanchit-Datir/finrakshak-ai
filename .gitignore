@@ -14,3 +14,9 @@ service-account*.json
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

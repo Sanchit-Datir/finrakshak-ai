@@ -19,7 +19,8 @@
     "format:check": "prettier --check .",
     "test": "npm run test -w @fund-tracker/shared && npm run test -w functions && npm run test -w web",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test",
-    "emulators": "firebase emulators:start"
+    "emulators": "firebase emulators:start",
+    "test:e2e": "npm run test:e2e -w web"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
