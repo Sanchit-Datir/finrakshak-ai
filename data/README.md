@@ -9,7 +9,7 @@ Source access audit (terms, robots, licences, gaps): `registry/sources.json`.
 | `processed/*.jsonl` | yes | Canonical tables (brief section 8), one JSON object per line |
 | `processed/bigquery/*.schema.json` | yes | BigQuery schemas for `bq load` |
 | `processed/case_timelines.json` | yes | Seed cases with linked official records in date order |
-| `raw/` | no (Cloud Storage) | Original downloads, content-addressed, with `manifest.jsonl` |
+| `raw/` | yes | Original downloads. `raw/mca_ogd/company_master.csv` is stored as 5 header-carrying parts (`company_master.partNof5.csv`); concatenate the rows to rebuild it |
 | `interim/` | no | Listings, item→document map, extracted text |
 
 ## Reading the data responsibly

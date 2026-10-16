@@ -15,6 +15,7 @@ service-account*.json
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# FundTrace ingest: raw/interim artifacts live in Cloud Storage, not git
-data/raw/
+# FundTrace ingest: interim artifacts are not committed. data/raw/ is committed, but the
+# unsplit original CSV is not (it is stored as 5 parts to stay under GitHub's 100 MB limit).
 data/interim/
+data/raw/mca_ogd/company_master.csv
