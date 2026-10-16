@@ -61,7 +61,10 @@
 {"case_id":"cox_kings","document_id":"doc_f1590c436e32a5dd","source_id":"ed","matched_alias":"Cox & Kings","matched_in":"title","publication_date":"2025-11-28"}
 {"case_id":"gitanjali","document_id":"doc_833aa5a5a2f8cf15","source_id":"ed","matched_alias":"Gitanjali Gems","matched_in":"title","publication_date":"2025-11-24"}
 {"case_id":"gitanjali","document_id":"doc_30b214713068d018","source_id":"ed","matched_alias":"Gitanjali Gems","matched_in":"title","publication_date":"2025-11-24"}
+{"case_id":"reliance_adag_finance","document_id":"doc_7cd4abcb3448102a","source_id":"ed","matched_alias":"Reliance Home Finance","matched_in":"text","publication_date":"2025-11-20"}
 {"case_id":"rotomac","document_id":"doc_6752f7dad7bd46fd","source_id":"ed","matched_alias":"Rotomac Global","matched_in":"title","publication_date":"2025-11-19"}
+{"case_id":"reliance_adag_finance","document_id":"doc_81fc2209aecf07ea","source_id":"ed","matched_alias":"Reliance Home Finance","matched_in":"text","publication_date":"2025-11-03"}
+{"case_id":"reliance_adag_finance","document_id":"doc_c6fe6a84e3ad44ee","source_id":"ed","matched_alias":"Reliance Home Finance","matched_in":"text","publication_date":"2025-11-03"}
 {"case_id":"dhfl","document_id":"doc_12d52a5f9554eed6","source_id":"ed","matched_alias":"Dewan Housing Finance","matched_in":"title","publication_date":"2025-09-09"}
 {"case_id":"reliance_adag_finance","document_id":"doc_a814738c096eda95","source_id":"ed","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2025-08-13"}
 {"case_id":"amtek","document_id":"doc_87879f854b4f41bc","source_id":"ed","matched_alias":"Amtek Auto","matched_in":"title","publication_date":"2025-08-11"}
@@ -70,6 +73,7 @@
 {"case_id":"pnb_lou_firestar","document_id":"doc_9bff3a6a2d84d86d","source_id":"ed","matched_alias":"Nirav Modi","matched_in":"title","publication_date":"2025-05-16"}
 {"case_id":"gitanjali","document_id":"doc_3f0aaeb283f281f4","source_id":"ed","matched_alias":"Mehul Choksi","matched_in":"title","publication_date":"2024-12-10"}
 {"case_id":"adarsh","document_id":"doc_4ad16bc81e5625fe","source_id":"ed","matched_alias":"Adarsh Credit Co-operative","matched_in":"title","publication_date":"2024-12-10"}
+{"case_id":"amtek","document_id":"doc_20da2cdac7bf6418","source_id":"ed","matched_alias":"Amtek Auto","matched_in":"text","publication_date":"2024-07-11"}
 {"case_id":"amtek","document_id":"doc_be1adc7352c3335f","source_id":"ed","matched_alias":"Amtek Auto","matched_in":"title","publication_date":"2024-06-24"}
 {"case_id":"bhushan_steel","document_id":"doc_618cde4fa5d047df","source_id":"ed","matched_alias":"Bhushan Steel","matched_in":"title","publication_date":"2024-03-08"}
 {"case_id":"religare","document_id":"doc_5bc35033e0aae672","source_id":"ed","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2024-01-25"}
@@ -79,4 +83,247 @@
 {"case_id":"dhfl","document_id":"doc_78d32ddbd6865554","source_id":"ed","matched_alias":"DHFL","matched_in":"title","publication_date":"2022-08-03"}
 {"case_id":"karvy","document_id":"doc_33f9959314dec2d5","source_id":"ed","matched_alias":"Karvy Stock Broking","matched_in":"title","publication_date":"2022-07-30"}
 {"case_id":"pnb_lou_firestar","document_id":"doc_cfe320d588597373","source_id":"ed","matched_alias":"Nirav Modi","matched_in":"title","publication_date":"2022-07-22"}
+{"case_id":"bhushan_power","document_id":"doc_5d02ae4a18d7737f","source_id":"ed","matched_alias":"Bhushan Power and Steel","matched_in":"text","publication_date":"2022-06-09"}
+{"case_id":"srei","document_id":"doc_4fe90a9e1d2af0ed","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2026-09-10"}
+{"case_id":"ilfs","document_id":"doc_811804d4f543f594","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2026-07-29"}
+{"case_id":"ilfs","document_id":"doc_1b6fdc9a400614a8","source_id":"ibbi","matched_alias":"IL&FS","matched_in":"title","publication_date":"2026-07-24"}
+{"case_id":"srei","document_id":"doc_85b5939cb4eec162","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2026-07-11"}
+{"case_id":"srei","document_id":"doc_58cef98e5f0aa3d9","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2026-05-18"}
+{"case_id":"srei","document_id":"doc_8942d30e4e6f204a","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2026-05-03"}
+{"case_id":"srei","document_id":"doc_1b8a4e23976e0e5e","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2026-05-02"}
+{"case_id":"srei","document_id":"doc_1b8a4e23976e0e5e","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2026-05-02"}
+{"case_id":"srei","document_id":"doc_11d31e70a1d407d5","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2026-03-31"}
+{"case_id":"ilfs","document_id":"doc_16ded6fd5e04c3e9","source_id":"ibbi","matched_alias":"IL&FS","matched_in":"title","publication_date":"2025-12-06"}
+{"case_id":"srei","document_id":"doc_6d79a4965234dd9d","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2025-11-21"}
+{"case_id":"ilfs","document_id":"doc_6632636307831de3","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_0e24edfde2a041cb","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_e4293256d5676ea4","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_235e0dc86f1d4299","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_fcdd2f5579aac4f9","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_dfd9e337ccf21e8c","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_64b70c863645c209","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_aa4dc15d6cae6110","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_f0930122033cc498","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_475d8f87259e572e","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_92d133ede6f77bcf","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_5d080ba5c5c30d3d","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"ilfs","document_id":"doc_5341dcfac54ef29e","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2025-11-16"}
+{"case_id":"bhushan_power","document_id":"doc_b98e547070c96454","source_id":"ibbi","matched_alias":"Bhushan Power and Steel","matched_in":"title","publication_date":"2025-11-15"}
+{"case_id":"gensol","document_id":"doc_675d8c018f45f26d","source_id":"ibbi","matched_alias":"Blu-Smart Mobility","matched_in":"title","publication_date":"2025-10-17"}
+{"case_id":"srei","document_id":"doc_634ab4366bde900c","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2025-09-21"}
+{"case_id":"reliance_adag_finance","document_id":"doc_941c9476d3bcd65e","source_id":"ibbi","matched_alias":"Reliance Home Finance","matched_in":"title","publication_date":"2025-09-18"}
+{"case_id":"gensol","document_id":"doc_daa056837a8f4cf4","source_id":"ibbi","matched_alias":"Blu-Smart Mobility","matched_in":"title","publication_date":"2025-07-31"}
+{"case_id":"srei","document_id":"doc_4409d601811b78f1","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2025-07-26"}
+{"case_id":"gensol","document_id":"doc_d70af87cbe3fe368","source_id":"ibbi","matched_alias":"Gensol Engineering","matched_in":"title","publication_date":"2025-06-14"}
+{"case_id":"srei","document_id":"doc_40799a638276d249","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2025-06-14"}
+{"case_id":"gensol","document_id":"doc_75950efd0c07666e","source_id":"ibbi","matched_alias":"Gensol Engineering","matched_in":"title","publication_date":"2025-06-14"}
+{"case_id":"srei","document_id":"doc_e9cd8dd6cf06658f","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2025-05-06"}
+{"case_id":"srei","document_id":"doc_93b2396751e30e94","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2025-05-03"}
+{"case_id":"srei","document_id":"doc_3704a493d793f800","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2025-04-30"}
+{"case_id":"srei","document_id":"doc_4323212fe6b58ee7","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2025-03-01"}
+{"case_id":"ilfs","document_id":"doc_f67c2ec8fa67acc1","source_id":"ibbi","matched_alias":"IL&FS","matched_in":"title","publication_date":"2025-02-28"}
+{"case_id":"reliance_adag_finance","document_id":"doc_bcee0843eb6f7f59","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-12-16"}
+{"case_id":"reliance_adag_finance","document_id":"doc_cfa187e8907ff93f","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-12-01"}
+{"case_id":"srei","document_id":"doc_d6130681700d71c4","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2024-11-29"}
+{"case_id":"srei","document_id":"doc_25d6d6e2429c8a8c","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2024-11-29"}
+{"case_id":"srei","document_id":"doc_b475182cca3cd74a","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2024-11-27"}
+{"case_id":"reliance_adag_finance","document_id":"doc_b04650fb1e380b25","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-10-17"}
+{"case_id":"reliance_adag_finance","document_id":"doc_53b0832dc77c457f","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-10-16"}
+{"case_id":"reliance_adag_finance","document_id":"doc_b66fd8ee6ef8722e","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-10-15"}
+{"case_id":"reliance_adag_finance","document_id":"doc_96d45d44b763e3a4","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-09-10"}
+{"case_id":"coffee_day","document_id":"doc_03756a6ec756d918","source_id":"ibbi","matched_alias":"Coffee Day Enterprises","matched_in":"title","publication_date":"2024-08-10"}
+{"case_id":"reliance_adag_finance","document_id":"doc_fb55cc830dc0c9e5","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-07-31"}
+{"case_id":"reliance_adag_finance","document_id":"doc_6f3eef54c446ce83","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-07-21"}
+{"case_id":"reliance_adag_finance","document_id":"doc_8a2951254e9eeea0","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-07-21"}
+{"case_id":"reliance_adag_finance","document_id":"doc_317c90ed2b55b553","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-07-10"}
+{"case_id":"reliance_adag_finance","document_id":"doc_f65f7ca8c6030dcb","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-07-03"}
+{"case_id":"reliance_adag_finance","document_id":"doc_9e6f70f17576f3e9","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-06-14"}
+{"case_id":"reliance_adag_finance","document_id":"doc_242f6a373d8e31f8","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-06-14"}
+{"case_id":"srei","document_id":"doc_6e4264c668b51e9a","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2024-05-23"}
+{"case_id":"reliance_adag_finance","document_id":"doc_b18a6c7b7a97c815","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-05-11"}
+{"case_id":"reliance_adag_finance","document_id":"doc_c37a046135114afe","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-05-11"}
+{"case_id":"srei","document_id":"doc_e69d0ff19b99b084","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2024-05-04"}
+{"case_id":"reliance_adag_finance","document_id":"doc_a76efce99d741ddc","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2024-04-26"}
+{"case_id":"srei","document_id":"doc_350e5230c41424b1","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2024-04-03"}
+{"case_id":"srei","document_id":"doc_7f288697fc1d77e0","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2024-03-10"}
+{"case_id":"srei","document_id":"doc_8836291a81ab7ead","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2024-03-10"}
+{"case_id":"srei","document_id":"doc_f35c9ccb4e0b0b5f","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2024-03-10"}
+{"case_id":"religare","document_id":"doc_cc858949cce2b651","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2024-03-09"}
+{"case_id":"religare","document_id":"doc_fabc1637c85a1797","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2024-02-25"}
+{"case_id":"gitanjali","document_id":"doc_73431c3790a99e92","source_id":"ibbi","matched_alias":"Gitanjali Gems","matched_in":"title","publication_date":"2024-02-10"}
+{"case_id":"srei","document_id":"doc_d83c6185bc71573a","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2024-01-09"}
+{"case_id":"srei","document_id":"doc_ef112cc45f7e0f68","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-12-23"}
+{"case_id":"srei","document_id":"doc_5ea0faf4f1916a4c","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-12-20"}
+{"case_id":"srei","document_id":"doc_656dbe204c69fa98","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-11-24"}
+{"case_id":"srei","document_id":"doc_60337e3dc9f4ba1c","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-11-15"}
+{"case_id":"cox_kings","document_id":"doc_8ae96fe74a019a75","source_id":"ibbi","matched_alias":"Cox and Kings","matched_in":"title","publication_date":"2023-11-11"}
+{"case_id":"srei","document_id":"doc_21103ba66500c2f0","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-11-11"}
+{"case_id":"reliance_adag_finance","document_id":"doc_91c613fdec76eb48","source_id":"ibbi","matched_alias":"Reliance Home Finance","matched_in":"title","publication_date":"2023-08-07"}
+{"case_id":"bhushan_power","document_id":"doc_85432fd10a97d053","source_id":"ibbi","matched_alias":"Bhushan Power & Steel","matched_in":"title","publication_date":"2023-08-02"}
+{"case_id":"coffee_day","document_id":"doc_02ac24c0126125d2","source_id":"ibbi","matched_alias":"Coffee Day Global","matched_in":"title","publication_date":"2023-07-28"}
+{"case_id":"religare","document_id":"doc_58a2c50978ca2e13","source_id":"ibbi","matched_alias":"Religare Enterprises","matched_in":"title","publication_date":"2023-07-20"}
+{"case_id":"srei","document_id":"doc_c192d8d5d7837840","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-06-28"}
+{"case_id":"srei","document_id":"doc_151b479dd346c48b","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-06-16"}
+{"case_id":"ilfs","document_id":"doc_d1ad96617ce539c3","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2023-06-11"}
+{"case_id":"srei","document_id":"doc_d32bc2a77558948f","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2023-05-16"}
+{"case_id":"srei","document_id":"doc_7c5f09f49c745dc9","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2023-04-24"}
+{"case_id":"srei","document_id":"doc_c0fe191da7e3eac0","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-04-14"}
+{"case_id":"srei","document_id":"doc_4e1d762dd637e6e0","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-03-30"}
+{"case_id":"srei","document_id":"doc_04b21d8d71b78a63","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-03-11"}
+{"case_id":"zee","document_id":"doc_27c4a75c6ea59234","source_id":"ibbi","matched_alias":"Zee Entertainment Enterprises","matched_in":"title","publication_date":"2023-02-22"}
+{"case_id":"ilfs","document_id":"doc_11cbac28f9d04ad1","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2023-02-13"}
+{"case_id":"srei","document_id":"doc_65fcf569400e944b","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-02-10"}
+{"case_id":"dhfl","document_id":"doc_6901c9b652189ad0","source_id":"ibbi","matched_alias":"Dewan Housing Finance","matched_in":"title","publication_date":"2023-01-26"}
+{"case_id":"srei","document_id":"doc_9ee19a48a90469a6","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2023-01-12"}
+{"case_id":"cox_kings","document_id":"doc_f5beb37d177cb8b1","source_id":"ibbi","matched_alias":"Cox and Kings","matched_in":"title","publication_date":"2023-01-11"}
+{"case_id":"religare","document_id":"doc_90801543e1b239cb","source_id":"ibbi","matched_alias":"Fortis Healthcare","matched_in":"title","publication_date":"2022-12-24"}
+{"case_id":"srei","document_id":"doc_4efcee24f811b607","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2022-12-23"}
+{"case_id":"srei","document_id":"doc_0d693637866e554d","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2022-12-01"}
+{"case_id":"srei","document_id":"doc_3a2fb420020873ed","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2022-11-19"}
+{"case_id":"religare","document_id":"doc_14b8d05785ac10e7","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2022-11-16"}
+{"case_id":"cox_kings","document_id":"doc_d788a554b81e78c1","source_id":"ibbi","matched_alias":"Cox & Kings","matched_in":"title","publication_date":"2022-11-10"}
+{"case_id":"ilfs","document_id":"doc_b21f32d81515bde1","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2022-10-31"}
+{"case_id":"reliance_adag_finance","document_id":"doc_f05aedf825b4a264","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2022-10-20"}
+{"case_id":"reliance_adag_finance","document_id":"doc_e34b60fb001d37d5","source_id":"ibbi","matched_alias":"Reliance Home Finance","matched_in":"title","publication_date":"2022-08-30"}
+{"case_id":"srei","document_id":"doc_2532aa86e7548eba","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2022-07-28"}
+{"case_id":"ilfs","document_id":"doc_5e62f6c144cc13ce","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2022-07-14"}
+{"case_id":"reliance_adag_finance","document_id":"doc_f95f25a6065b2019","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2022-06-29"}
+{"case_id":"srei","document_id":"doc_075d35c37f8c2e6c","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2022-06-18"}
+{"case_id":"reliance_adag_finance","document_id":"doc_8971ebd296e0ed75","source_id":"ibbi","matched_alias":"Reliance Home Finance","matched_in":"title","publication_date":"2022-06-14"}
+{"case_id":"religare","document_id":"doc_5685f435059b1d24","source_id":"ibbi","matched_alias":"RHC Holding","matched_in":"title","publication_date":"2022-05-20"}
+{"case_id":"ilfs","document_id":"doc_448a5cf2d3772790","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2022-03-22"}
+{"case_id":"reliance_adag_finance","document_id":"doc_a911e06ab9d85a3a","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2022-03-19"}
+{"case_id":"srei","document_id":"doc_07b42cea8c61123b","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2022-03-17"}
+{"case_id":"cox_kings","document_id":"doc_37c7fce9c87c8607","source_id":"ibbi","matched_alias":"Cox & Kings","matched_in":"title","publication_date":"2021-12-20"}
+{"case_id":"reliance_adag_finance","document_id":"doc_67cb67f88b444d9b","source_id":"ibbi","matched_alias":"Reliance Capital Limited","matched_in":"title","publication_date":"2021-12-07"}
+{"case_id":"srei","document_id":"doc_43a22613f1950648","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2021-11-19"}
+{"case_id":"sterling_biotech","document_id":"doc_03ebabc4b6de39b2","source_id":"ibbi","matched_alias":"Sterling SEZ","matched_in":"title","publication_date":"2021-11-19"}
+{"case_id":"srei","document_id":"doc_03ebabc4b6de39b2","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2021-11-19"}
+{"case_id":"srei","document_id":"doc_915bd03382951cee","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2021-10-22"}
+{"case_id":"srei","document_id":"doc_3dd4f9545662d6ce","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2021-10-11"}
+{"case_id":"srei","document_id":"doc_bf92039e94f237c6","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2021-10-11"}
+{"case_id":"srei","document_id":"doc_a29bfe8b48b3ecea","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2021-10-06"}
+{"case_id":"religare","document_id":"doc_0852e398173bde9b","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2021-09-28"}
+{"case_id":"pnb_lou_firestar","document_id":"doc_7be5501f3083b1c7","source_id":"ibbi","matched_alias":"Firestar International","matched_in":"title","publication_date":"2021-08-20"}
+{"case_id":"reliance_adag_finance","document_id":"doc_8a348f17f656d3df","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2021-06-05"}
+{"case_id":"srei","document_id":"doc_dd7d8c04ad7ae84d","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2021-05-19"}
+{"case_id":"cox_kings","document_id":"doc_19358415172e6c04","source_id":"ibbi","matched_alias":"Cox & Kings","matched_in":"title","publication_date":"2021-05-07"}
+{"case_id":"srei","document_id":"doc_889ed7f6464c5c37","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2021-03-18"}
+{"case_id":"coffee_day","document_id":"doc_56c7aac7073e3a85","source_id":"ibbi","matched_alias":"Sical Logistics","matched_in":"title","publication_date":"2021-03-11"}
+{"case_id":"sterling_biotech","document_id":"doc_ff242cb36bbd31f4","source_id":"ibbi","matched_alias":"Sterling Biotech","matched_in":"title","publication_date":"2021-02-27"}
+{"case_id":"srei","document_id":"doc_8fbc51f35c11fe0e","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2021-02-13"}
+{"case_id":"reliance_adag_finance","document_id":"doc_d9f289e78008d106","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2021-02-10"}
+{"case_id":"srei","document_id":"doc_bdc8ea6fc3f758c7","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2020-11-22"}
+{"case_id":"religare","document_id":"doc_c0573c2cb892f8dc","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2020-11-12"}
+{"case_id":"reliance_adag_finance","document_id":"doc_4c5149b3e0334f34","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2020-10-13"}
+{"case_id":"reliance_adag_finance","document_id":"doc_908d3db01fabd020","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2020-09-10"}
+{"case_id":"winsome","document_id":"doc_b08c24ae57dc33ee","source_id":"ibbi","matched_alias":"Forever Precious Jewellery","matched_in":"title","publication_date":"2020-09-04"}
+{"case_id":"winsome","document_id":"doc_002b47bb41796b2a","source_id":"ibbi","matched_alias":"Winsome Diamonds","matched_in":"title","publication_date":"2020-09-04"}
+{"case_id":"reliance_adag_finance","document_id":"doc_8795599d5647f59a","source_id":"ibbi","matched_alias":"Reliance Home Finance","matched_in":"title","publication_date":"2020-03-19"}
+{"case_id":"pnb_lou_firestar","document_id":"doc_702ae42dd405a646","source_id":"ibbi","matched_alias":"Firestar International","matched_in":"title","publication_date":"2020-03-18"}
+{"case_id":"ilfs","document_id":"doc_5472955687b2da1e","source_id":"ibbi","matched_alias":"IL&FS","matched_in":"title","publication_date":"2020-03-18"}
+{"case_id":"pnb_lou_firestar","document_id":"doc_075357f28dc51239","source_id":"ibbi","matched_alias":"Firestar Diamond","matched_in":"title","publication_date":"2020-03-03"}
+{"case_id":"reliance_adag_finance","document_id":"doc_edd96916a97fba91","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2020-02-29"}
+{"case_id":"religare","document_id":"doc_f66a733b8bb414e7","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2020-02-07"}
+{"case_id":"ilfs","document_id":"doc_9a67fd325a8cd8e2","source_id":"ibbi","matched_alias":"IL&FS","matched_in":"title","publication_date":"2020-01-23"}
+{"case_id":"ilfs","document_id":"doc_03cccd0b35620849","source_id":"ibbi","matched_alias":"IL&FS","matched_in":"title","publication_date":"2020-01-10"}
+{"case_id":"reliance_adag_finance","document_id":"doc_93af8e59f5d20ca8","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-12-23"}
+{"case_id":"reliance_adag_finance","document_id":"doc_b110aa285a49f111","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-12-16"}
+{"case_id":"reliance_adag_finance","document_id":"doc_2b610251a0449234","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-12-05"}
+{"case_id":"dhfl","document_id":"doc_3e09ef774d59fd14","source_id":"ibbi","matched_alias":"Dewan Housing Finance","matched_in":"title","publication_date":"2019-12-04"}
+{"case_id":"reliance_adag_finance","document_id":"doc_11793f35c8f894ad","source_id":"ibbi","matched_alias":"Reliance Capital Ltd","matched_in":"title","publication_date":"2019-12-03"}
+{"case_id":"srei","document_id":"doc_2e39297f837ff8c6","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2019-11-22"}
+{"case_id":"reliance_adag_finance","document_id":"doc_9126af844306c945","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-11-08"}
+{"case_id":"cox_kings","document_id":"doc_ecd5233a9c9ce981","source_id":"ibbi","matched_alias":"Cox & Kings","matched_in":"title","publication_date":"2019-10-26"}
+{"case_id":"cox_kings","document_id":"doc_2e1928f88102967e","source_id":"ibbi","matched_alias":"Cox & Kings","matched_in":"title","publication_date":"2019-10-25"}
+{"case_id":"reliance_adag_finance","document_id":"doc_16d2c32ab6f7e965","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-10-23"}
+{"case_id":"reliance_adag_finance","document_id":"doc_8b183442a5fa2902","source_id":"ibbi","matched_alias":"Reliance Home Finance","matched_in":"title","publication_date":"2019-10-13"}
+{"case_id":"reliance_adag_finance","document_id":"doc_bfb377283cf03b04","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-10-12"}
+{"case_id":"pnb_lou_firestar","document_id":"doc_5cb9baad6c30ce6a","source_id":"ibbi","matched_alias":"Firestar Diamond","matched_in":"title","publication_date":"2019-10-11"}
+{"case_id":"reliance_adag_finance","document_id":"doc_2f015a1bf2856aa4","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-10-10"}
+{"case_id":"reliance_adag_finance","document_id":"doc_f2122c80f2fae02e","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-10-05"}
+{"case_id":"zee","document_id":"doc_0a2afd38c9ed77f6","source_id":"ibbi","matched_alias":"Zee Entertainment Enterprises","matched_in":"title","publication_date":"2019-09-25"}
+{"case_id":"srei","document_id":"doc_2536ff1ecdb732a9","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2019-09-01"}
+{"case_id":"reliance_adag_finance","document_id":"doc_e7969eef38d91df6","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-08-24"}
+{"case_id":"reliance_adag_finance","document_id":"doc_53bae476251dac04","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-08-24"}
+{"case_id":"srei","document_id":"doc_9a52b0a3977eb655","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2019-08-04"}
+{"case_id":"srei","document_id":"doc_7d2c87769d353396","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2019-07-27"}
+{"case_id":"zee","document_id":"doc_bc95355399ab8851","source_id":"ibbi","matched_alias":"Zee Entertainment Enterprises","matched_in":"title","publication_date":"2019-06-30"}
+{"case_id":"reliance_adag_finance","document_id":"doc_d8d017a5117729ca","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-06-28"}
+{"case_id":"srei","document_id":"doc_3e771921d55f555f","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2019-06-28"}
+{"case_id":"reliance_adag_finance","document_id":"doc_0888a96c7ba77272","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-06-27"}
+{"case_id":"srei","document_id":"doc_d7e57d41f4a8e309","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2019-06-17"}
+{"case_id":"reliance_adag_finance","document_id":"doc_bdecb8cdef2ead17","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-05-17"}
+{"case_id":"sterling_biotech","document_id":"doc_e1f6fbcbd3db3abd","source_id":"ibbi","matched_alias":"Sterling Biotech","matched_in":"title","publication_date":"2019-05-15"}
+{"case_id":"abg_shipyard","document_id":"doc_9541b9875b611552","source_id":"ibbi","matched_alias":"ABG Shipyard","matched_in":"title","publication_date":"2019-05-03"}
+{"case_id":"reliance_adag_finance","document_id":"doc_cf43216df6e33611","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-04-29"}
+{"case_id":"reliance_adag_finance","document_id":"doc_fc3443279a164c63","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-04-25"}
+{"case_id":"reliance_adag_finance","document_id":"doc_9f3eadf9e1b1cded","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-04-15"}
+{"case_id":"reliance_adag_finance","document_id":"doc_86e5c43a9859630d","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-03-14"}
+{"case_id":"reliance_adag_finance","document_id":"doc_d0a87e2cd3412035","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-03-12"}
+{"case_id":"reliance_adag_finance","document_id":"doc_7f84a8cdd5e47083","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-03-11"}
+{"case_id":"religare","document_id":"doc_cf695d27e9b9ce91","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2019-03-05"}
+{"case_id":"reliance_adag_finance","document_id":"doc_7bb415fc3d4a55b9","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-03-01"}
+{"case_id":"religare","document_id":"doc_fa86c23d6ffd073f","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2019-02-21"}
+{"case_id":"religare","document_id":"doc_2a7897c942821c71","source_id":"ibbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2019-02-21"}
+{"case_id":"reliance_adag_finance","document_id":"doc_2a04d84861b4b82d","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-02-06"}
+{"case_id":"reliance_adag_finance","document_id":"doc_2b8f45cf663364c2","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-02-03"}
+{"case_id":"reliance_adag_finance","document_id":"doc_5c105941113b3d69","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-02-02"}
+{"case_id":"reliance_adag_finance","document_id":"doc_bd8b859952429636","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-01-30"}
+{"case_id":"reliance_adag_finance","document_id":"doc_983a1973c9c8dae8","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2019-01-12"}
+{"case_id":"ilfs","document_id":"doc_068b8475b6748ac3","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2019-01-07"}
+{"case_id":"srei","document_id":"doc_5e5f84b0a4e539e3","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2019-01-04"}
+{"case_id":"srei","document_id":"doc_fdcb66138e2340da","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-12-22"}
+{"case_id":"srei","document_id":"doc_87bd07f68029e944","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-12-22"}
+{"case_id":"reliance_adag_finance","document_id":"doc_4e1ea5ccfa8a5b85","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-12-13"}
+{"case_id":"reliance_adag_finance","document_id":"doc_c546ec6102e6777e","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-12-10"}
+{"case_id":"ilfs","document_id":"doc_e4732faec17d4f12","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2018-12-10"}
+{"case_id":"reliance_adag_finance","document_id":"doc_ae4f522a5826a765","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-12-10"}
+{"case_id":"reliance_adag_finance","document_id":"doc_12871e62a7f3dc61","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-12-06"}
+{"case_id":"ilfs","document_id":"doc_9d0b20a5f9ce28e5","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2018-11-29"}
+{"case_id":"reliance_adag_finance","document_id":"doc_5a5a5f52982817df","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-10-27"}
+{"case_id":"reliance_adag_finance","document_id":"doc_cab977cd6880a90a","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-10-27"}
+{"case_id":"reliance_adag_finance","document_id":"doc_be8f9928a7bf2076","source_id":"ibbi","matched_alias":"Reliance Capital Ltd","matched_in":"title","publication_date":"2018-10-18"}
+{"case_id":"gitanjali","document_id":"doc_ef2997663767b15b","source_id":"ibbi","matched_alias":"Gitanjali Gems","matched_in":"title","publication_date":"2018-10-09"}
+{"case_id":"srei","document_id":"doc_cdff55485913f1ce","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-09-01"}
+{"case_id":"ilfs","document_id":"doc_68684f8ff0808577","source_id":"ibbi","matched_alias":"IL & FS","matched_in":"title","publication_date":"2018-08-30"}
+{"case_id":"reliance_adag_finance","document_id":"doc_ea9fc52b5bc3e31d","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-08-10"}
+{"case_id":"srei","document_id":"doc_1143044da0749e28","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-07-28"}
+{"case_id":"srei","document_id":"doc_59a312e9182b8dad","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2018-07-25"}
+{"case_id":"sterling_biotech","document_id":"doc_604c32fb5070795c","source_id":"ibbi","matched_alias":"Sterling SEZ","matched_in":"title","publication_date":"2018-07-25"}
+{"case_id":"srei","document_id":"doc_604c32fb5070795c","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2018-07-25"}
+{"case_id":"reliance_adag_finance","document_id":"doc_ad0d497f51de178c","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-07-07"}
+{"case_id":"srei","document_id":"doc_bad4a48d11b9540b","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2018-07-05"}
+{"case_id":"sterling_biotech","document_id":"doc_9b59912e4e06fd59","source_id":"ibbi","matched_alias":"Sterling Biotech","matched_in":"title","publication_date":"2018-06-27"}
+{"case_id":"srei","document_id":"doc_c09827827ac51543","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-06-20"}
+{"case_id":"reliance_adag_finance","document_id":"doc_e21f5cbe87a39b7f","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-06-11"}
+{"case_id":"srei","document_id":"doc_981a121fa4fc3926","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-06-09"}
+{"case_id":"videocon","document_id":"doc_f8ff896eeb61a9b2","source_id":"ibbi","matched_alias":"Videocon Industries","matched_in":"title","publication_date":"2018-06-09"}
+{"case_id":"srei","document_id":"doc_834759dd5ee16a94","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2018-06-01"}
+{"case_id":"srei","document_id":"doc_6a679ebf3f01ad44","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-04-07"}
+{"case_id":"srei","document_id":"doc_0bb2d71daa40e144","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-04-07"}
+{"case_id":"rotomac","document_id":"doc_31acb35b3fb4a6c1","source_id":"ibbi","matched_alias":"Rotomac Global","matched_in":"title","publication_date":"2018-03-29"}
+{"case_id":"reliance_adag_finance","document_id":"doc_ecb59e13c984d5ff","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-03-27"}
+{"case_id":"srei","document_id":"doc_fb9fa46701fa4dd8","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-03-18"}
+{"case_id":"reliance_adag_finance","document_id":"doc_752e27e607ffc0c2","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2018-03-15"}
+{"case_id":"srei","document_id":"doc_e1ded6bf4c554b8e","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2018-03-09"}
+{"case_id":"winsome","document_id":"doc_d68edca1f357382b","source_id":"ibbi","matched_alias":"Winsome Diamonds","matched_in":"title","publication_date":"2018-02-15"}
+{"case_id":"winsome","document_id":"doc_73da3853cd9e95b0","source_id":"ibbi","matched_alias":"Forever Precious Jewellery","matched_in":"title","publication_date":"2018-02-14"}
+{"case_id":"srei","document_id":"doc_3469d8330b869d28","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2018-01-10"}
+{"case_id":"srei","document_id":"doc_2d7ffe90204d6498","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2017-11-24"}
+{"case_id":"rotomac","document_id":"doc_37f8e1ae794a5a71","source_id":"ibbi","matched_alias":"Rotomac Global","matched_in":"title","publication_date":"2017-09-25"}
+{"case_id":"reliance_adag_finance","document_id":"doc_edf291277adb919c","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2017-09-22"}
+{"case_id":"reliance_adag_finance","document_id":"doc_6d2795bcb81e1405","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2017-09-14"}
+{"case_id":"reliance_adag_finance","document_id":"doc_346bda22960a9db8","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2017-09-06"}
+{"case_id":"reliance_adag_finance","document_id":"doc_9111e7fa5a59014a","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2017-08-28"}
+{"case_id":"reliance_adag_finance","document_id":"doc_0e42b5c2e17412b2","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2017-08-28"}
+{"case_id":"abg_shipyard","document_id":"doc_806da0cc563e0cba","source_id":"ibbi","matched_alias":"ABG Shipyard","matched_in":"title","publication_date":"2017-08-04"}
+{"case_id":"videocon","document_id":"doc_a99a9c6d76c8aa0e","source_id":"ibbi","matched_alias":"NuPower Renewables","matched_in":"title","publication_date":"2017-08-03"}
+{"case_id":"amtek","document_id":"doc_3b882d82dd21c274","source_id":"ibbi","matched_alias":"Amtek Auto","matched_in":"title","publication_date":"2017-07-29"}
+{"case_id":"bhushan_power","document_id":"doc_131a145d2f49ecce","source_id":"ibbi","matched_alias":"Bhushan Power & Steel","matched_in":"title","publication_date":"2017-07-28"}
+{"case_id":"bhushan_steel","document_id":"doc_6914e61503082485","source_id":"ibbi","matched_alias":"Bhushan Steel","matched_in":"title","publication_date":"2017-07-26"}
+{"case_id":"srei","document_id":"doc_21dfd90602f52638","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2017-07-24"}
+{"case_id":"reliance_adag_finance","document_id":"doc_b17db80447fd34ad","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2017-07-05"}
+{"case_id":"ilfs","document_id":"doc_9fbe74a56c1e533d","source_id":"ibbi","matched_alias":"IL&FS","matched_in":"title","publication_date":"2017-04-29"}
+{"case_id":"cox_kings","document_id":"doc_69016cc9224b5a69","source_id":"rbi","matched_alias":"Cox & Kings","matched_in":"text","publication_date":"2024-02-09"}
 {"case_id":"religare","document_id":"doc_0e3b1a2e14fb460c","source_id":"rbi","matched_alias":"Religare Finvest","matched_in":"title","publication_date":"2017-10-12"}
