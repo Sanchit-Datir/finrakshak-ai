@@ -1,0 +1,32 @@
+[
+  {
+    "name": "entity_a",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "entity_b",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "name_a",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "name_b",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "similarity",
+    "mode": "REQUIRED",
+    "type": "FLOAT64"
+  },
+  {
+    "name": "reason",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  }
+]

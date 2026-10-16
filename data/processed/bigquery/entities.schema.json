@@ -1,0 +1,57 @@
+[
+  {
+    "name": "entity_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "entity_type",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "canonical_name",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "cin",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "status",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "incorporation_date",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  },
+  {
+    "name": "jurisdiction",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "aliases",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "match_method",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "sources",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "mention_count",
+    "mode": "REQUIRED",
+    "type": "INT64"
+  }
+]

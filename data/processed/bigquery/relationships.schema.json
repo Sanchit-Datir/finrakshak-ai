@@ -1,0 +1,57 @@
+[
+  {
+    "name": "relationship_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "from_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "relationship_type",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "to_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "valid_from",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  },
+  {
+    "name": "valid_to",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  },
+  {
+    "name": "first_observed_at",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  },
+  {
+    "name": "source_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "document_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "evidence_status",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "confidence",
+    "mode": "REQUIRED",
+    "type": "FLOAT64"
+  }
+]

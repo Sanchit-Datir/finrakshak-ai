@@ -1,0 +1,47 @@
+[
+  {
+    "name": "signal_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "subject_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "signal_type",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "value",
+    "mode": "REQUIRED",
+    "type": "FLOAT64"
+  },
+  {
+    "name": "explanation",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "feature_date",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  },
+  {
+    "name": "document_ids",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "benign_explanations",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "review_status",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  }
+]

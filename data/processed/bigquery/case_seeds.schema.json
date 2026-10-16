@@ -1,0 +1,32 @@
+[
+  {
+    "name": "case_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "display_name",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "aliases",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "related_aliases",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "selection_reason",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "verification_status",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  }
+]

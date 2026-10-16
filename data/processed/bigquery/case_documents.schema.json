@@ -1,0 +1,32 @@
+[
+  {
+    "name": "case_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "document_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "source_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "matched_alias",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "matched_in",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "publication_date",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  }
+]
