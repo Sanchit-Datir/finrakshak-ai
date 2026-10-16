@@ -1,0 +1,54 @@
+# Builds and deploys the web app to Firebase Hosting (works on the Spark plan).
+#   pull_request → a preview channel URL per PR (expires after 7 days)
+#   push to main → the live site
+# Auth is keyless: Workload Identity Federation (see scripts/setup-gcp.sh).
+# Repo variables (Settings → Secrets and variables → Actions → Variables):
+#   FIREBASE_PROJECT_ID, WIF_PROVIDER, DEPLOY_SA,
+#   VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_APP_ID,
+#   VITE_RECAPTCHA_SITE_KEY (optional), VITE_GEMINI_MODEL (optional)
+name: Deploy
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  deploy:
+    # Fork PRs get no OIDC token; they are covered by CI only.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      VITE_FIREBASE_API_KEY: ${{ vars.VITE_FIREBASE_API_KEY }}
+      VITE_FIREBASE_AUTH_DOMAIN: ${{ vars.VITE_FIREBASE_AUTH_DOMAIN }}
+      VITE_FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+      VITE_FIREBASE_APP_ID: ${{ vars.VITE_FIREBASE_APP_ID }}
+      VITE_RECAPTCHA_SITE_KEY: ${{ vars.VITE_RECAPTCHA_SITE_KEY }}
+      VITE_GEMINI_MODEL: ${{ vars.VITE_GEMINI_MODEL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build -w @fund-tracker/shared && npm run build -w web
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.DEPLOY_SA }}
+      - name: Deploy preview channel
+        if: github.event_name == 'pull_request'
+        run: |
+          npx firebase hosting:channel:deploy "pr-${{ github.event.number }}" \
+            --project "${{ vars.FIREBASE_PROJECT_ID }}" --expires 7d --json > channel.json
+          url=$(jq -r '.result[]?.url // empty' channel.json | head -1)
+          echo "### Preview: ${url:-see deploy log}" >> "$GITHUB_STEP_SUMMARY"
+      - name: Deploy live site
+        if: github.event_name == 'push'
+        run: npx firebase deploy --only hosting --project "${{ vars.FIREBASE_PROJECT_ID }}" --non-interactive

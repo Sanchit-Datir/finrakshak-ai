@@ -1,4 +1,11 @@
-import { FlaskConical, Info, RefreshCw, TriangleAlert, type LucideIcon } from 'lucide-react';
+import {
+  FlaskConical,
+  Info,
+  RefreshCw,
+  Sparkles,
+  TriangleAlert,
+  type LucideIcon,
+} from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Button } from './Button.js';
 import { cn } from './cn.js';
@@ -97,6 +104,16 @@ export function DemoBadge({ className }: { className?: string }): React.JSX.Elem
 }
 
 /** Marks output that no real OCR / AI service produced. */
+/** Marks values read by Gemini: real AI output, still unverified until a reviewer confirms it. */
+export function AiBadge(): React.JSX.Element {
+  return (
+    <span className="bg-violet-soft text-violet inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold">
+      <Sparkles className="size-3" aria-hidden />
+      Read by Gemini — verify
+    </span>
+  );
+}
+
 export function SimulatedBadge({
   label = 'Simulated demo output',
 }: {

@@ -1,3 +1,4 @@
+import { aiConfigured } from '../lib/ai/env.js';
 import { Database, Lock, RotateCcw, Save, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Badge } from '../components/ui/Badge.js';
@@ -516,12 +517,17 @@ const SOURCES: [string, string, 'ok' | 'warn' | 'neutral'][] = [
   ['Deterministic application checks', 'Running in browser', 'ok'],
   ['Transaction monitoring rules', 'Running in browser on demo ledger + imported CSV', 'ok'],
   ['Core banking transaction feed', 'Not connected — use CSV import', 'warn'],
-  [
-    'OCR / handwriting recognition',
-    'Not connected — demo samples show simulated output; uploads need manual entry',
-    'warn',
-  ],
-  ['Gemini on Vertex AI (document analysis)', 'Not connected — no AI analysis runs', 'warn'],
+  aiConfigured()
+    ? [
+        'OCR / handwriting / translation (Gemini via Firebase AI Logic)',
+        'Connected — uploads are read by Gemini; every value needs human review',
+        'ok',
+      ]
+    : [
+        'OCR / handwriting / translation (Gemini via Firebase AI Logic)',
+        'Not connected — demo samples show simulated output; uploads need manual entry',
+        'warn',
+      ],
   [
     'Public records (courts, MCA, land records)',
     'Not connected — no lookups are performed',

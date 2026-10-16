@@ -53,4 +53,5 @@ Claude (and humans) must flag any of these to the project owner when touched. Fo
 - **B-31 Secrets & env** → no secrets in the web bundle (all `VITE_*` is public). Use Secret Manager for server secrets.
 - **B-32 Firebase plan** → Functions + Vertex require the Blaze (pay-as-you-go) plan; confirm before deploy.
 - **B-33 Security-rule regressions** → every rules change needs emulator tests; default-deny must remain.
+- **B-35 Client-side Gemini (Firebase AI Logic)** → anyone with the site's public Firebase config can call the model until App Check is enforced in Firebase console → AI Logic; set `VITE_RECAPTCHA_SITE_KEY`, enforce App Check, and watch the Gemini Developer API free-tier quota. Uploaded document images are sent to Google's Gemini API — use synthetic/demo documents only, never real borrower data, while on the free tier.
 - **B-34 Deployment region** → keep Functions, Firestore, and Vertex in compatible regions (latency, data residency).

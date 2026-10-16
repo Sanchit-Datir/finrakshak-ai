@@ -1,8 +1,8 @@
 # Fund Tracker — Engineering Instructions
 
 Monorepo: **React + Vite web UI** (`web/`), **Firebase Cloud Functions** backend (`functions/`),
-shared **zod** schemas/types (`packages/shared/`). Data in **Firestore**; AI via **Gemini on
-Vertex AI**; hosted on **Firebase Hosting**. Language: **TypeScript only**.
+shared **zod** schemas/types (`packages/shared/`). Data in **Firestore**; AI via **Gemini** (Firebase AI Logic
+now, Vertex AI after the Blaze upgrade); hosted on **Firebase Hosting**. Language: **TypeScript only**.
 
 ## Web prototype layout (FundTrace AI)
 
@@ -37,7 +37,8 @@ CI enforces the same. Never bypass with `--no-verify`, `@ts-ignore`, or `eslint-
 
 ## Architecture rules
 
-- `web` never touches Gemini/Vertex directly. All AI calls go through a callable function. Vertex uses Application Default Credentials — **no API keys in code or in the web bundle**.
+- **Current phase (Spark plan, no Functions):** document extraction calls Gemini from the browser through **Firebase AI Logic** (Gemini Developer API backend) — only in `web/src/lib/ai/`. The Gemini key stays inside Firebase; nothing secret goes in the bundle. Output is untrusted: parse with zod, drop unknown keys, store as `origin: 'gemini'`, `state: 'unreviewed'`. Protect the quota with App Check (B-08, B-35).
+- **After upgrading to Blaze:** move AI calls behind a callable function (Gemini on Vertex AI via `functions/src/services/gemini.ts`, Application Default Credentials). No new AI call sites outside `web/src/lib/ai/` until then.
 - Functions layout: `callable/` (thin: auth + validate + delegate) → `services/` (logic, external APIs) → `config/` (env). Handlers hold no business logic.
 - Every callable: (1) check `request.auth`, (2) validate input with zod, (3) authorize ownership of the resource, (4) act, (5) return a zod-typed result. Enable App Check (`enforceAppCheck: true`).
 - Env/config is read only via `functions/src/config/env.ts` (validated once). Secrets use Firebase/Secret Manager (`defineSecret`), never committed. `.env*` is gitignored.

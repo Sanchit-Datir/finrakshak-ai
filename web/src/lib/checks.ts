@@ -158,6 +158,8 @@ function certaintyFor(dfs: DocField[]): string {
   ];
   if (handwritten) parts.push('Includes handwritten text, which is read with lower confidence.');
   if (simulated) parts.push('Extracted values are simulated demo output.');
+  if (dfs.some((d) => d.field.origin === 'gemini'))
+    parts.push('Includes values read by Gemini (AI), which can misread text.');
   return parts.join(' ');
 }
 

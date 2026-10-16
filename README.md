@@ -1,6 +1,6 @@
 # FundTrace AI — Loan Lifecycle Intelligence
 
-TypeScript monorepo on Google/Firebase: React UI, Cloud Functions backend, Firestore, Gemini via Vertex AI.
+TypeScript monorepo on Google/Firebase: React UI on Firebase Hosting, Gemini via Firebase AI Logic (Cloud Functions + Vertex AI after the Blaze upgrade).
 
 The web app is a **functional prototype with synthetic demo data** built to the spec in
 [`docs/fundtrace-ai-ui-spec.md`](docs/fundtrace-ai-ui-spec.md). Core workflow: capture paper documents →
@@ -24,15 +24,38 @@ npm run check      # format + lint + typecheck + tests
 npm run build
 ```
 
-## Firebase setup (one-time)
+## Google setup (one-time, free Spark plan)
 
-1. Create a Firebase project (Blaze plan, required for Functions/Vertex); enable Auth, Firestore, App Check, and the Vertex AI API.
-2. Put its ID in `.firebaserc`.
-3. `npx firebase login`, then `npm run emulators` to develop locally.
-4. Copy `web/.env.example` to `web/.env.local` and fill in the web app config.
-5. Deploy: `npm run build && npx firebase deploy`.
+Services used now — all work without upgrading to Blaze: **Firebase Hosting**, **Firebase AI Logic**
+(Gemini Developer API) and **App Check**. Cloud Functions, Vertex AI and Cloud Storage need Blaze and
+come later (see `CLAUDE.md`).
 
-See `CLAUDE.md` for standards and `docs/BOUNDARY_CONDITIONS.md` for edge cases that must be handled.
+1. Firebase console → create (or reuse) the project, put its ID in `.firebaserc`.
+2. **AI Logic** → _Get started_ → choose **Gemini Developer API**. Firebase creates and holds the Gemini key.
+3. **Project settings → Your apps** → add a Web app; copy its config into `web/.env.local` (from `web/.env.example`).
+4. **App Check** → register the web app with **reCAPTCHA v3**, put the site key in `VITE_RECAPTCHA_SITE_KEY`,
+   then _enforce_ App Check for AI Logic once the deployed site works (B-08, B-35).
+5. **Users and permissions** → add teammates (Editor is fine for the hackathon).
+6. Run `scripts/setup-gcp.sh <project-id>` once (needs `gcloud`, project Owner). It sets up keyless
+   GitHub → Firebase deploys and prints the GitHub repo variables to add.
+
+### Deploy pipeline
+
+| Event           | What happens (`.github/workflows/deploy.yml`)                                |
+| --------------- | ---------------------------------------------------------------------------- |
+| Pull request    | check + build, deploy to a 7-day **preview channel**; URL in the job summary |
+| Merge to `main` | check + build, deploy the **live** site                                      |
+
+No service-account keys are stored: GitHub signs in through Workload Identity Federation, limited to this repo.
+Teammates just open PRs — no local Firebase login is needed to ship.
+
+### Teammate quick start
+
+```bash
+nvm use && npm install
+cp web/.env.example web/.env.local   # paste the web config; leave blank for offline demo mode
+npm run dev -w web
+```
 
 ## Run the web prototype
 
@@ -53,8 +76,8 @@ Settings → “Data sources & demo” resets or clears the demo dataset. Help &
 | Monitoring rules (rapid onward transfer, linked counterparty, repeated counterparty, circular flow, split cash)          | **Real** — `web/src/lib/monitoring.ts`, thresholds editable in Settings                                            |
 | File intake (PDF page count, image blur/darkness/resolution warnings)                                                    | **Real**, local only (pdf.js + canvas)                                                                             |
 | CSV transaction import, CSV/TXT exports                                                                                  | **Real**, validated with zod                                                                                       |
-| OCR / handwriting / translation                                                                                          | **Not connected.** Demo sample documents show labelled _simulated demo output_; uploads require manual field entry |
-| Gemini on Vertex AI analysis                                                                                             | **Not connected.** No AI result is shown anywhere                                                                  |
+| OCR / handwriting / translation of uploads                                                                               | **Real when configured** — Gemini via Firebase AI Logic (`web/src/lib/ai/`); values are unreviewed until confirmed |
+| Demo sample documents                                                                                                    | Labelled _simulated demo output_                                                                                   |
 | Authentication / role enforcement                                                                                        | **Demo sign-in only** — no credential is checked; UI-only role gating                                              |
 | Storage                                                                                                                  | Browser `localStorage` (zod-validated on read); uploaded files live only in the open tab                           |
 | Public records, core-banking feed, SMS/email                                                                             | Not connected                                                                                                      |

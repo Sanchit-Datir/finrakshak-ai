@@ -437,6 +437,23 @@ export function addManualField(
   });
 }
 
+/** Stores Gemini-extracted fields (unreviewed) and fills type/language only if still unset. */
+export function addMachineFields(
+  docId: string,
+  actor: string,
+  result: { docType: string | null; language: Language; fields: ExtractedField[] },
+): void {
+  mutate((d) => {
+    const doc = findDoc(d, docId);
+    doc.fields.push(...result.fields);
+    doc.docType ??= result.docType;
+    doc.language ??= result.language;
+    doc.audit.push(
+      audit(actor, 'Extracted', `Gemini read ${result.fields.length} field(s); review required`),
+    );
+  });
+}
+
 export function resetField(docId: string, fieldId: string, actor: string): void {
   mutate((d) => {
     const doc = findDoc(d, docId);

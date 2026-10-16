@@ -11,7 +11,7 @@ import { useToast } from '../../state/toast.js';
 import { Badge } from '../ui/Badge.js';
 import { Button } from '../ui/Button.js';
 import { SelectField, TextField, inputClass } from '../ui/Field.js';
-import { EmptyState, Notice, SimulatedBadge } from '../ui/States.js';
+import { AiBadge, EmptyState, Notice, SimulatedBadge } from '../ui/States.js';
 import { FieldStateBadge } from '../ui/StatusBadges.js';
 import { Tabs } from '../ui/Tabs.js';
 import { cn } from '../ui/cn.js';
@@ -57,6 +57,7 @@ export function ExtractedFieldsPanel({
         <div className="flex flex-wrap items-center gap-2">
           <p className="text-sm font-semibold">Machine-extracted text — please verify.</p>
           {simulated && <SimulatedBadge />}
+          {doc.fields.some((f) => f.origin === 'gemini') && <AiBadge />}
         </div>
         <p className="text-muted mt-0.5 text-xs">
           {reviewed} of {doc.fields.length} field(s) reviewed · Language:{' '}

@@ -1,3 +1,4 @@
+import { aiConfigured } from '../lib/ai/env.js';
 import { BookOpen, CircleHelp, FlaskConical, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router';
 import { Card } from '../components/ui/Card.js';
@@ -31,7 +32,9 @@ const WALKTHROUGH: [string, string][] = [
 const STATUS: [string, string][] = [
   [
     'Simulated / connected',
-    'Deterministic checks and monitoring rules run for real in your browser. OCR, translation and Gemini analysis are NOT connected — demo samples show labelled simulated output; uploads require manual entry.',
+    aiConfigured()
+      ? 'Deterministic checks and monitoring rules run for real in your browser. Uploaded documents are read by Gemini (Firebase AI Logic); its values are AI output and must be reviewed. Demo samples still show labelled simulated output.'
+      : 'Deterministic checks and monitoring rules run for real in your browser. OCR, translation and Gemini analysis are NOT connected — demo samples show labelled simulated output; uploads require manual entry.',
   ],
   ['Sign-in', 'Demo sign-in only. No password is checked and roles are not enforced on a server.'],
   [

@@ -162,3 +162,15 @@ export function fieldTemplatesFor(docType: string | null): FieldTemplate[] {
     return true;
   });
 }
+
+/** Every known document-type key (the classification vocabulary offered to Gemini). */
+export function allDocTypeKeys(): string[] {
+  return [...BY_KEY.keys()];
+}
+
+/** Union of all field templates — the only keys automatic extraction may return. */
+export function allFieldTemplates(): FieldTemplate[] {
+  return fieldTemplatesFor(null).concat(
+    Object.keys(BY_TYPE).flatMap((t) => fieldTemplatesFor(t)),
+  ).filter((f, i, all) => all.findIndex((g) => g.key === f.key) === i);
+}

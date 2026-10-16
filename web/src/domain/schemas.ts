@@ -206,7 +206,7 @@ export const ExtractedFieldSchema = z.object({
   machineValue: z.string().nullable(),
   /** Current reviewed value. Equals machineValue until a human corrects it. */
   value: z.string(),
-  origin: z.enum(['simulated', 'manual']),
+  origin: z.enum(['simulated', 'gemini', 'manual']),
   page: z.number().int().nonnegative(),
   region: RegionSchema.nullable(),
   quality: z.enum(['clear', 'low', 'handwritten', 'unreadable', 'not_applicable']),
