@@ -207,6 +207,7 @@
 {"case_id":"pnb_lou_firestar","document_id":"doc_7be5501f3083b1c7","source_id":"ibbi","matched_alias":"Firestar International","matched_in":"title","publication_date":"2021-08-20"}
 {"case_id":"reliance_adag_finance","document_id":"doc_8a348f17f656d3df","source_id":"ibbi","matched_alias":"Reliance Commercial Finance","matched_in":"title","publication_date":"2021-06-05"}
 {"case_id":"srei","document_id":"doc_dd7d8c04ad7ae84d","source_id":"ibbi","matched_alias":"Srei Equipment Finance","matched_in":"title","publication_date":"2021-05-19"}
+{"case_id":"kingfisher","document_id":"doc_dd7d8c04ad7ae84d","source_id":"ibbi","matched_alias":"Kingfisher Airlines","matched_in":"text","publication_date":"2021-05-19"}
 {"case_id":"cox_kings","document_id":"doc_19358415172e6c04","source_id":"ibbi","matched_alias":"Cox & Kings","matched_in":"title","publication_date":"2021-05-07"}
 {"case_id":"srei","document_id":"doc_889ed7f6464c5c37","source_id":"ibbi","matched_alias":"Srei Infrastructure Finance","matched_in":"title","publication_date":"2021-03-18"}
 {"case_id":"coffee_day","document_id":"doc_56c7aac7073e3a85","source_id":"ibbi","matched_alias":"Sical Logistics","matched_in":"title","publication_date":"2021-03-11"}

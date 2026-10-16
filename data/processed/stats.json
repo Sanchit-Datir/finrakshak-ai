@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-10-16T11:44:34.163Z",
+  "built_at": "2026-10-16T12:07:03.597Z",
   "listed_items": {
     "nfra": 118,
     "sfio": 5,
@@ -17,14 +17,14 @@
   "rows": {
     "documents": 19627,
     "case_events": 19624,
-    "entities": 18158,
+    "entities": 18286,
     "persons": 2682,
-    "relationships": 53900,
-    "evidence_claims": 46361,
+    "relationships": 54427,
+    "evidence_claims": 46907,
     "risk_signals": 934,
     "case_seeds": 23,
-    "case_documents": 329,
-    "entity_match_candidates": 861,
+    "case_documents": 330,
+    "entity_match_candidates": 973,
     "addresses": 0
   }
 }

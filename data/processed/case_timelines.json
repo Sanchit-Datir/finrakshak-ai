@@ -2283,10 +2283,22 @@
     "display_name": "Kingfisher Airlines",
     "verification_status": "seed_candidate_unverified",
     "sources": [
+      "ibbi",
       "ed"
     ],
-    "first_public_record": "2025-12-19",
+    "first_public_record": "2021-05-19",
     "entries": [
+      {
+        "date": "2021-05-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Muktar Minerals Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/bd10367f867f83a4635d904c5dc06cb3.pdf",
+        "document_id": "doc_dd7d8c04ad7ae84d",
+        "matched_alias": "Kingfisher Airlines",
+        "matched_in": "text"
+      },
       {
         "date": "2025-12-19",
         "source_id": "ed",
