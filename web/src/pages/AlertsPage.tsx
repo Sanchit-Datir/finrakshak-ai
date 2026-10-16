@@ -149,6 +149,7 @@ export function AlertsPage(): React.JSX.Element {
               { value: 'all', label: 'All sources' },
               { value: 'monitoring', label: SOURCE_LABEL.monitoring },
               { value: 'pre_disbursement', label: SOURCE_LABEL.pre_disbursement },
+              { value: 'public_records', label: SOURCE_LABEL.public_records },
             ]}
           />
           <FilterSelect

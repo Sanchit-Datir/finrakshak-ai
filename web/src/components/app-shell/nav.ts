@@ -4,6 +4,7 @@ import {
   ChartNoAxesCombined,
   FilePlus2,
   Files,
+  Landmark,
   LayoutDashboard,
   Network,
   SearchCheck,
@@ -24,6 +25,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { to: '/documents', label: 'Document Library', icon: Files },
   { to: '/borrowers', label: 'Borrowers', icon: Users },
   { to: '/monitoring', label: 'Post-disbursement Monitoring', icon: Activity },
+  { to: '/monitoring/public-records', label: 'Public-records watch', icon: Landmark },
   { to: '/investigations', label: 'Investigations', icon: SearchCheck },
   { to: '/graph-lab', label: 'Graph Lab (prototype)', icon: Network },
 ];

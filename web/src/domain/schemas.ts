@@ -53,6 +53,8 @@ export const BorrowerSchema = z.object({
   relationshipManager: z.string(),
   status: z.enum(['active', 'inactive']),
   maskedIdentifier: z.string(),
+  /** CIN / LLPIN / registration number of a business borrower ('' when none). */
+  registrationNo: z.string(),
   entityId: id,
   createdAt: isoDate,
   updatedAt: isoDate,
@@ -235,6 +237,48 @@ export const PublicRecordsSnapshotSchema = z.object({
   customersChecked: z.array(PrSubjectSchema),
 });
 export type PublicRecordsSnapshot = z.infer<typeof PublicRecordsSnapshotSchema>;
+
+/**
+ * Post-disbursement public-records watch: a disbursed loan's borrower checked against the
+ * local public-records graph. Each record dated after disbursement becomes an event (and an
+ * alert) the first time a check sees it; events are append-only, like notifications sent.
+ */
+export const WatchEventSchema = z.object({
+  /** Stable key: case type, record date and title. */
+  key: z.string().min(1),
+  record: PrRecordSchema,
+  /** When a check first raised it (the notification time). */
+  raisedAt: isoDate,
+  /** The "as of" date of the check that raised it (replay date in tests). */
+  raisedAsOf: z.string(),
+});
+export type WatchEvent = z.infer<typeof WatchEventSchema>;
+
+export const PublicWatchSchema = z.object({
+  id,
+  /** Loan in the loan book this watch follows (null when added by hand). */
+  loanId: id.nullable(),
+  loanRef: z.string().min(1).max(60),
+  borrowerName: z.string().min(1).max(200),
+  cin: z.string(),
+  amountMinor: minor.nullable(),
+  /** YYYY-MM-DD; records dated after this raise alerts. */
+  disbursedOn: z.string(),
+  branchId: id,
+  createdAt: isoDate,
+  createdBy: z.string(),
+  lastCheck: z
+    .object({
+      checkedAt: isoDate,
+      asOf: z.string(),
+      datasetBuiltAt: z.string().nullable(),
+      subject: PrSubjectSchema,
+    })
+    .nullable(),
+  events: z.array(WatchEventSchema),
+  audit: z.array(AuditEntrySchema),
+});
+export type PublicWatch = z.infer<typeof PublicWatchSchema>;
 
 export const ApplicationSchema = z.object({
   id,
@@ -553,6 +597,7 @@ export const DbSchema = z.object({
   cases: z.array(CaseSchema),
   settings: SettingsSchema,
   readAlertIds: z.array(z.string()),
+  publicWatches: z.array(PublicWatchSchema),
   counters: z.object({
     application: z.number().int(),
     document: z.number().int(),

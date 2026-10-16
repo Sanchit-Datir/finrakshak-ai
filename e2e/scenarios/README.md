@@ -1,22 +1,25 @@
-# Loan-application test scenarios
+# Test scenarios (end to end)
 
 Each folder here is one end-to-end test case for the web app. It holds:
 
-- `scenario.ts`: the application **inputs** and the **expected** risk-analysis result
+- `scenario.ts`: the **inputs** and the **expected** result
 - `README.md`: the story behind it, the data it relies on, and the expected outcome
 
-`tests/loan-scenarios.spec.ts` runs every scenario listed in `index.ts`. For each one it:
+There are two kinds of scenario, each with its own runner:
 
-1. fills a new application
-2. runs the public-records check and the configured checks
-3. compares the result with `expect`
-4. saves screenshots to `screenshots/<id>/`
+| Kind                                | Type (`types.ts`)    | Runner                               | What it does                                                                                                                                                            |
+| ----------------------------------- | -------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Loan application (pre-disbursement) | `LoanScenario`       | `tests/loan-scenarios.spec.ts`       | Fills a new application, runs the checks (including the public-records check) and compares the result with `expect`                                                     |
+| Post-disbursement watch             | `MonitoringScenario` | `tests/monitoring-scenarios.spec.ts` | Signs in, lets the automatic public-records watch check the demo loan book, and confirms the alerts on the dashboard, Alerts page, Monitoring banner and watch timeline |
+
+Both runners save screenshots to `screenshots/<id>/`.
 
 ## Scenarios
 
-| ID                                                                 | What it tests                                                                                        | Expected priority |
-| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | ----------------- |
-| [`maheep-trade-credit-chain`](maheep-trade-credit-chain/README.md) | The applicant's largest customer is in liquidation at the end of a chain of four unpaid debts (IBBI) | Urgent review     |
+| ID                                                                                       | Kind                    | What it tests                                                                                                                                      | Expected                                     |
+| ---------------------------------------------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| [`maheep-trade-credit-chain`](maheep-trade-credit-chain/README.md)                       | Loan application        | The applicant's largest customer is in liquidation at the end of a chain of four unpaid debts (IBBI)                                               | Urgent review                                |
+| [`advantage-overseas-post-disbursement`](advantage-overseas-post-disbursement/README.md) | Post-disbursement watch | TEST loan `L-2023-0601` (demo loan book): after disbursement the borrower is taken to insolvency, then liquidation, then ED search and attachments | 6 alerts raised automatically, Urgent review |
 
 ## Run
 
@@ -25,15 +28,18 @@ npm run build -w @fund-tracker/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # publishes the public-records graph used by the check
 npm run e2e                          # builds the web app, starts vite preview, runs all scenarios
 npm run e2e -- -g maheep             # one scenario, by id
+npm run e2e -- -g advantage          # the post-disbursement scenario
 ```
 
 ## Add a scenario
 
-1. Create `scenarios/<id>/scenario.ts` exporting a `LoanScenario` (see `types.ts`). Copy
-   `maheep-trade-credit-chain/scenario.ts` as a starting point.
+1. Create `scenarios/<id>/scenario.ts` exporting a `LoanScenario` or a `MonitoringScenario` (see
+   `types.ts`). Copy `maheep-trade-credit-chain/scenario.ts` or
+   `advantage-overseas-post-disbursement/scenario.ts` as a starting point.
 2. Write `scenarios/<id>/README.md`. Say what pattern is tested, which public records it relies
    on (with dates), the expected result, and which values are test inputs.
-3. Add the scenario to `SCENARIOS` in `index.ts` and a row to the table above.
+3. Add the scenario to `SCENARIOS` or `MONITORING_SCENARIOS` in `index.ts`, and add a row to the
+   table above.
 4. Run `npm run e2e -- -g <id>` and check the screenshots.
 
 If a scenario needs a step the runner doesn't have yet (other borrower types, documents, transaction

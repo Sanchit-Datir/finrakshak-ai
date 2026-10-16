@@ -1,13 +1,23 @@
-import { Activity, ArrowLeftRight, Bell, Download, FileUp, Play, SearchCheck } from 'lucide-react';
+import {
+  Activity,
+  ArrowLeftRight,
+  Bell,
+  Download,
+  FileUp,
+  Landmark,
+  Play,
+  SearchCheck,
+} from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { AlertDrawer, entityLabel } from '../components/monitoring/AlertDrawer.js';
 import { TransactionFlow } from '../components/monitoring/TransactionFlow.js';
 import { Badge } from '../components/ui/Badge.js';
-import { Button } from '../components/ui/Button.js';
+import { Button, LinkButton } from '../components/ui/Button.js';
 import { Card, CardHeader } from '../components/ui/Card.js';
 import { Dialog } from '../components/ui/Dialog.js';
 import { FilterSelect, TextField } from '../components/ui/Field.js';
+import { LoanPublicRecordsBanner } from '../components/monitoring/LoanPublicRecordsBanner.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
@@ -166,6 +176,9 @@ export function MonitoringPage(): React.JSX.Element {
         subtitle="Review transaction patterns and investigate movements that may need attention."
         actions={
           <>
+            <LinkButton to="/monitoring/public-records" icon={Landmark}>
+              Public-records watch
+            </LinkButton>
             <Button
               icon={FileUp}
               onClick={() => {
@@ -312,6 +325,7 @@ export function MonitoringPage(): React.JSX.Element {
         </Card>
       ) : (
         <>
+          <LoanPublicRecordsBanner watch={db.publicWatches.find((w) => w.loanId === loan.id)} />
           <Card className="mb-6 p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>

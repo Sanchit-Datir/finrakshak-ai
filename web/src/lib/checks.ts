@@ -22,7 +22,8 @@ export type FindingCategory =
   | 'collateral_conflict'
   | 'purpose_evidence_gap'
   | 'evidence_incomplete'
-  | 'counterparty_exposure';
+  | 'counterparty_exposure'
+  | 'post_disbursement_record';
 
 export const CATEGORY_LABEL: Record<FindingCategory, string> = {
   document_inconsistency: 'Document inconsistency',
@@ -34,6 +35,7 @@ export const CATEGORY_LABEL: Record<FindingCategory, string> = {
   purpose_evidence_gap: 'Loan-purpose evidence gap',
   evidence_incomplete: 'Evidence incomplete',
   counterparty_exposure: 'Customer / counterparty exposure (public records)',
+  post_disbursement_record: 'Public record after disbursement',
 };
 
 export interface EvidenceRef {

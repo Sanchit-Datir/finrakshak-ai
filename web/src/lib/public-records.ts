@@ -242,6 +242,11 @@ export function checkPublicRecords(ix: LabIndex, data: ApplicationData, ranAt: s
   };
 }
 
+/** Resolves one company (exact CIN, then exact name) with its records. */
+export function lookupCompany(ix: LabIndex, name: string, cin: string): PrSubject {
+  return resolveSubject(ix, resolver(ix), 'applicant', name, cin);
+}
+
 let cached: Promise<LabIndex> | null = null;
 
 /** Loads the published real-data graph once per page (B-41: ~5 MB gzip). */

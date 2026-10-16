@@ -49,3 +49,27 @@ export interface LoanScenario {
   readonly input: ScenarioInput;
   readonly expect: ScenarioExpectation;
 }
+
+/**
+ * A post-disbursement scenario: a loan already in the demo loan book is checked automatically
+ * against public records after sign-in; the alerts must show up on the dashboard, the Alerts page,
+ * the loan in Post-disbursement Monitoring and the public-records watch timeline.
+ * Runs through tests/monitoring-scenarios.spec.ts.
+ */
+export interface MonitoringScenario {
+  readonly id: string;
+  readonly title: string;
+  /** Loan id in the demo loan book (web/src/demo/seed.ts). */
+  readonly loanId: string;
+  readonly borrowerName: string;
+  /** Alerts the automatic check must raise (records dated after disbursement). */
+  readonly expectedAlerts: number;
+  /** Records expected in the timeline, oldest first. */
+  readonly timeline: readonly RegExp[];
+  /** On the Alerts page (source = Public-records watch): the alert to open and text in its drawer. */
+  readonly alert: {
+    readonly title: RegExp;
+    readonly detail: RegExp;
+    readonly priority: ReviewPriority;
+  };
+}

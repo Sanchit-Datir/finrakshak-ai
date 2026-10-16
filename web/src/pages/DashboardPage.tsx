@@ -20,6 +20,7 @@ import { ApplicationsTable } from '../components/applications/ApplicationsTable.
 import { DonutChart } from '../components/charts/DonutChart.js';
 import { StackedBarChart } from '../components/charts/StackedBarChart.js';
 import { Button, LinkButton } from '../components/ui/Button.js';
+import { PublicRecordsLoansCard } from '../components/monitoring/PublicRecordsLoansCard.js';
 import { Card, CardHeader } from '../components/ui/Card.js';
 import { FilterSelect } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
@@ -208,6 +209,10 @@ export function DashboardPage(): React.JSX.Element {
           hint="Cases not yet resolved or closed"
           to="/investigations?status=open"
         />
+      </div>
+
+      <div className="mt-6">
+        <PublicRecordsLoansCard watches={db.publicWatches} />
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-5">
