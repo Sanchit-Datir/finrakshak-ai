@@ -33,11 +33,29 @@ export async function runListing(
   adapter: SourceAdapter,
   ctx: SourceContext,
 ): Promise<ListingItem[]> {
-  const items = (await adapter.list(ctx)).map((i) => ListingItemSchema.parse(i));
+  const items = validListing(adapter.id, await adapter.list(ctx));
   await writeJsonl(listingFile(adapter.id), items);
   const day = ctx.runAt.slice(0, 10);
   await writeJsonl(dataPath('interim', 'listings', 'history', adapter.id, `${day}.jsonl`), items);
   log.info('listing saved', { source: adapter.id, items: items.length });
+  return items;
+}
+
+const MAX_TITLE = 2_000;
+
+/** Validates listed items; over-long titles are truncated and invalid rows skipped with a warning. */
+function validListing(source: SourceId, raw: readonly ListingItem[]): ListingItem[] {
+  const items: ListingItem[] = [];
+  for (const item of raw) {
+    const parsed = ListingItemSchema.safeParse({ ...item, title: item.title.slice(0, MAX_TITLE) });
+    if (parsed.success) items.push(parsed.data);
+    else
+      log.warn('invalid listing row skipped', {
+        source,
+        item: item.item_id,
+        error: parsed.error.message,
+      });
+  }
   return items;
 }
 
