@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { SourceIdSchema, type SourceId } from '@fund-tracker/shared';
 import { makeContext, runDownloads, runListing } from './acquire.js';
-import { dataPath, getConfig, SOURCE_DOC_CAPS } from './config.js';
+import { dataPath, getConfig, SOURCE_DOC_CAPS, SOURCE_ITEM_CAPS } from './config.js';
 import { buildDataset } from './dataset/build.js';
 import { extractAllText } from './extract/runExtract.js';
 import { errorMessage, log } from './log.js';
@@ -21,7 +21,7 @@ const ADAPTERS: ReadonlyMap<SourceId, SourceAdapter> = new Map(
 
 const USAGE = `Usage: ingest <command> [options]
   registry                         write data/registry/sources.json
-  acquire <source...> [--list-only|--docs-only] [--max N]
+  acquire <source...> [--list-only|--docs-only] [--max N] [--max-items N]
                                    sources: ${[...ADAPTERS.keys()].join(', ')}, all
   extract                          extract text from downloaded documents
   build                            build the canonical dataset in data/processed`;
@@ -40,12 +40,13 @@ function flagValue(args: readonly string[], flag: string): number | undefined {
 
 async function acquire(args: readonly string[]): Promise<void> {
   const explicit = flagValue(args, '--max');
+  const explicitItems = flagValue(args, '--max-items');
   for (const id of parseSources(args)) {
     const max = explicit ?? SOURCE_DOC_CAPS[id] ?? getConfig().maxDocsPerSource;
     const adapter = ADAPTERS.get(id);
     if (!adapter)
       throw new Error(`No automated adapter for ${id} (see data/registry/sources.json)`);
-    const ctx = await makeContext(id);
+    const ctx = await makeContext(id, explicitItems ?? SOURCE_ITEM_CAPS[id]);
     if (!args.includes('--docs-only')) await runListing(adapter, ctx);
     if (!args.includes('--list-only')) await runDownloads(adapter, ctx, max);
   }

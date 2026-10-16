@@ -7,6 +7,8 @@ export interface SourceContext {
   readonly store: RawStore;
   /** UTC timestamp of this acquisition run. */
   readonly runAt: string;
+  /** Stop listing after this many items (e.g. a small SEBI sample); undefined = everything. */
+  readonly maxItems?: number;
 }
 
 /**

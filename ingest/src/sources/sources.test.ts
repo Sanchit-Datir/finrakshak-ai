@@ -36,7 +36,7 @@ describe('relevance', () => {
     ]);
     expect(matchSeeds('dhflx and ilfs-like text')).toEqual([]);
   });
-  it('prioritises seeded and fund-diversion items; skips unrelated RBI releases', () => {
+  it('orders seeded, then fund-diversion, then other SEBI items; skips unrelated RBI releases', () => {
     const base = {
       source_id: 'sebi' as const,
       collection: 'c',
@@ -64,7 +64,7 @@ describe('relevance', () => {
       published_date: '2026-02-01',
     };
     expect(selectForDownload('sebi', [other, diversion, seeded], 10).map((i) => i.item_id)).toEqual(
-      ['a', 'b'],
+      ['a', 'b', 'c'],
     );
     expect(
       downloadPriority('rbi', { ...other, source_id: 'rbi', title: 'Money Market Operations' }),

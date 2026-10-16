@@ -75,7 +75,8 @@ async function listOrderType(
   const html = first.body.toString('utf8');
   const items = parseSebiRows(html, collection, ctx.runAt);
   const pages = Math.ceil(totalRecords(html) / 25);
-  for (let page = 1; page < pages; page++) {
+  const cap = ctx.maxItems ?? Infinity;
+  for (let page = 1; page < pages && items.length < cap; page++) {
     let rows = await fetchPage(smid, label, page, collection, ctx);
     if (rows.length === 0) {
       // The listing session can expire; reopen the listing page once, as a browser would.
@@ -85,7 +86,7 @@ async function listOrderType(
     }
     items.push(...rows);
   }
-  return items;
+  return items.slice(0, cap);
 }
 
 async function fetchPage(
@@ -130,8 +131,13 @@ export const sebiAdapter: SourceAdapter = {
     'sebi.gov.in public enforcement order; robots.txt permits crawling (only /js and /css disallowed). Orders may be appealed (SAT) or settled without admission; record status separately.',
   async list(ctx: SourceContext): Promise<ListingItem[]> {
     const all: ListingItem[] = [];
-    for (const [smid, label] of ORDER_TYPES) all.push(...(await listOrderType(smid, label, ctx)));
-    return all;
+    const cap = ctx.maxItems ?? Infinity;
+    for (const [smid, label] of ORDER_TYPES) {
+      if (all.length >= cap) break;
+      const remaining = { ...ctx, maxItems: cap - all.length };
+      all.push(...(await listOrderType(smid, label, remaining)));
+    }
+    return all.slice(0, cap);
   },
   async resolveDocuments(item: ListingItem, ctx: SourceContext): Promise<string[]> {
     if (!item.detail_url) return [];

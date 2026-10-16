@@ -20,12 +20,13 @@ export const listingFile = (s: SourceId): string => dataPath('interim', 'listing
 export const itemDocsFile = (s: SourceId): string =>
   dataPath('interim', 'item_documents', `${s}.jsonl`);
 
-export async function makeContext(sourceId: SourceId): Promise<SourceContext> {
-  return {
+export async function makeContext(sourceId: SourceId, maxItems?: number): Promise<SourceContext> {
+  const base = {
     fetcher: new PoliteFetcher(getConfig()),
     store: await RawStore.open(sourceId),
     runAt: new Date().toISOString(),
   };
+  return maxItems === undefined ? base : { ...base, maxItems };
 }
 
 /** Step 1: list everything the source publishes (metadata only). */

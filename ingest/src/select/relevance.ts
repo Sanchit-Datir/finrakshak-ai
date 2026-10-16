@@ -54,9 +54,12 @@ export function downloadPriority(sourceId: SourceId, item: ListingItem): number 
     case 'ibbi':
       return seeded ? 0 : null;
     case 'ed':
-    case 'sebi':
       if (seeded) return 0;
       return FUND_DIVERSION.test(text) ? 1 : null;
+    case 'sebi':
+      // Every listed SEBI order is eligible; the per-source cap bounds volume.
+      if (seeded) return 0;
+      return FUND_DIVERSION.test(text) ? 1 : 2;
     case 'rbi':
       return RBI_ENFORCEMENT.test(item.title) ? (seeded ? 0 : 1) : null;
     case 'mca_ogd':
