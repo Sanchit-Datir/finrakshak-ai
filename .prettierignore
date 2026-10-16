@@ -4,3 +4,6 @@ lib
 coverage
 package-lock.json
 .firebase
+
+# Generated datasets (ingest)
+data/

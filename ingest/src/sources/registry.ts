@@ -1,0 +1,231 @@
+import { SourceRegistryEntrySchema, type SourceRegistryEntry } from '@fund-tracker/shared';
+
+const CHECKED = '2026-10-16';
+const POLITE =
+  'Single connection, >=1.5 s between requests per host, exponential backoff on 429/5xx, identifying User-Agent.';
+
+/** Phase 0 access audit (brief section 14). Re-verify before each refresh. */
+const ENTRIES: readonly SourceRegistryEntry[] = [
+  {
+    source_id: 'mca_ogd',
+    owner: 'Ministry of Corporate Affairs / NIC Open Government Data platform',
+    urls: [
+      'https://www.data.gov.in/catalog/company-master-data',
+      'https://api.data.gov.in/',
+      'https://www.mca.gov.in/',
+    ],
+    access_status: 'blocked_by_robots',
+    access_method:
+      'OGD API (api.data.gov.in) with a registered API key, or manual ZIP/CSV download by a signed-in user.',
+    robots_txt:
+      'www.data.gov.in: "User-agent: * / Disallow: /" (all crawling disallowed). www.mca.gov.in: 403 (Akamai) to automated clients.',
+    terms_summary:
+      'Government Open Data Licence – India (GODL): reuse incl. commercial with attribution (verify licence field of the specific resource on data.gov.in).',
+    terms_url: null,
+    attribution:
+      'Source: Ministry of Corporate Affairs via data.gov.in, <resource URL>, accessed <date>, GODL-India.',
+    commercial_reuse: 'permitted_with_attribution',
+    rate_limit_policy: 'API key quota; unauthenticated/shared sample key heavily throttled.',
+    refresh_cadence: 'Periodic dataset releases (check resource "updated" date).',
+    collections: [],
+    known_gaps: [
+      'Not acquired: robots.txt disallows www.data.gov.in and api.data.gov.in reset connections from this environment.',
+      'Needs an OGD API key (user registration) and a run from an Indian/GCP asia-south1 egress, or a manual download.',
+      'MCA detailed filings (directors, charges, financials) require MCA21 login/payment — out of scope.',
+    ],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'sebi',
+    owner: 'Securities and Exchange Board of India',
+    urls: ['https://www.sebi.gov.in/enforcement/orders.html'],
+    access_status: 'automated_ok',
+    access_method:
+      "HTML listings (session + the page's own pagination endpoint), order detail pages, order PDFs.",
+    robots_txt: 'Allows all except /js, /css.',
+    terms_summary:
+      'No reuse licence published; public statutory orders. Attribute SEBI; check before redistribution.',
+    terms_url: null,
+    attribution: 'Source: Securities and Exchange Board of India, <order URL>, accessed <date>.',
+    commercial_reuse: 'unknown',
+    rate_limit_policy: POLITE,
+    refresh_cadence: 'Daily (orders published as passed).',
+    collections: ['sebi.orders.*'],
+    known_gaps: [
+      'Interim/ex-parte orders and settlements are not findings; SAT appeal references are captured from listings when shown.',
+    ],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'nse_bse',
+    owner: 'National Stock Exchange of India / BSE Ltd',
+    urls: ['https://www.nseindia.com/', 'https://www.bseindia.com/'],
+    access_status: 'licence_required',
+    access_method:
+      'Licensed data products (NSE Data & Analytics corporate data feed; BSE datafeed) or written permission.',
+    robots_txt:
+      'NSE allows crawling, but Terms of Use prohibit copying/storing content without written permission.',
+    terms_summary:
+      'Content owned by exchanges; automated collection/redistribution requires licence.',
+    terms_url: 'https://www.nseindia.com/static/nse-terms-of-use',
+    attribution: 'Per licence agreement.',
+    commercial_reuse: 'permission_required',
+    rate_limit_policy: 'Per licence.',
+    refresh_cadence: 'Real-time / end of day (licensed feeds).',
+    collections: [],
+    known_gaps: [
+      'Not acquired (brief: obtain written/licence clarification first). Email NSE Data & Analytics and datafeed@bseindia.com.',
+    ],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'ibbi',
+    owner: 'Insolvency and Bankruptcy Board of India',
+    urls: ['https://ibbi.gov.in/public-announcement'],
+    access_status: 'automated_ok',
+    access_method: 'Paginated HTML table of public announcements; announcement PDFs.',
+    robots_txt: 'No robots.txt served (error page).',
+    terms_summary: 'No reuse terms published; statutory public notices. Attribute IBBI.',
+    terms_url: null,
+    attribution: 'Source: Insolvency and Bankruptcy Board of India, <URL>, accessed <date>.',
+    commercial_reuse: 'unknown',
+    rate_limit_policy: `${POLITE} Server resets bursts — keep the delay.`,
+    refresh_cadence: 'Daily.',
+    collections: ['ibbi.public_announcements'],
+    known_gaps: [
+      'Listing has no CIN; per-CIN claim pages exist (/claims/*/<CIN>) for later enrichment.',
+      'Also covers the brief\'s separate "insolvency disclosures" row.',
+    ],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'sfio',
+    owner: 'Serious Fraud Investigation Office (MCA)',
+    urls: ['https://sfio.gov.in/'],
+    access_status: 'automated_ok',
+    access_method: 'S3WaaS document tables (prosecution lists, notices) and PDFs.',
+    robots_txt: 'Allows all except /wp-admin/.',
+    terms_summary:
+      'Copyright policy: reproduction requires permission by email; prominent attribution; not in misleading context.',
+    terms_url: 'https://sfio.gov.in/website-policies/',
+    attribution: 'Source: Serious Fraud Investigation Office, <URL>, accessed <date>.',
+    commercial_reuse: 'permission_required',
+    rate_limit_policy: POLITE,
+    refresh_cadence: 'Ad hoc.',
+    collections: ['sfio.prosecution', 'sfio.whats_new', 'sfio.notifications'],
+    known_gaps: ['Few documents; investigation reports are not public.'],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'ed',
+    owner: 'Directorate of Enforcement',
+    urls: ['https://enforcementdirectorate.gov.in/media/press-release/'],
+    access_status: 'automated_ok',
+    access_method:
+      'Public JSON used by the press-release page (/umbraco/backoffice/api/PressReleaseApi/GetPublic) and PDFs.',
+    robots_txt: 'No robots.txt (404).',
+    terms_summary:
+      'Copyright policy: may not be reproduced partially or fully without permission; acknowledge source.',
+    terms_url: 'https://enforcementdirectorate.gov.in/site-footer-links/copyright-policy/',
+    attribution: 'Source: Directorate of Enforcement press release, <URL>, accessed <date>.',
+    commercial_reuse: 'permission_required',
+    rate_limit_policy: POLITE,
+    refresh_cadence: 'Daily.',
+    collections: ['ed.press_releases'],
+    known_gaps: [
+      'JSON covers June 2022 onwards; older archive not exposed on current site.',
+      'Releases describe attachments/arrests/complaints — allegations unless a conviction is stated.',
+    ],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'nclt',
+    owner: 'National Company Law Tribunal',
+    urls: ['https://nclt.gov.in/'],
+    access_status: 'blocked_by_server',
+    access_method: 'Manual curation of specific orders.',
+    robots_txt: 'HTTP 403 Forbidden to automated clients.',
+    terms_summary: 'Not assessed (blocked).',
+    terms_url: null,
+    attribution: 'Source: NCLT, <URL>, accessed <date>.',
+    commercial_reuse: 'unknown',
+    rate_limit_policy: 'n/a',
+    refresh_cadence: 'n/a',
+    collections: [],
+    known_gaps: [
+      'Not acquired: server blocks automated access. Curate high-value orders manually (brief).',
+    ],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'ecourts_sci',
+    owner: 'eCourts Services / Supreme Court of India',
+    urls: ['https://ecourts.gov.in/', 'https://www.sci.gov.in/'],
+    access_status: 'captcha_or_login',
+    access_method: 'Manual search (CAPTCHA-protected judgment search).',
+    robots_txt:
+      'sci.gov.in allows crawling outside /wp-admin/, but judgment search is CAPTCHA-gated; ecourts.gov.in has no robots.txt.',
+    terms_summary: 'Judgments are public records; portal terms not assessed.',
+    terms_url: null,
+    attribution: 'Source: Supreme Court of India / eCourts, <URL>, accessed <date>.',
+    commercial_reuse: 'unknown',
+    rate_limit_policy: 'n/a',
+    refresh_cadence: 'n/a',
+    collections: [],
+    known_gaps: [
+      'Not acquired: CAPTCHA (brief forbids bypassing).',
+      'A CC-BY-4.0 bulk mirror exists on AWS Open Data (s3://indian-supreme-court-judgments) — not used here because the brief excludes AWS; team decision needed.',
+    ],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'rbi',
+    owner: 'Reserve Bank of India',
+    urls: ['https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx'],
+    access_status: 'automated_ok',
+    access_method: 'Press-release archive by year (page form) and press-release detail pages.',
+    robots_txt:
+      'robots.txt request is refused (HTTP 418); site pages are served to identified clients.',
+    terms_summary:
+      'No explicit reuse licence found; public regulatory communications. Attribute RBI.',
+    terms_url: 'https://www.rbi.org.in/Scripts/Disclaimer.aspx',
+    attribution: 'Source: Reserve Bank of India press release, <URL>, accessed <date>.',
+    commercial_reuse: 'unknown',
+    rate_limit_policy: POLITE,
+    refresh_cadence: 'Daily.',
+    collections: ['rbi.press_releases'],
+    known_gaps: [
+      'Only enforcement-type releases (penalties, CoR cancellations, s.35A directions, alert list) are downloaded; others are metadata only.',
+      'Borrower-level fraud data (CRILC/CFR) is confidential and not available.',
+    ],
+    last_checked: CHECKED,
+  },
+  {
+    source_id: 'nfra',
+    owner: 'National Financial Reporting Authority',
+    urls: ['https://nfra.gov.in/document-category/orders/'],
+    access_status: 'automated_ok',
+    access_method: 'S3WaaS document tables (orders, AQR, FRQR, inspection reports) and PDFs.',
+    robots_txt: 'Allows all except /wp-admin/.',
+    terms_summary: 'No reuse terms found on site; attribute NFRA.',
+    terms_url: null,
+    attribution: 'Source: National Financial Reporting Authority, <URL>, accessed <date>.',
+    commercial_reuse: 'unknown',
+    rate_limit_policy: POLITE,
+    refresh_cadence: 'Ad hoc.',
+    collections: [
+      'nfra.orders',
+      'nfra.aqr_reports',
+      'nfra.frqr_reports',
+      'nfra.inspection_reports',
+    ],
+    known_gaps: [
+      'Orders sanction auditors, not the audited company; final orders were stayed by the Supreme Court (Mar 2025) — verify status.',
+    ],
+    last_checked: CHECKED,
+  },
+];
+
+export const SOURCE_REGISTRY: readonly SourceRegistryEntry[] = ENTRIES.map((e) =>
+  SourceRegistryEntrySchema.parse(e),
+);

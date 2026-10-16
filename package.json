@@ -9,17 +9,19 @@
   "workspaces": [
     "packages/*",
     "functions",
+    "ingest",
     "web"
   ],
   "scripts": {
-    "build": "npm run build -w @fund-tracker/shared && npm run build -w functions && npm run build -w web",
-    "typecheck": "npm run build -w @fund-tracker/shared && npm run typecheck -w functions && npm run typecheck -w web",
+    "build": "npm run build -w @fund-tracker/shared && npm run build -w functions && npm run build -w ingest && npm run build -w web",
+    "typecheck": "npm run build -w @fund-tracker/shared && npm run typecheck -w functions && npm run typecheck -w ingest && npm run typecheck -w web",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run test -w @fund-tracker/shared && npm run test -w functions && npm run test -w web",
+    "test": "npm run test -w @fund-tracker/shared && npm run test -w functions && npm run test -w ingest && npm run test -w web",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test",
-    "emulators": "firebase emulators:start"
+    "emulators": "firebase emulators:start",
+    "ingest": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/cli.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

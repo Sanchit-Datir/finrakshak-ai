@@ -1,0 +1,25 @@
+{
+  "name": "ingest",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "cli": "node dist/cli.js"
+  },
+  "dependencies": {
+    "@fund-tracker/shared": "*",
+    "cheerio": "^1.2.0",
+    "pdfjs-dist": "^6.4.299",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

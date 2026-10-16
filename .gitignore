@@ -14,3 +14,7 @@ service-account*.json
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# FundTrace ingest: raw/interim artifacts live in Cloud Storage, not git
+data/raw/
+data/interim/
