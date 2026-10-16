@@ -41,10 +41,10 @@ export function getConfig(): IngestConfig {
 }
 
 /**
- * Per-source document caps (overridden by `--max`). SEBI is capped at 500 to keep a
+ * Per-source document caps (overridden by `--max`). SEBI is capped at 50 to keep a
  * full run to about an hour; every SEBI order is still listed as metadata.
  */
-export const SOURCE_DOC_CAPS: Readonly<Partial<Record<SourceId, number>>> = { sebi: 500 };
+export const SOURCE_DOC_CAPS: Readonly<Partial<Record<SourceId, number>>> = { sebi: 50 };
 
 export function dataPath(...parts: string[]): string {
   return path.join(getConfig().dataDir, ...parts);

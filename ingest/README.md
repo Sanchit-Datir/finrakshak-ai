@@ -26,7 +26,7 @@ node ingest/dist/cli.js build
 ```
 
 Behind an HTTP proxy (e.g. Claude Code cloud sessions) run Node with `NODE_USE_ENV_PROXY=1`.
-Options: `--list-only`, `--docs-only`, `--max N` (documents per source; default 1500, SEBI 500 via `SOURCE_DOC_CAPS`; env
+Options: `--list-only`, `--docs-only`, `--max N` (documents per source; default 1500, SEBI 50 via `SOURCE_DOC_CAPS`; env
 `FUNDTRACE_MAX_DOCS_PER_SOURCE`); `FUNDTRACE_MIN_DELAY_MS` (per-host delay, default 1500 ms;
 use 2500 for IBBI); `FUNDTRACE_DATA_DIR` (default `<repo>/data`). Every step is idempotent:
 already-downloaded URLs and already-extracted checksums are skipped; a changed document becomes a
