@@ -32,6 +32,7 @@ const COLUMNS: Readonly<Record<keyof McaCompany, readonly string[]>> = {
     'date_of_registration',
     'date_of_incorporation',
     'company_registration_date',
+    'company_registration_date_date',
     'registration_date',
   ],
   state: ['registered_state', 'company_state_code', 'state'],
@@ -65,15 +66,12 @@ export function splitCsv(line: string): string[] {
 }
 
 function columnIndex(header: readonly string[]): Map<keyof McaCompany, number> {
-  const norm = header.map((h) =>
-    h
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '_')
-      .replace(/^_|_$/g, ''),
-  );
+  // Compare letters/digits only: "CompanyName", "COMPANY_NAME" and "company name" all match.
+  const key = (h: string): string => h.toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const norm = header.map(key);
   const idx = new Map<keyof McaCompany, number>();
   for (const [field, names] of Object.entries(COLUMNS) as [keyof McaCompany, readonly string[]][]) {
-    const i = names.map((n) => norm.indexOf(n)).find((x) => x >= 0);
+    const i = names.map((n) => norm.indexOf(key(n))).find((x) => x >= 0);
     if (i !== undefined) idx.set(field, i);
   }
   return idx;
@@ -152,7 +150,10 @@ export async function loadMcaMaster(
       rows++;
       const key = normalizeCompanyName(company.name);
       if (wantCins.has(company.cin)) byCin.set(company.cin, company);
-      if (wantNames.has(key)) byName.set(key, [...(byName.get(key) ?? []), company]);
+      // The same company can appear twice (e.g. split parts next to the unsplit file): keep one per CIN.
+      const sameName = byName.get(key) ?? [];
+      if (wantNames.has(key) && !sameName.some((c) => c.cin === company.cin))
+        byName.set(key, [...sameName, company]);
     }
   }
   return { files, rows, byCin, byName };

@@ -15,7 +15,13 @@ service-account*.json
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# FundTrace ingest: interim artifacts are not committed. data/raw/ is committed, but the
-# unsplit original CSV is not (it is stored as 5 parts to stay under GitHub's 100 MB limit).
+# FundTrace ingest (see data/README.md "How data is stored"):
+# - committed: data/registry/, data/processed/ and the MCA master as 5 parts
+#   (data/raw/mca_ogd/company_master.partNof5.csv, each under GitHub's 100 MB limit)
+# - not committed: downloaded PDFs/HTML (~800 MB; ED/SFIO need permission to reproduce)
+#   and the unsplit MCA CSV — these go to Cloud Storage; data/interim/ is rebuildable
 data/interim/
-data/raw/mca_ogd/company_master.csv
+data/raw/*
+!data/raw/mca_ogd/
+data/raw/mca_ogd/*
+!data/raw/mca_ogd/company_master.part*of5.csv
