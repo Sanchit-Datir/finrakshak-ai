@@ -14,9 +14,9 @@ const ENTRIES: readonly SourceRegistryEntry[] = [
       'https://api.data.gov.in/',
       'https://www.mca.gov.in/',
     ],
-    access_status: 'blocked_by_robots',
+    access_status: 'manual_only',
     access_method:
-      'OGD API (api.data.gov.in) with a registered API key, or manual ZIP/CSV download by a signed-in user.',
+      'Manual CSV download by a signed-in user (automated crawling is disallowed); committed as data/raw/mca_ogd/company_master.partNof5.csv. OGD API with a registered key is the automated alternative.',
     robots_txt:
       'www.data.gov.in: "User-agent: * / Disallow: /" (all crawling disallowed). www.mca.gov.in: 403 (Akamai) to automated clients.',
     terms_summary:
@@ -27,10 +27,11 @@ const ENTRIES: readonly SourceRegistryEntry[] = [
     commercial_reuse: 'permitted_with_attribution',
     rate_limit_policy: 'API key quota; unauthenticated/shared sample key heavily throttled.',
     refresh_cadence: 'Periodic dataset releases (check resource "updated" date).',
-    collections: [],
+    collections: ['mca_ogd.company_master'],
     known_gaps: [
-      'Not acquired: robots.txt disallows www.data.gov.in and api.data.gov.in reset connections from this environment.',
-      'Needs an OGD API key (user registration) and a run from an Indian/GCP asia-south1 egress, or a manual download.',
+      "Current file covers Maharashtra only (ROC Mumbai/Pune): 766,814 rows = 603,710 companies + 161,571 LLPs (+1,533 other). Add other states' CSVs to data/raw/mca_ogd/ for national coverage.",
+      'Automated download not possible: robots.txt disallows www.data.gov.in; api.data.gov.in needs a key and resets connections from this environment.',
+      'Joined to entities by exact CIN or unique normalised name only; some well-known CINs (e.g. DHFL) are absent from this file.',
       'MCA detailed filings (directors, charges, financials) require MCA21 login/payment — out of scope.',
     ],
     last_checked: CHECKED,
