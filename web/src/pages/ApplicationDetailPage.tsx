@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { applicantName } from '../components/applications/ApplicationsTable.js';
 import { FindingsTable } from '../components/applications/Findings.js';
+import { PublicRecordsCheck } from '../components/applications/PublicRecordsCheck.js';
 import { ExtractStep } from '../components/applications/ExtractStep.js';
 import { SourceViewerDialog } from '../components/documents/SourceViewerDialog.js';
 import { EntityGraph } from '../components/graph/EntityGraph.js';
@@ -243,13 +244,18 @@ export function ApplicationDetailPage(): React.JSX.Element {
               </EmptyState>
             </Card>
           ) : (
-            <Card>
-              <CardHeader
-                title="Risk findings"
-                subtitle={`Checks last run ${f.dateTime(app.checksRunAt)} · deterministic rules · no AI analysis ran`}
-              />
-              <FindingsTable app={app} findings={findings} actor={actor} />
-            </Card>
+            <div className="space-y-4">
+              <Card>
+                <CardHeader
+                  title="Risk findings"
+                  subtitle={`Checks last run ${f.dateTime(app.checksRunAt)} · deterministic rules · no AI analysis ran`}
+                />
+                <FindingsTable app={app} findings={findings} actor={actor} />
+              </Card>
+              {app.data.business.businessName.trim() !== '' && (
+                <PublicRecordsCheck app={app} actor={actor} />
+              )}
+            </div>
           ))}
         {current === 'entities' && (
           <Card className="p-4">

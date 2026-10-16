@@ -1,0 +1,2040 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.144Z",
+    "synthetic": true,
+    "label": "SYNTHETIC test scenarios",
+    "dataset_built_at": null,
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 60,
+      "edges": 56,
+      "networks": 4,
+      "identity_candidates": 1,
+      "node:company": 41,
+      "node:llp": 1,
+      "node:bank": 3,
+      "node:person": 1,
+      "node:address": 3,
+      "node:event": 11,
+      "edge:registered_at": 17,
+      "basis:established": 54,
+      "strength:strong": 18,
+      "strength:weak": 38,
+      "edge:named_in": 19,
+      "edge:insolvency_applicant_against": 10,
+      "edge:insolvency_professional_for": 8,
+      "edge:mentioned_in": 1,
+      "basis:candidate": 2,
+      "edge:possible_same_entity": 1,
+      "hub_nodes": 4
+    },
+    "notes": [
+      "SYNTHETIC TEST DATA — not real companies or findings.",
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases",
+      "S1 Benign shared address: Three unrelated companies at one co-working address form a low-score network with no adverse records.",
+      "S2 Service address hub: Twelve companies at one address: the address is a hub and links nobody.",
+      "S3 Large-bank creditor hub: A bank filing against eight debtors does not chain those debtors into a network.",
+      "S4 Specific creditor: A small lender filing against two debtors links them (established, strong).",
+      "S5 Ambiguous names: \"Shree Ganesh Steels Pvt Ltd\" vs \"Shree Ganesh Steel Ltd\" stay separate and appear only as an identity candidate.",
+      "S6 Same name, different towns: Two \"Urban Co-operative Bank\" entries in different towns are neither merged nor proposed as identical.",
+      "S7 Documented co-party: Two companies named in the same order are linked through that order, with evidence.",
+      "S8 Text mention only: A company only mentioned in a press release is a weak candidate link, not a network member.",
+      "S9 Batch notice: An RBI notice cancelling eight registrations is a hub and links none of them.",
+      "S10 Group companies: Two registered companies with similar names at one address are linked through the address but never proposed as the same entity (different CINs)."
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_alpha",
+      "kind": "company",
+      "label": "SYNTH Alpha Traders Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_beta",
+      "kind": "company",
+      "label": "SYNTH Beta Foods Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_gamma",
+      "kind": "llp",
+      "label": "SYNTH Gamma Design LLP",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc1",
+      "kind": "company",
+      "label": "SYNTH Service Client 1 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc2",
+      "kind": "company",
+      "label": "SYNTH Service Client 2 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc3",
+      "kind": "company",
+      "label": "SYNTH Service Client 3 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc4",
+      "kind": "company",
+      "label": "SYNTH Service Client 4 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc5",
+      "kind": "company",
+      "label": "SYNTH Service Client 5 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc6",
+      "kind": "company",
+      "label": "SYNTH Service Client 6 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc7",
+      "kind": "company",
+      "label": "SYNTH Service Client 7 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc8",
+      "kind": "company",
+      "label": "SYNTH Service Client 8 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc9",
+      "kind": "company",
+      "label": "SYNTH Service Client 9 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc10",
+      "kind": "company",
+      "label": "SYNTH Service Client 10 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc11",
+      "kind": "company",
+      "label": "SYNTH Service Client 11 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_svc12",
+      "kind": "company",
+      "label": "SYNTH Service Client 12 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 8,
+      "id": "ent_synth_bank",
+      "kind": "bank",
+      "label": "SYNTH National Bank Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_synth_debtor1",
+      "kind": "company",
+      "label": "SYNTH Debtor 1 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_synth_debtor2",
+      "kind": "company",
+      "label": "SYNTH Debtor 2 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_synth_debtor3",
+      "kind": "company",
+      "label": "SYNTH Debtor 3 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_synth_debtor4",
+      "kind": "company",
+      "label": "SYNTH Debtor 4 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_synth_debtor5",
+      "kind": "company",
+      "label": "SYNTH Debtor 5 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_synth_debtor6",
+      "kind": "company",
+      "label": "SYNTH Debtor 6 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_synth_debtor7",
+      "kind": "company",
+      "label": "SYNTH Debtor 7 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_synth_debtor8",
+      "kind": "company",
+      "label": "SYNTH Debtor 8 Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_synth_lender",
+      "kind": "company",
+      "label": "SYNTH Small Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_ka",
+      "kind": "company",
+      "label": "SYNTH Kappa Infra Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_la",
+      "kind": "company",
+      "label": "SYNTH Lambda Infra Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_sg1",
+      "kind": "company",
+      "label": "SYNTH Shree Ganesh Steels Private Limited",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_sg2",
+      "kind": "company",
+      "label": "SYNTH Shree Ganesh Steel Limited",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 0,
+      "id": "ent_synth_ucb1",
+      "kind": "bank",
+      "label": "SYNTH Urban Co-operative Bank Ltd, Cuttack",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 0,
+      "id": "ent_synth_ucb2",
+      "kind": "bank",
+      "label": "SYNTH Urban Co-operative Bank Ltd, Sikar",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_delta",
+      "kind": "company",
+      "label": "SYNTH Delta Exports Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_epsilon",
+      "kind": "company",
+      "label": "SYNTH Epsilon Holdings Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_zeta",
+      "kind": "company",
+      "label": "SYNTH Zeta Realty Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_eta",
+      "kind": "company",
+      "label": "SYNTH Eta Builders Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_nbfc1",
+      "kind": "company",
+      "label": "SYNTH NBFC 1 Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_nbfc2",
+      "kind": "company",
+      "label": "SYNTH NBFC 2 Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_nbfc3",
+      "kind": "company",
+      "label": "SYNTH NBFC 3 Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_nbfc4",
+      "kind": "company",
+      "label": "SYNTH NBFC 4 Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_nbfc5",
+      "kind": "company",
+      "label": "SYNTH NBFC 5 Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_nbfc6",
+      "kind": "company",
+      "label": "SYNTH NBFC 6 Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_nbfc7",
+      "kind": "company",
+      "label": "SYNTH NBFC 7 Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_nbfc8",
+      "kind": "company",
+      "label": "SYNTH NBFC 8 Finance Ltd",
+      "detail": null,
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_grp1",
+      "kind": "company",
+      "label": "SYNTH Omega Steel Industries Ltd",
+      "detail": "SYNTH-CIN-0001",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_synth_grp2",
+      "kind": "company",
+      "label": "SYNTH Omega Steel Trading Ltd",
+      "detail": "SYNTH-CIN-0002",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 8,
+      "id": "per_synth_ip",
+      "kind": "person",
+      "label": "SYNTH INSOLVENCY PROFESSIONAL",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "adr_synth_cowork",
+      "kind": "address",
+      "label": "SYNTHETIC Co-working Hub, 1 Test Road, Mumbai",
+      "detail": "Maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "address"
+      ],
+      "degree": 12,
+      "id": "adr_synth_service",
+      "kind": "address",
+      "label": "SYNTHETIC Service Address, 9 Test Road, Pune",
+      "detail": "Maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "adr_synth_group",
+      "kind": "address",
+      "label": "SYNTHETIC Omega House, 5 Test Road, Nagpur",
+      "detail": "Maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_order",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_synth_order",
+      "kind": "event",
+      "label": "SYNTH Final order in the matter of Delta Exports Ltd and Epsilon Holdings Ltd",
+      "detail": "SYNTHETIC · synthetic · sebi_final_order",
+      "sources": [
+        "sebi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_pr",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_synth_pr",
+      "kind": "event",
+      "label": "SYNTH Attachment of assets of Zeta Realty Ltd",
+      "detail": "SYNTHETIC · synthetic · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "event"
+      ],
+      "degree": 8,
+      "id": "evt_synth_batch",
+      "kind": "event",
+      "label": "SYNTH RBI cancels registration of 8 NBFCs",
+      "detail": "SYNTHETIC · synthetic · rbi_cor_cancellation",
+      "sources": [
+        "rbi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp1",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_synth_cirp1",
+      "kind": "event",
+      "label": "SYNTH CIRP of Debtor 1 Pvt Ltd",
+      "detail": "SYNTHETIC · synthetic · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp2",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_synth_cirp2",
+      "kind": "event",
+      "label": "SYNTH CIRP of Debtor 2 Pvt Ltd",
+      "detail": "SYNTHETIC · synthetic · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp3",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_synth_cirp3",
+      "kind": "event",
+      "label": "SYNTH CIRP of Debtor 3 Pvt Ltd",
+      "detail": "SYNTHETIC · synthetic · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp4",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_synth_cirp4",
+      "kind": "event",
+      "label": "SYNTH CIRP of Debtor 4 Pvt Ltd",
+      "detail": "SYNTHETIC · synthetic · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp5",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_synth_cirp5",
+      "kind": "event",
+      "label": "SYNTH CIRP of Debtor 5 Pvt Ltd",
+      "detail": "SYNTHETIC · synthetic · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp6",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_synth_cirp6",
+      "kind": "event",
+      "label": "SYNTH CIRP of Debtor 6 Pvt Ltd",
+      "detail": "SYNTHETIC · synthetic · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp7",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_synth_cirp7",
+      "kind": "event",
+      "label": "SYNTH CIRP of Debtor 7 Pvt Ltd",
+      "detail": "SYNTHETIC · synthetic · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp8",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_synth_cirp8",
+      "kind": "event",
+      "label": "SYNTH CIRP of Debtor 8 Pvt Ltd",
+      "detail": "SYNTHETIC · synthetic · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_synth_1",
+      "from": "ent_synth_alpha",
+      "to": "adr_synth_cowork",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_1",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_2",
+      "from": "ent_synth_beta",
+      "to": "adr_synth_cowork",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_2",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_3",
+      "from": "ent_synth_gamma",
+      "to": "adr_synth_cowork",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_3",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_4",
+      "from": "ent_synth_svc1",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_4",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_5",
+      "from": "ent_synth_svc2",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_5",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_6",
+      "from": "ent_synth_svc3",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_6",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_7",
+      "from": "ent_synth_svc4",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_7",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_8",
+      "from": "ent_synth_svc5",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_8",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_9",
+      "from": "ent_synth_svc6",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_9",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_10",
+      "from": "ent_synth_svc7",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_10",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_11",
+      "from": "ent_synth_svc8",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_11",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_12",
+      "from": "ent_synth_svc9",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_12",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_13",
+      "from": "ent_synth_svc10",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_13",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_14",
+      "from": "ent_synth_svc11",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_14",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_15",
+      "from": "ent_synth_svc12",
+      "to": "adr_synth_service",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_15",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_16",
+      "from": "ent_synth_grp1",
+      "to": "adr_synth_group",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_16",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_17",
+      "from": "ent_synth_grp2",
+      "to": "adr_synth_group",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_mca",
+      "relationship_id": "rel_synth_17",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_18",
+      "from": "ent_synth_debtor1",
+      "to": "evt_synth_cirp1",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp1",
+      "relationship_id": "rel_synth_18",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_19",
+      "from": "ent_synth_bank",
+      "to": "ent_synth_debtor1",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp1",
+      "relationship_id": "rel_synth_19",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_20",
+      "from": "per_synth_ip",
+      "to": "ent_synth_debtor1",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp1",
+      "relationship_id": "rel_synth_20",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_21",
+      "from": "ent_synth_debtor2",
+      "to": "evt_synth_cirp2",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp2",
+      "relationship_id": "rel_synth_21",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_22",
+      "from": "ent_synth_bank",
+      "to": "ent_synth_debtor2",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp2",
+      "relationship_id": "rel_synth_22",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_23",
+      "from": "per_synth_ip",
+      "to": "ent_synth_debtor2",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp2",
+      "relationship_id": "rel_synth_23",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_24",
+      "from": "ent_synth_debtor3",
+      "to": "evt_synth_cirp3",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp3",
+      "relationship_id": "rel_synth_24",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_25",
+      "from": "ent_synth_bank",
+      "to": "ent_synth_debtor3",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp3",
+      "relationship_id": "rel_synth_25",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_26",
+      "from": "per_synth_ip",
+      "to": "ent_synth_debtor3",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp3",
+      "relationship_id": "rel_synth_26",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_27",
+      "from": "ent_synth_debtor4",
+      "to": "evt_synth_cirp4",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp4",
+      "relationship_id": "rel_synth_27",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_28",
+      "from": "ent_synth_bank",
+      "to": "ent_synth_debtor4",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp4",
+      "relationship_id": "rel_synth_28",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_29",
+      "from": "per_synth_ip",
+      "to": "ent_synth_debtor4",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp4",
+      "relationship_id": "rel_synth_29",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_30",
+      "from": "ent_synth_debtor5",
+      "to": "evt_synth_cirp5",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp5",
+      "relationship_id": "rel_synth_30",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_31",
+      "from": "ent_synth_bank",
+      "to": "ent_synth_debtor5",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp5",
+      "relationship_id": "rel_synth_31",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_32",
+      "from": "per_synth_ip",
+      "to": "ent_synth_debtor5",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp5",
+      "relationship_id": "rel_synth_32",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_33",
+      "from": "ent_synth_debtor6",
+      "to": "evt_synth_cirp6",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp6",
+      "relationship_id": "rel_synth_33",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_34",
+      "from": "ent_synth_bank",
+      "to": "ent_synth_debtor6",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp6",
+      "relationship_id": "rel_synth_34",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_35",
+      "from": "per_synth_ip",
+      "to": "ent_synth_debtor6",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp6",
+      "relationship_id": "rel_synth_35",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_36",
+      "from": "ent_synth_debtor7",
+      "to": "evt_synth_cirp7",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp7",
+      "relationship_id": "rel_synth_36",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_37",
+      "from": "ent_synth_bank",
+      "to": "ent_synth_debtor7",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp7",
+      "relationship_id": "rel_synth_37",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_38",
+      "from": "per_synth_ip",
+      "to": "ent_synth_debtor7",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp7",
+      "relationship_id": "rel_synth_38",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_39",
+      "from": "ent_synth_debtor8",
+      "to": "evt_synth_cirp8",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp8",
+      "relationship_id": "rel_synth_39",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_40",
+      "from": "ent_synth_bank",
+      "to": "ent_synth_debtor8",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp8",
+      "relationship_id": "rel_synth_40",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_41",
+      "from": "per_synth_ip",
+      "to": "ent_synth_debtor8",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp8",
+      "relationship_id": "rel_synth_41",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_42",
+      "from": "ent_synth_lender",
+      "to": "ent_synth_ka",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp1",
+      "relationship_id": "rel_synth_42",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_43",
+      "from": "ent_synth_lender",
+      "to": "ent_synth_la",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_cirp1",
+      "relationship_id": "rel_synth_43",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_44",
+      "from": "ent_synth_delta",
+      "to": "evt_synth_order",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "sebi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_order",
+      "relationship_id": "rel_synth_44",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_45",
+      "from": "ent_synth_epsilon",
+      "to": "evt_synth_order",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "sebi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_order",
+      "relationship_id": "rel_synth_45",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_46",
+      "from": "ent_synth_zeta",
+      "to": "evt_synth_pr",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_pr",
+      "relationship_id": "rel_synth_46",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_47",
+      "from": "ent_synth_eta",
+      "to": "evt_synth_pr",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_pr",
+      "relationship_id": "rel_synth_47",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_synth_48",
+      "from": "ent_synth_nbfc1",
+      "to": "evt_synth_batch",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "rbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "relationship_id": "rel_synth_48",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_49",
+      "from": "ent_synth_nbfc2",
+      "to": "evt_synth_batch",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "rbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "relationship_id": "rel_synth_49",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_50",
+      "from": "ent_synth_nbfc3",
+      "to": "evt_synth_batch",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "rbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "relationship_id": "rel_synth_50",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_51",
+      "from": "ent_synth_nbfc4",
+      "to": "evt_synth_batch",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "rbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "relationship_id": "rel_synth_51",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_52",
+      "from": "ent_synth_nbfc5",
+      "to": "evt_synth_batch",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "rbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "relationship_id": "rel_synth_52",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_53",
+      "from": "ent_synth_nbfc6",
+      "to": "evt_synth_batch",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "rbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "relationship_id": "rel_synth_53",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_54",
+      "from": "ent_synth_nbfc7",
+      "to": "evt_synth_batch",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "rbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "relationship_id": "rel_synth_54",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_synth_55",
+      "from": "ent_synth_nbfc8",
+      "to": "evt_synth_batch",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "rbi",
+      "date": "2026-01-15",
+      "document_id": "doc_synth_batch",
+      "relationship_id": "rel_synth_55",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_a52987bdda0db4e7",
+      "from": "ent_synth_sg1",
+      "to": "ent_synth_sg2",
+      "type": "possible_same_entity",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "graph_lab",
+      "date": null,
+      "document_id": null,
+      "relationship_id": null,
+      "confidence": 0.44999999999999996
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_synth_mca",
+      "url": "https://example.invalid/synthetic/mca",
+      "title": "SYNTHETIC company master",
+      "date": "2026-01-15",
+      "source_id": "mca_ogd"
+    },
+    {
+      "id": "doc_synth_order",
+      "url": "https://example.invalid/synthetic/order",
+      "title": "SYNTH Final order in the matter of Delta Exports Ltd and Epsilon Holdings Ltd",
+      "date": "2026-01-15",
+      "source_id": "sebi"
+    },
+    {
+      "id": "doc_synth_pr",
+      "url": "https://example.invalid/synthetic/pr",
+      "title": "SYNTH Attachment of assets of Zeta Realty Ltd",
+      "date": "2026-01-15",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_synth_batch",
+      "url": "https://example.invalid/synthetic/batch",
+      "title": "SYNTH RBI cancels registration of 8 NBFCs",
+      "date": "2026-01-15",
+      "source_id": "rbi"
+    },
+    {
+      "id": "doc_synth_cirp1",
+      "url": "https://example.invalid/synthetic/cirp1",
+      "title": "SYNTH CIRP of Debtor 1 Pvt Ltd",
+      "date": "2026-01-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_synth_cirp2",
+      "url": "https://example.invalid/synthetic/cirp2",
+      "title": "SYNTH CIRP of Debtor 2 Pvt Ltd",
+      "date": "2026-01-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_synth_cirp3",
+      "url": "https://example.invalid/synthetic/cirp3",
+      "title": "SYNTH CIRP of Debtor 3 Pvt Ltd",
+      "date": "2026-01-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_synth_cirp4",
+      "url": "https://example.invalid/synthetic/cirp4",
+      "title": "SYNTH CIRP of Debtor 4 Pvt Ltd",
+      "date": "2026-01-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_synth_cirp5",
+      "url": "https://example.invalid/synthetic/cirp5",
+      "title": "SYNTH CIRP of Debtor 5 Pvt Ltd",
+      "date": "2026-01-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_synth_cirp6",
+      "url": "https://example.invalid/synthetic/cirp6",
+      "title": "SYNTH CIRP of Debtor 6 Pvt Ltd",
+      "date": "2026-01-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_synth_cirp7",
+      "url": "https://example.invalid/synthetic/cirp7",
+      "title": "SYNTH CIRP of Debtor 7 Pvt Ltd",
+      "date": "2026-01-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_synth_cirp8",
+      "url": "https://example.invalid/synthetic/cirp8",
+      "title": "SYNTH CIRP of Debtor 8 Pvt Ltd",
+      "date": "2026-01-15",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [
+    {
+      "id": "net_ab9c630b310f0644",
+      "node_ids": [
+        "ent_synth_delta",
+        "evt_synth_order",
+        "ent_synth_epsilon"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 2,
+      "sources": [
+        "mca_ogd",
+        "sebi"
+      ],
+      "seed_cases": [],
+      "score": 4,
+      "summary": "2 organisations connected by established records (2 named in). A connection is not evidence of wrongdoing."
+    },
+    {
+      "id": "net_6fe055bee445a8aa",
+      "node_ids": [
+        "ent_synth_alpha",
+        "adr_synth_cowork",
+        "ent_synth_gamma",
+        "ent_synth_beta"
+      ],
+      "organisation_count": 3,
+      "adverse_organisation_count": 0,
+      "sources": [
+        "mca_ogd"
+      ],
+      "seed_cases": [],
+      "score": 1,
+      "summary": "3 organisations connected by established records (3 registered at). A connection is not evidence of wrongdoing."
+    },
+    {
+      "id": "net_d89c2bce6a502dd8",
+      "node_ids": [
+        "ent_synth_lender",
+        "ent_synth_la",
+        "ent_synth_ka"
+      ],
+      "organisation_count": 3,
+      "adverse_organisation_count": 0,
+      "sources": [
+        "mca_ogd"
+      ],
+      "seed_cases": [],
+      "score": 1,
+      "summary": "3 organisations connected by established records (2 insolvency applicant against). A connection is not evidence of wrongdoing."
+    },
+    {
+      "id": "net_b44cae00d000e8f8",
+      "node_ids": [
+        "ent_synth_grp1",
+        "adr_synth_group",
+        "ent_synth_grp2"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 0,
+      "sources": [
+        "mca_ogd"
+      ],
+      "seed_cases": [],
+      "score": 1,
+      "summary": "2 organisations connected by established records (2 registered at). A connection is not evidence of wrongdoing."
+    }
+  ],
+  "identity": [
+    {
+      "id": "idc_d9e50b65a30b1b7d",
+      "a": "ent_synth_sg1",
+      "b": "ent_synth_sg2",
+      "name_a": "SYNTH Shree Ganesh Steels Private Limited",
+      "name_b": "SYNTH Shree Ganesh Steel Limited",
+      "similarity": 0.75,
+      "reasons": [
+        "similar_name"
+      ],
+      "status": "needs_review"
+    }
+  ]
+}

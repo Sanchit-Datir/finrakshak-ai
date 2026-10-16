@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Adarsh group (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 3,
+      "edges": 2,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 1,
+      "node:event": 2,
+      "edge:named_in": 2,
+      "basis:established": 2,
+      "strength:strong": 2,
+      "hub_nodes": 0
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "adarsh"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_210bdf4a3333751e",
+      "kind": "company",
+      "label": "Adarsh Credit Co-operative Society Ltd",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2026-02-16",
+      "document_id": "doc_0069f7bac8a6b84d",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_30dd69e9330fd966",
+      "kind": "event",
+      "label": "ED, Jaipur has provisionally attached movable & immovable properties worth Rs. 7.72 Crore (approx.) under PMLA, 2002 on 12.02.2026 in the case of M/s Adarsh Credit Co-operative Society Ltd & others in a matter related to",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2024-12-10",
+      "document_id": "doc_4ad16bc81e5625fe",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_a7fa2c7a33fcbbdb",
+      "kind": "event",
+      "label": "ED, Jaipur has provisionally attached movable & immovable properties worth Rs. 135.06 Crore under the provisions of PMLA, 2002 on 09.12.2024 in the matter of M/s Adarsh Credit Co-operative Society Ltd & others. Total att",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_609b905fe68b7107",
+      "from": "ent_210bdf4a3333751e",
+      "to": "evt_30dd69e9330fd966",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2026-02-16",
+      "document_id": "doc_0069f7bac8a6b84d",
+      "relationship_id": "rel_609b905fe68b7107",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_a2d2b6bceebbf2df",
+      "from": "ent_210bdf4a3333751e",
+      "to": "evt_a7fa2c7a33fcbbdb",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2024-12-10",
+      "document_id": "doc_4ad16bc81e5625fe",
+      "relationship_id": "rel_a2d2b6bceebbf2df",
+      "confidence": 0.85
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_0069f7bac8a6b84d",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/b9800212-72f6-4f7d-965d-587595b4f85d_Press%20Release-PAO-Adarsh-16022026%202.pdf",
+      "title": "ED, Jaipur has provisionally attached movable & immovable properties worth Rs. 7.72 Crore (approx.) under PMLA, 2002 on 12.02.2026 in the case of M/s Adarsh Credit Co-operative Society Ltd & others in a matter related to",
+      "date": "2026-02-16",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_4ad16bc81e5625fe",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/31019e7c-0c2d-4c19-aec5-2342b5a7866d_Press%20Release-Adarsh%20Credit%20Co-operative%20Society%20Ltd=-010122024%205.pdf",
+      "title": "ED, Jaipur has provisionally attached movable & immovable properties worth Rs. 135.06 Crore under the provisions of PMLA, 2002 on 09.12.2024 in the matter of M/s Adarsh Credit Co-operative Society Ltd & others. Total att",
+      "date": "2024-12-10",
+      "source_id": "ed"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

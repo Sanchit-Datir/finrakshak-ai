@@ -4,6 +4,7 @@ import { docTypeLabel } from './doc-catalog.js';
 import { formatMoney } from './format.js';
 import { parseAreaToHectares } from './land.js';
 import { runMonitoring } from './monitoring.js';
+import { publicRecordsFindings } from './public-records-findings.js';
 import { nameSimilarity, normalizeDigits, normalizeName } from './text.js';
 
 /**
@@ -20,7 +21,8 @@ export type FindingCategory =
   | 'financial_mismatch'
   | 'collateral_conflict'
   | 'purpose_evidence_gap'
-  | 'evidence_incomplete';
+  | 'evidence_incomplete'
+  | 'counterparty_exposure';
 
 export const CATEGORY_LABEL: Record<FindingCategory, string> = {
   document_inconsistency: 'Document inconsistency',
@@ -31,6 +33,7 @@ export const CATEGORY_LABEL: Record<FindingCategory, string> = {
   collateral_conflict: 'Collateral information conflict',
   purpose_evidence_gap: 'Loan-purpose evidence gap',
   evidence_incomplete: 'Evidence incomplete',
+  counterparty_exposure: 'Customer / counterparty exposure (public records)',
 };
 
 export interface EvidenceRef {
@@ -39,6 +42,8 @@ export interface EvidenceRef {
   docId: string | null;
   fieldId: string | null;
   appId: string | null;
+  /** External source (e.g. an IBBI or ED document) for public-record evidence. */
+  url?: string;
 }
 
 export interface Finding {
@@ -569,6 +574,8 @@ const relationshipReview: Check = ({ app, db }) => {
   ];
 };
 
+const publicRecords: Check = ({ app }) => publicRecordsFindings(app);
+
 const CHECKS: Check[] = [
   requiredFields,
   missingDocuments,
@@ -581,6 +588,7 @@ const CHECKS: Check[] = [
   incomeMismatch,
   relationshipReview,
   reviewState,
+  publicRecords,
 ];
 
 export const CHECK_NAMES = [
@@ -595,6 +603,7 @@ export const CHECK_NAMES = [
   'Declared income vs bank credits',
   'Relationships to open investigations',
   'Field review status',
+  'Public records: applicant and customers',
 ] as const;
 
 export function applicationDocs(app: Application, db: Db): FtDocument[] {

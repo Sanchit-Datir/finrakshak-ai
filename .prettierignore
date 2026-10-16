@@ -7,3 +7,7 @@ package-lock.json
 
 # Generated datasets (ingest)
 data/
+
+# Playwright output (e2e)
+playwright-report
+test-results

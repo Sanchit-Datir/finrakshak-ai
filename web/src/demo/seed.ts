@@ -84,9 +84,10 @@ function emptyData(): ApplicationData {
       warehouseReceiptNo: '',
       collateralValueMinor: null,
     },
-    business: { businessName: '', registrationNo: '', gstin: '', udyamNo: '' },
+    business: { businessName: '', registrationNo: '', pan: '', gstin: '', udyamNo: '' },
     guarantor: { name: '', relation: '' },
     declaration: { purposeDeclared: false, remarks: '' },
+    receivables: { customers: [] },
   };
 }
 
@@ -107,6 +108,7 @@ function data(p: DeepPartial<ApplicationData>): ApplicationData {
     business: { ...base.business, ...p.business },
     guarantor: { ...base.guarantor, ...p.guarantor },
     declaration: { ...base.declaration, ...p.declaration },
+    receivables: { customers: [...(p.receivables?.customers ?? base.receivables.customers)] },
   };
 }
 
@@ -563,6 +565,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       audit: [audit(created, officer, 'Application created', 'Created from branch counter (demo)')],
       checksRunAt: o.checks === false ? null : plus(created, 4),
       findingStates: {},
+      publicRecords: null,
     };
     if (submitted !== null)
       a.audit.push(

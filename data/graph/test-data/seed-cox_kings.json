@@ -1,0 +1,1389 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Cox & Kings (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 35,
+      "edges": 41,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 17,
+      "node:bank": 2,
+      "node:person": 5,
+      "node:address": 2,
+      "node:event": 9,
+      "edge:named_in": 8,
+      "basis:established": 36,
+      "strength:strong": 15,
+      "edge:mentioned_in": 5,
+      "basis:candidate": 5,
+      "strength:weak": 26,
+      "edge:insolvency_applicant_against": 8,
+      "edge:insolvency_professional_for": 18,
+      "edge:registered_at": 2,
+      "hub_nodes": 4
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 8,
+      "id": "ent_L28939PN1987PLC043953",
+      "kind": "company",
+      "label": "Bilcare Limited",
+      "detail": "L28939PN1987PLC043953 · Active",
+      "sources": [
+        "nfra",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 7,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 18,
+      "id": "ent_L45309MH2004PLC147531",
+      "kind": "company",
+      "label": "Reliance Communications Ltd.",
+      "detail": "L45309MH2004PLC147531 · Under CIRP",
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 4,
+      "seed_cases": [
+        "cox_kings"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 11,
+      "id": "ent_L63040MH1939PLC011352",
+      "kind": "company",
+      "label": "Cox & Kings Ltd.",
+      "detail": "L63040MH1939PLC011352 · Under Liquidation",
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_accba4fc190a10a6",
+      "kind": "company",
+      "label": "V Hotels Ltd.",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_f13825fc8b2e3890",
+      "kind": "company",
+      "label": "Macrotech Developers Ltd.",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 4,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 29,
+      "id": "ent_L65190MH2003PLC143249",
+      "kind": "bank",
+      "label": "Yes Bank Limited",
+      "detail": "L65190MH2003PLC143249 · Active",
+      "sources": [
+        "ed",
+        "ibbi",
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_U55204PN2011PTC139856",
+      "kind": "company",
+      "label": "ISG HOSPITALITY SERVICES PRIVATE LIMITED",
+      "detail": "U55204PN2011PTC139856 · Under CIRP",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 5,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 21,
+      "id": "ent_L65191PN1994PLC076333",
+      "kind": "bank",
+      "label": "IndusInd Bank Limited",
+      "detail": "L65191PN1994PLC076333 · Active",
+      "sources": [
+        "ibbi",
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_U74900MH2008PTC186830",
+      "kind": "company",
+      "label": "Rigved Technologies Private Limited",
+      "detail": "U74900MH2008PTC186830 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U34300MH1994PLC081463",
+      "kind": "company",
+      "label": "KLT Automotive and Tubular Products Limited",
+      "detail": "U34300MH1994PLC081463 · Under CIRP",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "ent_U24296MH2016PTC273687",
+      "kind": "company",
+      "label": "Emerald Performance Chemical Private Limited",
+      "detail": "U24296MH2016PTC273687 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_L17000MH1997PLC111406",
+      "kind": "company",
+      "label": "S.K.S Textiles Ltd",
+      "detail": "L17000MH1997PLC111406 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "cox_kings"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "ent_U63040MH2011PTC215069",
+      "kind": "company",
+      "label": "COX AND KINGS GLOBAL SERVICES PRIVATE LIMITED",
+      "detail": "U63040MH2011PTC215069 · Under CIRP",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "cox_kings"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U74999MH2016PLC289073",
+      "kind": "company",
+      "label": "Cox & Kings Financial Service Limited",
+      "detail": "U74999MH2016PLC289073",
+      "sources": [
+        "ibbi",
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_e2af71bfdc5b925a",
+      "kind": "company",
+      "label": "JMT AUTO LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "ent_3305932293060b23",
+      "kind": "company",
+      "label": "Rattan India Finance Pvt. Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U74999MH1980PLC022661",
+      "kind": "company",
+      "label": "SNEH SADAN TRADERS AND AGENTS LIMITED",
+      "detail": "U74999MH1980PLC022661 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_5d02ee4e08668b7e",
+      "kind": "company",
+      "label": "Date 1 Bharathu Investment & Finance India Limited",
+      "detail": null,
+      "sources": [
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_e265cf55d6d5d6c0",
+      "kind": "company",
+      "label": "PSPR Enterprises Private Limited",
+      "detail": null,
+      "sources": [
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "per_724a0d260640b7a7",
+      "kind": "person",
+      "label": "RAJKUMAR FERU GUPTA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 15,
+      "id": "per_b2e6700077040cdf",
+      "kind": "person",
+      "label": "BIRENDRA KUMAR AGRAWAL",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 25,
+      "id": "per_10184a3cc7126a69",
+      "kind": "person",
+      "label": "ALOK KUMAR AGARWAL",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "per_7a34fc0190136555",
+      "kind": "person",
+      "label": "ASHUTOSH AGARWALA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "per_e86090b148a1e501",
+      "kind": "person",
+      "label": "PARDEEP KUMAR SETHI",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_960f7e5be6914e77",
+      "kind": "address",
+      "label": "1ST FLOOR TURNER MORRISONBUILDING 16 BANK STREET,MUMBAI,Maharashtra,400023-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_135866861bf80da9",
+      "kind": "address",
+      "label": "Turner Morrison Building, 1st Floor,   16, Bank Street, Fort.,Mumbai,Mumbai City,Maharashtra,400001-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": "2025-11-28",
+      "document_id": "doc_f1590c436e32a5dd",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "evt_22c7606af5bb2f88",
+      "kind": "event",
+      "label": "ED, Mumbai Zonal Office has successfully ensured release of properties to Legitimate Claimant in the money laundering case against Cox & Kings Ltd. (CKL), its promoters and others. The Hon’ble Supreme Court, has ordered ",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2023-11-11",
+      "document_id": "doc_8ae96fe74a019a75",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_7bd0bfd25ea4419e",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: COX AND KINGS GLOBAL SERVICES PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2023-01-11",
+      "document_id": "doc_f5beb37d177cb8b1",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_16eb4943d6b031ef",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: COX AND KINGS GLOBAL SERVICES PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2022-11-10",
+      "document_id": "doc_d788a554b81e78c1",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_41bc03b86076fd68",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: COX & KINGS FINANCIAL SERVICE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2021-12-20",
+      "document_id": "doc_37c7fce9c87c8607",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_310fe5e6f18d1ce0",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: Cox & Kings Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2021-05-07",
+      "document_id": "doc_19358415172e6c04",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_418bf4e5da985aaf",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Cox & Kings Financial Service Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2019-10-26",
+      "document_id": "doc_ecd5233a9c9ce981",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_8b1c63cd37dc1504",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: COX & KINGS LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2019-10-25",
+      "document_id": "doc_2e1928f88102967e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_27f3962cb2bf13f6",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Cox & Kings Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2024-02-09",
+      "document_id": "doc_69016cc9224b5a69",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "evt_1fd43c006d08b262",
+      "kind": "event",
+      "label": "RBI cancels Certificate of Registration of Three NBFCs",
+      "detail": "Reserve Bank of India · registration cancelled · rbi_cor_cancellation",
+      "sources": [
+        "rbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_9a9460cb542b8c1a",
+      "from": "ent_L63040MH1939PLC011352",
+      "to": "evt_22c7606af5bb2f88",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-11-28",
+      "document_id": "doc_f1590c436e32a5dd",
+      "relationship_id": "rel_9a9460cb542b8c1a",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_54960a889bd3f7bd",
+      "from": "ent_accba4fc190a10a6",
+      "to": "evt_22c7606af5bb2f88",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-11-28",
+      "document_id": "doc_f1590c436e32a5dd",
+      "relationship_id": "rel_54960a889bd3f7bd",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_45b27d56b6b8584a",
+      "from": "ent_f13825fc8b2e3890",
+      "to": "evt_22c7606af5bb2f88",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-11-28",
+      "document_id": "doc_f1590c436e32a5dd",
+      "relationship_id": "rel_45b27d56b6b8584a",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_81892910d977408e",
+      "from": "ent_U63040MH2011PTC215069",
+      "to": "evt_7bd0bfd25ea4419e",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-11-11",
+      "document_id": "doc_8ae96fe74a019a75",
+      "relationship_id": "rel_81892910d977408e",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_aff622aac7fc4071",
+      "from": "ent_U63040MH2011PTC215069",
+      "to": "evt_16eb4943d6b031ef",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-01-11",
+      "document_id": "doc_f5beb37d177cb8b1",
+      "relationship_id": "rel_aff622aac7fc4071",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_b183c85094f9c6c1",
+      "from": "ent_L65191PN1994PLC076333",
+      "to": "ent_U63040MH2011PTC215069",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-01-11",
+      "document_id": "doc_f5beb37d177cb8b1",
+      "relationship_id": "rel_b183c85094f9c6c1",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_31bd0c41405b410b",
+      "from": "ent_U74999MH2016PLC289073",
+      "to": "evt_41bc03b86076fd68",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-11-10",
+      "document_id": "doc_d788a554b81e78c1",
+      "relationship_id": "rel_31bd0c41405b410b",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_491a28d03d313719",
+      "from": "ent_L65190MH2003PLC143249",
+      "to": "ent_U74999MH2016PLC289073",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-11-10",
+      "document_id": "doc_d788a554b81e78c1",
+      "relationship_id": "rel_491a28d03d313719",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_96bce5cf0f146ec1",
+      "from": "ent_L63040MH1939PLC011352",
+      "to": "evt_310fe5e6f18d1ce0",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-12-20",
+      "document_id": "doc_37c7fce9c87c8607",
+      "relationship_id": "rel_96bce5cf0f146ec1",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_3a28df8f7a85b82f",
+      "from": "ent_3305932293060b23",
+      "to": "ent_L63040MH1939PLC011352",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-12-20",
+      "document_id": "doc_37c7fce9c87c8607",
+      "relationship_id": "rel_3a28df8f7a85b82f",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_ea128e033948781f",
+      "from": "ent_3305932293060b23",
+      "to": "ent_U74999MH1980PLC022661",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-09-25",
+      "document_id": "doc_70fa6c08f3e92533",
+      "relationship_id": "rel_ea128e033948781f",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_716584d749323108",
+      "from": "ent_U74999MH2016PLC289073",
+      "to": "evt_418bf4e5da985aaf",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-05-07",
+      "document_id": "doc_19358415172e6c04",
+      "relationship_id": "rel_716584d749323108",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_f489fd9031ba3c13",
+      "from": "ent_L65190MH2003PLC143249",
+      "to": "ent_U74999MH2016PLC289073",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-05-07",
+      "document_id": "doc_19358415172e6c04",
+      "relationship_id": "rel_f489fd9031ba3c13",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_52b53460a3dbce39",
+      "from": "ent_3305932293060b23",
+      "to": "ent_U74999MH1980PLC022661",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-11-08",
+      "document_id": "doc_4cc086594c9dc5dd",
+      "relationship_id": "rel_52b53460a3dbce39",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_9b3de4ca7593a201",
+      "from": "ent_L63040MH1939PLC011352",
+      "to": "evt_8b1c63cd37dc1504",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-26",
+      "document_id": "doc_ecd5233a9c9ce981",
+      "relationship_id": "rel_9b3de4ca7593a201",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_e0b80f2512ad73ef",
+      "from": "ent_3305932293060b23",
+      "to": "ent_L63040MH1939PLC011352",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-26",
+      "document_id": "doc_ecd5233a9c9ce981",
+      "relationship_id": "rel_e0b80f2512ad73ef",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_f113541b3423e42d",
+      "from": "ent_L63040MH1939PLC011352",
+      "to": "evt_27f3962cb2bf13f6",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-25",
+      "document_id": "doc_2e1928f88102967e",
+      "relationship_id": "rel_f113541b3423e42d",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_fbc0b81a26cbcd44",
+      "from": "ent_3305932293060b23",
+      "to": "ent_L63040MH1939PLC011352",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-25",
+      "document_id": "doc_2e1928f88102967e",
+      "relationship_id": "rel_fbc0b81a26cbcd44",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_96835e241e49fffe",
+      "from": "ent_5d02ee4e08668b7e",
+      "to": "evt_1fd43c006d08b262",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "rbi",
+      "date": "2024-02-09",
+      "document_id": "doc_69016cc9224b5a69",
+      "relationship_id": "rel_96835e241e49fffe",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_561e1ea182e9a985",
+      "from": "ent_U74999MH2016PLC289073",
+      "to": "evt_1fd43c006d08b262",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "rbi",
+      "date": "2024-02-09",
+      "document_id": "doc_69016cc9224b5a69",
+      "relationship_id": "rel_561e1ea182e9a985",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_c4f9719d06657ffe",
+      "from": "ent_e265cf55d6d5d6c0",
+      "to": "evt_1fd43c006d08b262",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "rbi",
+      "date": "2024-02-09",
+      "document_id": "doc_69016cc9224b5a69",
+      "relationship_id": "rel_c4f9719d06657ffe",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_dfa2c6148e63aea0",
+      "from": "per_724a0d260640b7a7",
+      "to": "ent_U55204PN2011PTC139856",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-07-15",
+      "document_id": "doc_f3076f94ba082598",
+      "relationship_id": "rel_dfa2c6148e63aea0",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_3a6f20554ebd84d4",
+      "from": "per_724a0d260640b7a7",
+      "to": "ent_U74900MH2008PTC186830",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-06-11",
+      "document_id": "doc_7190dfcda4419272",
+      "relationship_id": "rel_3a6f20554ebd84d4",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_36611259997a07b2",
+      "from": "per_7a34fc0190136555",
+      "to": "ent_U34300MH1994PLC081463",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-09-30",
+      "document_id": "doc_1124b4dc035d0840",
+      "relationship_id": "rel_36611259997a07b2",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_60044ae5c1a3d08c",
+      "from": "per_724a0d260640b7a7",
+      "to": "ent_U24296MH2016PTC273687",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-08-09",
+      "document_id": "doc_deca6155db901315",
+      "relationship_id": "rel_60044ae5c1a3d08c",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_51c83fa496352766",
+      "from": "per_724a0d260640b7a7",
+      "to": "ent_L17000MH1997PLC111406",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-01-06",
+      "document_id": "doc_e9d62ea62ef2b4ff",
+      "relationship_id": "rel_51c83fa496352766",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_9001c0501fcd2e3d",
+      "from": "per_724a0d260640b7a7",
+      "to": "ent_U63040MH2011PTC215069",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-11-11",
+      "document_id": "doc_8ae96fe74a019a75",
+      "relationship_id": "rel_9001c0501fcd2e3d",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_68a7d45af975df9b",
+      "from": "per_b2e6700077040cdf",
+      "to": "ent_U63040MH2011PTC215069",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-01-11",
+      "document_id": "doc_f5beb37d177cb8b1",
+      "relationship_id": "rel_68a7d45af975df9b",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_9e6ecfcf46306155",
+      "from": "per_7a34fc0190136555",
+      "to": "ent_L28939PN1987PLC043953",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-11-14",
+      "document_id": "doc_0cdb4ea72ef34b7a",
+      "relationship_id": "rel_9e6ecfcf46306155",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_2e127c89337551ed",
+      "from": "per_e86090b148a1e501",
+      "to": "ent_U74999MH2016PLC289073",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-11-10",
+      "document_id": "doc_d788a554b81e78c1",
+      "relationship_id": "rel_2e127c89337551ed",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_0396aa6871828e58",
+      "from": "per_e86090b148a1e501",
+      "to": "ent_e2af71bfdc5b925a",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-02-28",
+      "document_id": "doc_3371eef47d3d64d9",
+      "relationship_id": "rel_0396aa6871828e58",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_d1aded6a3028b0ff",
+      "from": "per_7a34fc0190136555",
+      "to": "ent_L63040MH1939PLC011352",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-12-20",
+      "document_id": "doc_37c7fce9c87c8607",
+      "relationship_id": "rel_d1aded6a3028b0ff",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_77c0aca0fc93e519",
+      "from": "per_10184a3cc7126a69",
+      "to": "ent_U74999MH1980PLC022661",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-09-25",
+      "document_id": "doc_70fa6c08f3e92533",
+      "relationship_id": "rel_77c0aca0fc93e519",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_50e1f114b02d9486",
+      "from": "per_e86090b148a1e501",
+      "to": "ent_U74999MH2016PLC289073",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-05-07",
+      "document_id": "doc_19358415172e6c04",
+      "relationship_id": "rel_50e1f114b02d9486",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_56fe5cff88e716ba",
+      "from": "per_10184a3cc7126a69",
+      "to": "ent_U74999MH1980PLC022661",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-11-08",
+      "document_id": "doc_4cc086594c9dc5dd",
+      "relationship_id": "rel_56fe5cff88e716ba",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_a6a6065ba1f31749",
+      "from": "per_10184a3cc7126a69",
+      "to": "ent_L63040MH1939PLC011352",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-26",
+      "document_id": "doc_ecd5233a9c9ce981",
+      "relationship_id": "rel_a6a6065ba1f31749",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_4d97f94b9f5626cc",
+      "from": "per_10184a3cc7126a69",
+      "to": "ent_L63040MH1939PLC011352",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-25",
+      "document_id": "doc_2e1928f88102967e",
+      "relationship_id": "rel_4d97f94b9f5626cc",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_6e84d07d33a1c361",
+      "from": "per_e86090b148a1e501",
+      "to": "ent_L45309MH2004PLC147531",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-05-07",
+      "document_id": "doc_77da7a1e087964a9",
+      "relationship_id": "rel_6e84d07d33a1c361",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_44f1fed40e486e50",
+      "from": "per_e86090b148a1e501",
+      "to": "ent_L45309MH2004PLC147531",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-05-21",
+      "document_id": "doc_d2eda725dedea6de",
+      "relationship_id": "rel_44f1fed40e486e50",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_33dd6cdbc726c8b7",
+      "from": "ent_L63040MH1939PLC011352",
+      "to": "adr_960f7e5be6914e77",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_33dd6cdbc726c8b7",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_228e73e5ba38b846",
+      "from": "ent_U63040MH2011PTC215069",
+      "to": "adr_135866861bf80da9",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_228e73e5ba38b846",
+      "confidence": 0.8
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_f1590c436e32a5dd",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/46853e57-d707-4db9-b1c8-d60ac7c0d1cf_MBZO-1%20Press%20release%20restitution%20of%20properties%20to%20the%20Successful%20Resolution%20Applicant.pdf",
+      "title": "ED, Mumbai Zonal Office has successfully ensured release of properties to Legitimate Claimant in the money laundering case against Cox & Kings Ltd. (CKL), its promoters and others. The Hon’ble Supreme Court, has ordered ",
+      "date": "2025-11-28",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_f3076f94ba082598",
+      "url": "https://ibbi.gov.in//uploads/announcement/2026-07-18-160150-mzfod-79204a9706d1c8405060e9ed9f9e1ec8.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ISG HOSPITALITY SERVICES PRIVATE LIMITED",
+      "date": "2026-07-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_7190dfcda4419272",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-06-11-161657-jq7s1-7714e04f82d61eaff436c639a5ea5f1f.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Rigved Technologies Private Limited",
+      "date": "2025-06-11",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_1124b4dc035d0840",
+      "url": "https://ibbi.gov.in//uploads/announcement/2024-09-30-155710-r1z5a-5c06ce6c0111806ecfd4fbad7e27f559.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: KLT Automotive and Tubular Products Limited",
+      "date": "2024-09-30",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_deca6155db901315",
+      "url": "https://ibbi.gov.in//uploads/announcement/f1eabc4e8f1769ebda69872eafab458e.pdf",
+      "title": "Public Announcement of Liquidation Process: Emerald Performance Chemical Private Limited",
+      "date": "2024-08-09",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_e9d62ea62ef2b4ff",
+      "url": "https://ibbi.gov.in//uploads/announcement/2024-01-16-182124-m0sut-5c06ce6c0111806ecfd4fbad7e27f559.pdf",
+      "title": "Public Announcement of Liquidation Process: S.K.S Textiles Ltd",
+      "date": "2024-01-06",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_8ae96fe74a019a75",
+      "url": "https://ibbi.gov.in//uploads/announcement/6c9d7a3dc6650e93c3e3d9823f7c287c.pdf",
+      "title": "Public Announcement of Liquidation Process: COX AND KINGS GLOBAL SERVICES PRIVATE LIMITED",
+      "date": "2023-11-11",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_f5beb37d177cb8b1",
+      "url": "https://ibbi.gov.in//uploads/announcement/23c35d19483d26b6784e8411660b8dbf.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: COX AND KINGS GLOBAL SERVICES PRIVATE LIMITED",
+      "date": "2023-01-11",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_0cdb4ea72ef34b7a",
+      "url": "https://ibbi.gov.in//uploads/announcement/3730ac12f2a8b9b4c4abb642a4cb6b37.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Bilcare Limited",
+      "date": "2022-11-14",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_d788a554b81e78c1",
+      "url": "https://ibbi.gov.in//uploads/announcement/e597d656503f106d879ea936312f3d2c.pdf",
+      "title": "Public Announcement of Liquidation Process: COX & KINGS FINANCIAL SERVICE LIMITED",
+      "date": "2022-11-10",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_3371eef47d3d64d9",
+      "url": "https://ibbi.gov.in//uploads/announcement/2022-03-02-124723-zoafj-f9b6e5c2a6b3fe3ddfee8b1b29ce81c0.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: JMT AUTO LIMITED",
+      "date": "2022-02-28",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_37c7fce9c87c8607",
+      "url": "https://ibbi.gov.in//uploads/announcement/6dcc730b2bed073245589f303ff36d14.pdf",
+      "title": "Public Announcement of Liquidation Process: Cox & Kings Limited",
+      "date": "2021-12-20",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_70fa6c08f3e92533",
+      "url": "https://ibbi.gov.in//uploads/announcement/3615f6cc579e4c621bed587a07fb7d53.pdf",
+      "title": "Public Announcement of Liquidation Process: SNEH SADAN TRADERS AND AGENTS LIMITED",
+      "date": "2021-09-25",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_19358415172e6c04",
+      "url": "https://ibbi.gov.in//uploads/announcement/2021-05-17-120859-q8xz6-e0159f5966b415b8e63fbc2ed351bff5.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Cox & Kings Financial Service Limited",
+      "date": "2021-05-07",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_4cc086594c9dc5dd",
+      "url": "https://ibbi.gov.in//uploads/announcement/a0ad77061a8dc0d1d4e513fc68f90a0f.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Sneh Sadan Traders & Agents Ltd.",
+      "date": "2019-11-08",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_ecd5233a9c9ce981",
+      "url": "https://ibbi.gov.in//uploads/announcement/c6d9d4ee1b9811cb9944073a06837432.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: COX & KINGS LIMITED",
+      "date": "2019-10-26",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_2e1928f88102967e",
+      "url": "https://ibbi.gov.in//uploads/announcement/67ee9da0248fe4a789b87ac740238877.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Cox & Kings Ltd.",
+      "date": "2019-10-25",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_77da7a1e087964a9",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Reliance Communications Ltd.",
+      "date": "2019-05-07",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_d2eda725dedea6de",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Reliance Communications Ltd.",
+      "date": "2018-05-21",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_69016cc9224b5a69",
+      "url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=57298",
+      "title": "RBI cancels Certificate of Registration of Three NBFCs",
+      "date": "2024-02-09",
+      "source_id": "rbi"
+    },
+    {
+      "id": "doc_mca_company_master",
+      "url": "https://www.data.gov.in/resource/registrars-companies-roc-wise-company-master-data",
+      "title": "MCA RoC-wise company master data (company_master.part1of5.csv, company_master.part2of5.csv, company_master.part3of5.csv, company_master.part4of5.csv, company_master.part5of5.csv)",
+      "date": null,
+      "source_id": "mca_ogd"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

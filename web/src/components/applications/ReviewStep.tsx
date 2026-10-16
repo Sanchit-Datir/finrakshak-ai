@@ -15,6 +15,7 @@ import {
 import { LAND_UNIT_LABEL } from '../../lib/land.js';
 import { minorToRupeeInput, parseRupeesToMinor } from '../../lib/format.js';
 import { prefillFromDocuments } from '../../lib/prefill.js';
+import { parseCustomerRows, rowsOf, type CustomerRow } from '../../lib/receivables.js';
 import { addApplicationNote, saveApplication, toggleUnverified } from '../../state/actions.js';
 import { useToast } from '../../state/toast.js';
 import { Button } from '../ui/Button.js';
@@ -22,6 +23,7 @@ import { Dialog } from '../ui/Dialog.js';
 import { Checkbox, SelectField, TextArea, TextField } from '../ui/Field.js';
 import { Notice } from '../ui/States.js';
 import { cn } from '../ui/cn.js';
+import { ReceivablesSection } from './ReceivablesSection.js';
 
 interface Money {
   amount: string;
@@ -30,8 +32,19 @@ interface Money {
   collateral: string;
 }
 type Errors = Partial<
-  Record<'fullName' | 'amount' | 'purpose' | 'income' | 'liabilities' | 'collateral', string>
+  Record<
+    | 'fullName'
+    | 'amount'
+    | 'purpose'
+    | 'income'
+    | 'liabilities'
+    | 'collateral'
+    | 'pan'
+    | 'customers',
+    string
+  >
 >;
+const PAN_PATTERN = /^[A-Z]{5}\d{4}[A-Z]$/;
 
 const BUSINESS_TYPES: ReadonlySet<BorrowerType> = new Set([
   'proprietorship',
@@ -96,6 +109,10 @@ export function ReviewStep({
   });
   const [data, setData] = useState<ApplicationData>(initial.data);
   const [money, setMoney] = useState<Money>(() => moneyOf(initial.data));
+  const [customerRows, setCustomerRows] = useState<CustomerRow[]>(() =>
+    rowsOf(initial.data.receivables.customers),
+  );
+  const [customerErrors, setCustomerErrors] = useState<Record<number, string>>({});
   const [borrowerType, setBorrowerType] = useState<BorrowerType>(app.borrowerType);
   const [branchId, setBranchId] = useState(app.branchId);
   const [errors, setErrors] = useState<Errors>({});
@@ -135,6 +152,11 @@ export function ReviewStep({
     const collateral = parse(money.collateral, 'collateral', false);
     if (strict && data.applicant.fullName.trim() === '') e.fullName = 'Enter the applicant name.';
     if (strict && data.loan.purpose.trim() === '') e.purpose = 'Enter the declared loan purpose.';
+    if (data.business.pan !== '' && !PAN_PATTERN.test(data.business.pan))
+      e.pan = 'Enter a 10-character PAN, e.g. ABCDE1234F, or leave it blank.';
+    const parsed = parseCustomerRows(customerRows);
+    setCustomerErrors(parsed.errors);
+    if (Object.keys(parsed.errors).length > 0) e.customers = 'Fix the highlighted customer rows.';
     setErrors(e);
     if (Object.keys(e).length > 0) return null;
     return {
@@ -146,6 +168,7 @@ export function ReviewStep({
         existingLiabilitiesMinor: liabilities,
       },
       collateral: { ...data.collateral, collateralValueMinor: collateral },
+      receivables: { customers: parsed.customers },
     };
   };
 
@@ -532,6 +555,16 @@ export function ReviewStep({
             />
           )}
           <TextField
+            label="PAN of the business"
+            value={data.business.pan}
+            maxLength={10}
+            autoComplete="off"
+            error={errors.pan ?? null}
+            onChange={(e) => {
+              set('business', { pan: e.target.value.toUpperCase().trim() });
+            }}
+          />
+          <TextField
             label="GSTIN"
             value={data.business.gstin}
             onChange={(e) => {
@@ -546,6 +579,16 @@ export function ReviewStep({
             }}
           />
         </Section>
+      )}
+
+      {isBusiness && (
+        <ReceivablesSection
+          rows={customerRows}
+          errors={customerErrors}
+          unverified={unv('receivables')}
+          onToggle={toggle('receivables')}
+          onChange={setCustomerRows}
+        />
       )}
 
       <Section

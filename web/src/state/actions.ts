@@ -16,6 +16,7 @@ import type {
   FtDocument,
   Language,
   Priority,
+  PublicRecordsSnapshot,
   Transaction,
 } from '../domain/schemas.js';
 import {
@@ -72,6 +73,7 @@ export function createDraftApplication(actor: string, branchId: string): string 
       audit: [audit(actor, 'Application created', 'Draft started')],
       checksRunAt: null,
       findingStates: {},
+      publicRecords: null,
     });
   });
   return id;
@@ -118,6 +120,28 @@ export function recordChecksRun(appId: string, actor: string, summary: string): 
     const a = findApp(d, appId);
     a.checksRunAt = nowIso();
     a.audit.push(audit(actor, 'Checks run', summary));
+  });
+}
+
+/** Saves the facts a public-records check found, so findings are reproducible and audited. */
+export function recordPublicRecordsCheck(
+  appId: string,
+  actor: string,
+  snapshot: PublicRecordsSnapshot,
+): void {
+  mutate((d) => {
+    const a = findApp(d, appId);
+    a.publicRecords = snapshot;
+    const found = snapshot.exposures.length;
+    a.audit.push(
+      audit(
+        actor,
+        'Public-records check run',
+        `Local dataset built ${snapshot.datasetBuiltAt?.slice(0, 10) ?? 'unknown'}; ` +
+          `${snapshot.customersChecked.length} customer(s) checked; ` +
+          `${found} customer(s) in insolvency or liquidation`,
+      ),
+    );
   });
 }
 

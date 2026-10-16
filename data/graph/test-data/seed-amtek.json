@@ -1,0 +1,727 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Amtek Auto (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 15,
+      "edges": 26,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 8,
+      "node:bank": 1,
+      "node:person": 1,
+      "node:event": 5,
+      "edge:named_in": 14,
+      "basis:established": 18,
+      "strength:strong": 14,
+      "edge:mentioned_in": 8,
+      "basis:candidate": 8,
+      "strength:weak": 12,
+      "edge:insolvency_applicant_against": 1,
+      "edge:insolvency_professional_for": 3,
+      "hub_nodes": 2
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 4,
+      "seed_cases": [
+        "amtek"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_d974099d3b0374d0",
+      "kind": "company",
+      "label": "Amtek Auto Limited",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_37059f32a6ba2ae0",
+      "kind": "company",
+      "label": "ARGL Limited",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 5,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_04c46f4e5ff84d08",
+      "kind": "company",
+      "label": "ACIL Limited",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_1ba39ac44bab1be9",
+      "kind": "company",
+      "label": "Metalyst Forging Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 3,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_f9ed47a0388f103f",
+      "kind": "company",
+      "label": "Castex Technologies Limited",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_b9f05ac88374c6ce",
+      "kind": "company",
+      "label": "ARG Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_06a7e82b996dc172",
+      "kind": "company",
+      "label": "Pitti Engineering Ltd",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_6546e0baed6cf884",
+      "kind": "company",
+      "label": "Metalic Forging Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 46,
+      "id": "ent_13df690f5d8d90bc",
+      "kind": "bank",
+      "label": "Corporation Bank",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 6,
+      "id": "per_8eda991fd1872db6",
+      "kind": "person",
+      "label": "DINKAR TIRUVANNADAPURAM VENKATASUBRAMNIAN",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-08-11",
+      "document_id": "doc_87879f854b4f41bc",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "evt_0555c0a5db5a7238",
+      "kind": "event",
+      "label": "ED, Gurugram has filed a Supplementary Prosecution Complaint on 01.08.2025 before the Special PMLA Court, at Rouse Avenue, New Delhi in connection with the Bank Fraud case involving M/s Amtek Auto Limited, M/s ARGL Limit",
+      "detail": "Directorate of Enforcement · prosecution complaint filed · ed_prosecution_complaint",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-07-12",
+      "document_id": "doc_ffafbc5c8ae9c16b",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "evt_5281ee459ce66683",
+      "kind": "event",
+      "label": "ED, Gurugram Zonal Office has provisionally attached movable and immovable assets worth Rs. 588.57 Crore on 10/07/2025, under the PMLA, 2002, in connection with the Bank Fraud case involving M/s Amtek Auto Limited, M/s A",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2024-07-11",
+      "document_id": "doc_20da2cdac7bf6418",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "evt_7b8333d23437a880",
+      "kind": "event",
+      "label": "ED, Gurugram has arrested Arvind Dham, Promoter of Amtek Group of Companies on 09.07.2024 under the provisions of PMLA, 2002 in the case of M/s ACIL Limited and others, in connection with a Bank fraud case of more than R",
+      "detail": "Directorate of Enforcement · investigation · ed_arrest",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2024-06-24",
+      "document_id": "doc_be1adc7352c3335f",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "evt_14e55476d4b8400f",
+      "kind": "event",
+      "label": "ED, Gurugram has conducted search operations on 20.06.2024 at approx 40 locations in Delhi NCR, Gurugram, Mumbai and Nagpur under the provisions of PMLA, 2002 in the case of M/s ACIL Limited, M/s Amtek Auto Limited, Arvi",
+      "detail": "Directorate of Enforcement · investigation · ed_search_seizure",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2017-07-29",
+      "document_id": "doc_3b882d82dd21c274",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_8ed286d9d124a167",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Amtek Auto Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_57405c2b3aa69a33",
+      "from": "ent_d974099d3b0374d0",
+      "to": "evt_0555c0a5db5a7238",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-08-11",
+      "document_id": "doc_87879f854b4f41bc",
+      "relationship_id": "rel_57405c2b3aa69a33",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_c4c36912eb576fe3",
+      "from": "ent_37059f32a6ba2ae0",
+      "to": "evt_0555c0a5db5a7238",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-08-11",
+      "document_id": "doc_87879f854b4f41bc",
+      "relationship_id": "rel_c4c36912eb576fe3",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_2505ea7b7c310f05",
+      "from": "ent_04c46f4e5ff84d08",
+      "to": "evt_0555c0a5db5a7238",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-08-11",
+      "document_id": "doc_87879f854b4f41bc",
+      "relationship_id": "rel_2505ea7b7c310f05",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_0996591ec2df82ec",
+      "from": "ent_1ba39ac44bab1be9",
+      "to": "evt_0555c0a5db5a7238",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-08-11",
+      "document_id": "doc_87879f854b4f41bc",
+      "relationship_id": "rel_0996591ec2df82ec",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_7a6c90e4fc6f0705",
+      "from": "ent_f9ed47a0388f103f",
+      "to": "evt_0555c0a5db5a7238",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-08-11",
+      "document_id": "doc_87879f854b4f41bc",
+      "relationship_id": "rel_7a6c90e4fc6f0705",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_00442787de07978d",
+      "from": "ent_d974099d3b0374d0",
+      "to": "evt_5281ee459ce66683",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-07-12",
+      "document_id": "doc_ffafbc5c8ae9c16b",
+      "relationship_id": "rel_00442787de07978d",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_7418eac41bddf720",
+      "from": "ent_b9f05ac88374c6ce",
+      "to": "evt_5281ee459ce66683",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-07-12",
+      "document_id": "doc_ffafbc5c8ae9c16b",
+      "relationship_id": "rel_7418eac41bddf720",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_7e0f151e3a56f51a",
+      "from": "ent_04c46f4e5ff84d08",
+      "to": "evt_5281ee459ce66683",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-07-12",
+      "document_id": "doc_ffafbc5c8ae9c16b",
+      "relationship_id": "rel_7e0f151e3a56f51a",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_894411a5424a0029",
+      "from": "ent_1ba39ac44bab1be9",
+      "to": "evt_5281ee459ce66683",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-07-12",
+      "document_id": "doc_ffafbc5c8ae9c16b",
+      "relationship_id": "rel_894411a5424a0029",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_a19b5bced41bbb24",
+      "from": "ent_f9ed47a0388f103f",
+      "to": "evt_5281ee459ce66683",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-07-12",
+      "document_id": "doc_ffafbc5c8ae9c16b",
+      "relationship_id": "rel_a19b5bced41bbb24",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_f0c20b55a4eeac4b",
+      "from": "ent_06a7e82b996dc172",
+      "to": "evt_5281ee459ce66683",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-07-12",
+      "document_id": "doc_ffafbc5c8ae9c16b",
+      "relationship_id": "rel_f0c20b55a4eeac4b",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_014998a246cada43",
+      "from": "ent_04c46f4e5ff84d08",
+      "to": "evt_7b8333d23437a880",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2024-07-11",
+      "document_id": "doc_20da2cdac7bf6418",
+      "relationship_id": "rel_014998a246cada43",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_e174e076bfeadac2",
+      "from": "ent_b9f05ac88374c6ce",
+      "to": "evt_7b8333d23437a880",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-07-11",
+      "document_id": "doc_20da2cdac7bf6418",
+      "relationship_id": "rel_e174e076bfeadac2",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_365cb85bc21d8feb",
+      "from": "ent_d974099d3b0374d0",
+      "to": "evt_7b8333d23437a880",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-07-11",
+      "document_id": "doc_20da2cdac7bf6418",
+      "relationship_id": "rel_365cb85bc21d8feb",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_ea739aaf415ba17a",
+      "from": "ent_6546e0baed6cf884",
+      "to": "evt_7b8333d23437a880",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-07-11",
+      "document_id": "doc_20da2cdac7bf6418",
+      "relationship_id": "rel_ea739aaf415ba17a",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_f9b5fdc97a4b1b08",
+      "from": "ent_f9ed47a0388f103f",
+      "to": "evt_7b8333d23437a880",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-07-11",
+      "document_id": "doc_20da2cdac7bf6418",
+      "relationship_id": "rel_f9b5fdc97a4b1b08",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_422356043f1d3372",
+      "from": "ent_04c46f4e5ff84d08",
+      "to": "evt_14e55476d4b8400f",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2024-06-24",
+      "document_id": "doc_be1adc7352c3335f",
+      "relationship_id": "rel_422356043f1d3372",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_324b1ca4992ec425",
+      "from": "ent_d974099d3b0374d0",
+      "to": "evt_14e55476d4b8400f",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2024-06-24",
+      "document_id": "doc_be1adc7352c3335f",
+      "relationship_id": "rel_324b1ca4992ec425",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_ea6811e69b2cc847",
+      "from": "ent_b9f05ac88374c6ce",
+      "to": "evt_14e55476d4b8400f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-06-24",
+      "document_id": "doc_be1adc7352c3335f",
+      "relationship_id": "rel_ea6811e69b2cc847",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_45111b641c1d65e3",
+      "from": "ent_6546e0baed6cf884",
+      "to": "evt_14e55476d4b8400f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-06-24",
+      "document_id": "doc_be1adc7352c3335f",
+      "relationship_id": "rel_45111b641c1d65e3",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_b3892b3858a45285",
+      "from": "ent_f9ed47a0388f103f",
+      "to": "evt_14e55476d4b8400f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-06-24",
+      "document_id": "doc_be1adc7352c3335f",
+      "relationship_id": "rel_b3892b3858a45285",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_6a6b8c8e0f84a05e",
+      "from": "ent_d974099d3b0374d0",
+      "to": "evt_8ed286d9d124a167",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-29",
+      "document_id": "doc_3b882d82dd21c274",
+      "relationship_id": "rel_6a6b8c8e0f84a05e",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_8ae315768500a4e5",
+      "from": "ent_13df690f5d8d90bc",
+      "to": "ent_d974099d3b0374d0",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-29",
+      "document_id": "doc_3b882d82dd21c274",
+      "relationship_id": "rel_8ae315768500a4e5",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_58f39e768ed127ec",
+      "from": "per_8eda991fd1872db6",
+      "to": "ent_37059f32a6ba2ae0",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-03-21",
+      "document_id": "doc_9454ec4529f7a811",
+      "relationship_id": "rel_58f39e768ed127ec",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_a4182536d2aa13f6",
+      "from": "per_8eda991fd1872db6",
+      "to": "ent_f9ed47a0388f103f",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-12-24",
+      "document_id": "doc_11de3f8868e37c51",
+      "relationship_id": "rel_a4182536d2aa13f6",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_0c5b8af8d08d505c",
+      "from": "per_8eda991fd1872db6",
+      "to": "ent_d974099d3b0374d0",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-29",
+      "document_id": "doc_3b882d82dd21c274",
+      "relationship_id": "rel_0c5b8af8d08d505c",
+      "confidence": 0.85
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_87879f854b4f41bc",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/0bf01aa4-2944-4a9f-a961-3bbdfeb7d000_Press%20release%20-%20Amtek%20SPC-11.8.2025%203.pdf",
+      "title": "ED, Gurugram has filed a Supplementary Prosecution Complaint on 01.08.2025 before the Special PMLA Court, at Rouse Avenue, New Delhi in connection with the Bank Fraud case involving M/s Amtek Auto Limited, M/s ARGL Limit",
+      "date": "2025-08-11",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_ffafbc5c8ae9c16b",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/0af7d176-ea01-47d6-b922-f20e552a268b_Press%20release%20120725%203rd%20PAO%20Amtek(Final)%201.pdf",
+      "title": "ED, Gurugram Zonal Office has provisionally attached movable and immovable assets worth Rs. 588.57 Crore on 10/07/2025, under the PMLA, 2002, in connection with the Bank Fraud case involving M/s Amtek Auto Limited, M/s A",
+      "date": "2025-07-12",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_20da2cdac7bf6418",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/be649705-f922-46c8-bea2-4a7127017409_Press%20Release%20Arrest%20-%20Arvind%20Dham-1172024%204.pdf",
+      "title": "ED, Gurugram has arrested Arvind Dham, Promoter of Amtek Group of Companies on 09.07.2024 under the provisions of PMLA, 2002 in the case of M/s ACIL Limited and others, in connection with a Bank fraud case of more than R",
+      "date": "2024-07-11",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_be1adc7352c3335f",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/f41edd55-9b68-4d62-8879-b0910263c6ae_Press%20Release%20-Search-%20ACIL%20Ltd%20and%20Ors%20-2462024%201.pdf",
+      "title": "ED, Gurugram has conducted search operations on 20.06.2024 at approx 40 locations in Delhi NCR, Gurugram, Mumbai and Nagpur under the provisions of PMLA, 2002 in the case of M/s ACIL Limited, M/s Amtek Auto Limited, Arvi",
+      "date": "2024-06-24",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_9454ec4529f7a811",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ARGL Ltd.",
+      "date": "2018-03-21",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_11de3f8868e37c51",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Castex Technologies Limited",
+      "date": "2017-12-24",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_3b882d82dd21c274",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Amtek Auto Limited",
+      "date": "2017-07-29",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

@@ -37,6 +37,7 @@ const ReportsPage = named(() => import('./pages/ReportsPage.js'), 'ReportsPage')
 const AlertsPage = named(() => import('./pages/AlertsPage.js'), 'AlertsPage');
 const SettingsPage = named(() => import('./pages/SettingsPage.js'), 'SettingsPage');
 const HelpPage = named(() => import('./pages/HelpPage.js'), 'HelpPage');
+const GraphLabPage = named(() => import('./pages/GraphLabPage.js'), 'GraphLabPage');
 const NotFoundPage = named(() => import('./pages/NotFoundPage.js'), 'NotFoundPage');
 
 export function App(): React.JSX.Element {
@@ -62,6 +63,7 @@ export function App(): React.JSX.Element {
             <Route path="/alerts" element={<AlertsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/help" element={<HelpPage />} />
+            <Route path="/graph-lab" element={<GraphLabPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

@@ -1,0 +1,530 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Videocon group (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 13,
+      "edges": 13,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 6,
+      "node:bank": 1,
+      "node:person": 2,
+      "node:address": 2,
+      "node:event": 2,
+      "edge:insolvency_applicant_against": 3,
+      "basis:established": 13,
+      "strength:weak": 8,
+      "edge:named_in": 2,
+      "strength:strong": 5,
+      "edge:insolvency_professional_for": 6,
+      "edge:registered_at": 2,
+      "hub_nodes": 1
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_364f00c3b5f4475a",
+      "kind": "company",
+      "label": "McNally Bharat Engineering Company Ltd",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 6,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 10,
+      "id": "ent_284ed7d46f99fcd0",
+      "kind": "company",
+      "label": "Jaypee Infratech Ltd",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 470,
+      "id": "ent_1edba887a60c30a3",
+      "kind": "bank",
+      "label": "State Bank of India",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_U72900MH2007PLC204763",
+      "kind": "company",
+      "label": "Videocon Telecommunications Ltd.",
+      "detail": "U72900MH2007PLC204763 · Under CIRP",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "videocon"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_L99999MH1986PLC103624",
+      "kind": "company",
+      "label": "Videocon Industries Ltd.",
+      "detail": "L99999MH1986PLC103624 · Under CIRP",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_e60606032a30eded",
+      "kind": "company",
+      "label": "Cape Infrastructure Private Limited",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "videocon"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_U40108MH2008PTC189142",
+      "kind": "company",
+      "label": "Nupower Renewables Private Limited",
+      "detail": "U40108MH2008PTC189142 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "per_f5f48142840cbd2b",
+      "kind": "person",
+      "label": "ANUJ JAIN",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "per_acd480b9de70a761",
+      "kind": "person",
+      "label": "USHA BALASUBRAMANIAN",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_3da61c6e9f865e21",
+      "kind": "address",
+      "label": "14. K.M STONE, AURANGABAD PAITHAN ROAD   VILLAGE CHITTEGAON, TALUKA PAITHAN,AURANGABAD,Maharashtra,431105-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_57ee42c64282f1e3",
+      "kind": "address",
+      "label": "618, Maker Chambers V   Nariman Point,Mumbai,Mumbai City,Maharashtra,400021-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": "2018-06-09",
+      "document_id": "doc_f8ff896eeb61a9b2",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_998404a7ae7eb72a",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Videocon Industries Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2017-08-03",
+      "document_id": "doc_a99a9c6d76c8aa0e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_a2de9daa5f2648ca",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Cape Infrastructure Private Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_7c46b8157ed85196",
+      "from": "ent_1edba887a60c30a3",
+      "to": "ent_U72900MH2007PLC204763",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-06-13",
+      "document_id": "doc_be74e8bd731644fa",
+      "relationship_id": "rel_7c46b8157ed85196",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_54460db5a2cc2b2d",
+      "from": "ent_L99999MH1986PLC103624",
+      "to": "evt_998404a7ae7eb72a",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-06-09",
+      "document_id": "doc_f8ff896eeb61a9b2",
+      "relationship_id": "rel_54460db5a2cc2b2d",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_177b3729359b1175",
+      "from": "ent_1edba887a60c30a3",
+      "to": "ent_L99999MH1986PLC103624",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-06-09",
+      "document_id": "doc_f8ff896eeb61a9b2",
+      "relationship_id": "rel_177b3729359b1175",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_7fe798c8671ea1b7",
+      "from": "ent_e60606032a30eded",
+      "to": "evt_a2de9daa5f2648ca",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-08-03",
+      "document_id": "doc_a99a9c6d76c8aa0e",
+      "relationship_id": "rel_7fe798c8671ea1b7",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_0cfccb9f658a8726",
+      "from": "ent_U40108MH2008PTC189142",
+      "to": "ent_e60606032a30eded",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-08-03",
+      "document_id": "doc_a99a9c6d76c8aa0e",
+      "relationship_id": "rel_0cfccb9f658a8726",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_743fd0e75ba68544",
+      "from": "per_f5f48142840cbd2b",
+      "to": "ent_364f00c3b5f4475a",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-05-05",
+      "document_id": "doc_28031f87c4f8d060",
+      "relationship_id": "rel_743fd0e75ba68544",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_7a583e750ecf7b84",
+      "from": "per_f5f48142840cbd2b",
+      "to": "ent_284ed7d46f99fcd0",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-08-17",
+      "document_id": "doc_47b05c2bae574282",
+      "relationship_id": "rel_7a583e750ecf7b84",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_66f406e37176cc4f",
+      "from": "per_f5f48142840cbd2b",
+      "to": "ent_U72900MH2007PLC204763",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-06-13",
+      "document_id": "doc_be74e8bd731644fa",
+      "relationship_id": "rel_66f406e37176cc4f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_067132c48c4e146c",
+      "from": "per_f5f48142840cbd2b",
+      "to": "ent_L99999MH1986PLC103624",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-06-09",
+      "document_id": "doc_f8ff896eeb61a9b2",
+      "relationship_id": "rel_067132c48c4e146c",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_c85c27be3d666005",
+      "from": "per_f5f48142840cbd2b",
+      "to": "ent_284ed7d46f99fcd0",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-08-10",
+      "document_id": "doc_af4fb1f41b655f26",
+      "relationship_id": "rel_c85c27be3d666005",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_10ccd5a9907e0e28",
+      "from": "per_acd480b9de70a761",
+      "to": "ent_e60606032a30eded",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-08-03",
+      "document_id": "doc_a99a9c6d76c8aa0e",
+      "relationship_id": "rel_10ccd5a9907e0e28",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_2c109cad4d787915",
+      "from": "ent_L99999MH1986PLC103624",
+      "to": "adr_3da61c6e9f865e21",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_2c109cad4d787915",
+      "confidence": 0.8
+    },
+    {
+      "id": "edg_rel_fca0dc94e31a2ad3",
+      "from": "ent_U40108MH2008PTC189142",
+      "to": "adr_57ee42c64282f1e3",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_fca0dc94e31a2ad3",
+      "confidence": 0.8
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_28031f87c4f8d060",
+      "url": "https://ibbi.gov.in//uploads/announcement/b5c857a0c1a5c764ea95731b64dfd143.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: McNally Bharat Engineering Company Limited",
+      "date": "2022-05-05",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_47b05c2bae574282",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Jaypee Infratech Ltd.",
+      "date": "2018-08-17",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_be74e8bd731644fa",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Videocon Telecommunications Ltd.",
+      "date": "2018-06-13",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_f8ff896eeb61a9b2",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Videocon Industries Ltd.",
+      "date": "2018-06-09",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_af4fb1f41b655f26",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Jaypee Infratech Ltd",
+      "date": "2017-08-10",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_a99a9c6d76c8aa0e",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Cape Infrastructure Private Limited",
+      "date": "2017-08-03",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_mca_company_master",
+      "url": "https://www.data.gov.in/resource/registrars-companies-roc-wise-company-master-data",
+      "title": "MCA RoC-wise company master data (company_master.part1of5.csv, company_master.part2of5.csv, company_master.part3of5.csv, company_master.part4of5.csv, company_master.part5of5.csv)",
+      "date": null,
+      "source_id": "mca_ogd"
+    }
+  ],
+  "networks": [
+    {
+      "id": "net_dc8d88a6ba5f87d4",
+      "node_ids": [
+        "ent_e60606032a30eded",
+        "ent_U40108MH2008PTC189142",
+        "adr_57ee42c64282f1e3",
+        "evt_a2de9daa5f2648ca"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 1,
+      "sources": [
+        "ibbi",
+        "mca_ogd"
+      ],
+      "seed_cases": [
+        "videocon"
+      ],
+      "score": 6,
+      "summary": "2 organisations connected by established records (1 named in, 1 insolvency applicant against, 1 registered at). A connection is not evidence of wrongdoing."
+    }
+  ],
+  "identity": []
+}

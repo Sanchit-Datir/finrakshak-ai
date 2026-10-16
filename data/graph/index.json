@@ -1,0 +1,132 @@
+[
+  {
+    "file": "graph-lab.json.gz",
+    "label": "Public-source graph (real data)",
+    "synthetic": false
+  },
+  {
+    "file": "test-scenarios/synthetic-scenarios.json",
+    "label": "SYNTHETIC test scenarios",
+    "synthetic": true
+  },
+  {
+    "file": "test-data/seed-dhfl.json",
+    "label": "Seed case: Dewan Housing Finance Corporation (DHFL) (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-ilfs.json",
+    "label": "Seed case: IL&FS group (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-coffee_day.json",
+    "label": "Seed case: Coffee Day Enterprises (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-reliance_adag_finance.json",
+    "label": "Seed case: Reliance Home Finance / Reliance Commercial Finance / Reliance Capital (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-religare.json",
+    "label": "Seed case: Religare Finvest / Religare Enterprises (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-abg_shipyard.json",
+    "label": "Seed case: ABG Shipyard (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-pnb_lou_firestar.json",
+    "label": "Seed case: PNB letters-of-undertaking matter (Firestar group) (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-gitanjali.json",
+    "label": "Seed case: Gitanjali Gems (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-kingfisher.json",
+    "label": "Seed case: Kingfisher Airlines (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-bhushan_power.json",
+    "label": "Seed case: Bhushan Power and Steel (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-bhushan_steel.json",
+    "label": "Seed case: Bhushan Steel (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-videocon.json",
+    "label": "Seed case: Videocon group (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-sterling_biotech.json",
+    "label": "Seed case: Sterling Biotech (Sandesara group) (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-karvy.json",
+    "label": "Seed case: Karvy Stock Broking (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-srei.json",
+    "label": "Seed case: Srei Infrastructure Finance / Srei Equipment Finance (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-brightcom.json",
+    "label": "Seed case: Brightcom Group (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-zee.json",
+    "label": "Seed case: Zee Entertainment Enterprises (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-gensol.json",
+    "label": "Seed case: Gensol Engineering (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-amtek.json",
+    "label": "Seed case: Amtek Auto (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-rotomac.json",
+    "label": "Seed case: Rotomac Global (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-cox_kings.json",
+    "label": "Seed case: Cox & Kings (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-winsome.json",
+    "label": "Seed case: Winsome Diamonds (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/seed-adarsh.json",
+    "label": "Seed case: Adarsh group (2 hops)",
+    "synthetic": false
+  },
+  {
+    "file": "test-data/top-networks.json",
+    "label": "Top 10 networks",
+    "synthetic": false
+  }
+]

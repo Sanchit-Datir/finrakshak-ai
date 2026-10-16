@@ -32,6 +32,7 @@ export const SOURCE_LABEL: Record<UnifiedAlert['source'], string> = {
 
 const ACTIVE_APP = new Set(['documents_needed', 'processing', 'needs_review', 'ready_for_decision']);
 const ALERTABLE: ReadonlySet<Finding['category']> = new Set([
+  'counterparty_exposure',
   'document_inconsistency',
   'duplicate_identifier',
   'entity_relationship',

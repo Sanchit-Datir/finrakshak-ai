@@ -185,6 +185,7 @@ export const SECTION_LABEL: Record<ApplicationSection, string> = {
   business: 'Business details',
   guarantor: 'Guarantor / co-borrower',
   declaration: 'Declaration and loan purpose',
+  receivables: 'Trade receivables (largest customers)',
 };
 
 export const DISCLAIMERS = [

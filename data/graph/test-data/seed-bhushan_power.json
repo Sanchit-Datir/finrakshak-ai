@@ -1,0 +1,549 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Bhushan Power and Steel (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 14,
+      "edges": 13,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 5,
+      "node:bank": 1,
+      "node:other_org": 1,
+      "node:person": 3,
+      "node:event": 4,
+      "edge:named_in": 4,
+      "basis:established": 10,
+      "strength:strong": 6,
+      "edge:mentioned_in": 2,
+      "basis:candidate": 3,
+      "strength:weak": 7,
+      "edge:insolvency_applicant_against": 3,
+      "edge:insolvency_professional_for": 3,
+      "edge:possible_same_entity": 1,
+      "hub_nodes": 4
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_065ff9357db21bf7",
+      "kind": "company",
+      "label": "Bhushan Airways Services Private Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "bhushan_power"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_e230d20317aadd7c",
+      "kind": "company",
+      "label": "Sanjay Singal Ex- Managing Director of Bhushan Power & Steel Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "bhushan_power"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_0ea28b56b089a518",
+      "kind": "company",
+      "label": "Bhushan Power and Steel Limited",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 229,
+      "id": "ent_62757ead35367cfa",
+      "kind": "bank",
+      "label": "Punjab National Bank",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_0f3f35a2d5a8e425",
+      "kind": "company",
+      "label": "ATMA RAM HOUSE INVESTMENT PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_358499998a7877a6",
+      "kind": "company",
+      "label": "Karan Automotives Private Limited",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "bhushan_power"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_89ba7c77fece92dd",
+      "kind": "other_org",
+      "label": "Bhushan Power & Steel",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 25,
+      "id": "per_a7e9e7bc735ca76f",
+      "kind": "person",
+      "label": "SANTANU T RAY",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 9,
+      "id": "per_bd239370bb1a8e5e",
+      "kind": "person",
+      "label": "SHAILESH DAYAL",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 8,
+      "id": "per_d1c56d5fbb8b27b2",
+      "kind": "person",
+      "label": "MAHENDER KUMAR KHANDELWAL",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2022-06-09",
+      "document_id": "doc_5d02ae4a18d7737f",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "evt_fa3f36400aa59ea2",
+      "kind": "event",
+      "label": "ED has provisionally attached a Cessna 525 A CJ 2+ Aircraft valued at Rs. 30.91 Crore belonging to M/s. Bhushan Airways Services Private Limited under PMLA, 2002 in a cheating and bank fraud case. Total provisional attac",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-11-15",
+      "document_id": "doc_b98e547070c96454",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_d5fe3e3a768c723c",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ATMA RAM HOUSE INVESTMENT PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2023-08-02",
+      "document_id": "doc_85432fd10a97d053",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_ee2da5d97e8f7fcc",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Karan Automotives Private Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2017-07-28",
+      "document_id": "doc_131a145d2f49ecce",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_6d29ee033c7196a5",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Bhushan Power & Steel",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_baed242c855cdc88",
+      "from": "ent_065ff9357db21bf7",
+      "to": "evt_fa3f36400aa59ea2",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2022-06-09",
+      "document_id": "doc_5d02ae4a18d7737f",
+      "relationship_id": "rel_baed242c855cdc88",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_57dc7b3fdfbd5fd8",
+      "from": "ent_e230d20317aadd7c",
+      "to": "evt_fa3f36400aa59ea2",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2022-06-09",
+      "document_id": "doc_5d02ae4a18d7737f",
+      "relationship_id": "rel_57dc7b3fdfbd5fd8",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_a12f4acf8451373e",
+      "from": "ent_0ea28b56b089a518",
+      "to": "evt_fa3f36400aa59ea2",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2022-06-09",
+      "document_id": "doc_5d02ae4a18d7737f",
+      "relationship_id": "rel_a12f4acf8451373e",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_8838d8ccfed0f259",
+      "from": "ent_0f3f35a2d5a8e425",
+      "to": "evt_d5fe3e3a768c723c",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-15",
+      "document_id": "doc_b98e547070c96454",
+      "relationship_id": "rel_8838d8ccfed0f259",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_462db77984c82330",
+      "from": "ent_0ea28b56b089a518",
+      "to": "ent_0f3f35a2d5a8e425",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-15",
+      "document_id": "doc_b98e547070c96454",
+      "relationship_id": "rel_462db77984c82330",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_9ab838f9c862e4e9",
+      "from": "ent_358499998a7877a6",
+      "to": "evt_ee2da5d97e8f7fcc",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-08-02",
+      "document_id": "doc_85432fd10a97d053",
+      "relationship_id": "rel_9ab838f9c862e4e9",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_9aef3dbbc0a27388",
+      "from": "ent_0ea28b56b089a518",
+      "to": "ent_358499998a7877a6",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-08-02",
+      "document_id": "doc_85432fd10a97d053",
+      "relationship_id": "rel_9aef3dbbc0a27388",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_2d27016d99fdd0b3",
+      "from": "ent_89ba7c77fece92dd",
+      "to": "evt_6d29ee033c7196a5",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-28",
+      "document_id": "doc_131a145d2f49ecce",
+      "relationship_id": "rel_2d27016d99fdd0b3",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_15a623c182c0f727",
+      "from": "ent_62757ead35367cfa",
+      "to": "ent_89ba7c77fece92dd",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-28",
+      "document_id": "doc_131a145d2f49ecce",
+      "relationship_id": "rel_15a623c182c0f727",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_33542e5f05c8b79e",
+      "from": "per_a7e9e7bc735ca76f",
+      "to": "ent_0f3f35a2d5a8e425",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-15",
+      "document_id": "doc_b98e547070c96454",
+      "relationship_id": "rel_33542e5f05c8b79e",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_7ec73e3bf49005f1",
+      "from": "per_bd239370bb1a8e5e",
+      "to": "ent_358499998a7877a6",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-08-02",
+      "document_id": "doc_85432fd10a97d053",
+      "relationship_id": "rel_7ec73e3bf49005f1",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_1b024da622170bfd",
+      "from": "per_d1c56d5fbb8b27b2",
+      "to": "ent_89ba7c77fece92dd",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-28",
+      "document_id": "doc_131a145d2f49ecce",
+      "relationship_id": "rel_1b024da622170bfd",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_60e23116ebb4c245",
+      "from": "ent_0ea28b56b089a518",
+      "to": "ent_89ba7c77fece92dd",
+      "type": "possible_same_entity",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "graph_lab",
+      "date": null,
+      "document_id": null,
+      "relationship_id": null,
+      "confidence": 0.6
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_5d02ae4a18d7737f",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/ba25586f-88a5-45a4-b80b-86e05504eed6_P%20R%2009062022%20BASPL.pdf",
+      "title": "ED has provisionally attached a Cessna 525 A CJ 2+ Aircraft valued at Rs. 30.91 Crore belonging to M/s. Bhushan Airways Services Private Limited under PMLA, 2002 in a cheating and bank fraud case. Total provisional attac",
+      "date": "2022-06-09",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_b98e547070c96454",
+      "url": "https://ibbi.gov.in//uploads/announcement/77a8b243bfd19b0263d5955038436521.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ATMA RAM HOUSE INVESTMENT PRIVATE LIMITED",
+      "date": "2025-11-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_85432fd10a97d053",
+      "url": "https://ibbi.gov.in//uploads/announcement/ae08ffecb2920af0eee6010764a8d6e4.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Karan Automotives Private Limited",
+      "date": "2023-08-02",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_131a145d2f49ecce",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Bhushan Power & Steel",
+      "date": "2017-07-28",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [
+    {
+      "id": "net_f7ecf8556c4f2254",
+      "node_ids": [
+        "ent_0ea28b56b089a518",
+        "ent_358499998a7877a6",
+        "evt_ee2da5d97e8f7fcc",
+        "ent_0f3f35a2d5a8e425",
+        "evt_d5fe3e3a768c723c"
+      ],
+      "organisation_count": 3,
+      "adverse_organisation_count": 2,
+      "sources": [
+        "ed",
+        "ibbi"
+      ],
+      "seed_cases": [
+        "bhushan_power"
+      ],
+      "score": 7,
+      "summary": "3 organisations connected by established records (2 named in, 2 insolvency applicant against). A connection is not evidence of wrongdoing."
+    }
+  ],
+  "identity": [
+    {
+      "id": "idc_3fbba9f40235cf63",
+      "a": "ent_0ea28b56b089a518",
+      "b": "ent_89ba7c77fece92dd",
+      "name_a": "BHUSHAN POWER AND STEEL LIMITED",
+      "name_b": "BHUSHAN POWER AND STEEL",
+      "similarity": 1,
+      "reasons": [
+        "similar_name"
+      ],
+      "status": "needs_review"
+    }
+  ]
+}

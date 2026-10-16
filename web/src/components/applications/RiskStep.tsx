@@ -11,6 +11,7 @@ import { Card, CardHeader } from '../ui/Card.js';
 import { Notice } from '../ui/States.js';
 import { PriorityBadge } from '../ui/StatusBadges.js';
 import { FindingsTable } from './Findings.js';
+import { PublicRecordsCheck } from './PublicRecordsCheck.js';
 
 export function RiskStep({
   app,
@@ -91,6 +92,8 @@ export function RiskStep({
           </div>
         </Card>
       </div>
+
+      <PublicRecordsCheck app={app} actor={actor} />
 
       {ran && (
         <>

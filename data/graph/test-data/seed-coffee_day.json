@@ -1,0 +1,1221 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Coffee Day Enterprises (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 31,
+      "edges": 33,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 11,
+      "node:audit_firm": 4,
+      "node:bank": 1,
+      "node:person": 3,
+      "node:address": 1,
+      "node:event": 11,
+      "edge:named_in": 17,
+      "basis:established": 33,
+      "strength:strong": 26,
+      "edge:auditor_of": 6,
+      "edge:insolvency_applicant_against": 3,
+      "strength:weak": 7,
+      "edge:insolvency_professional_for": 6,
+      "edge:registered_at": 1,
+      "hub_nodes": 2
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 3,
+      "seed_cases": [
+        "coffee_day"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_95b0417c687b1c53",
+      "kind": "company",
+      "label": "Coffee Day Enterprises Limited",
+      "detail": null,
+      "sources": [
+        "nfra",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "coffee_day"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_4fafeae4ce9e048c",
+      "kind": "company",
+      "label": "Mysore Amalgamated Coffee Estates Limited",
+      "detail": null,
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 3,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_AAB-8182",
+      "kind": "audit_firm",
+      "label": "BSR & Associates LLP",
+      "detail": "AAB-8182 · Active",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_4ed2e00b0396cb92",
+      "kind": "audit_firm",
+      "label": "BSR & Associates",
+      "detail": null,
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "coffee_day"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_92a6da5f81a250a6",
+      "kind": "company",
+      "label": "Tanglin Developments Ltd",
+      "detail": null,
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_f0e30483fcff1c7b",
+      "kind": "audit_firm",
+      "label": "Sundaresha & Associates",
+      "detail": null,
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "coffee_day"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "ent_5514f2668b2f8cd7",
+      "kind": "company",
+      "label": "Coffee Day Global Limited",
+      "detail": null,
+      "sources": [
+        "nfra",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_a5b2f742b71f60e2",
+      "kind": "audit_firm",
+      "label": "ASRMP & Co.",
+      "detail": null,
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 4,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 8,
+      "id": "ent_e641146c7f01a521",
+      "kind": "company",
+      "label": "FS Financial Services Ltd",
+      "detail": null,
+      "sources": [
+        "nfra",
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 23,
+      "id": "ent_U65991MH2001GOI131154",
+      "kind": "company",
+      "label": "IDBI Trusteeship Services Limited",
+      "detail": "U65991MH2001GOI131154 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_L99999MH1992PLC066213",
+      "kind": "company",
+      "label": "Jet Airways (India) Limited",
+      "detail": "L99999MH1992PLC066213 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_fcdc58b4aae89d8f",
+      "kind": "bank",
+      "label": "INDUS IND BANK LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "coffee_day"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_c60a2052cd080b2c",
+      "kind": "company",
+      "label": "SICAL LOGISTICS LIMITED.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_24a99df11b301744",
+      "kind": "company",
+      "label": "MOL TOYOFUJI Automotive Logistics (India) Private Limited",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_fc5d43f7b00a50d6",
+      "kind": "company",
+      "label": "Essar Power M P Limited",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_d296f5f6d574e1ab",
+      "kind": "company",
+      "label": "Odisha Slurry Pipeline Infrastructure Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "per_d3eb3209bd106aa3",
+      "kind": "person",
+      "label": "ASHISH CHHAWCHHARIA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 7,
+      "id": "per_a63208b037199638",
+      "kind": "person",
+      "label": "SHAILENDRA AJMERA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "per_659784ed4602995c",
+      "kind": "person",
+      "label": "S LAKSHMISUBRAMANIAN",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "adr_c54f4666e3627441",
+      "kind": "address",
+      "label": "14 Floor, Central B Wing & North C Wing, Nesco IT   Park 4, Nesco Center, Western Express Hi,ghway, Gor,Mumbai,Mumbai City,Maharashtra,India-400063",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": "2024-10-10",
+      "document_id": "doc_841d3729d5cc868e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_5fa2ad026296a521",
+      "kind": "event",
+      "label": "Order in the matter of Coffee Day Enterprises Limited for FY 2019-20 against M/s Venkatesh & Co. and CA Dasaraty & CA Desikan G.",
+      "detail": "National Financial Reporting Authority · final order · nfra_disciplinary_order",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2024-09-09",
+      "document_id": "doc_d1e4d8a08cbd45d5",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_8bba3bedfff19c99",
+      "kind": "event",
+      "label": "Order in the matter of Mysore Amalgamated Coffee Estates Limited (MACEL) against M/s Lavitha & Associates Statutory Auditor and Engagement Partner (EP)",
+      "detail": "National Financial Reporting Authority · final order · nfra_disciplinary_order",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2024-08-19",
+      "document_id": "doc_27fa21b05d44aace",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "evt_cb8e0b0c020cdef8",
+      "kind": "event",
+      "label": "Order in the matter of Coffee Day Enterprises Ltd (CDEL) for the FY 2018-19 against M/s BSR & Associates LLP, CA Aravind Maiya and CA Amit Somani",
+      "detail": "National Financial Reporting Authority · final order · nfra_disciplinary_order",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2023-08-18",
+      "document_id": "doc_aada6b8fb00a924b",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_4bb0781ce0a87328",
+      "kind": "event",
+      "label": "Order in the matter of Tanglin Developments Ltd against M/s Sundaresha & Associates, CA C. Ramesh, and CA Chaitanya G. Deshpande for FY 2019-20",
+      "detail": "National Financial Reporting Authority · final order · nfra_disciplinary_order",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2023-04-26",
+      "document_id": "doc_9974c4d919b89487",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_990167fe8524177c",
+      "kind": "event",
+      "label": "Order in the matter of TDL against M/s Sundaresha & Associates and CA C. Ramesh for FY 2018-19",
+      "detail": "National Financial Reporting Authority · final order · nfra_disciplinary_order",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2023-04-12",
+      "document_id": "doc_0e3b1acfc9b19b8e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_6ad703156e3af699",
+      "kind": "event",
+      "label": "Order in the matter of Coffee Day Global Limited against M/s ASRMP & Co., CA A. S. Sundaresha, CA Madhusudan U A, and CA Pranaav G. Ambekar, under Section 132(4) of the Companies Act 2013",
+      "detail": "National Financial Reporting Authority · final order · nfra_disciplinary_order",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2020-08-24",
+      "document_id": "doc_6eff9a591aa4e818",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_e49cd368e92f5ec7",
+      "kind": "event",
+      "label": "Corrigendum with corrected Audit Quality Review (AQR) Report in respect of audit done by BSR & Associates LLP (Firm Reg No 116231W(slash)W-100024) of IL&FS Financial Services Ltd (IFIN) for FY 2017-18.",
+      "detail": "National Financial Reporting Authority · review report · nfra_audit_quality_review",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2020-08-17",
+      "document_id": "doc_bf0a3150d55d38f8",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_2aad4ad7081ba03e",
+      "kind": "event",
+      "label": "Audit Quality Review (AQR) Report in respect of audit done by BSR & Associates LLP (Firm Reg No 116231W(slash)W-100024) of IL&FS Financial Services Ltd (IFIN) for FY 2017-18.",
+      "detail": "National Financial Reporting Authority · review report · nfra_audit_quality_review",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2024-08-10",
+      "document_id": "doc_03756a6ec756d918",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_2070e0f1bb096e54",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Coffee Day Enterprises Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2023-07-28",
+      "document_id": "doc_02ac24c0126125d2",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_96a50de512ce5955",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Coffee Day Global Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2021-03-11",
+      "document_id": "doc_56c7aac7073e3a85",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_43696844417406f6",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: SICAL LOGISTICS LIMITED.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_166763c9a5c34630",
+      "from": "ent_95b0417c687b1c53",
+      "to": "evt_5fa2ad026296a521",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2024-10-10",
+      "document_id": "doc_841d3729d5cc868e",
+      "relationship_id": "rel_166763c9a5c34630",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_0784571e26a1cd67",
+      "from": "ent_4fafeae4ce9e048c",
+      "to": "evt_8bba3bedfff19c99",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2024-09-09",
+      "document_id": "doc_d1e4d8a08cbd45d5",
+      "relationship_id": "rel_0784571e26a1cd67",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_8bc57817c937e785",
+      "from": "ent_95b0417c687b1c53",
+      "to": "evt_cb8e0b0c020cdef8",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2024-08-19",
+      "document_id": "doc_27fa21b05d44aace",
+      "relationship_id": "rel_8bc57817c937e785",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_9f4152c11518f499",
+      "from": "ent_AAB-8182",
+      "to": "evt_cb8e0b0c020cdef8",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2024-08-19",
+      "document_id": "doc_27fa21b05d44aace",
+      "relationship_id": "rel_9f4152c11518f499",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_a7cb8857ab06a026",
+      "from": "ent_AAB-8182",
+      "to": "ent_95b0417c687b1c53",
+      "type": "auditor_of",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2024-08-19",
+      "document_id": "doc_27fa21b05d44aace",
+      "relationship_id": "rel_a7cb8857ab06a026",
+      "confidence": 0.6
+    },
+    {
+      "id": "edg_rel_6612cbec36d5a4e3",
+      "from": "ent_4ed2e00b0396cb92",
+      "to": "evt_cb8e0b0c020cdef8",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2024-08-19",
+      "document_id": "doc_27fa21b05d44aace",
+      "relationship_id": "rel_6612cbec36d5a4e3",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_8ff6dc2d864b462d",
+      "from": "ent_4ed2e00b0396cb92",
+      "to": "ent_95b0417c687b1c53",
+      "type": "auditor_of",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2024-08-19",
+      "document_id": "doc_27fa21b05d44aace",
+      "relationship_id": "rel_8ff6dc2d864b462d",
+      "confidence": 0.6
+    },
+    {
+      "id": "edg_rel_ccc4aa41e01a1e9a",
+      "from": "ent_92a6da5f81a250a6",
+      "to": "evt_4bb0781ce0a87328",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2023-08-18",
+      "document_id": "doc_aada6b8fb00a924b",
+      "relationship_id": "rel_ccc4aa41e01a1e9a",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_e60c385f468809f7",
+      "from": "ent_f0e30483fcff1c7b",
+      "to": "evt_4bb0781ce0a87328",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2023-08-18",
+      "document_id": "doc_aada6b8fb00a924b",
+      "relationship_id": "rel_e60c385f468809f7",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_3331cdf21870da24",
+      "from": "ent_f0e30483fcff1c7b",
+      "to": "ent_92a6da5f81a250a6",
+      "type": "auditor_of",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2023-08-18",
+      "document_id": "doc_aada6b8fb00a924b",
+      "relationship_id": "rel_3331cdf21870da24",
+      "confidence": 0.6
+    },
+    {
+      "id": "edg_rel_61d93e199937277b",
+      "from": "ent_f0e30483fcff1c7b",
+      "to": "evt_990167fe8524177c",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2023-04-26",
+      "document_id": "doc_9974c4d919b89487",
+      "relationship_id": "rel_61d93e199937277b",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_672d8155a5669e23",
+      "from": "ent_5514f2668b2f8cd7",
+      "to": "evt_6ad703156e3af699",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2023-04-12",
+      "document_id": "doc_0e3b1acfc9b19b8e",
+      "relationship_id": "rel_672d8155a5669e23",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_f89b789251524af0",
+      "from": "ent_a5b2f742b71f60e2",
+      "to": "evt_6ad703156e3af699",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2023-04-12",
+      "document_id": "doc_0e3b1acfc9b19b8e",
+      "relationship_id": "rel_f89b789251524af0",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_0f40b05e0cd4ba09",
+      "from": "ent_a5b2f742b71f60e2",
+      "to": "ent_5514f2668b2f8cd7",
+      "type": "auditor_of",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2023-04-12",
+      "document_id": "doc_0e3b1acfc9b19b8e",
+      "relationship_id": "rel_0f40b05e0cd4ba09",
+      "confidence": 0.6
+    },
+    {
+      "id": "edg_rel_b1ca540d9023613a",
+      "from": "ent_AAB-8182",
+      "to": "evt_e49cd368e92f5ec7",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2020-08-24",
+      "document_id": "doc_6eff9a591aa4e818",
+      "relationship_id": "rel_b1ca540d9023613a",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_9b629438f2d06686",
+      "from": "ent_AAB-8182",
+      "to": "ent_e641146c7f01a521",
+      "type": "auditor_of",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2020-08-24",
+      "document_id": "doc_6eff9a591aa4e818",
+      "relationship_id": "rel_9b629438f2d06686",
+      "confidence": 0.6
+    },
+    {
+      "id": "edg_rel_138a169d43960e30",
+      "from": "ent_e641146c7f01a521",
+      "to": "evt_e49cd368e92f5ec7",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2020-08-24",
+      "document_id": "doc_6eff9a591aa4e818",
+      "relationship_id": "rel_138a169d43960e30",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_785ad97597e5da16",
+      "from": "ent_AAB-8182",
+      "to": "evt_2aad4ad7081ba03e",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2020-08-17",
+      "document_id": "doc_bf0a3150d55d38f8",
+      "relationship_id": "rel_785ad97597e5da16",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_ffafc4bbf4ad064f",
+      "from": "ent_AAB-8182",
+      "to": "ent_e641146c7f01a521",
+      "type": "auditor_of",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2020-08-17",
+      "document_id": "doc_bf0a3150d55d38f8",
+      "relationship_id": "rel_ffafc4bbf4ad064f",
+      "confidence": 0.6
+    },
+    {
+      "id": "edg_rel_39c0d8587ad74dbf",
+      "from": "ent_e641146c7f01a521",
+      "to": "evt_2aad4ad7081ba03e",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2020-08-17",
+      "document_id": "doc_bf0a3150d55d38f8",
+      "relationship_id": "rel_39c0d8587ad74dbf",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_fb1d7e9b7e2a3ee7",
+      "from": "ent_95b0417c687b1c53",
+      "to": "evt_2070e0f1bb096e54",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-08-10",
+      "document_id": "doc_03756a6ec756d918",
+      "relationship_id": "rel_fb1d7e9b7e2a3ee7",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_6c523ab38b3b6656",
+      "from": "ent_U65991MH2001GOI131154",
+      "to": "ent_95b0417c687b1c53",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-08-10",
+      "document_id": "doc_03756a6ec756d918",
+      "relationship_id": "rel_6c523ab38b3b6656",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_416e5e58c6cc9e60",
+      "from": "ent_5514f2668b2f8cd7",
+      "to": "evt_96a50de512ce5955",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-07-28",
+      "document_id": "doc_02ac24c0126125d2",
+      "relationship_id": "rel_416e5e58c6cc9e60",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_7e1cc4bc646a1d5c",
+      "from": "ent_fcdc58b4aae89d8f",
+      "to": "ent_5514f2668b2f8cd7",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-07-28",
+      "document_id": "doc_02ac24c0126125d2",
+      "relationship_id": "rel_7e1cc4bc646a1d5c",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_4b7a13ae48d49b2f",
+      "from": "ent_c60a2052cd080b2c",
+      "to": "evt_43696844417406f6",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-03-11",
+      "document_id": "doc_56c7aac7073e3a85",
+      "relationship_id": "rel_4b7a13ae48d49b2f",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_d79b06b357ab9291",
+      "from": "ent_24a99df11b301744",
+      "to": "ent_c60a2052cd080b2c",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-03-11",
+      "document_id": "doc_56c7aac7073e3a85",
+      "relationship_id": "rel_d79b06b357ab9291",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_c1e4df23daf3a1ef",
+      "from": "per_d3eb3209bd106aa3",
+      "to": "ent_95b0417c687b1c53",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-08-10",
+      "document_id": "doc_03756a6ec756d918",
+      "relationship_id": "rel_c1e4df23daf3a1ef",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_7ed7ba0745e7c7ae",
+      "from": "per_a63208b037199638",
+      "to": "ent_5514f2668b2f8cd7",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-07-28",
+      "document_id": "doc_02ac24c0126125d2",
+      "relationship_id": "rel_7ed7ba0745e7c7ae",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_8311030c19b52d3f",
+      "from": "per_659784ed4602995c",
+      "to": "ent_c60a2052cd080b2c",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-03-11",
+      "document_id": "doc_56c7aac7073e3a85",
+      "relationship_id": "rel_8311030c19b52d3f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_824eee1ea0c27108",
+      "from": "per_d3eb3209bd106aa3",
+      "to": "ent_fc5d43f7b00a50d6",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-10-10",
+      "document_id": "doc_39a4d8f22d453377",
+      "relationship_id": "rel_824eee1ea0c27108",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_087f44e488d0a1b7",
+      "from": "per_d3eb3209bd106aa3",
+      "to": "ent_L99999MH1992PLC066213",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-06-24",
+      "document_id": "doc_de27e0ab7a856275",
+      "relationship_id": "rel_087f44e488d0a1b7",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_809ecdca336e68ba",
+      "from": "per_d3eb3209bd106aa3",
+      "to": "ent_d296f5f6d574e1ab",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-05-18",
+      "document_id": "doc_677794cf9a1e3ce0",
+      "relationship_id": "rel_809ecdca336e68ba",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_010b766ec7433867",
+      "from": "ent_AAB-8182",
+      "to": "adr_c54f4666e3627441",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_010b766ec7433867",
+      "confidence": 0.8
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_841d3729d5cc868e",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/10/20241010657531408.pdf",
+      "title": "Order in the matter of Coffee Day Enterprises Limited for FY 2019-20 against M/s Venkatesh & Co. and CA Dasaraty & CA Desikan G.",
+      "date": "2024-10-10",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_d1e4d8a08cbd45d5",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/09/20240909677548557.pdf",
+      "title": "Order in the matter of Mysore Amalgamated Coffee Estates Limited (MACEL) against M/s Lavitha & Associates Statutory Auditor and Engagement Partner (EP)",
+      "date": "2024-09-09",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_27fa21b05d44aace",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/08/202408191036463933.pdf",
+      "title": "Order in the matter of Coffee Day Enterprises Ltd (CDEL) for the FY 2018-19 against M/s BSR & Associates LLP, CA Aravind Maiya and CA Amit Somani",
+      "date": "2024-08-19",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_aada6b8fb00a924b",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/08/202308212014234658.pdf",
+      "title": "Order in the matter of Tanglin Developments Ltd against M/s Sundaresha & Associates, CA C. Ramesh, and CA Chaitanya G. Deshpande for FY 2019-20",
+      "date": "2023-08-18",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_9974c4d919b89487",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023042611.pdf",
+      "title": "Order in the matter of TDL against M/s Sundaresha & Associates and CA C. Ramesh for FY 2018-19",
+      "date": "2023-04-26",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_0e3b1acfc9b19b8e",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023041290.pdf",
+      "title": "Order in the matter of Coffee Day Global Limited against M/s ASRMP & Co., CA A. S. Sundaresha, CA Madhusudan U A, and CA Pranaav G. Ambekar, under Section 132(4) of the Companies Act 2013",
+      "date": "2023-04-12",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_6eff9a591aa4e818",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010589.pdf",
+      "title": "Corrigendum with corrected Audit Quality Review (AQR) Report in respect of audit done by BSR & Associates LLP (Firm Reg No 116231W(slash)W-100024) of IL&FS Financial Services Ltd (IFIN) for FY 2017-18.",
+      "date": "2020-08-24",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_bf0a3150d55d38f8",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010522-1.pdf",
+      "title": "Audit Quality Review (AQR) Report in respect of audit done by BSR & Associates LLP (Firm Reg No 116231W(slash)W-100024) of IL&FS Financial Services Ltd (IFIN) for FY 2017-18.",
+      "date": "2020-08-17",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_03756a6ec756d918",
+      "url": "https://ibbi.gov.in//uploads/announcement/6eac373d5a284646a90977c094409bde.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Coffee Day Enterprises Limited",
+      "date": "2024-08-10",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_02ac24c0126125d2",
+      "url": "https://ibbi.gov.in//uploads/announcement/1806d33090dc773c32046b1a98e30614.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Coffee Day Global Limited",
+      "date": "2023-07-28",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_56c7aac7073e3a85",
+      "url": "https://ibbi.gov.in//uploads/announcement/2021-03-16-140534-d94jb-e97a34113528bee529770a12bcf3788d.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: SICAL LOGISTICS LIMITED.",
+      "date": "2021-03-11",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_39a4d8f22d453377",
+      "url": "https://ibbi.gov.in//uploads/announcement/402100f4f9d099380f12d1b97260bdc6.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Essar Power M P Limited",
+      "date": "2020-10-10",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_de27e0ab7a856275",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Jet Airways (India) Ltd.",
+      "date": "2019-06-24",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_677794cf9a1e3ce0",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Odisha Slurry Pipeline Infrastructure Ltd.",
+      "date": "2019-05-18",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_mca_company_master",
+      "url": "https://www.data.gov.in/resource/registrars-companies-roc-wise-company-master-data",
+      "title": "MCA RoC-wise company master data (company_master.part1of5.csv, company_master.part2of5.csv, company_master.part3of5.csv, company_master.part4of5.csv, company_master.part5of5.csv)",
+      "date": null,
+      "source_id": "mca_ogd"
+    }
+  ],
+  "networks": [
+    {
+      "id": "net_9c219c354146c0d1",
+      "node_ids": [
+        "ent_5514f2668b2f8cd7",
+        "ent_fcdc58b4aae89d8f",
+        "evt_96a50de512ce5955",
+        "ent_a5b2f742b71f60e2",
+        "evt_6ad703156e3af699"
+      ],
+      "organisation_count": 3,
+      "adverse_organisation_count": 2,
+      "sources": [
+        "ibbi",
+        "nfra"
+      ],
+      "seed_cases": [
+        "coffee_day"
+      ],
+      "score": 7,
+      "summary": "3 organisations connected by established records (3 named in, 1 auditor of, 1 insolvency applicant against). A connection is not evidence of wrongdoing."
+    },
+    {
+      "id": "net_7ed81220309e829a",
+      "node_ids": [
+        "ent_92a6da5f81a250a6",
+        "ent_f0e30483fcff1c7b",
+        "evt_990167fe8524177c",
+        "evt_4bb0781ce0a87328"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 2,
+      "sources": [
+        "nfra"
+      ],
+      "seed_cases": [
+        "coffee_day"
+      ],
+      "score": 6,
+      "summary": "2 organisations connected by established records (3 named in, 1 auditor of). A connection is not evidence of wrongdoing."
+    },
+    {
+      "id": "net_69eb37924e34af02",
+      "node_ids": [
+        "ent_c60a2052cd080b2c",
+        "ent_24a99df11b301744",
+        "evt_43696844417406f6"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 1,
+      "sources": [
+        "ibbi"
+      ],
+      "seed_cases": [
+        "coffee_day"
+      ],
+      "score": 5,
+      "summary": "2 organisations connected by established records (1 named in, 1 insolvency applicant against). A connection is not evidence of wrongdoing."
+    }
+  ],
+  "identity": []
+}

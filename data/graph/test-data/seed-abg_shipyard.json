@@ -1,0 +1,309 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: ABG Shipyard (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 7,
+      "edges": 8,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 2,
+      "node:bank": 1,
+      "node:person": 1,
+      "node:event": 3,
+      "edge:named_in": 3,
+      "basis:established": 7,
+      "strength:strong": 3,
+      "edge:mentioned_in": 1,
+      "basis:candidate": 1,
+      "strength:weak": 5,
+      "edge:insolvency_applicant_against": 2,
+      "edge:insolvency_professional_for": 2,
+      "hub_nodes": 2
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 3,
+      "seed_cases": [
+        "abg_shipyard"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_9fb546b5bc6dbaef",
+      "kind": "company",
+      "label": "ABG Shipyard Ltd.",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_U40100MH1996PLC097035",
+      "kind": "company",
+      "label": "Bermaco Energy Systems Ltd.",
+      "detail": "U40100MH1996PLC097035 · Active",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 7,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 88,
+      "id": "ent_825af0bd1de44d7d",
+      "kind": "bank",
+      "label": "ICICI Bank Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi",
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 8,
+      "id": "per_1818e54124c31a64",
+      "kind": "person",
+      "label": "SUNDARESH BHAT",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2022-09-22",
+      "document_id": "doc_b4174c90ba876e01",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_840e49a402d33cec",
+      "kind": "event",
+      "label": "ED has attached assets worth Rs. 2747.69 Crore belonging to ABG Shipyard Ltd., its group companies and other related entities under PMLA, 2002 in a bank loan fraud case.",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2019-05-03",
+      "document_id": "doc_9541b9875b611552",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_c6b9517a8df6759a",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: ABG Shipyard Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2017-08-04",
+      "document_id": "doc_806da0cc563e0cba",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_f90caf56127b2dea",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ABG Shipyard Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_09160983895a1838",
+      "from": "ent_9fb546b5bc6dbaef",
+      "to": "evt_840e49a402d33cec",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2022-09-22",
+      "document_id": "doc_b4174c90ba876e01",
+      "relationship_id": "rel_09160983895a1838",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_eb61272691c3a808",
+      "from": "ent_U40100MH1996PLC097035",
+      "to": "evt_840e49a402d33cec",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2022-09-22",
+      "document_id": "doc_b4174c90ba876e01",
+      "relationship_id": "rel_eb61272691c3a808",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_fc6a08e215f78e96",
+      "from": "ent_9fb546b5bc6dbaef",
+      "to": "evt_c6b9517a8df6759a",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-05-03",
+      "document_id": "doc_9541b9875b611552",
+      "relationship_id": "rel_fc6a08e215f78e96",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_ef15460b3da0f8bb",
+      "from": "ent_825af0bd1de44d7d",
+      "to": "ent_9fb546b5bc6dbaef",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-05-03",
+      "document_id": "doc_9541b9875b611552",
+      "relationship_id": "rel_ef15460b3da0f8bb",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_7b9d302b3d811a78",
+      "from": "ent_9fb546b5bc6dbaef",
+      "to": "evt_f90caf56127b2dea",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-08-04",
+      "document_id": "doc_806da0cc563e0cba",
+      "relationship_id": "rel_7b9d302b3d811a78",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_6b0e1699c3e65832",
+      "from": "ent_825af0bd1de44d7d",
+      "to": "ent_9fb546b5bc6dbaef",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-08-04",
+      "document_id": "doc_806da0cc563e0cba",
+      "relationship_id": "rel_6b0e1699c3e65832",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_06f8a2de2c4ddc3d",
+      "from": "per_1818e54124c31a64",
+      "to": "ent_9fb546b5bc6dbaef",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-05-03",
+      "document_id": "doc_9541b9875b611552",
+      "relationship_id": "rel_06f8a2de2c4ddc3d",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_0801f3dd884cfb94",
+      "from": "per_1818e54124c31a64",
+      "to": "ent_9fb546b5bc6dbaef",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-08-04",
+      "document_id": "doc_806da0cc563e0cba",
+      "relationship_id": "rel_0801f3dd884cfb94",
+      "confidence": 0.85
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_b4174c90ba876e01",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/85227309-4408-4e0a-9bf2-c136a418cb8d_Press%20Release%20ABGSL.pdf",
+      "title": "ED has attached assets worth Rs. 2747.69 Crore belonging to ABG Shipyard Ltd., its group companies and other related entities under PMLA, 2002 in a bank loan fraud case.",
+      "date": "2022-09-22",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_9541b9875b611552",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Liquidation Process: ABG Shipyard Ltd.",
+      "date": "2019-05-03",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_806da0cc563e0cba",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ABG Shipyard Limited",
+      "date": "2017-08-04",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

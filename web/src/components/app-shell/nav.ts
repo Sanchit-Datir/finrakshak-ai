@@ -5,6 +5,7 @@ import {
   FilePlus2,
   Files,
   LayoutDashboard,
+  Network,
   SearchCheck,
   Settings,
   Users,
@@ -24,6 +25,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { to: '/borrowers', label: 'Borrowers', icon: Users },
   { to: '/monitoring', label: 'Post-disbursement Monitoring', icon: Activity },
   { to: '/investigations', label: 'Investigations', icon: SearchCheck },
+  { to: '/graph-lab', label: 'Graph Lab (prototype)', icon: Network },
 ];
 
 export const REPORTS_GROUP: { label: string; icon: LucideIcon; items: NavItem[] } = {
