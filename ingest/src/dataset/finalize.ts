@@ -32,16 +32,20 @@ function toRelationship(e: Edge): Relationship {
 
 function orgEdges(c: DatasetCollector, o: PendingOrg): Edge[] {
   const id = c.registry.entityId(o.key);
-  const edges: Edge[] = [
-    {
-      from: id,
-      type: 'NAMED_IN_PROCEEDING',
-      to: o.eventId,
-      m: o,
-      status: o.status,
-      confidence: ORIGIN_CONFIDENCE[o.origin],
-    },
-  ];
+  // Creditors filing insolvency are not parties "named" adversely; they only get the applicant edge.
+  const edges: Edge[] =
+    o.role === 'insolvency_applicant'
+      ? []
+      : [
+          {
+            from: id,
+            type: 'NAMED_IN_PROCEEDING',
+            to: o.eventId,
+            m: o,
+            status: o.status,
+            confidence: ORIGIN_CONFIDENCE[o.origin],
+          },
+        ];
   for (const subject of o.subjectKeys) {
     const to = c.registry.entityId(subject);
     if (to === id) continue;
