@@ -34,18 +34,18 @@ new manifest line (new version), never an overwrite.
 
 ## Sources (see `data/registry/sources.json` for the full audit)
 
-| Source        | Status      | What is collected                                                                                                  |
-| ------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
-| NFRA          | automated   | All orders, AQR, FRQR and inspection reports (listing + PDFs)                                                      |
-| SEBI          | automated   | All enforcement-order listings (7 order types, with SAT appeal refs); PDFs for seed-case and fund-diversion titles |
-| IBBI          | automated   | All public announcements (debtor, applicant, IP, type, dates); PDFs for seed cases                                 |
-| ED            | automated   | All press releases since Jun 2022 (public JSON); PDFs for seed cases / lending-fraud keywords                      |
-| RBI           | automated   | Press-release index 2015–; detail text for enforcement releases (penalties, CoR cancellations, s.35A, alert list)  |
-| SFIO          | automated   | Prosecution lists (convicted directors, proclaimed offenders) and notices                                          |
-| MCA / OGD     | **blocked** | robots.txt disallows www.data.gov.in; API needs a key and an Indian egress                                         |
-| NSE / BSE     | **licence** | Terms require written permission / licensed feed                                                                   |
-| NCLT          | **blocked** | HTTP 403 to automated clients — curate manually                                                                    |
-| eCourts / SCI | **CAPTCHA** | Not bypassed; curate manually                                                                                      |
+| Source        | Status      | What is collected                                                                                                                                                                                                                     |
+| ------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| NFRA          | automated   | All orders, AQR, FRQR and inspection reports (listing + PDFs)                                                                                                                                                                         |
+| SEBI          | automated   | All enforcement-order listings (7 order types, with SAT appeal refs); PDFs for seed-case and fund-diversion titles                                                                                                                    |
+| IBBI          | automated   | All public announcements (debtor, applicant, IP, type, dates); PDFs for seed cases                                                                                                                                                    |
+| ED            | automated   | All press releases since Jun 2022 (public JSON); PDFs for seed cases / lending-fraud keywords                                                                                                                                         |
+| RBI           | automated   | Press-release index 2015–; detail text for enforcement releases (penalties, CoR cancellations, s.35A, alert list)                                                                                                                     |
+| SFIO          | automated   | Prosecution lists (convicted directors, proclaimed offenders) and notices                                                                                                                                                             |
+| MCA / OGD     | **manual**  | robots.txt disallows www.data.gov.in. Download the RoC-wise Company Master Data CSV(s) yourself into `data/raw/mca_ogd/`; `build` then binds CIN, status, incorporation date and registered address (unique-name or CIN matches only) |
+| NSE / BSE     | **licence** | Terms require written permission / licensed feed                                                                                                                                                                                      |
+| NCLT          | **blocked** | HTTP 403 to automated clients — curate manually                                                                                                                                                                                       |
+| eCourts / SCI | **CAPTCHA** | Not bypassed; curate manually                                                                                                                                                                                                         |
 
 Download selection lives in `src/select/relevance.ts`; seed cases (brief step 2) in
 `src/seed/cases.ts` — aliases are search terms, not claims.
@@ -76,6 +76,16 @@ done
 ```
 
 `documents.file_location` uses `gs://<bucket>/raw/...`; substitute your bucket name.
+
+## MCA company master data (manual step)
+
+1. Sign in at data.gov.in and download "Registrars of Companies (RoC)-wise Company Master Data"
+   (one CSV per RoC/state or the national file).
+2. Save the CSV files in `data/raw/mca_ogd/` (any `*.csv`; header variants are detected).
+3. Run `node ingest/dist/cli.js build`. `stats.json → mca_master` reports rows read and matches.
+
+This adds `addresses`, `REGISTERED_AT` edges and the `shared_registered_address` signal. Ambiguous
+names (several companies with the same normalised name) are not matched.
 
 ## Limits and next steps
 

@@ -170,6 +170,42 @@ function seedNetworkSignals(
   );
 }
 
+const MAX_ADDRESS_GROUP = 50;
+
+/** Brief pattern "connected borrower cluster": entities sharing an address with an adversely named entity. */
+function sharedAddressSignals(
+  rels: readonly Relationship[],
+  adverseIds: ReadonlySet<string>,
+): RiskSignal[] {
+  const byAddress = new Map<string, string[]>();
+  for (const r of rels) {
+    if (r.relationship_type === 'REGISTERED_AT')
+      byAddress.set(r.to_id, [...(byAddress.get(r.to_id) ?? []), r.from_id]);
+  }
+  const out: RiskSignal[] = [];
+  for (const [address, ids] of byAddress) {
+    const unique = [...new Set(ids)];
+    const flagged = unique.filter((id) => adverseIds.has(id));
+    if (unique.length < 2 || unique.length > MAX_ADDRESS_GROUP || flagged.length === 0) continue;
+    for (const id of unique) {
+      const others = flagged.filter((f) => f !== id);
+      if (others.length === 0) continue;
+      out.push({
+        ...signal(
+          id,
+          'shared_registered_address',
+          others.length,
+          `Shares registered address ${address} with ${others.length} entity(ies) named in adverse records: ${others.slice(0, 5).join(', ')}.`,
+          [],
+          null,
+        ),
+        document_ids: ['doc_mca_company_master'],
+      });
+    }
+  }
+  return out;
+}
+
 export function buildSignals(
   rels: readonly Relationship[],
   events: readonly CaseEvent[],
@@ -178,8 +214,14 @@ export function buildSignals(
 ): RiskSignal[] {
   const byId = new Map(events.map((e) => [e.event_id, e]));
   const out: RiskSignal[] = [];
-  for (const [id, acc] of eventsByEntity(rels, byId))
-    out.push(...entitySignals(id, acc, adverseTypes));
+  const byEntity = eventsByEntity(rels, byId);
+  for (const [id, acc] of byEntity) out.push(...entitySignals(id, acc, adverseTypes));
   out.push(...seedNetworkSignals(rels, seedEntities, byId));
+  const adverseIds = new Set(
+    [...byEntity]
+      .filter(([, a]) => a.events.some((e) => adverseTypes.has(e.case_type)))
+      .map(([id]) => id),
+  );
+  out.push(...sharedAddressSignals(rels, adverseIds));
   return out;
 }

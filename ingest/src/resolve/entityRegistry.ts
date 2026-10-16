@@ -7,8 +7,17 @@ import {
   normalizePersonName,
 } from './names.js';
 
+export interface OrgAttributes {
+  readonly status: string | null;
+  readonly incorporation_date: string | null;
+  readonly address: string | null;
+  readonly state: string | null;
+  readonly via: 'cin' | 'name';
+}
+
 interface OrgAcc {
   readonly key: string;
+  attrs?: OrgAttributes;
   readonly names: Map<string, number>;
   readonly sources: Set<SourceId>;
   readonly cins: Map<string, number>;
@@ -61,6 +70,28 @@ export class EntityRegistry {
     return key;
   }
 
+  orgKeys(): string[] {
+    return [...this.orgs.keys()];
+  }
+
+  /** CIN bound from documents, if unambiguous. */
+  documentCin(key: string): string | null {
+    const acc = this.orgs.get(key);
+    return acc ? this.cinOf(acc) : null;
+  }
+
+  /** Attaches MCA master attributes; a name match also binds the CIN. */
+  enrich(key: string, cin: string, attrs: OrgAttributes): void {
+    const acc = this.orgs.get(key);
+    if (!acc) return;
+    if (attrs.via === 'name') acc.cins.set(cin, (acc.cins.get(cin) ?? 0) + 1);
+    acc.attrs = attrs;
+  }
+
+  attributes(key: string): OrgAttributes | undefined {
+    return this.orgs.get(key)?.attrs;
+  }
+
   bindCin(key: string, cin: string): void {
     const acc = this.orgs.get(key);
     if (acc) acc.cins.set(cin, (acc.cins.get(cin) ?? 0) + 1);
@@ -105,11 +136,15 @@ export class EntityRegistry {
         entity_type: acc.type ?? guessEntityType(acc.key),
         canonical_name: prev?.canonical_name ?? names[0] ?? acc.key,
         cin,
-        status: null,
-        incorporation_date: null,
+        status: acc.attrs?.status ?? prev?.status ?? null,
+        incorporation_date: acc.attrs?.incorporation_date ?? prev?.incorporation_date ?? null,
         jurisdiction: 'IN',
         aliases: [...new Set([...(prev?.aliases ?? []), acc.key, ...names])].slice(0, 25),
-        match_method: cin ? 'exact_cin' : 'normalized_name',
+        match_method: !cin
+          ? 'normalized_name'
+          : acc.attrs?.via === 'name'
+            ? 'mca_master_name'
+            : 'exact_cin',
         sources: [...new Set([...(prev?.sources ?? []), ...acc.sources])],
         mention_count: (prev?.mention_count ?? 0) + acc.mentions,
       });

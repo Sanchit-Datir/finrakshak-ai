@@ -16,7 +16,12 @@ export const EntityTypeSchema = z.enum(ENTITY_TYPES);
 export type EntityType = z.infer<typeof EntityTypeSchema>;
 
 /** How an entity was resolved. Fuzzy matches are never merged automatically. */
-export const MATCH_METHODS = ['exact_cin', 'normalized_name', 'unresolved'] as const;
+export const MATCH_METHODS = [
+  'exact_cin',
+  'mca_master_name',
+  'normalized_name',
+  'unresolved',
+] as const;
 export const MatchMethodSchema = z.enum(MATCH_METHODS);
 
 export const EntitySchema = z.object({
@@ -33,6 +38,17 @@ export const EntitySchema = z.object({
   mention_count: z.number().int().nonnegative(),
 });
 export type Entity = z.infer<typeof EntitySchema>;
+
+/** Registered office address (brief section 8: Address). */
+export const AddressSchema = z.object({
+  address_id: z.string().min(1),
+  normalized_address: z.string().min(1),
+  raw_address: z.string().min(1),
+  state: z.string().nullable(),
+  normalization_confidence: z.number().min(0).max(1),
+  entity_count: z.number().int().nonnegative(),
+});
+export type Address = z.infer<typeof AddressSchema>;
 
 /** Public professional role only (brief: collect only necessary information). */
 export const PersonSchema = z.object({
@@ -52,6 +68,7 @@ export const RELATIONSHIP_TYPES = [
   'AUDIT_PARTNER_FOR',
   'REGULATORY_ACTION_AGAINST',
   'CO_MENTIONED_WITH',
+  'REGISTERED_AT',
 ] as const;
 export const RelationshipTypeSchema = z.enum(RELATIONSHIP_TYPES);
 export type RelationshipType = z.infer<typeof RelationshipTypeSchema>;

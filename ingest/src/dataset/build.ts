@@ -1,4 +1,5 @@
 import {
+  AddressSchema,
   CaseDocumentLinkSchema,
   CaseEventSchema,
   CaseSeedSchema,
@@ -26,6 +27,7 @@ import { readJsonl, writeJson, writeJsonl } from '../store/jsonl.js';
 import { RawStore } from '../store/rawStore.js';
 import { bigQuerySchema } from './bigquery.js';
 import { classify } from './classify.js';
+import { enrichFromMca } from './mca.js';
 import { DatasetCollector, type DocWithText } from './collector.js';
 import { buildClaims, buildRelationships } from './finalize.js';
 import { buildSignals } from './signals.js';
@@ -81,6 +83,7 @@ const TABLES = {
   case_seeds: CaseSeedSchema,
   case_documents: CaseDocumentLinkSchema,
   entity_match_candidates: EntityMatchCandidateSchema,
+  addresses: AddressSchema,
 } as const satisfies Record<string, z.AnyZodObject>;
 type TableName = keyof typeof TABLES;
 
@@ -102,11 +105,14 @@ export async function buildDataset(adapters: readonly SourceAdapter[]): Promise<
   const adverse = new Set<string>();
   const listed: Record<string, number> = {};
   for (const a of adapters) listed[a.id] = await collectSource(c, a, adverse);
-  const relationships = buildRelationships(c);
+  // MCA enrichment binds CINs, so it must run before any entity id is materialised.
+  const mca = await enrichFromMca(c.registry);
+  const relationships = [...buildRelationships(c), ...mca.edges];
   const entities = c.registry.entities();
   const signals = buildSignals(relationships, c.events, adverse, seedEntityIds(entities));
+  const documents = mca.document ? [...c.documents, mca.document] : c.documents;
   const counts: Record<string, number> = {
-    documents: await writeTable('documents', c.documents),
+    documents: await writeTable('documents', documents),
     case_events: await writeTable('case_events', c.events),
     entities: await writeTable('entities', entities),
     persons: await writeTable('persons', c.registry.persons()),
@@ -119,6 +125,7 @@ export async function buildDataset(adapters: readonly SourceAdapter[]): Promise<
       'entity_match_candidates',
       c.registry.matchCandidates(),
     ),
+    addresses: await writeTable('addresses', mca.addresses),
   };
   await writeJson(
     dataPath('processed', 'case_timelines.json'),
@@ -127,6 +134,7 @@ export async function buildDataset(adapters: readonly SourceAdapter[]): Promise<
   await writeJson(dataPath('processed', 'stats.json'), {
     built_at: new Date().toISOString(),
     listed_items: listed,
+    mca_master: mca.stats,
     rows: counts,
   });
   log.info('dataset built', counts);
