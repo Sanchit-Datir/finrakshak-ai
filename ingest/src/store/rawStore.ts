@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { mkdir, stat, writeFile } from 'node:fs/promises';
+import { mkdir, rename, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { RawArtifactSchema, type RawArtifact, type SourceId } from '@fund-tracker/shared';
 import { dataPath } from '../config.js';
@@ -64,7 +64,10 @@ export class RawStore {
     const abs = dataPath(rel);
     if (!(await exists(abs))) {
       await mkdir(path.dirname(abs), { recursive: true });
-      await writeFile(abs, res.body);
+      // Write-then-rename so an interrupted run never leaves a truncated file under a valid checksum.
+      const tmp = `${abs}.tmp-${process.pid}`;
+      await writeFile(tmp, res.body);
+      await rename(tmp, abs);
     }
     const prior = this.byUrl.get(res.url);
     if (prior?.sha256 === digest) return prior;

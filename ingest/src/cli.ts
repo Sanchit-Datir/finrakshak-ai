@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { SourceIdSchema, type SourceId } from '@fund-tracker/shared';
 import { makeContext, runDownloads, runListing } from './acquire.js';
-import { dataPath, getConfig } from './config.js';
+import { dataPath, getConfig, SOURCE_DOC_CAPS } from './config.js';
 import { buildDataset } from './dataset/build.js';
 import { extractAllText } from './extract/runExtract.js';
 import { errorMessage, log } from './log.js';
@@ -39,8 +39,9 @@ function flagValue(args: readonly string[], flag: string): number | undefined {
 }
 
 async function acquire(args: readonly string[]): Promise<void> {
-  const max = flagValue(args, '--max') ?? getConfig().maxDocsPerSource;
+  const explicit = flagValue(args, '--max');
   for (const id of parseSources(args)) {
+    const max = explicit ?? SOURCE_DOC_CAPS[id] ?? getConfig().maxDocsPerSource;
     const adapter = ADAPTERS.get(id);
     if (!adapter)
       throw new Error(`No automated adapter for ${id} (see data/registry/sources.json)`);

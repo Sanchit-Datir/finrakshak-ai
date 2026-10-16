@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type { SourceId } from '@fund-tracker/shared';
 import { z } from 'zod';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -38,6 +39,12 @@ export function getConfig(): IngestConfig {
   };
   return cached;
 }
+
+/**
+ * Per-source document caps (overridden by `--max`). SEBI is capped at 500 to keep a
+ * full run to about an hour; every SEBI order is still listed as metadata.
+ */
+export const SOURCE_DOC_CAPS: Readonly<Partial<Record<SourceId, number>>> = { sebi: 500 };
 
 export function dataPath(...parts: string[]): string {
   return path.join(getConfig().dataDir, ...parts);
