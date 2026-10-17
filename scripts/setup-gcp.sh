@@ -89,6 +89,14 @@ for runtime_sa in "${RUNTIME_SAS[@]}"; do
     --member "serviceAccount:$DEPLOY_SA" --role roles/iam.serviceAccountUser >/dev/null
 done
 
+# The functions read and write Firestore AS their runtime account (profiles, daily AI counters). A fresh
+# project's default accounts have no data access, so without this every profile lookup fails with
+# PERMISSION_DENIED and nobody can sign in. Granted to both default accounts: Firebase tools have switched
+# between them before.
+for runtime_sa in "${RUNTIME_SAS[@]}"; do
+  grant "$runtime_sa" roles/datastore.user
+done
+
 # Emergency stop (scripts/emergency-stop.sh): may only change who can call Cloud Run services and switch an
 # API off. It cannot deploy, delete, read data or secrets, change billing, or turn anything ON.
 STOP_ROLE="emergencyStop"

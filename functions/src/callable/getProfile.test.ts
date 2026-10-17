@@ -1,8 +1,17 @@
 import { HttpsError, type CallableRequest } from 'firebase-functions/v2/https';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ProfileStore, UserProfile } from '../services/profiles.js';
 import { createRateLimiter } from '../services/rate-limit.js';
 import { getProfileHandler } from './getProfile.js';
+
+const log = vi.hoisted(() => ({ info: vi.fn(), warn: vi.fn(), error: vi.fn() }));
+vi.mock('firebase-functions', () => ({ logger: log }));
+
+beforeEach(() => {
+  log.info.mockClear();
+  log.warn.mockClear();
+  log.error.mockClear();
+});
 
 const PROFILE: UserProfile = {
   name: 'Anjali Patil',
@@ -77,5 +86,55 @@ describe('getProfileHandler burst limit', () => {
     await expect(
       getProfileHandler(req({ uid: 'u2', token: {} }), store, limiter),
     ).resolves.toMatchObject({ uid: 'u2' });
+  });
+});
+
+describe('getProfileHandler logging and failures', () => {
+  const asUser = req({ uid: 'u1', token: { email: 'private@example.com' } });
+
+  it('logs one outcome line per sign-in, with the user ID but never the email or name', async () => {
+    const store: ProfileStore = { get: () => Promise.resolve(PROFILE) };
+    await getProfileHandler(asUser, store);
+    expect(log.info).toHaveBeenCalledWith('getProfile', { uid: 'u1', outcome: 'ok' });
+    const everything = JSON.stringify([
+      log.info.mock.calls,
+      log.warn.mock.calls,
+      log.error.mock.calls,
+    ]);
+    expect(everything).not.toContain('private@example.com');
+    expect(everything).not.toContain('Anjali');
+  });
+
+  it('logs "not_set_up" when the person has no usable profile', async () => {
+    const store: ProfileStore = { get: () => Promise.resolve(null) };
+    await getProfileHandler(asUser, store);
+    expect(log.info).toHaveBeenCalledWith('getProfile', { uid: 'u1', outcome: 'not_set_up' });
+  });
+
+  it('turns a failed lookup into a clear error and an error log with the cause', async () => {
+    const failure = Object.assign(
+      new Error('7 PERMISSION_DENIED: Missing or insufficient permissions.'),
+      {
+        code: 7,
+      },
+    );
+    const store: ProfileStore = { get: () => Promise.reject(failure) };
+    const error = await getProfileHandler(asUser, store).catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(HttpsError);
+    expect((error as HttpsError).code).toBe('internal');
+    expect((error as HttpsError).details).toEqual({ reason: 'profile_lookup_failed' });
+    expect((error as HttpsError).message).not.toContain('PERMISSION_DENIED');
+    expect(log.error).toHaveBeenCalledWith(
+      'getProfile: profile lookup failed',
+      expect.objectContaining({ uid: 'u1', errorCode: 7 }),
+    );
+  });
+
+  it('logs a warning when someone is rate limited', async () => {
+    const store: ProfileStore = { get: () => Promise.resolve(PROFILE) };
+    const limiter = createRateLimiter({ limit: 1, windowMs: 60_000 });
+    await getProfileHandler(asUser, store, limiter);
+    await getProfileHandler(asUser, store, limiter).catch(() => 0);
+    expect(log.warn).toHaveBeenCalledWith('getProfile: rate limited', { uid: 'u1' });
   });
 });

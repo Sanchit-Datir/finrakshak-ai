@@ -5,6 +5,7 @@ import { getEnv } from '../config/env.js';
 import { RATE_LIMITS, RATE_WINDOW_MS } from '../config/limits.js';
 import { geminiApiKey } from '../config/secrets.js';
 import { GEMINI_LIMITS, GeminiError, generateText } from '../services/gemini.js';
+import { describeError } from '../services/log.js';
 import { defaultProfileStore } from '../services/profiles.js';
 import { createRateLimiter, type RateLimiter } from '../services/rate-limit.js';
 import { accessFromProfiles, type AccessStore } from '../services/access.js';
@@ -54,6 +55,7 @@ export async function askGeminiHandler(
   // turn into a flood of Firestore or Gemini calls. Applies to the free mock too.
   const rate = deps.limiter.check(request.auth.uid);
   if (!rate.allowed) {
+    logger.warn('askGemini: rate limited', { uid: request.auth.uid });
     throw new HttpsError(
       'resource-exhausted',
       `Too many requests. Wait ${String(rate.retryAfterSeconds)} seconds and try again.`,
@@ -71,24 +73,50 @@ export async function askGeminiHandler(
   const mock = env.GEMINI_PROVIDER === 'mock';
   let remainingToday: number | null = null;
   if (!mock) {
-    if (!(await deps.access.isAllowed(request.auth.uid))) {
-      throw new HttpsError(
-        'permission-denied',
-        'This account is not enabled for AI features. Ask an administrator.',
-      );
-    }
-    const quota = await consumeDailyQuota(deps.usage, request.auth.uid, env.GEMINI_DAILY_LIMIT);
-    if (!quota.allowed) {
-      throw new HttpsError('resource-exhausted', 'Daily AI limit reached. Try again tomorrow.', {
-        reason: 'daily_limit',
+    try {
+      if (!(await deps.access.isAllowed(request.auth.uid))) {
+        logger.warn('askGemini: refused, AI not enabled for this account', {
+          uid: request.auth.uid,
+        });
+        throw new HttpsError(
+          'permission-denied',
+          'This account is not enabled for AI features. Ask an administrator.',
+        );
+      }
+      const quota = await consumeDailyQuota(deps.usage, request.auth.uid, env.GEMINI_DAILY_LIMIT);
+      if (!quota.allowed) {
+        logger.warn('askGemini: refused, daily limit reached', { uid: request.auth.uid });
+        throw new HttpsError('resource-exhausted', 'Daily AI limit reached. Try again tomorrow.', {
+          reason: 'daily_limit',
+        });
+      }
+      remainingToday = quota.remaining;
+    } catch (error) {
+      if (error instanceof HttpsError) throw error;
+      // The access or usage lookup itself failed (for example a Firestore permission): fail closed, and say so.
+      logger.error('askGemini: access or usage lookup failed', {
+        uid: request.auth.uid,
+        ...describeError(error),
+      });
+      throw new HttpsError('internal', 'Could not check your access. Try again.', {
+        reason: 'access_lookup_failed',
       });
     }
-    remainingToday = quota.remaining;
   }
 
   try {
     // Output is untrusted text: callers that need structure must validate it (B-13).
-    return { text: await generateText(input.data.prompt), mock, remainingToday };
+    const text = await generateText(input.data.prompt);
+    // Sizes only: never the question or the answer.
+    logger.info('askGemini', {
+      uid: request.auth.uid,
+      outcome: 'ok',
+      mock,
+      promptChars: input.data.prompt.length,
+      replyChars: text.length,
+      remainingToday,
+    });
+    return { text, mock, remainingToday };
   } catch (error) {
     // Never log the prompt (B-16); the upstream status and message are enough to debug.
     if (error instanceof GeminiError) {
