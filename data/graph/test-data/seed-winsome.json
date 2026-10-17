@@ -1,0 +1,348 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Winsome Diamonds (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 9,
+      "edges": 8,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 2,
+      "node:person": 3,
+      "node:event": 4,
+      "edge:named_in": 4,
+      "basis:established": 8,
+      "strength:strong": 4,
+      "edge:insolvency_professional_for": 4,
+      "strength:weak": 4,
+      "hub_nodes": 3
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "winsome"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_U36911GJ1996PLC028701",
+      "kind": "company",
+      "label": "FOREVER PRECIOUS JEWELLERY AND DIAMONDS LIMITED",
+      "detail": "U36911GJ1996PLC028701",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "winsome"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_L36910GJ1985PLC015915",
+      "kind": "company",
+      "label": "WINSOME DIAMONDS AND JEWELLERY LIMITED",
+      "detail": "L36910GJ1985PLC015915",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 36,
+      "id": "per_0d90b67f8a3188d0",
+      "kind": "person",
+      "label": "AMIT GUPTA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 19,
+      "id": "per_2dba50bac3fa6ac5",
+      "kind": "person",
+      "label": "SUNIT JAGDISHCHANDRA SHAH",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 11,
+      "id": "per_4972e1caed5ad4ab",
+      "kind": "person",
+      "label": "VIKASH GAUTAMCHAND JAIN",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2020-09-04",
+      "document_id": "doc_b08c24ae57dc33ee",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_5c4a10dfc959e08b",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: FOREVER PRECIOUS JEWELLERY AND DIAMONDS LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2020-09-04",
+      "document_id": "doc_002b47bb41796b2a",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_1f1aa2ae1843a0ac",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: WINSOME DIAMONDS AND JEWELLERY LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2018-02-15",
+      "document_id": "doc_d68edca1f357382b",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_74802c7ea932b951",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Winsome Diamonds and Jewellery Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2018-02-14",
+      "document_id": "doc_73da3853cd9e95b0",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_63746937719ddeb3",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Forever Precious Jewellery and Diamonds Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_8b00863ce67bd404",
+      "from": "ent_U36911GJ1996PLC028701",
+      "to": "evt_5c4a10dfc959e08b",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-09-04",
+      "document_id": "doc_b08c24ae57dc33ee",
+      "relationship_id": "rel_8b00863ce67bd404",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_55f7471cbe1d6617",
+      "from": "ent_L36910GJ1985PLC015915",
+      "to": "evt_1f1aa2ae1843a0ac",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-09-04",
+      "document_id": "doc_002b47bb41796b2a",
+      "relationship_id": "rel_55f7471cbe1d6617",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_1db16852248884ce",
+      "from": "ent_L36910GJ1985PLC015915",
+      "to": "evt_74802c7ea932b951",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-02-15",
+      "document_id": "doc_d68edca1f357382b",
+      "relationship_id": "rel_1db16852248884ce",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_8f3f83c0f106e572",
+      "from": "ent_U36911GJ1996PLC028701",
+      "to": "evt_63746937719ddeb3",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-02-14",
+      "document_id": "doc_73da3853cd9e95b0",
+      "relationship_id": "rel_8f3f83c0f106e572",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_219fb1c0d23ef9dd",
+      "from": "per_0d90b67f8a3188d0",
+      "to": "ent_U36911GJ1996PLC028701",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-09-04",
+      "document_id": "doc_b08c24ae57dc33ee",
+      "relationship_id": "rel_219fb1c0d23ef9dd",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_9d8c19bff0ba6b13",
+      "from": "per_0d90b67f8a3188d0",
+      "to": "ent_L36910GJ1985PLC015915",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-09-04",
+      "document_id": "doc_002b47bb41796b2a",
+      "relationship_id": "rel_9d8c19bff0ba6b13",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_3e185309c76a9f25",
+      "from": "per_2dba50bac3fa6ac5",
+      "to": "ent_L36910GJ1985PLC015915",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-02-15",
+      "document_id": "doc_d68edca1f357382b",
+      "relationship_id": "rel_3e185309c76a9f25",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_7837722cb663a55f",
+      "from": "per_4972e1caed5ad4ab",
+      "to": "ent_U36911GJ1996PLC028701",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-02-14",
+      "document_id": "doc_73da3853cd9e95b0",
+      "relationship_id": "rel_7837722cb663a55f",
+      "confidence": 0.85
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_b08c24ae57dc33ee",
+      "url": "https://ibbi.gov.in//uploads/announcement/0f73ce0e43f8b925db1a24b3cb66fa02.pdf",
+      "title": "Public Announcement of Liquidation Process: FOREVER PRECIOUS JEWELLERY AND DIAMONDS LIMITED",
+      "date": "2020-09-04",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_002b47bb41796b2a",
+      "url": "https://ibbi.gov.in//uploads/announcement/a6dff5b6532e0f023720aa77283a2742.pdf",
+      "title": "Public Announcement of Liquidation Process: WINSOME DIAMONDS AND JEWELLERY LIMITED",
+      "date": "2020-09-04",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_d68edca1f357382b",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Winsome Diamonds and Jewellery Limited",
+      "date": "2018-02-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_73da3853cd9e95b0",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Forever Precious Jewellery and Diamonds Ltd.",
+      "date": "2018-02-14",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

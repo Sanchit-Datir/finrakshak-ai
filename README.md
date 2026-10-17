@@ -10,7 +10,9 @@ transactions → investigate a unified case.
 ```
 web/              React + Vite UI (Firebase Hosting)
 functions/        Cloud Functions (callables, services, config)
-packages/shared/  zod schemas + shared types
+packages/shared/  zod schemas + shared types (incl. the evidence/graph data model)
+ingest/           public-source data pipeline (acquire → extract → build), see ingest/README.md
+data/             source registry, MCA master, canonical dataset, see data/README.md
 docs/             BOUNDARY_CONDITIONS.md, ARCHITECTURE.md
 CLAUDE.md         Coding standards & instructions (read first)
 ```
@@ -45,6 +47,22 @@ npm run build -w web && npx vite preview --root web   # production build
 Pick a demo role on the sign-in page (Risk Analyst / Administrator can edit rules and checklists).
 Settings → “Data sources & demo” resets or clears the demo dataset. Help & Support has a guided walkthrough.
 
+## Public-source dataset (`ingest/`)
+
+A TypeScript pipeline collects permitted public records (NFRA, IBBI, ED, RBI, SFIO, a SEBI sample)
+and the MCA company master into an evidence graph: case events, entities, relationships, evidence
+claims with `fact / finding / allegation / inference` status, and review leads. It is offline data for
+BigQuery and the upcoming graph features; the web app does not read it yet.
+
+```bash
+npm run build -w @fund-tracker/shared && npm run build -w ingest
+node ingest/dist/cli.js build      # rebuild data/processed from data/raw (+ MCA join), ~30 s
+```
+
+- How to run, sources, caps, BigQuery load: [`ingest/README.md`](ingest/README.md)
+- What is stored where (git vs Cloud Storage), file layouts, MCA coverage: [`data/README.md`](data/README.md)
+- Source terms and access audit: [`data/registry/sources.json`](data/registry/sources.json)
+
 ## What is real vs. simulated
 
 | Area                                                                                                                     | Status                                                                                                             |
@@ -57,9 +75,10 @@ Settings → “Data sources & demo” resets or clears the demo dataset. Help &
 | Gemini on Vertex AI analysis                                                                                             | **Not connected.** No AI result is shown anywhere                                                                  |
 | Authentication / role enforcement                                                                                        | **Demo sign-in only** — no credential is checked; UI-only role gating                                              |
 | Storage                                                                                                                  | Browser `localStorage` (zod-validated on read); uploaded files live only in the open tab                           |
-| Public records, core-banking feed, SMS/email                                                                             | Not connected                                                                                                      |
+| Public records (MCA, NFRA, IBBI, ED, RBI, SFIO, SEBI sample)                                                             | **Real dataset, not yet wired into the app** — built by `ingest/` into `data/processed/`                           |
+| Core-banking feed, SMS/email                                                                                             | Not connected                                                                                                      |
 
-All names, accounts, amounts and records are fictional. Alerts and findings are investigative leads, not fraud determinations.
+In the web app, all names, accounts, amounts and records are fictional. Alerts and findings are investigative leads, not fraud determinations.
 
 ## Integrating real services (next steps)
 

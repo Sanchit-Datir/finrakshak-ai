@@ -1,0 +1,727 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Gensol Engineering (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 19,
+      "edges": 19,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:llp": 1,
+      "node:company": 10,
+      "node:person": 3,
+      "node:event": 5,
+      "edge:named_in": 5,
+      "basis:established": 13,
+      "strength:strong": 6,
+      "edge:mentioned_in": 5,
+      "basis:candidate": 6,
+      "strength:weak": 13,
+      "edge:insolvency_applicant_against": 4,
+      "edge:insolvency_professional_for": 4,
+      "edge:possible_same_entity": 1,
+      "hub_nodes": 5
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_18afe5694c05ff12",
+      "kind": "llp",
+      "label": "Capbridge Ventures LLP",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "gensol"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_5f1b54801ade6d5f",
+      "kind": "company",
+      "label": "Gensol Engineering Ltd",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "gensol"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_998fc281a92d82e3",
+      "kind": "company",
+      "label": "BluSmart Fleet Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_8141d73f7f66cff7",
+      "kind": "company",
+      "label": "Go Auto Pvt Ltd",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_6031459d51257567",
+      "kind": "company",
+      "label": "Toyota Financial Services India Ltd",
+      "detail": null,
+      "sources": [
+        "ed",
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_d3bf73f322cbfe24",
+      "kind": "company",
+      "label": "NBFC Toyota Financial Services India Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 17,
+      "id": "ent_c2bec4ce2d1c07b2",
+      "kind": "company",
+      "label": "Indian Renewable Energy Development Agency Limited",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 13,
+      "id": "ent_U74999PN1997PLC110262",
+      "kind": "company",
+      "label": "Catalyst Trusteeship Limited",
+      "detail": "U74999PN1997PLC110262 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "gensol"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_ecc214725402dd16",
+      "kind": "company",
+      "label": "BLU-SMART MOBILITY TECH PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_b2e7b77e02bd4760",
+      "kind": "company",
+      "label": "LEPTON SOFTWARE EXPORT AND RESEARCH PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "gensol"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_303ba1af231e87ec",
+      "kind": "company",
+      "label": "BLU-SMART MOBILITY LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 28,
+      "id": "per_a3b022e4dc109b81",
+      "kind": "person",
+      "label": "RITESH PRAKASH ADATIYA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 15,
+      "id": "per_9f470244b9870488",
+      "kind": "person",
+      "label": "PAWAN KUMAR GOYAL",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 6,
+      "id": "per_6d78783e94343f26",
+      "kind": "person",
+      "label": "KESHAV KHANEJA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-01-19",
+      "document_id": "doc_8b2f7f9402caf1c0",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "evt_b6e5e364bfdc3a54",
+      "kind": "event",
+      "label": "ED, HIU, New Delhi has issued a Provisional Attachment Order (PAO) in the case of Gensol Group under the provisions of the PMLA, 2002 attaching Apartment No. CM 706-A, DLF Camellias, Gurugram, Haryana registered in the n",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-10-17",
+      "document_id": "doc_675d8c018f45f26d",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_5e1d1799a576a8f0",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: BLU-SMART MOBILITY TECH PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-07-31",
+      "document_id": "doc_daa056837a8f4cf4",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_6296df3a522462e6",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: BLU-SMART MOBILITY LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-06-14",
+      "document_id": "doc_d70af87cbe3fe368",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_5e3af8358c4e408d",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Gensol Engineering Ltd",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-06-14",
+      "document_id": "doc_75950efd0c07666e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_53da8cced18ef976",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Gensol Engineering Ltd",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_ffcea5c889e659f7",
+      "from": "ent_18afe5694c05ff12",
+      "to": "evt_b6e5e364bfdc3a54",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2026-01-19",
+      "document_id": "doc_8b2f7f9402caf1c0",
+      "relationship_id": "rel_ffcea5c889e659f7",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_38d9553226b2cb85",
+      "from": "ent_5f1b54801ade6d5f",
+      "to": "evt_b6e5e364bfdc3a54",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2026-01-19",
+      "document_id": "doc_8b2f7f9402caf1c0",
+      "relationship_id": "rel_38d9553226b2cb85",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_82ced376deaba536",
+      "from": "ent_998fc281a92d82e3",
+      "to": "evt_b6e5e364bfdc3a54",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2026-01-19",
+      "document_id": "doc_8b2f7f9402caf1c0",
+      "relationship_id": "rel_82ced376deaba536",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_fe1954bb7ee35238",
+      "from": "ent_8141d73f7f66cff7",
+      "to": "evt_b6e5e364bfdc3a54",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2026-01-19",
+      "document_id": "doc_8b2f7f9402caf1c0",
+      "relationship_id": "rel_fe1954bb7ee35238",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_e2e9f7cf119c0d07",
+      "from": "ent_6031459d51257567",
+      "to": "evt_b6e5e364bfdc3a54",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2026-01-19",
+      "document_id": "doc_8b2f7f9402caf1c0",
+      "relationship_id": "rel_e2e9f7cf119c0d07",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_77cc831363e2ae65",
+      "from": "ent_d3bf73f322cbfe24",
+      "to": "evt_b6e5e364bfdc3a54",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2026-01-19",
+      "document_id": "doc_8b2f7f9402caf1c0",
+      "relationship_id": "rel_77cc831363e2ae65",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_f768613d678fb2ac",
+      "from": "ent_ecc214725402dd16",
+      "to": "evt_5e1d1799a576a8f0",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-10-17",
+      "document_id": "doc_675d8c018f45f26d",
+      "relationship_id": "rel_f768613d678fb2ac",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_9de71949ad386153",
+      "from": "ent_b2e7b77e02bd4760",
+      "to": "ent_ecc214725402dd16",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-10-17",
+      "document_id": "doc_675d8c018f45f26d",
+      "relationship_id": "rel_9de71949ad386153",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_54838523b4950911",
+      "from": "ent_303ba1af231e87ec",
+      "to": "evt_6296df3a522462e6",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-07-31",
+      "document_id": "doc_daa056837a8f4cf4",
+      "relationship_id": "rel_54838523b4950911",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_3127d407ef7e23c2",
+      "from": "ent_U74999PN1997PLC110262",
+      "to": "ent_303ba1af231e87ec",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-07-31",
+      "document_id": "doc_daa056837a8f4cf4",
+      "relationship_id": "rel_3127d407ef7e23c2",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_596cb6ac4b838568",
+      "from": "ent_5f1b54801ade6d5f",
+      "to": "evt_5e3af8358c4e408d",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-06-14",
+      "document_id": "doc_d70af87cbe3fe368",
+      "relationship_id": "rel_596cb6ac4b838568",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_03ada454e1b4bd5a",
+      "from": "ent_c2bec4ce2d1c07b2",
+      "to": "ent_5f1b54801ade6d5f",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-06-14",
+      "document_id": "doc_d70af87cbe3fe368",
+      "relationship_id": "rel_03ada454e1b4bd5a",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_d22c7e8c98281273",
+      "from": "ent_5f1b54801ade6d5f",
+      "to": "evt_53da8cced18ef976",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-06-14",
+      "document_id": "doc_75950efd0c07666e",
+      "relationship_id": "rel_d22c7e8c98281273",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_e22c9b76d7c68222",
+      "from": "ent_c2bec4ce2d1c07b2",
+      "to": "ent_5f1b54801ade6d5f",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-06-14",
+      "document_id": "doc_75950efd0c07666e",
+      "relationship_id": "rel_e22c9b76d7c68222",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_838b306ba9fa01a0",
+      "from": "per_9f470244b9870488",
+      "to": "ent_ecc214725402dd16",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-10-17",
+      "document_id": "doc_675d8c018f45f26d",
+      "relationship_id": "rel_838b306ba9fa01a0",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_79f144274b8b0129",
+      "from": "per_a3b022e4dc109b81",
+      "to": "ent_303ba1af231e87ec",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-07-31",
+      "document_id": "doc_daa056837a8f4cf4",
+      "relationship_id": "rel_79f144274b8b0129",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_770b932a2f04240b",
+      "from": "per_6d78783e94343f26",
+      "to": "ent_5f1b54801ade6d5f",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-06-14",
+      "document_id": "doc_d70af87cbe3fe368",
+      "relationship_id": "rel_770b932a2f04240b",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_4a38bc6e3d6ef699",
+      "from": "per_6d78783e94343f26",
+      "to": "ent_5f1b54801ade6d5f",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-06-14",
+      "document_id": "doc_75950efd0c07666e",
+      "relationship_id": "rel_4a38bc6e3d6ef699",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_86a8e7cf42dae5ad",
+      "from": "ent_ecc214725402dd16",
+      "to": "ent_303ba1af231e87ec",
+      "type": "possible_same_entity",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "graph_lab",
+      "date": null,
+      "document_id": null,
+      "relationship_id": null,
+      "confidence": 0.44999999999999996
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_8b2f7f9402caf1c0",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/ca70cf4f-cfa8-4932-a1a3-05a471599d78_Press%20Release-PAO-Gensol-19.1.2026%203%20(1).pdf",
+      "title": "ED, HIU, New Delhi has issued a Provisional Attachment Order (PAO) in the case of Gensol Group under the provisions of the PMLA, 2002 attaching Apartment No. CM 706-A, DLF Camellias, Gurugram, Haryana registered in the n",
+      "date": "2026-01-19",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_675d8c018f45f26d",
+      "url": "https://ibbi.gov.in//uploads/announcement/18b370832eaf43a311344a0498b10eae.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: BLU-SMART MOBILITY TECH PRIVATE LIMITED",
+      "date": "2025-10-17",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_daa056837a8f4cf4",
+      "url": "https://ibbi.gov.in//uploads/announcement/d18ebed177899b4c007a8a4229eba862.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: BLU-SMART MOBILITY LIMITED",
+      "date": "2025-07-31",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_d70af87cbe3fe368",
+      "url": "https://ibbi.gov.in//uploads/announcement/fddee1171fe976373d0de5a09f5348ff.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Gensol Engineering Ltd",
+      "date": "2025-06-14",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_75950efd0c07666e",
+      "url": "https://ibbi.gov.in//uploads/announcement/0a3e5a20e451ef9979c1ee71e84dadd5.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Gensol Engineering Ltd",
+      "date": "2025-06-14",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [
+    {
+      "id": "net_57fba923e17bd511",
+      "node_ids": [
+        "ent_ecc214725402dd16",
+        "ent_b2e7b77e02bd4760",
+        "evt_5e1d1799a576a8f0"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 1,
+      "sources": [
+        "ibbi"
+      ],
+      "seed_cases": [
+        "gensol"
+      ],
+      "score": 5,
+      "summary": "2 organisations connected by established records (1 named in, 1 insolvency applicant against). A connection is not evidence of wrongdoing."
+    }
+  ],
+  "identity": [
+    {
+      "id": "idc_e3721143aa35bbc4",
+      "a": "ent_ecc214725402dd16",
+      "b": "ent_303ba1af231e87ec",
+      "name_a": "BLU SMART MOBILITY TECH PRIVATE LIMITED",
+      "name_b": "BLU SMART MOBILITY LIMITED",
+      "similarity": 0.75,
+      "reasons": [
+        "similar_name"
+      ],
+      "status": "needs_review"
+    }
+  ]
+}

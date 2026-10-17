@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Brightcom Group (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 2,
+      "edges": 1,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 1,
+      "node:event": 1,
+      "edge:named_in": 1,
+      "basis:established": 1,
+      "strength:strong": 1,
+      "hub_nodes": 0
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "brightcom"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_d6034aaea5f0d256",
+      "kind": "company",
+      "label": "Brightcom Group Limited",
+      "detail": null,
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2024-04-26",
+      "document_id": "doc_5c4343a91790a790",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_c6348abb985aa07c",
+      "kind": "event",
+      "label": "Order in the matter of Brightcom Group Limited for FY 2019-20 to FY 2021-22 against M/s PCN & Associates and CA Gopala Krishna Kandula",
+      "detail": "National Financial Reporting Authority · final order · nfra_disciplinary_order",
+      "sources": [
+        "nfra"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_4c341f1907bd2d90",
+      "from": "ent_d6034aaea5f0d256",
+      "to": "evt_c6348abb985aa07c",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2024-04-26",
+      "document_id": "doc_5c4343a91790a790",
+      "relationship_id": "rel_4c341f1907bd2d90",
+      "confidence": 0.85
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_5c4343a91790a790",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/04/202404261550519674.pdf",
+      "title": "Order in the matter of Brightcom Group Limited for FY 2019-20 to FY 2021-22 against M/s PCN & Associates and CA Gopala Krishna Kandula",
+      "date": "2024-04-26",
+      "source_id": "nfra"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

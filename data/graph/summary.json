@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Public-source graph (real data)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 43405,
+      "edges": 47116,
+      "networks": 3349,
+      "identity_candidates": 972,
+      "node:company": 15846,
+      "node:audit_firm": 93,
+      "node:bank": 1846,
+      "node:llp": 253,
+      "node:other_org": 248,
+      "node:person": 2682,
+      "node:address": 2813,
+      "node:event": 19624,
+      "edge:named_in": 18051,
+      "basis:established": 44211,
+      "strength:strong": 25926,
+      "edge:auditor_of": 17,
+      "edge:mentioned_in": 1933,
+      "basis:candidate": 2905,
+      "strength:weak": 21190,
+      "edge:insolvency_applicant_against": 8317,
+      "edge:audit_partner_for": 27,
+      "edge:insolvency_professional_for": 14844,
+      "edge:registered_at": 2955,
+      "edge:possible_same_entity": 972,
+      "hub_nodes": 1013
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "insights": {
+    "topHubs": [
+      {
+        "label": "State Bank of India",
+        "kind": "bank",
+        "degree": 470
+      },
+      {
+        "label": "Punjab National Bank",
+        "kind": "bank",
+        "degree": 229
+      },
+      {
+        "label": "Bank of India",
+        "kind": "bank",
+        "degree": 182
+      },
+      {
+        "label": "Bank of Baroda",
+        "kind": "bank",
+        "degree": 112
+      },
+      {
+        "label": "Union Bank of India",
+        "kind": "bank",
+        "degree": 104
+      },
+      {
+        "label": "Canara Bank",
+        "kind": "bank",
+        "degree": 101
+      },
+      {
+        "label": "IDBI Bank Ltd.",
+        "kind": "bank",
+        "degree": 96
+      },
+      {
+        "label": "ICICI Bank Ltd.",
+        "kind": "bank",
+        "degree": 88
+      },
+      {
+        "label": "Edelweiss Asset Reconstruction Company Limited",
+        "kind": "company",
+        "degree": 86
+      },
+      {
+        "label": "Central Bank of India",
+        "kind": "bank",
+        "degree": 81
+      },
+      {
+        "label": "Oriental Bank of Commerce",
+        "kind": "bank",
+        "degree": 81
+      },
+      {
+        "label": "THIRUPAL GORIGE",
+        "kind": "person",
+        "degree": 77
+      }
+    ],
+    "seedLinks": [
+      {
+        "network_id": "net_002f999216f387b7",
+        "cases": [
+          "coffee_day",
+          "ilfs"
+        ],
+        "path": [
+          "BSR & Associates LLP —auditor of→ Coffee Day Enterprises Limited",
+          "BSR & Associates LLP —registered at→ [shared registered address, maharashtra]",
+          "BSR & Co. LLP —registered at→ [shared registered address, maharashtra]",
+          "BSR & Co. LLP —named in→ BSR & Co. LLP – Inspection Report No. 132.2-2023-02",
+          "BSR & Co. —named in→ BSR & Co. LLP – Inspection Report No. 132.2-2023-02",
+          "BSR & Co. —named in→ M/s Walker Chandiok & Co LLP – Inspection Report No.132.2-2023-06",
+          "Walker Chandiok & Co LLP —named in→ M/s Walker Chandiok & Co LLP – Inspection Report No.132.2-2023-06",
+          "Walker Chandiok & Co LLP —named in→ Walker Chandiok & Co LLP – Inspection Report No. 132.2-2024-06",
+          "SRBC & Co. —named in→ Walker Chandiok & Co LLP – Inspection Report No. 132.2-2024-06",
+          "SRBC & Co. —named in→ M/s SRBC & Co. LLP – Inspection Report No.132.2-2024-02",
+          "SRBC & Co LLP —named in→ M/s SRBC & Co. LLP – Inspection Report No.132.2-2024-02",
+          "SRBC & Co LLP —auditor of→ Infrastructure Leasing & Financial Services Limited"
+        ]
+      }
+    ],
+    "sharedAddressGroups": 101,
+    "specificCreditorLinks": 4921,
+    "sameCaseEvents": 190,
+    "networkSizes": {
+      "2": 2598,
+      "3-5": 688,
+      "6-20": 62,
+      "21+": 1
+    }
+  }
+}

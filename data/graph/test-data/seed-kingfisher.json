@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Kingfisher Airlines (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 3,
+      "edges": 2,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 2,
+      "node:event": 1,
+      "edge:named_in": 1,
+      "basis:established": 1,
+      "strength:strong": 1,
+      "edge:mentioned_in": 1,
+      "basis:candidate": 1,
+      "strength:weak": 1,
+      "hub_nodes": 0
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "kingfisher"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_c27b4e919818d2fb",
+      "kind": "company",
+      "label": "Kingfisher Airlines Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "kingfisher"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_c2e47641dabf1a9c",
+      "kind": "company",
+      "label": "United Breweries Holdings Ltd.",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-12-19",
+      "document_id": "doc_360b89d47b65d17b",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_fa8e2934a8cb439f",
+      "kind": "event",
+      "label": "Directorate of Enforcement (ED), Mumbai Zonal Office has facilitated the restitution of Rs. 311.67 Crore towards long-pending workmen dues of M/s Kingfisher Airlines Limited (KAL), reaffirming its commitment to victim-ce",
+      "detail": "Directorate of Enforcement · assets restituted · ed_restitution",
+      "sources": [
+        "ed"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_a2d05ba3cfc7e39c",
+      "from": "ent_c27b4e919818d2fb",
+      "to": "evt_fa8e2934a8cb439f",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ed",
+      "date": "2025-12-19",
+      "document_id": "doc_360b89d47b65d17b",
+      "relationship_id": "rel_a2d05ba3cfc7e39c",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_94baf14ca0f5896a",
+      "from": "ent_c2e47641dabf1a9c",
+      "to": "evt_fa8e2934a8cb439f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-12-19",
+      "document_id": "doc_360b89d47b65d17b",
+      "relationship_id": "rel_94baf14ca0f5896a",
+      "confidence": 0.5
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_360b89d47b65d17b",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/e95c1d19-ee85-4321-9d88-b4e853c6804f_Press%20Releae-restitution-_Kingfisher%20workmen%20dues%20-18.12.2025.pdf",
+      "title": "Directorate of Enforcement (ED), Mumbai Zonal Office has facilitated the restitution of Rs. 311.67 Crore towards long-pending workmen dues of M/s Kingfisher Airlines Limited (KAL), reaffirming its commitment to victim-ce",
+      "date": "2025-12-19",
+      "source_id": "ed"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

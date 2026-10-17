@@ -1,0 +1,3909 @@
+[
+  {
+    "case_id": "dhfl",
+    "display_name": "Dewan Housing Finance Corporation (DHFL)",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed",
+      "nfra"
+    ],
+    "first_public_record": "2019-12-04",
+    "entries": [
+      {
+        "date": "2019-12-04",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Dewan Housing Finance Corporation Limited (DHFL)",
+        "url": "https://ibbi.gov.in//uploads/announcement/0cc175b9c0f1b6a831c399e269772661.pdf",
+        "document_id": "doc_3e09ef774d59fd14",
+        "matched_alias": "Dewan Housing Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-08-03",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has provisionally attached assets worth Rs. 251 Crore of Sanjay Chhabria and assets worth Rs 164 Crore of Avinash Bhosale, (total asset worth of Rs. 415 crore) in Yes Bank- DHFL Fraud case under PMLA, 2002. Total attachment in the case stands at Rs. 1827 Crore.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/aa1482b4-572e-43ae-ac2e-327bdd92786e_PR%20Sanajy%20Chhabria-Avinash%20Bhosale_%20Yes%20bank-%20DHFL_02082022%20(1).pdf",
+        "document_id": "doc_78d32ddbd6865554",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-01-26",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: CRYSTAL FACILITIES MANAGEMENT PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/eeb2861e36f015fbc3021cce639d9dab.pdf",
+        "document_id": "doc_6901c9b652189ad0",
+        "matched_alias": "Dewan Housing Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-03-31",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "In the matter of CA Akash Goel, ICAT Membership No. 419186 under Section 132(4) of the Companies Act 2013 read with Rule 11(6) of National Financial Reporting Authority Rules 2018.",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023040161.pdf",
+        "document_id": "doc_4d72081ffdd481b0",
+        "matched_alias": "Dewan Housing Finance",
+        "matched_in": "text"
+      },
+      {
+        "date": "2023-04-03",
+        "source_id": "nfra",
+        "case_type": "nfra_order_erratum",
+        "proceeding_status": "erratum",
+        "title": "Errata",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023040398.pdf",
+        "document_id": "doc_5dd39cf37556551a",
+        "matched_alias": "Dewan Housing Finance",
+        "matched_in": "text"
+      },
+      {
+        "date": "2023-04-12",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Sam Varghese in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023041359-1.pdf",
+        "document_id": "doc_105463aedd02722d",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-13",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Mathew samuel in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023041342.pdf",
+        "document_id": "doc_4ebc55ea458bc6dd",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-13",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against Harish Kumar T K in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023041362.pdf",
+        "document_id": "doc_dc405c5e1ed6a2a3",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-13",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against M baskaran in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023041341.pdf",
+        "document_id": "doc_3126e16df37e42b9",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Aabhas Tiwari in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930247458921.pdf",
+        "document_id": "doc_362f2c92e586b413",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA D N Chaturvedi in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/202309301929371721.pdf",
+        "document_id": "doc_8897f63a6409754e",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Dhiraj Jain in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930885090631.pdf",
+        "document_id": "doc_b467d0b70762ea03",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Harish Sharma in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930216615260.pdf",
+        "document_id": "doc_e0ca4827e102198e",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Mangesh Vitthal Kekre in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930102493366.pdf",
+        "document_id": "doc_0a93e1b2aeaa7d0e",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Mohammad Ayub in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/202309302054291999.pdf",
+        "document_id": "doc_4eed3b5eed365994",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Nilesh Shah in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/202309301969301223.pdf",
+        "document_id": "doc_51427d5e9b2cb6d0",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA P Poovalingam in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930632231876.pdf",
+        "document_id": "doc_b593ce47f7169e47",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA P Rabi Kumar Patra in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930468762697.pdf",
+        "document_id": "doc_34230743debe01ae",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Ramesh Chaturvedi in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/202309301033323124.pdf",
+        "document_id": "doc_990be1e3c10d06ba",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Ramesh Pipalawa in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930632754955.pdf",
+        "document_id": "doc_bd9656a37f7d54cc",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Rashmikant Kundalia in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/202309301290330148.pdf",
+        "document_id": "doc_e8e3b529c7fdc780",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Sanjay Soni in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930874985168.pdf",
+        "document_id": "doc_a283aa00c8b3f02c",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Shrishail V Mantgol in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/2023093060187848.pdf",
+        "document_id": "doc_126aca4ad04a7988",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Sunil Jumani in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/202309301218193129.pdf",
+        "document_id": "doc_a60019a70a5c9014",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Vaman Kamath in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930762115071.pdf",
+        "document_id": "doc_8e4574b8a51ea339",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Vijay Singh Pamecha in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/202309301021524878.pdf",
+        "document_id": "doc_8f5c527c2d7106d2",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA S K Senapati in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/09/20230930760381266.pdf",
+        "document_id": "doc_b78a8b65d63e770b",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-09-29",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Vishwanath Goswami in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/10/20231003371781422.pdf",
+        "document_id": "doc_b857b471975f691f",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-12-05",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of DHFL against CA Jignesh Mehta for FY 2017-18",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/12/202312062007647446.pdf",
+        "document_id": "doc_59f3b8185504d50e",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-12-05",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of DHFL against CA Amit Vinay Chaturvedi for FY 2017-18",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/12/202312061561878508.pdf",
+        "document_id": "doc_390a02f753c32ab8",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-12-13",
+        "source_id": "nfra",
+        "case_type": "nfra_order_erratum",
+        "proceeding_status": "erratum",
+        "title": "Errata with respect to NFRA order no. 63 and 64 issued on 05.12.2023 in matter of DHFL against CA Jignesh Mehta and CA Amit Vinay Chaturvedi",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/12/202312142005445600.pdf",
+        "document_id": "doc_9bc321572d5ee462",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-06-21",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Kashinath Chaturvedi in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/06/202406212101761437.pdf",
+        "document_id": "doc_fb48b282122efa09",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-06-21",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order against CA Krishna Bihari Chaturvedi in the matter of DHFL Branch Audit",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/06/202406211115088640.pdf",
+        "document_id": "doc_e2cabe0c668a8e89",
+        "matched_alias": "DHFL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-09-09",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED, Mumbai Zonal Office has provisionally attached immovable assets in the form of 154 Flats and movable assets in the form of receivables pertaining to 20 Flats situated at Mumbai, valued at Rs. 185.84 Crore (approx.) on 05.09.2025 under PMLA, 2002, in the bank fraud case against M/s Dewan Housing Finance Corporation Ltd. (DHFL), Kapil Wadhawan, Dheeraj Wadhawan and others for committing bank fraud and cheating consortium of banks. Total attachment in this case till date stands at Rs.256.23 Crore.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/73e81cc3-f2d7-4db2-99c4-135117e51a7e_Press%20Release%20in%20PAO%20of%20DHFL%20UBI%2009-09-2025%208%20(1).pdf",
+        "document_id": "doc_12d52a5f9554eed6",
+        "matched_alias": "Dewan Housing Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-08-28",
+        "source_id": "ed",
+        "case_type": "ed_search_seizure",
+        "proceeding_status": "investigation",
+        "title": "ED, Headquarters Investigation Unit, has conducted search operation on 19.08.2026 under PMLA, 2002, in connection with the ongoing money-laundering investigation arising out of the loan fraud committed by M/s Dewan Housing Finance Corporation Ltd (DHFL) and its promoters. During the search operations, the bank account of M/s Al Jalore Trading FZE was examined and an amount of approximately US$ 5.41 million ~ Rs. 51.75 Crore (approx.) lying in the account of said entity, representing Proceeds of Crime, was frozen. Other incriminating documents and records relating to the transactions and assets under investigation were also seized/impounded during the course of the search proceedings. Further investigation is under progress.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/dcf343fa-fa63-4dea-bede-ddea6c7c7ea3_PRESS%20RELEASE%20%20DHFL.pdf",
+        "document_id": "doc_0974080799a63dad",
+        "matched_alias": "Dewan Housing Finance",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "ilfs",
+    "display_name": "IL&FS group",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "nfra",
+      "ed"
+    ],
+    "first_public_record": "2017-04-29",
+    "entries": [
+      {
+        "date": "2017-04-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_voluntary_liquidation",
+        "proceeding_status": "voluntary_liquidation",
+        "title": "Public Announcement of Voluntary Liquidation Process: IL&FS Capital Advisors Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_9fbe74a56c1e533d",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-08-30",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: La-Fin Financial Services Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_68684f8ff0808577",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-11-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Golden Glow Estates Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_9d0b20a5f9ce28e5",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-12-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_voluntary_liquidation",
+        "proceeding_status": "voluntary_liquidation",
+        "title": "Public Announcement of Voluntary Liquidation Process: IL & FS Broking Services Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_e4732faec17d4f12",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-01-07",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Nandi Engineering Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_068b8475b6748ac3",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-12-12",
+        "source_id": "nfra",
+        "case_type": "nfra_audit_quality_review",
+        "proceeding_status": "review_report",
+        "title": "Audit Quality Review (AQR) Report in respect of Audit done by Deloitte Haskins and Sells LLP (Firm Reg No 117366W(slash)W-100018) of IL&FS Financial Services Ltd (IFIN) for FY 2017-18.",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010516.pdf",
+        "document_id": "doc_81720092f961f6c9",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-01-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Emerald Lands (India) Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/b7f6f4006db9a57c8c1d674146ddac93.pdf",
+        "document_id": "doc_03cccd0b35620849",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-01-23",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: KVK Energy and Infrastructure Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/47dad7f2a0682e840c8bc177fddefb3f.pdf",
+        "document_id": "doc_9a67fd325a8cd8e2",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-03-18",
+        "source_id": "ibbi",
+        "case_type": "ibbi_voluntary_liquidation",
+        "proceeding_status": "voluntary_liquidation",
+        "title": "Public Announcement of Voluntary Liquidation Process: IL&FS PORTFOLIO MANAGEMENT SERVICES LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2994bcffc09920427962db97136f0b13.pdf",
+        "document_id": "doc_5472955687b2da1e",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-08-17",
+        "source_id": "nfra",
+        "case_type": "nfra_audit_quality_review",
+        "proceeding_status": "review_report",
+        "title": "Audit Quality Review (AQR) Report in respect of audit done by BSR & Associates LLP (Firm Reg No 116231W(slash)W-100024) of IL&FS Financial Services Ltd (IFIN) for FY 2017-18.",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010522-1.pdf",
+        "document_id": "doc_bf0a3150d55d38f8",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-08-24",
+        "source_id": "nfra",
+        "case_type": "nfra_audit_quality_review",
+        "proceeding_status": "review_report",
+        "title": "Corrigendum with corrected Audit Quality Review (AQR) Report in respect of audit done by BSR & Associates LLP (Firm Reg No 116231W(slash)W-100024) of IL&FS Financial Services Ltd (IFIN) for FY 2017-18.",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010589.pdf",
+        "document_id": "doc_6eff9a591aa4e818",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-12-09",
+        "source_id": "nfra",
+        "case_type": "nfra_audit_quality_review",
+        "proceeding_status": "review_report",
+        "title": "Supplementary Audit Quality Review Report (SAQRR) in respect of Statutory Audit of IL&FS Financial Services Limited for the Year 2017-18.",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010563.pdf",
+        "document_id": "doc_72b16a86f86e2761",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-09-23",
+        "source_id": "nfra",
+        "case_type": "nfra_audit_quality_review",
+        "proceeding_status": "review_report",
+        "title": "Audit Quality Review (AQR) Report in respect of Statutory Audit done by SRBC & Co LLP, Chartered Accountants Firm Registration Number (FRN:324982E(slash)E300003) of IL&FS Transportation Networks Limited (ITNL) for the Financial Year 2017-18.",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010562.pdf",
+        "document_id": "doc_eae8d3d5d7949498",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-03-22",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: G C Property Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/d9746e9485d33d29b425d4022ea931c5.pdf",
+        "document_id": "doc_448a5cf2d3772790",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-06-22",
+        "source_id": "nfra",
+        "case_type": "nfra_audit_quality_review",
+        "proceeding_status": "review_report",
+        "title": "Audit Quality Review (AQR) Report in respect of Statutory Audit done by SRBC & Co LLP, Chartered Accountants Firm Registration Number (FRN:324982E(slash)E300003) of Infrastructure Leasing & Financial Services Limited (IL&FS) for the Financial Year 2017-18",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010583.pdf",
+        "document_id": "doc_361afc2ea7691c9a",
+        "matched_alias": "Infrastructure Leasing & Financial Services",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-07-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: G. C. Property Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/c3003179b444449256e9b2d481e60b0a.pdf",
+        "document_id": "doc_5e62f6c144cc13ce",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-10-31",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: E Village Kendra Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/5ddcafb24e0e8f35829cf4a76a5e9feb.pdf",
+        "document_id": "doc_b21f32d81515bde1",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-02-13",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: McLeod Russel India Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/164c85030375f0f37ee837dc55bac0ab.pdf",
+        "document_id": "doc_11cbac28f9d04ad1",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-06-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Attivo Economic Zone (Mumbai) Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/17231048a9e92df47df2b6ebd43e5d99.pdf",
+        "document_id": "doc_d1ad96617ce539c3",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-02-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/66a05cd28816549c62eeb74fd2457910.pdf",
+        "document_id": "doc_f67c2ec8fa67acc1",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-06-28",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "In continuation to the ED’s ongoing efforts for restitution of properties to their rightful owners and in order to put the productive assets to use enabling financial institutes to monetize the assets attached or seized/secured by ED, assets worth Rs 952 Crore belonging to Vadraj Cement Limited who has taken financial assistance from IL&FS were restituted / restored to the rightful claimant, by the Hon’ble Special Court (PMLA), Mumbai vide order dated 25.06.2025, subsequent to the NOC issued by the ED in this regard.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/0e57bb2f-015d-4b4d-8a30-88b9619cfb66_Press_Release_Restoration-Vadraj_Cement_2862025-4.pdf",
+        "document_id": "doc_a468efd9476c6cd9",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SATLUJ REAL ESTATES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/f97a6afcb84f891d10c2cd49395a209b.pdf",
+        "document_id": "doc_6632636307831de3",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SARVATRA REALTORS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-165415-a3jpy-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_0e24edfde2a041cb",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: KUSHMANDA PROPERTIES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-165918-ydi57-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_e4293256d5676ea4",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: KAVERI REALTORS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-170409-usm7i-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_235e0dc86f1d4299",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: KATRA REALTORS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173220-k2aqb-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_fcdd2f5579aac4f9",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: KATRA REAL ESTATES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173425-9u6d3-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_dfd9e337ccf21e8c",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: KAILASH REALTORS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173546-td3zu-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_64b70c863645c209",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ICON BUILDCON PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173755-ncr8o-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_aa4dc15d6cae6110",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: GHARONDHA REALTORS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173907-vhktu-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_f0930122033cc498",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ELITIST REALTORS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-174029-elzkx-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_475d8f87259e572e",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: CHAKRADHARI PROPERTIES PVT LTD",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-174200-3h0s7-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_92d133ede6f77bcf",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: BAJRANG REALTORS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-174311-evuac-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+        "document_id": "doc_5d080ba5c5c30d3d",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: APNA GHAR PROPERTIES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-174503-kl46b-3b2339050f45f034ee0fda92f65f1263.pdf",
+        "document_id": "doc_5341dcfac54ef29e",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-12-06",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: BHARAT WATERFRONT PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-12-08-130130-5epg8-e529a9cea4a728eb9c5828b13b22844c.pdf",
+        "document_id": "doc_16ded6fd5e04c3e9",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-07-24",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ADHUNIK MEGHALAYA STEELS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/db61be349cae5774fe37c8755a0f17e4.pdf",
+        "document_id": "doc_1b6fdc9a400614a8",
+        "matched_alias": "IL&FS",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-07-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ADHUNIK MEGHALAYA STEELS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2213f1dce367ab262cc7871110ea0369.pdf",
+        "document_id": "doc_811804d4f543f594",
+        "matched_alias": "IL & FS",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "coffee_day",
+    "display_name": "Coffee Day Enterprises",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "nfra"
+    ],
+    "first_public_record": "2021-03-11",
+    "entries": [
+      {
+        "date": "2021-03-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SICAL LOGISTICS LIMITED.",
+        "url": "https://ibbi.gov.in//uploads/announcement/2021-03-16-140534-d94jb-e97a34113528bee529770a12bcf3788d.pdf",
+        "document_id": "doc_56c7aac7073e3a85",
+        "matched_alias": "Sical Logistics",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-12",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of Coffee Day Global Limited against M/s ASRMP & Co., CA A. S. Sundaresha, CA Madhusudan U A, and CA Pranaav G. Ambekar, under Section 132(4) of the Companies Act 2013",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023041290.pdf",
+        "document_id": "doc_0e3b1acfc9b19b8e",
+        "matched_alias": "Coffee Day Global",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-13",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of MACEL against CA Lavitha Shetty, under Section 132(4) of the Companies Act 2013 for the FY 2018-19",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023041369.pdf",
+        "document_id": "doc_1a32b6ced7fa5326",
+        "matched_alias": "MACEL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-25",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of MACEL against CA Lavitha Shetty for FY 2019-20",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023042571.pdf",
+        "document_id": "doc_532149520f414e06",
+        "matched_alias": "MACEL",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-26",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of TDL against M/s Sundaresha & Associates and CA C. Ramesh for FY 2018-19",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/04/2023042611.pdf",
+        "document_id": "doc_9974c4d919b89487",
+        "matched_alias": "Coffee Day Enterprises",
+        "matched_in": "text"
+      },
+      {
+        "date": "2023-07-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Coffee Day Global Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/1806d33090dc773c32046b1a98e30614.pdf",
+        "document_id": "doc_02ac24c0126125d2",
+        "matched_alias": "Coffee Day Global",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-08-18",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of Tanglin Developments Ltd against M/s Sundaresha & Associates, CA C. Ramesh, and CA Chaitanya G. Deshpande for FY 2019-20",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/08/202308212014234658.pdf",
+        "document_id": "doc_aada6b8fb00a924b",
+        "matched_alias": "Tanglin Developments",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-08-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Coffee Day Enterprises Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/6eac373d5a284646a90977c094409bde.pdf",
+        "document_id": "doc_03756a6ec756d918",
+        "matched_alias": "Coffee Day Enterprises",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-08-19",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of Coffee Day Enterprises Ltd (CDEL) for the FY 2018-19 against M/s BSR & Associates LLP, CA Aravind Maiya and CA Amit Somani",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/08/202408191036463933.pdf",
+        "document_id": "doc_27fa21b05d44aace",
+        "matched_alias": "Coffee Day Enterprises",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-09-09",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of Mysore Amalgamated Coffee Estates Limited (MACEL) against M/s Lavitha & Associates Statutory Auditor and Engagement Partner (EP)",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/09/20240909677548557.pdf",
+        "document_id": "doc_d1e4d8a08cbd45d5",
+        "matched_alias": "Mysore Amalgamated Coffee Estates",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-10-10",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of Coffee Day Enterprises Limited for FY 2019-20 against M/s Venkatesh & Co. and CA Dasaraty & CA Desikan G.",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/10/20241010657531408.pdf",
+        "document_id": "doc_841d3729d5cc868e",
+        "matched_alias": "Coffee Day Enterprises",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "reliance_adag_finance",
+    "display_name": "Reliance Home Finance / Reliance Commercial Finance / Reliance Capital",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "nfra",
+      "ed"
+    ],
+    "first_public_record": "2017-07-05",
+    "entries": [
+      {
+        "date": "2017-07-05",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Ved Cellulose Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_b17db80447fd34ad",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2017-08-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Anil Nutrients Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_9111e7fa5a59014a",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2017-08-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Anil Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_0e42b5c2e17412b2",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2017-09-06",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Prime Car Private Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_346bda22960a9db8",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2017-09-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Maharashtra Vidhyut Nigam Private Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_6d2795bcb81e1405",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2017-09-22",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Laxmivinayak Rice Mill Private Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_edf291277adb919c",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-03-15",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Pandit Automotive Pvt. Ltd",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_752e27e607ffc0c2",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-03-27",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Laxmivinayak Rice Mills Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_ecb59e13c984d5ff",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-06-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Anil Nutrients Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_e21f5cbe87a39b7f",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-07-07",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SBZ AD Agency Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_ad0d497f51de178c",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-08-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Pandit Automotive Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_ea9fc52b5bc3e31d",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-10-18",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: GVR Infra Projects Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_be8f9928a7bf2076",
+        "matched_alias": "Reliance Capital Ltd",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-10-27",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Snowqueen Towers Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_5a5a5f52982817df",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-10-27",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Anil Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_cab977cd6880a90a",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-12-06",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Noble Resourcing Business and Solutions Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_12871e62a7f3dc61",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-12-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Adtech signages india private limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/cf655f76f7613006c3f2e9fa20f5f9fb.pdf",
+        "document_id": "doc_c546ec6102e6777e",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-12-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Adtech Signages India Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_ae4f522a5826a765",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-12-13",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Arion Cement Manufacturing Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_4e1ea5ccfa8a5b85",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-01-12",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: V S Texmills Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_983a1973c9c8dae8",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-01-30",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Fibertech Infracon Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_bd8b859952429636",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-02-02",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Maruti Pet & Preform Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_5c105941113b3d69",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-02-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Sharp Knife Company Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_2b8f45cf663364c2",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-02-06",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Kingiree Fashion Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_2a04d84861b4b82d",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-03-01",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Dev Polyplast Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_7bb415fc3d4a55b9",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-03-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Rays Power Experts Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_7f84a8cdd5e47083",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-03-12",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Xedon MediaÂ Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_d0a87e2cd3412035",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-03-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Hamsini Foundations Pvt Ltd",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_86e5c43a9859630d",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-04-15",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Apex MRI Centre Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_9f3eadf9e1b1cded",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-04-25",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Shree Raj Mahal Jewellers Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_fc3443279a164c63",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-04-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Sunar Jewels Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_cf43216df6e33611",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-05-17",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Maximum Synthetics Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_bdecb8cdef2ead17",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-06-27",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Ambica Concrete Company (India) Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_0888a96c7ba77272",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-06-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Arion Cement Manufacturing Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_d8d017a5117729ca",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-08-24",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Apex MRI Centre Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_e7969eef38d91df6",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-08-24",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Apex MRI Centre Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/c90ae5c101edf22962d81fc36ed8effd.jpg",
+        "document_id": "doc_53bae476251dac04",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-10-05",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Sharp Knife Company Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/0ec69ac1b7fb804b61e7c5d721ae6a93.pdf",
+        "document_id": "doc_f2122c80f2fae02e",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-10-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Bharat Bright Bars Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/58513357aab9b1a8e3bf331c3d60b34a.pdf",
+        "document_id": "doc_2f015a1bf2856aa4",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-10-12",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Rosewood Trexim Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/eb0c8d3f70fb1eb7fbebcecfb716472a.pdf",
+        "document_id": "doc_bfb377283cf03b04",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-10-13",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Zaveri Constructions Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/396c42f6beea749307fedaea304fd97e.pdf",
+        "document_id": "doc_8b183442a5fa2902",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-10-23",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Two Brothers Beverage Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/39cc9a2617dcbc4e56b1a96750fdd79e.pdf",
+        "document_id": "doc_16d2c32ab6f7e965",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-11-08",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Rutika Creations Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/1fc24818c3d4647f500fb4418cbd0724.pdf",
+        "document_id": "doc_9126af844306c945",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-12-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Win Trendz Exim Pvt. ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/5af7b2ae5799ae51c45786bc09f5a0f8.pdf",
+        "document_id": "doc_11793f35c8f894ad",
+        "matched_alias": "Reliance Capital Ltd",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-12-05",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Xedon Media Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/6800929c4f2c74d3a905109967415b9a.pdf",
+        "document_id": "doc_2b610251a0449234",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-12-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Fibertech Infracon Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/32094eba0695e4dc92112fa24e282215.pdf",
+        "document_id": "doc_b110aa285a49f111",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-12-23",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Smilecare MultiSpecialty Hospitals India Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/fa45e22e58bfde66d423899da18a9879.pdf",
+        "document_id": "doc_93af8e59f5d20ca8",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-02-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Vista Mining Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/83e5d93f935cfa0ebede5d5ab0cd2811.pdf",
+        "document_id": "doc_edd96916a97fba91",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-03-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Starlite Infracon Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/552a77c951e87d9f7687887e749367a7.pdf",
+        "document_id": "doc_8795599d5647f59a",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-09-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: SHREE RAJ MAHAL JEWELLERS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/3fed628baa24b0e4987a02cb14a508be.pdf",
+        "document_id": "doc_908d3db01fabd020",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-10-13",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Rutika Creations Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/da48a3873dbdb7431bdf5822cb9935b4.pdf",
+        "document_id": "doc_4c5149b3e0334f34",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-02-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: MAXIMUM SYNTHETICS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2021-02-25-144117-92u64-65c7f5e963fba4df879482159c684ab2.pdf",
+        "document_id": "doc_d9f289e78008d106",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-06-05",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Smilecare Multi Specialty Hospitals India Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/9560224b891bae72c47406fecf9f7fd4.pdf",
+        "document_id": "doc_8a348f17f656d3df",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-12-07",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Reliance Capital Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/9fe33957448ce5c91fe351847787b5d8.pdf",
+        "document_id": "doc_67cb67f88b444d9b",
+        "matched_alias": "Reliance Capital Limited",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-03-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: BROADBAND PACENET (INDIA) PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/a3e752b561c22856cbaffc4ddf371729.pdf",
+        "document_id": "doc_a911e06ab9d85a3a",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-06-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: RAGHAV SAREES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/734e40fa7b6374ef520788558b4461b1.pdf",
+        "document_id": "doc_8971ebd296e0ed75",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-06-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: M S Railtech Consultants Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/f7568ae169422cd9dc287a622ff7ac02.pdf",
+        "document_id": "doc_f95f25a6065b2019",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-08-30",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: ZAVERI CONSTRUCTIONS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/9d2de8f5aabc4700b9a8539ca6b99622.pdf",
+        "document_id": "doc_e34b60fb001d37d5",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-10-20",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Prapti Fashions Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/cd13e75577ab187fdfa785406bb9fd45.pdf",
+        "document_id": "doc_f05aedf825b4a264",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-08-07",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Raghav Sarees Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2023-08-08-161100-916dz-5c06ce6c0111806ecfd4fbad7e27f559.pdf",
+        "document_id": "doc_91c613fdec76eb48",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-04-12",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of Reliance Capital Ltd for FY 2018-19 against M/s Pathak H.D. & Associates, CA Parimal Kumar Jha and CA Vishal D Shah",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/04/20240413980099888.pdf",
+        "document_id": "doc_9f39e0b210a8faae",
+        "matched_alias": "Reliance Capital Ltd",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-04-26",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter Reliance Home Finance Limited for FY 2018-19 against M/s Dhiraj & Dheeraj, CA Piyush Patni and CA Pawan Kumar Gupta",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/04/202404261795478852.pdf",
+        "document_id": "doc_b968e4086ccc7716",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-04-26",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Rosewood Projects Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2024-05-01-120520-5cl0a-e5ccee87b9e884971bfb67d4b0c9074c.pdf",
+        "document_id": "doc_a76efce99d741ddc",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-05-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Medybiz Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/863572ad221ca0d337194ffdd4591abd.pdf",
+        "document_id": "doc_b18a6c7b7a97c815",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-05-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: CELEBRITA MEDIAHOUSE PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/a4e346a06ee799797bf62a45e0bfebf4.pdf",
+        "document_id": "doc_c37a046135114afe",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-05-16",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of Reliance Commercial Finance Ltd for FY 2018-19 against M/s Shridhar & Associates and CA Ajay Vastani",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/05/2024051797901178.pdf",
+        "document_id": "doc_8f261dc425ee2e22",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-06-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Pifiniti Movies Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/6a0c8c8f5e58792da9ad35530cbe9e5b.pdf",
+        "document_id": "doc_9e6f70f17576f3e9",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-06-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Pifiniti Movies Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/bad313e7cb4a6e9ecd3e5d8ca0e28eff.pdf",
+        "document_id": "doc_242f6a373d8e31f8",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-07-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: TULIP ADVISORS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/0571cf21146f52f5ed047cfcc4c4bf5f.pdf",
+        "document_id": "doc_f65f7ca8c6030dcb",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-07-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: EDRISHTI MOVIES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/c4260094725aa7a0353cec4978722d14.pdf",
+        "document_id": "doc_317c90ed2b55b553",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-07-21",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ARION MOVIE PRODUCTIONS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/a4d55cc41d698247e05099790d2f3a3d.pdf",
+        "document_id": "doc_6f3eef54c446ce83",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-07-21",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Accura Productions Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/c7028642ba081e70fc4d8a658fb4eaa9.pdf",
+        "document_id": "doc_8a2951254e9eeea0",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-07-31",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Thwink Big Content Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/e123e20f6b8c661bbd7b7736f3a7f61c.pdf",
+        "document_id": "doc_fb55cc830dc0c9e5",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-09-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Azalia Distribution Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/30f147852a5ab0d907d000eaae7b9fcd.pdf",
+        "document_id": "doc_96d45d44b763e3a4",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-10-15",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SUMMIT CEMINFRA PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/b1c74d61537e129fb558dc52601bcacd.pdf",
+        "document_id": "doc_b66fd8ee6ef8722e",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-10-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Hirma Power Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2024-11-12-121030-zfcp2-29c3974f478d1d52c9fdd1569ccf7bd3.pdf",
+        "document_id": "doc_53b0832dc77c457f",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-10-17",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: RPL Star Power Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/75ef5ccf503df5b8f4e56a0a56505d7a.pdf",
+        "document_id": "doc_b04650fb1e380b25",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-12-01",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: RPL SOLAR POWER PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/727bd85d739c5ed938c834e57ca3eeee.pdf",
+        "document_id": "doc_cfa187e8907ff93f",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-12-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: PRAPTI FASHIONS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/ecf59b8afae96ac3729981c0052dfc01.pdf",
+        "document_id": "doc_bcee0843eb6f7f59",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-08-13",
+        "source_id": "ed",
+        "case_type": "ed_arrest",
+        "proceeding_status": "investigation",
+        "title": "ED, Headquarters Office, New Delhi, has conducted search operations on 12th and 13th August 2025 at multiple locations in Delhi and Mumbai under PMLA, 2002 in connection with an ongoing investigation against Ms. Sandeepa Virk, and her associates. During investigation, she was found to be in contact with Angarai Natarajan Sethuraman, former Director of erstwhile Reliance Capital Limited regarding illegal liaising work. Sh. Sethuraman was also found to be involved in diversion of funds from Reliance Commercial Finance Ltd (RCFL) and Reliance Capital Limited. Ms. Sandeepa Virk has been arrested on 12.08.2025 and produced before the Competent Court which has granted custody to ED till 14/8/2025.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/4d8e03df-67e8-405c-9a1d-f0a209d6a691_Press%20Release%20-%20Search%20arrest%20Sandeepa-13.8.2025%20(Final)%203.pdf",
+        "document_id": "doc_a814738c096eda95",
+        "matched_alias": "Reliance Commercial Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-09-18",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: RELIANCE HOME FINANCE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-09-18-164852-buca3-f4cbe6a7078b489ec4b4a7537c528858.pdf",
+        "document_id": "doc_941c9476d3bcd65e",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-03",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has provisionally attaches over 42 properties of Reliance Anil Ambani Group worth more than Rs. 3,083 Crore on 31/10/2025 under the provisions of PMLA, 2002. 30 properties of Reliance Infrastructure Limited, 5 properties of Adhar Property Consultancy Private Limited, 4 properties of Mohanbir Hi-tech Build Private Limited, 1 property each of Gamesa Investment Management Private Limited, Vihaan43 Realty Private Limited (earlier known as M/s Kunjbihari Developers Private Limited) and property of Campion Properties Limited attached. Assets include the Pali Hill residence, Reliance Centre in at Maharaja Ranjeet Singh Marg in New Delhi, and other properties in Delhi, Noida, Ghaziabad, Mumbai, Pune, Thane, Hyderabad, Chennai, Kancheepuram and East Godavari. The said attachments have been made in case of RCOM's SBI bank fraud and RCFL and RHFL's Yes bank fraud.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/1b89b9ee-e6d4-49ff-a941-07b47f56b5a5_ED%20Press%20Release-PAO-%203.11.25.pdf",
+        "document_id": "doc_81fc2209aecf07ea",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "text"
+      },
+      {
+        "date": "2025-11-03",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has attached over 132 acres of land of Dhirubhai Ambani Knowledge City (DAKC) in Navi Mumbai, Maharashtra worth over Rs. 4,462 Crores in Reliance Communications Ltd’s Bank Fraud case. Cumulative attachment of properties in the group now stands over Rs.7,500 Crores.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/fb9f75bd-21a5-4513-87a1-2771b2425fe9_PRESS%20RELEASE%20-%20Reliance%20DAKC-3.11.2025F.pdf",
+        "document_id": "doc_c6fe6a84e3ad44ee",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "text"
+      },
+      {
+        "date": "2025-11-20",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED, STF, Headquarters has provisionally attached multiple buildings in Dhirubhai Ambani Knowledge City (DAKC) and Millenium Business Park, Navi Mumbai, as well as plots of land and buildings in Pune, Chennai, and Bhubaneswar, cumulatively worth Rs. 1452.51 Crore under PMLA, 2002 in connection with bank fraud cases of Reliance Anil Ambani Group. The total attachment in these cases stands at Rs. 8,997 Crore (approx.), so far.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/b868603a-fd01-49c3-8ed4-3719aadb004d_PRESS%20RELEASE_PAO-%20RCOM%20-20.11.2025%201.pdf",
+        "document_id": "doc_7cd4abcb3448102a",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "text"
+      },
+      {
+        "date": "2025-12-05",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has provisionally attached over 18 properties, Fixed Deposits, Bank Balance and Shareholding in Unqouted Investments of Reliance Anil Ambani Group worth Rs.1,120 Crore under PMLA, 2002 in Reliance Home Finance Limited/Reliance Commercial Finance Limited/Yes Bank Fraud Case. The provisionally attached properties comprises of 7 properties of Reliance Infrastructure Limited, 2 properties of Reliance Power Limited, 9 properties of Reliance Value Service Private Limited, Fixed Deposits in the name of Reliance Value Service Private Limited, Reliance Venture Asset Management Private Limited, M/s Phi Management Solutions Private Limited , M/s Adhar Property Consultancy Pvt Ltd:, M/s Gamesa Investment Management Private Limited and Further Investments made in Unquoted Investment by Reliance Venture Asset Management Private Limited and M/s Phi Management Solutions Private Limited. Total attachments in this case stands at Rs.10,117 Crore, so far.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/e9910145-7604-44d6-bb61-359cf44837ac_PRESS%20RELEASE%20-PAO-Reliance%20Anil%20Ambani%20Group-05.12.2025.pdf",
+        "document_id": "doc_916f515297467b44",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-01-28",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED vide 4 separate Provisional Attachment Orders has attached several properties worth Rs. 1,885 Crore ( approx.) of Reliance Anil Ambani Group including Bank Balance, Receivable, Shareholding in Unqouted Investments and Immovable Properties. The Attachments have been done in Reliance Home Finance Limited/Reliance Commercial Finance Limited/Yes Bank Fraud Case as well as Reliance Communication Limited Bank Fraud Case. Attached Property are in the form of shareholding of Reliance Infrastructure Limited in BSES Yamuna Power Limited, BSES Rajdhani Power Limited, Mumbai Metro One Private Limited. Further, Bank Balance of Rs 148 Crore and Receivable worth 143 Crore have been provisionally attached in the hands of M/s Value Corp Finance And Securities Limited. Further, One immovable property in the form of residential house in the name of Angarai Sethuraman, and movable property in the form shares/mutual funds in the name of wife of Punit Garg; both Senior Employees of Reliance Group have be",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/6b116954-2071-4c8b-bc75-d886570cf1db_Press%20Release%20-PAO-Reliance%20Anil%20Ambani%20Group-28.01.26-Revised.pdf",
+        "document_id": "doc_f5935704d228da18",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-03-12",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has provisionally attached 31 immovable properties in the form of land parcels situated in Goa, Kerala, Karnataka, Punjab, Tamil Nadu, Uttar Pradesh, Haryana, Jharkhand, Maharashtra, Delhi, West Bengal, Andhra Pradesh and Rajasthan worth Rs. 581.65 Crore in the case of Reliance Home Finance Limited (RHFL) / Reliance Commercial Finance Limited (RCFL) on 11/03/2026. The attachment follows search operations conducted on 6/03/2026 in the case of Reliance Power Limited (R-POWER) under FEMA. The cumulative Reliance Anil Ambani Group attachment has reached to Rs.16,310 Crore.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/67ef1c59-fa7b-4cbb-97d3-14cfe7bf66bf_Press%20Release%20-PAO-Reliance%20Anil%20Ambani%20Group%2012032026-1.pdf",
+        "document_id": "doc_6dd93302c482eacf",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-07-08",
+        "source_id": "ed",
+        "case_type": "ed_prosecution_complaint",
+        "proceeding_status": "prosecution_complaint_filed",
+        "title": "In continuation of ongoing investigation into Reliance Home Finance Limited and Reliance Commercial Limited case, ED conducted searches on 07.07.2026 at premises of M/s E-Complex Private Limited and residence of one of its Directors. Incriminating documents and evidence relating to suspicious transactions linked to the Reliance Anil Ambani Group were seized. Earlier, ED arrested two persons in the case and filed prosecution complaint on 12.06.2026. Total Proceeds of Crime of ₹15,548 Crore have been quantified in this case and properties worth ₹4,510 Crore have already been attached.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/80ff77c2-4b33-408c-aeb4-4698cc95421f_Press%20Release%20E%20Complex%20Search-872026_2.pdf",
+        "document_id": "doc_dc34bf49e79684f4",
+        "matched_alias": "Reliance Home Finance",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "religare",
+    "display_name": "Religare Finvest / Religare Enterprises",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "rbi",
+      "ibbi",
+      "ed",
+      "nfra"
+    ],
+    "first_public_record": "2017-10-12",
+    "entries": [
+      {
+        "date": "2017-10-12",
+        "source_id": "rbi",
+        "case_type": "rbi_monetary_penalty",
+        "proceeding_status": "penalty_imposed",
+        "title": "RBI imposes Monetary Penalty on M/s Religare Finvest Ltd",
+        "url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=41946",
+        "document_id": "doc_0e3b1a2e14fb460c",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-02-21",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: OSPL Infradel Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_fa86c23d6ffd073f",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-02-21",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Nippon Investment and Finance Company Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_2a7897c942821c71",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-03-05",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Venkateshwara Capital Management Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_cf695d27e9b9ce91",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-02-07",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Venkateswara Capital Management Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/9cca12a32f1c0047a6375deaeb241925.pdf",
+        "document_id": "doc_f66a733b8bb414e7",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-11-12",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: REDS MARINE SERVICES LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/47403bfa973bcdfa4cf019e3461e6780.jpg",
+        "document_id": "doc_c0573c2cb892f8dc",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-09-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Reds Marine Services Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2021-10-13-140739-m3gdo-65c7f5e963fba4df879482159c684ab2.pdf",
+        "document_id": "doc_0852e398173bde9b",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-05-20",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: RHC Holding Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/a3bbc78da301518590d035b945716d13.pdf",
+        "document_id": "doc_5685f435059b1d24",
+        "matched_alias": "RHC Holding",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-11-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Perpetual Capital and Servicing Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/a249f3bcd1077e9a5ded96efe30d9ec3.pdf",
+        "document_id": "doc_14b8d05785ac10e7",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-12-24",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: FORTIS HEALTHCARE HOLDINGS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2022-12-24-111857-z8pej-3b2339050f45f034ee0fda92f65f1263.pdf",
+        "document_id": "doc_90801543e1b239cb",
+        "matched_alias": "Fortis Healthcare",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-07-20",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Ligare Aviation Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/f543268c10d4e2a7af71ed61629af1b4.pdf",
+        "document_id": "doc_58a2c50978ca2e13",
+        "matched_alias": "Religare Enterprises",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-01-25",
+        "source_id": "ed",
+        "case_type": "ed_search_seizure",
+        "proceeding_status": "investigation",
+        "title": "ED has conducted search operations at 3 premises in Mumbai belonging to M/s Konti Infrapower & Multiventures Pvt Ltd, M/s Edison Infrapower & Multiventures Pvt Ltd, M/s Asian Satellite Broadcast Ltd, M/s Widescreen Holdings Pvt Ltd, M/s Jayneer Capital Pvt Ltd, Sprit Infrapower & Multiventures Pvt Ltd and the residential premises of an Ex- senior official of the Essel group on 24.01.2024 in the matter of siphoning off/ diversion of funds from Religare Finvest Limited, a NBFC of Religare Group. During the search operations various incriminating documents were recovered and seized.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/ede164f6-9fd7-4db0-950a-56b291d412ac_Press%20Release-%20Asian%20Satellite%20RFL%2025012024.pdf",
+        "document_id": "doc_5bc35033e0aae672",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-02-25",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SADASHIV CAPITAL SERVICES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/386cc424b5da2794b1990c4ee903e5c6.pdf",
+        "document_id": "doc_fabc1637c85a1797",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-03-09",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: STELLENCE PHARMSCIENCE PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/6d578a4512cde04158d8b47b716d76a3.pdf",
+        "document_id": "doc_cc858949cce2b651",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-01-31",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of M/s. Religare Finvest Limited against CA Neeraj Bansal For FY 2017-18",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2025/01/202608061682830703.pdf",
+        "document_id": "doc_936bd27ce29c14a9",
+        "matched_alias": "Religare Finvest",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "abg_shipyard",
+    "display_name": "ABG Shipyard",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2017-08-04",
+    "entries": [
+      {
+        "date": "2017-08-04",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ABG Shipyard Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_806da0cc563e0cba",
+        "matched_alias": "ABG Shipyard",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-05-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: ABG Shipyard Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_9541b9875b611552",
+        "matched_alias": "ABG Shipyard",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-09-22",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has attached assets worth Rs. 2747.69 Crore belonging to ABG Shipyard Ltd., its group companies and other related entities under PMLA, 2002 in a bank loan fraud case.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/85227309-4408-4e0a-9bf2-c136a418cb8d_Press%20Release%20ABGSL.pdf",
+        "document_id": "doc_b4174c90ba876e01",
+        "matched_alias": "ABG Shipyard",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "pnb_lou_firestar",
+    "display_name": "PNB letters-of-undertaking matter (Firestar group)",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2019-10-11",
+    "entries": [
+      {
+        "date": "2019-10-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Firestar Diamond International Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/68be83d76f637551de7316cd0a1c216b.pdf",
+        "document_id": "doc_5cb9baad6c30ce6a",
+        "matched_alias": "Firestar Diamond",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-03-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Firestar Diamond International Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/09152c75df7a281f417f14f30c9b16c7.pdf",
+        "document_id": "doc_075357f28dc51239",
+        "matched_alias": "Firestar Diamond",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-03-18",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Firestar International Ltd",
+        "url": "https://ibbi.gov.in//uploads/announcement/9a29396d601e556a15ff45d69d0c732f.pdf",
+        "document_id": "doc_702ae42dd405a646",
+        "matched_alias": "Firestar International",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-08-20",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: FIRESTAR INTERNATIONAL LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/24d2928cb514023d700d71914536b8b4.pdf",
+        "document_id": "doc_7be5501f3083b1c7",
+        "matched_alias": "Firestar International",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-07-22",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has provisionally attached movable properties i.e. Gems and Jewelleries and Bank Balances amounting to USD 30.98 million and HKD 5.75 million, equivalent INR value Rs 253.62 Crore (as of today) in the case of Nirav Modi group of companies in Hong Kong. With this, total attached/ seized assets tally in the case stands at Rs. 2650.07 Crore in this case",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/497c1d7f-0ae6-4730-a06a-5e94a71147e4_Press-Release-dtd-22072022-Nirav-Modi-PNB-Fraud-Case.pdf",
+        "document_id": "doc_cfe320d588597373",
+        "matched_alias": "Nirav Modi",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-05-16",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "UK High Court has once again refused bail to Nirav Modi, the mastermind of USD 1 billion fraud against PNB, hearing his 4 bail application on Thursday i.e. 15.05.2025. After thorough deliberation of arguments of defence (Nirav Modi) with counter arguments of prosecution (Govt. of India), written submissions made by ED (highlighting the money laundering aspects by using shell companies to launder the proceeds to even outside jurisdictions including UK) and keeping in view the sheer quantum of fraud (part of which has already been attached/seized by ED and restituted to the victim banks), the UK High Court rejecting the application, denied bail to Nirav Modi.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/e0af4067-b820-4a22-b1e2-2e991bb78d72_Press%20Release-Nirav%20Modi%20UK%20HC%20bail%20rejection-16052025%202.pdf",
+        "document_id": "doc_9bff3a6a2d84d86d",
+        "matched_alias": "Nirav Modi",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "gitanjali",
+    "display_name": "Gitanjali Gems",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2018-10-09",
+    "entries": [
+      {
+        "date": "2018-10-09",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Gitanjali Gems Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_ef2997663767b15b",
+        "matched_alias": "Gitanjali Gems",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-02-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: GITANJALI GEMS LTD",
+        "url": "https://ibbi.gov.in//uploads/announcement/2024-02-12-112006-be27m-5c06ce6c0111806ecfd4fbad7e27f559.pdf",
+        "document_id": "doc_73431c3790a99e92",
+        "matched_alias": "Gitanjali Gems",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-12-10",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "Hon’ble Special Court (PMLA), Mumbai allowed “monetisation of properties” amounting to Rs. 2565.90 Crore attached or seized by the ED, Mumbai in Mehul Choksi case (PNB fraud case). ED ongoing efforts for restitution of properties worth more than Rs 125 Crore to their rightful owners and victims of money laundering and in order to put the productive assets to use and to enable financial institutes to monetise the assets attached or seized/secured by ED, a concerted effort was put by ED in collaboration with PNB and ICICI Bank (victims of the bank fraud) and an application for restitution of assets was filed in the Mehul Choksi case.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/4849f701-4694-4dac-bb15-4147fa2ba635_Press%20Release-%20Monetisation%20Mehul%20Choksi%20-10122024%201.pdf",
+        "document_id": "doc_3f0aaeb283f281f4",
+        "matched_alias": "Mehul Choksi",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-24",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "In continuation to the ED’s ongoing efforts for restitution and restoration of assets, ED, Mumbai Zonal Office has facilitated the handing over of four (4) flats in Project Tatva, Urja – A Wing, Datthapada Road, Borivali (East), Mumbai, properties attached in the case of Mehul Choksi and Others (PNB Fraud Case), to liquidator on 21-11-2025, enabling the liquidator to proceed with monetisation for the benefit of victims, secured creditors and other legitimate claimants. Till now, immovable/movable properties located at Mumbai, Kolkata and Surat collectively having worth of Rs. 310 Crore (approx.) have been handed over to the Liquidator of M/s Gitanjali Gems Ltd.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/d4451431-2100-4fa1-a286-fe2b212e56ee_Press%20Release-%2024.11.2025%20(Mehul%20Choksi%20Monetisation)%203.pdf",
+        "document_id": "doc_833aa5a5a2f8cf15",
+        "matched_alias": "Gitanjali Gems",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-24",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "In continuation to the ED’s ongoing efforts for restitution and restoration of assets, ED, Mumbai Zonal Office has facilitated the handing over of four (4) flats in Project Tatva, Urja – A Wing, Datthapada Road, Borivali (East), Mumbai, properties attached in the case of Mehul Choksi and Others (PNB Fraud Case), to liquidator on 21-11-2025, enabling the liquidator to proceed with monetisation for the benefit of victims, secured creditors and other legitimate claimants. Till now, immovable/movable properties located at Mumbai, Kolkata and Surat collectively having worth of Rs. 310 Crore (approx.) have been handed over to the Liquidator of M/s Gitanjali Gems Ltd.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/f802a744-f3bd-467e-8809-85847a4f7b57_Press%20Release-%2024.11.2025%20(Mehul%20Choksi%20Monetisation)%203.pdf",
+        "document_id": "doc_30b214713068d018",
+        "matched_alias": "Gitanjali Gems",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "kingfisher",
+    "display_name": "Kingfisher Airlines",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2021-05-19",
+    "entries": [
+      {
+        "date": "2021-05-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Muktar Minerals Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/bd10367f867f83a4635d904c5dc06cb3.pdf",
+        "document_id": "doc_dd7d8c04ad7ae84d",
+        "matched_alias": "Kingfisher Airlines",
+        "matched_in": "text"
+      },
+      {
+        "date": "2025-12-19",
+        "source_id": "ed",
+        "case_type": "ed_restitution",
+        "proceeding_status": "assets_restituted",
+        "title": "Directorate of Enforcement (ED), Mumbai Zonal Office has facilitated the restitution of Rs. 311.67 Crore towards long-pending workmen dues of M/s Kingfisher Airlines Limited (KAL), reaffirming its commitment to victim-centric restoration of Proceeds of Crime (POC) under PMLA, 2002. This restitution underscores the ED’s continued commitment to depriving economic offenders of the POC while ensuring restoration of such proceeds to rightful stakeholders, including affected employees.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/e95c1d19-ee85-4321-9d88-b4e853c6804f_Press%20Releae-restitution-_Kingfisher%20workmen%20dues%20-18.12.2025.pdf",
+        "document_id": "doc_360b89d47b65d17b",
+        "matched_alias": "Kingfisher Airlines",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "bhushan_power",
+    "display_name": "Bhushan Power and Steel",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2017-07-28",
+    "entries": [
+      {
+        "date": "2017-07-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Bhushan Power & Steel",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_131a145d2f49ecce",
+        "matched_alias": "Bhushan Power & Steel",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-06-09",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has provisionally attached a Cessna 525 A CJ 2+ Aircraft valued at Rs. 30.91 Crore belonging to M/s. Bhushan Airways Services Private Limited under PMLA, 2002 in a cheating and bank fraud case. Total provisional attachment in this case stands at Rs. 4454.27 Crore.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/ba25586f-88a5-45a4-b80b-86e05504eed6_P%20R%2009062022%20BASPL.pdf",
+        "document_id": "doc_5d02ae4a18d7737f",
+        "matched_alias": "Bhushan Power and Steel",
+        "matched_in": "text"
+      },
+      {
+        "date": "2023-08-02",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Karan Automotives Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/ae08ffecb2920af0eee6010764a8d6e4.pdf",
+        "document_id": "doc_85432fd10a97d053",
+        "matched_alias": "Bhushan Power & Steel",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-15",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ATMA RAM HOUSE INVESTMENT PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/77a8b243bfd19b0263d5955038436521.pdf",
+        "document_id": "doc_b98e547070c96454",
+        "matched_alias": "Bhushan Power and Steel",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "bhushan_steel",
+    "display_name": "Bhushan Steel",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2017-07-26",
+    "entries": [
+      {
+        "date": "2017-07-26",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Bhushan Steel Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_6914e61503082485",
+        "matched_alias": "Bhushan Steel",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-01-12",
+        "source_id": "ed",
+        "case_type": "ed_arrest",
+        "proceeding_status": "investigation",
+        "title": "ED has arrested 5 persons namely Ajay Mittal, Archana Mittal, Nittin Johri, Prem Tewari and Prem Agarwal on 11-01-2024 under PMLA, 2002 in connection with the money laundering investigations against Bhushan Steel Limited related to Bank fraud of Rs 56,000 Crore. The arrested persons were produced before Hon’be Special Court, PMLA, on 11-01-2024 and 12-01-2024. The Hon’ble Court had granted ED custody for 3 days.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/6830b79a-2e1f-4bb8-8cc6-1e30ed264462_Press%20Release-%20Bhushan%20Steel%20Arrests-12012024.pdf",
+        "document_id": "doc_c4eca9c6e19d6665",
+        "matched_alias": "Bhushan Steel",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-03-08",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED Delhi Zonal Office has attached movable and immovable properties of M/s Bhushan Steel Limited under the provisions of PMLA, 2002 amounting to about Rs. 367 Crore on 06.03.2024. The immovable properties were situated in Delhi, Mumbai, Kolkata and Odisha. The attached properties were held in the name of benamidars/ shell entities through dummy directors so as to conceal the assets and to ensure that they are out of reach of law Enforcement Agencies.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/c45e8bc1-58c6-460d-ae2e-6bdf1e66ccd9_Press%20release-%20Bhushan%20Steel%20PAO-832024.pdf",
+        "document_id": "doc_618cde4fa5d047df",
+        "matched_alias": "Bhushan Steel",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-07-02",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED, Delhi Zonal Office has attached movable and immovable properties in the form of land and a part of residential property, situated in Indore, Madhya Pradesh, and equity shares and bank balances held in the name of Ritu Singal, wife of Neeraj Singal, promoter of erstwhile M/s Bhushan Steel Limited (BSL) under PMLA, 2002 amounting to Rs. 58.34 Crore (approx.) on 24.06.2026. Total attachment in this case stands at Rs. 481.72 Crore (approx.), so far.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/170b0c4b-5307-4cfd-adad-e02bc575740e_Press%20Release-%20Ritu%20Singal%20PAO%20-272026%202.pdf",
+        "document_id": "doc_a4cddacbc7e86b0e",
+        "matched_alias": "Bhushan Steel",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "videocon",
+    "display_name": "Videocon group",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi"
+    ],
+    "first_public_record": "2017-08-03",
+    "entries": [
+      {
+        "date": "2017-08-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Cape Infrastructure Private Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_a99a9c6d76c8aa0e",
+        "matched_alias": "NuPower Renewables",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-06-09",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Videocon Industries Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_f8ff896eeb61a9b2",
+        "matched_alias": "Videocon Industries",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "sterling_biotech",
+    "display_name": "Sterling Biotech (Sandesara group)",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi"
+    ],
+    "first_public_record": "2018-06-27",
+    "entries": [
+      {
+        "date": "2018-06-27",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Sterling Biotech Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_9b59912e4e06fd59",
+        "matched_alias": "Sterling Biotech",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-07-25",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Sterling SEZ and Infrastructure Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_604c32fb5070795c",
+        "matched_alias": "Sterling SEZ",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-05-15",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Sterling Biotech Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_e1f6fbcbd3db3abd",
+        "matched_alias": "Sterling Biotech",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-02-27",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Sterling Biotech Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/08b7e3e13297ac353a05efe57bdfbc49.pdf",
+        "document_id": "doc_ff242cb36bbd31f4",
+        "matched_alias": "Sterling Biotech",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-11-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Sterling SEZ and Infrastructure Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/27a5f8bf33e79b2175ac1472f689a8f7.pdf",
+        "document_id": "doc_03ebabc4b6de39b2",
+        "matched_alias": "Sterling SEZ",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "karvy",
+    "display_name": "Karvy Stock Broking",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ed"
+    ],
+    "first_public_record": "2022-07-30",
+    "entries": [
+      {
+        "date": "2022-07-30",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED has provisionally attached Immovable and movable assets worth Rs.110 Crore under PMLA, 2002 in the money laundering investigation against M/s Karvy Stock Broking Ltd (KSBL) and its Chairman Comandur Parthasarathy and others. With this, total attachment now stands at Rs.2095 Cr.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/5e9b44c4-3f56-4cf6-8003-597b079d0470_PR%20-%20HYZO%20-%20Karvy%20PAO%20No%202.pdf",
+        "document_id": "doc_33f9959314dec2d5",
+        "matched_alias": "Karvy Stock Broking",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "srei",
+    "display_name": "Srei Infrastructure Finance / Srei Equipment Finance",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2017-07-24",
+    "entries": [
+      {
+        "date": "2017-07-24",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: K. S Oils Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_21dfd90602f52638",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2017-11-24",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Resurgent Infratel Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_2d7ffe90204d6498",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-01-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Confident Solar Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_3469d8330b869d28",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-03-09",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: DDS Steel Rolling Mills Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_e1ded6bf4c554b8e",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-03-18",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: MIC Electronics Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_fb9fa46701fa4dd8",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-04-07",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SDS Steels Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_6a679ebf3f01ad44",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-04-07",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Jai Bhavani Steel Enterprises Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_0bb2d71daa40e144",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-06-01",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Resurgent Infratel Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_834759dd5ee16a94",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-06-09",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Maadurga Thermal Power Company Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_981a121fa4fc3926",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-06-20",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Concast Infratech Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_c09827827ac51543",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-07-05",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Confident Solar Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_bad4a48d11b9540b",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-07-25",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Sterling International Enterprises Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_59a312e9182b8dad",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-07-25",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Sterling SEZ and Infrastructure Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_604c32fb5070795c",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-07-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Jai Bhawani Steels Enterprises Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_1143044da0749e28",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-09-01",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Vishwa Infrastructures and Services Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_cdff55485913f1ce",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-12-22",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Concast Infratech Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_fdcb66138e2340da",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-12-22",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: CONCAST INFRATECH LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/d6f21c400b7478402f5e3d6f54963e54.pdf",
+        "document_id": "doc_87bd07f68029e944",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-01-04",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: RCM Infrastructure Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_5e5f84b0a4e539e3",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-06-17",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Vishwa Infrastructures and Services Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_d7e57d41f4a8e309",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-06-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Maadurga Thermal Power Company Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_3e771921d55f555f",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-07-27",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Right Towers Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_7d2c87769d353396",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-08-04",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Giridhan Projects Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/2019-08-13-145625-m8deq-57efc2d00727dccfdc7c46130f8bd6c8.pdf",
+        "document_id": "doc_9a52b0a3977eb655",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-09-01",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Wianxx Impex Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/04f05efe10253a86aca76aa0720fb095.pdf",
+        "document_id": "doc_2536ff1ecdb732a9",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-11-22",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Shree Ram Urban Infrastructure ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/41e1816205f53b9ec233d7ebc4dc4391.pdf",
+        "document_id": "doc_2e39297f837ff8c6",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-11-22",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Gujarat Hydrocarbon and Power Sez Ltd",
+        "url": "https://ibbi.gov.in//uploads/announcement/b665ca9c76161e1e81bb575684e3f64c.pdf",
+        "document_id": "doc_bdc8ea6fc3f758c7",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-02-13",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: GIRIDHAN PROJECTS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/24621dfbe90e2766582aeb55ed21fef2.pdf",
+        "document_id": "doc_8fbc51f35c11fe0e",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-03-18",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: K.S. Oils Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/601a2c6eb7437fd583a9a0aea1caf03a.pdf",
+        "document_id": "doc_889ed7f6464c5c37",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-05-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Muktar Minerals Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/bd10367f867f83a4635d904c5dc06cb3.pdf",
+        "document_id": "doc_dd7d8c04ad7ae84d",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-10-06",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Viom Infra Ventures Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2021-10-07-135033-gqel7-d995ba5cb415df627d2ea81951a4035b.pdf",
+        "document_id": "doc_a29bfe8b48b3ecea",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-10-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Srei Equipment Finance Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/3fca8234c10888be92b736018231a2e4.pdf",
+        "document_id": "doc_3dd4f9545662d6ce",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-10-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Srei Infrastructure Finance Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/b79a45775818790cf9e6b93af65b3a7b.pdf",
+        "document_id": "doc_bf92039e94f237c6",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-10-22",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: MUKTAR INFRASTRUCTURE (INDIA) PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2439d9f6813c6dbf8a20dbb209c8e408.pdf",
+        "document_id": "doc_915bd03382951cee",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-11-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Sterling International Enterprises Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/fc4c51ca162462aa140abd0bd0aa4e40.pdf",
+        "document_id": "doc_43a22613f1950648",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-11-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Sterling SEZ and Infrastructure Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/27a5f8bf33e79b2175ac1472f689a8f7.pdf",
+        "document_id": "doc_03ebabc4b6de39b2",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-03-17",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: WORLDS WINDOW INFRASTRUCTURE AND LOGISTICS PVT LTD",
+        "url": "https://ibbi.gov.in//uploads/announcement/2022-03-21-111839-zh20e-b9e283daa406b1385be1c6cd2ff749c5.pdf",
+        "document_id": "doc_07b42cea8c61123b",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-06-18",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: NIRMAL LIFESTYLE (KALYAN) PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/7db4c96bbda21e9b53d4a403d031748a.pdf",
+        "document_id": "doc_075d35c37f8c2e6c",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-07-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: AMW COMMERCIAL VEHICLE APPLICATIONS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2022-08-02-184633-juo54-3b2339050f45f034ee0fda92f65f1263.pdf",
+        "document_id": "doc_2532aa86e7548eba",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-11-19",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Mantovani Di Dharti Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/61c7271b9dd50b5b55a55601db5d9a12.pdf",
+        "document_id": "doc_3a2fb420020873ed",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-12-01",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: BHARATIYA VAIDYA VIDHAN LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/04f08061b6de41818990ba009c924e8c.pdf",
+        "document_id": "doc_0d693637866e554d",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-12-23",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SUPREME VASAI BHIWANDI TOLLWAYS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2022-12-26-142839-0lub1-f4cbe6a7078b489ec4b4a7537c528858.pdf",
+        "document_id": "doc_4efcee24f811b607",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-01-12",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Viom Infra Ventures Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/895c6be7349d40f2fcb91ba0a2d34bac.pdf",
+        "document_id": "doc_9ee19a48a90469a6",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-02-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: MUKTAR MINERALS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/e82b9cce3a08588d0c27b8ac0bc095fe.pdf",
+        "document_id": "doc_65fcf569400e944b",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-03-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: DEEPIKA INFRATECH PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/31c6eabaca8c98047969a111abc58b00.pdf",
+        "document_id": "doc_04b21d8d71b78a63",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-03-30",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: AKR CONSTRUCTION LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/cbd0fcbffedf09b868c743bc7f44502f.pdf",
+        "document_id": "doc_4e1d762dd637e6e0",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ARROWLINE ORGANIC PRODUCTS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/27fb67a1d350727cb8dfc091c79a1b85.pdf",
+        "document_id": "doc_c0fe191da7e3eac0",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-04-24",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ALSTRONG ENTERPRISES INDIA PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/9b1d044ba9d67e77e1e2bb1e16f20c88.pdf",
+        "document_id": "doc_7c5f09f49c745dc9",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-05-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SUPREME VASAI BHIWANDI TOLLWAYS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/c630503587de3866c0f6bd47c1cc90c9.pdf",
+        "document_id": "doc_d32bc2a77558948f",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-06-16",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Supreme Bungalows Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/6f6694229a054dc8c22824058382d690.pdf",
+        "document_id": "doc_151b479dd346c48b",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-06-28",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: DADHEECH INFRASTRUCTURES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2023-06-28-192043-4a6pf-e97a34113528bee529770a12bcf3788d.pdf",
+        "document_id": "doc_c192d8d5d7837840",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-11-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Avarsekar Realty Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/30d0fc04a87f168d4351d335aa42a61b.pdf",
+        "document_id": "doc_21103ba66500c2f0",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-11-15",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Royal Infrasoft Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2023-11-16-192118-rfqpe-9470c8b04564e136185cf60d2fe25e0f.pdf",
+        "document_id": "doc_60337e3dc9f4ba1c",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-11-24",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: PRATYUSH INFRASTRUCTURE PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2023-11-28-180243-k7mzy-3b2339050f45f034ee0fda92f65f1263.pdf",
+        "document_id": "doc_656dbe204c69fa98",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-12-20",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Shweta Housing and Hospitality Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/318f7cc3db41e5ea9945dc759f5ff9d1.pdf",
+        "document_id": "doc_5ea0faf4f1916a4c",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-12-23",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: VARUTHA DEVELOPERS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/67ec76dc82c22ceb1c0e63a80388bbc3.pdf",
+        "document_id": "doc_ef112cc45f7e0f68",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-01-09",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: HBS AUTO AND ANC SEZ PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/a66c8021e5b4ad4711d9737f2cd4e646.pdf",
+        "document_id": "doc_d83c6185bc71573a",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-03-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Tattva Valuers Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/fa166029d36009ef404544e37217ef67.pdf",
+        "document_id": "doc_7f288697fc1d77e0",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-03-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Supreme Innovative Building Projects Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/3f7c6323936811dee59d9fa538e7d4e4.pdf",
+        "document_id": "doc_8836291a81ab7ead",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-03-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Supreme Star Villa Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/bd0e69ad88ef703459e62010053d0036.pdf",
+        "document_id": "doc_f35c9ccb4e0b0b5f",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-04-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Blue Arcade Properties Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2024-04-09-205334-o5gy0-a5b26badcc57f4df0658daf39397f048.pdf",
+        "document_id": "doc_350e5230c41424b1",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-05-04",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SKY INFRA LOGISTICS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/11181bd11742f2ca34010ace15a1481e.pdf",
+        "document_id": "doc_e69d0ff19b99b084",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-05-23",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SUPREME INFRASTRUCTURE BOT PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/079e8c581108e7cac94dd747da8b30fb.pdf",
+        "document_id": "doc_6e4264c668b51e9a",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-11-27",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: AMW COMMERCIAL VEHICLE APPLICATIONS LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2024-11-30-162018-aw8cr-96e9d17d7d38ab75db0335e63861d283.pdf",
+        "document_id": "doc_b475182cca3cd74a",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-11-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Royal Infrasoft Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2024-12-02-185924-n924i-9fc33784ba25d4e7e60e24f8b23c74a5.pdf",
+        "document_id": "doc_d6130681700d71c4",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-11-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Sky Infra Logistics Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/c99aa9e21c368cf57560334a34b1fc2e.pdf",
+        "document_id": "doc_25d6d6e2429c8a8c",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-03-01",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Supreme Infrastructure BOT Private Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/dc2c0b2b673d69dcf0859749fce03249.pdf",
+        "document_id": "doc_4323212fe6b58ee7",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-04-30",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ACIRA CONSULTANCY PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/fba90438bd68d503e9a4d1a50a8f9c88.pdf",
+        "document_id": "doc_3704a493d793f800",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-05-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: DADHEECH INFRASTRUCTURES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/92e95d80274057fa82efe9c754daf7d2.pdf",
+        "document_id": "doc_93b2396751e30e94",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-05-06",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: VICTOR BUILDWEL PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/a43962037713100046e7aa93d8131624.pdf",
+        "document_id": "doc_e9cd8dd6cf06658f",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-06-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: NURIT PROPERTIES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/f56c92fe14dce4867db0f3b14d2c31ee.pdf",
+        "document_id": "doc_40799a638276d249",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-07-26",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: RAMAKRISHNA TOWNSHIPS & PROJECTS PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-07-28-141711-wkz9y-5c06ce6c0111806ecfd4fbad7e27f559.pdf",
+        "document_id": "doc_4409d601811b78f1",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-09-21",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: CORONATION INFRASTRUCTURE PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/e8d431786459f29a980ced29182e490b.pdf",
+        "document_id": "doc_634ab4366bde900c",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-21",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: WORLDS WINDOW WARDHA INFRASTRUCTURE PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2025-11-21-185757-rsphg-5c06ce6c0111806ecfd4fbad7e27f559.pdf",
+        "document_id": "doc_6d79a4965234dd9d",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-03-31",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: ATTIVO ECONOMIC ZONE (KOLKATA) PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/2026-04-01-161331-s98vd-8f43edcd475acb73dcec15a992bba1ae.pdf",
+        "document_id": "doc_11d31e70a1d407d5",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-05-02",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: GAJRAJ MINING PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/640f02a10fafdd946dc4d343bb09f8fc.pdf",
+        "document_id": "doc_1b8a4e23976e0e5e",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-05-02",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: GAJRAJ MINING PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/640f02a10fafdd946dc4d343bb09f8fc.pdf",
+        "document_id": "doc_1b8a4e23976e0e5e",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-05-03",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: SRK INFRACON (INDIA) PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/3006b17edf1d15f6bf3c7f2ad71e11cc.pdf",
+        "document_id": "doc_8942d30e4e6f204a",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-05-18",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: RANKINI POWER GENERATION PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/0a7694f1727e2439866a58edce7fe10b.pdf",
+        "document_id": "doc_58cef98e5f0aa3d9",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-07-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: FNM PROPERTY SERVICES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/a8e3bf5f30da4bdbc22c54fe215b9fca.pdf",
+        "document_id": "doc_85b5939cb4eec162",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-09-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: VIJAY MINING & INFRA CORP PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/02bc0329f775be475ab9b87df7fd3770.pdf",
+        "document_id": "doc_4fe90a9e1d2af0ed",
+        "matched_alias": "Srei Equipment Finance",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-09-18",
+        "source_id": "ed",
+        "case_type": "ed_search_seizure",
+        "proceeding_status": "investigation",
+        "title": "ED, Kolkata conducted searches u/s 17 of PMLA 2002 on 11.09.2026 at various premises connected to ARSS Group, Odisha, and the AMR/AMRL Group, Hyderabad in a money laundering case of loan default from SREI Group of Kolkata. Search operations resulted in seizure of assets and valuables aggregating to ₹6.35 Cr (Approx), bank balances ₹1.50 Cr (Approx), Demat/securities holdings ₹2.90 Crore (Approx), and cash and jewellery valued at ₹1.95 Crore (Approx) alongwith various incriminating documents.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/5e756eed-90ee-47ee-a0b7-e61dee1af63d_Press%20Release_Search_SREI_18092026%203.pdf",
+        "document_id": "doc_86019151f15b4908",
+        "matched_alias": "Srei Infrastructure Finance",
+        "matched_in": "text"
+      }
+    ]
+  },
+  {
+    "case_id": "brightcom",
+    "display_name": "Brightcom Group",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "nfra"
+    ],
+    "first_public_record": "2024-04-26",
+    "entries": [
+      {
+        "date": "2024-04-26",
+        "source_id": "nfra",
+        "case_type": "nfra_disciplinary_order",
+        "proceeding_status": "final_order",
+        "title": "Order in the matter of Brightcom Group Limited for FY 2019-20 to FY 2021-22 against M/s PCN & Associates and CA Gopala Krishna Kandula",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/04/202404261550519674.pdf",
+        "document_id": "doc_5c4343a91790a790",
+        "matched_alias": "Brightcom Group",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "zee",
+    "display_name": "Zee Entertainment Enterprises",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed",
+      "nfra"
+    ],
+    "first_public_record": "2019-06-30",
+    "entries": [
+      {
+        "date": "2019-06-30",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Tanjara Trading Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_bc95355399ab8851",
+        "matched_alias": "Zee Entertainment Enterprises",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-09-25",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Jupiter Broadcast Pvt. Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/ac399db81771d62f61dfc6b604133351.pdf",
+        "document_id": "doc_0a2afd38c9ed77f6",
+        "matched_alias": "Zee Entertainment Enterprises",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-02-22",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Zee Entertainment Enterprises Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/bc998a7bf91bc6d25821f3390f362aef.pdf",
+        "document_id": "doc_27c4a75c6ea59234",
+        "matched_alias": "Zee Entertainment Enterprises",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-01-25",
+        "source_id": "ed",
+        "case_type": "ed_search_seizure",
+        "proceeding_status": "investigation",
+        "title": "ED has conducted search operations at 3 premises in Mumbai belonging to M/s Konti Infrapower & Multiventures Pvt Ltd, M/s Edison Infrapower & Multiventures Pvt Ltd, M/s Asian Satellite Broadcast Ltd, M/s Widescreen Holdings Pvt Ltd, M/s Jayneer Capital Pvt Ltd, Sprit Infrapower & Multiventures Pvt Ltd and the residential premises of an Ex- senior official of the Essel group on 24.01.2024 in the matter of siphoning off/ diversion of funds from Religare Finvest Limited, a NBFC of Religare Group. During the search operations various incriminating documents were recovered and seized.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/ede164f6-9fd7-4db0-950a-56b291d412ac_Press%20Release-%20Asian%20Satellite%20RFL%2025012024.pdf",
+        "document_id": "doc_5bc35033e0aae672",
+        "matched_alias": "Essel Group",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-12-23",
+        "source_id": "nfra",
+        "case_type": "nfra_order_erratum",
+        "proceeding_status": "erratum",
+        "title": "Errata – Order in the matter of Zee Entertainment Enterprises Limited for the FY 2018-19 and 2019- 20",
+        "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/12/202412271758055001.pdf",
+        "document_id": "doc_c70469f37548b6de",
+        "matched_alias": "Zee Entertainment Enterprises",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "gensol",
+    "display_name": "Gensol Engineering",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2025-06-14",
+    "entries": [
+      {
+        "date": "2025-06-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Gensol Engineering Ltd",
+        "url": "https://ibbi.gov.in//uploads/announcement/fddee1171fe976373d0de5a09f5348ff.pdf",
+        "document_id": "doc_d70af87cbe3fe368",
+        "matched_alias": "Gensol Engineering",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-06-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Gensol Engineering Ltd",
+        "url": "https://ibbi.gov.in//uploads/announcement/0a3e5a20e451ef9979c1ee71e84dadd5.pdf",
+        "document_id": "doc_75950efd0c07666e",
+        "matched_alias": "Gensol Engineering",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-07-31",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: BLU-SMART MOBILITY LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/d18ebed177899b4c007a8a4229eba862.pdf",
+        "document_id": "doc_daa056837a8f4cf4",
+        "matched_alias": "Blu-Smart Mobility",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-10-17",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: BLU-SMART MOBILITY TECH PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/18b370832eaf43a311344a0498b10eae.pdf",
+        "document_id": "doc_675d8c018f45f26d",
+        "matched_alias": "Blu-Smart Mobility",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-01-19",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED, HIU, New Delhi has issued a Provisional Attachment Order (PAO) in the case of Gensol Group under the provisions of the PMLA, 2002 attaching Apartment No. CM 706-A, DLF Camellias, Gurugram, Haryana registered in the name of M/s Capbridge Ventures LLP (Gensol Group company) worth Rs. 40.57 Crore and Bank balances totaling to Rs. 14.28 Crore lying in various Gensol group companies in a matter related to diversion of public funds disbursed as loans from public lenders (IREDA and PFC) and NBFCs.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/ca70cf4f-cfa8-4932-a1a3-05a471599d78_Press%20Release-PAO-Gensol-19.1.2026%203%20(1).pdf",
+        "document_id": "doc_8b2f7f9402caf1c0",
+        "matched_alias": "Gensol Engineering",
+        "matched_in": "text"
+      }
+    ]
+  },
+  {
+    "case_id": "amtek",
+    "display_name": "Amtek Auto",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2017-07-29",
+    "entries": [
+      {
+        "date": "2017-07-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Amtek Auto Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_3b882d82dd21c274",
+        "matched_alias": "Amtek Auto",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-06-24",
+        "source_id": "ed",
+        "case_type": "ed_search_seizure",
+        "proceeding_status": "investigation",
+        "title": "ED, Gurugram has conducted search operations on 20.06.2024 at approx 40 locations in Delhi NCR, Gurugram, Mumbai and Nagpur under the provisions of PMLA, 2002 in the case of M/s ACIL Limited, M/s Amtek Auto Limited, Arvind Dham, Anubhav Dham, Gautam Malhotra and others, in connection with a Bank fraud case. During the search operations, various incriminating documents, cash worth Rs. 2.53 Crore and jewellery of more than Rs. 1.1 Crore were recovered and seized.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/f41edd55-9b68-4d62-8879-b0910263c6ae_Press%20Release%20-Search-%20ACIL%20Ltd%20and%20Ors%20-2462024%201.pdf",
+        "document_id": "doc_be1adc7352c3335f",
+        "matched_alias": "Amtek Auto",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-07-11",
+        "source_id": "ed",
+        "case_type": "ed_arrest",
+        "proceeding_status": "investigation",
+        "title": "ED, Gurugram has arrested Arvind Dham, Promoter of Amtek Group of Companies on 09.07.2024 under the provisions of PMLA, 2002 in the case of M/s ACIL Limited and others, in connection with a Bank fraud case of more than Rs. 25,000 Crore. The Hon’ble Special Court (PMLA), Rouse Avenue, Delhi has granted 07 days ED custody.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/be649705-f922-46c8-bea2-4a7127017409_Press%20Release%20Arrest%20-%20Arvind%20Dham-1172024%204.pdf",
+        "document_id": "doc_20da2cdac7bf6418",
+        "matched_alias": "Amtek Auto",
+        "matched_in": "text"
+      },
+      {
+        "date": "2025-07-12",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED, Gurugram Zonal Office has provisionally attached movable and immovable assets worth Rs. 588.57 Crore on 10/07/2025, under the PMLA, 2002, in connection with the Bank Fraud case involving M/s Amtek Auto Limited, M/s ARG Limited, M/s ACIL Limited, M/s Metalyst Forging Limited, and M/s Castex Technologies Limited, along with promoter Arvind Dham and others. The attachment comprise immovable properties, including 28 acres of land located in Hundewala, Ratuali and Kansapur at Yamuna Nagar and 67.5 acres of land at Kot and Khangesara villages of Panchkula, Haryana, along with other properties situated in the Delhi/NCR region. Additionally, the attached assets include fixed deposits amounting to Rs. 8.70 Crore, as well as shares, with a total valuation of Rs. 14.6 Crore. The total attached properties in this case so far, stands at Rs. 6261.37 Crore (approx.)",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/0af7d176-ea01-47d6-b922-f20e552a268b_Press%20release%20120725%203rd%20PAO%20Amtek(Final)%201.pdf",
+        "document_id": "doc_ffafbc5c8ae9c16b",
+        "matched_alias": "Amtek Auto",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-08-11",
+        "source_id": "ed",
+        "case_type": "ed_prosecution_complaint",
+        "proceeding_status": "prosecution_complaint_filed",
+        "title": "ED, Gurugram has filed a Supplementary Prosecution Complaint on 01.08.2025 before the Special PMLA Court, at Rouse Avenue, New Delhi in connection with the Bank Fraud case involving M/s Amtek Auto Limited, M/s ARGL Limited, M/s ACIL Limited, M/s Metalyst Forging Limited, and M/s Castex Technologies Limited, and other group companies along with promoters Arvind Dham and others. The Hon’ble Court was pleased to issue notice to all 56 accused including main promoter and family members of Amtek group, Chartered Accountants, Bankers, Resolution Professionals, Stock market operators, and others on 07.08.2025 u/s 223 of BNSS.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/0bf01aa4-2944-4a9f-a961-3bbdfeb7d000_Press%20release%20-%20Amtek%20SPC-11.8.2025%203.pdf",
+        "document_id": "doc_87879f854b4f41bc",
+        "matched_alias": "Amtek Auto",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "rotomac",
+    "display_name": "Rotomac Global",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "ed"
+    ],
+    "first_public_record": "2017-09-25",
+    "entries": [
+      {
+        "date": "2017-09-25",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Rotomac Global Private Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_37f8e1ae794a5a71",
+        "matched_alias": "Rotomac Global",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-03-29",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Rotomac Global Pvt. Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_31acb35b3fb4a6c1",
+        "matched_alias": "Rotomac Global",
+        "matched_in": "title"
+      },
+      {
+        "date": "2025-11-19",
+        "source_id": "ed",
+        "case_type": "ed_restitution",
+        "proceeding_status": "assets_restituted",
+        "title": "Directorate of Enforcement, Delhi Zonal Office, has successfully restituted assets worth Rs. 380 Crore (approx.) to the liquidator to proceed with liquidation for the benefit of victims, secured creditors and other legitimate claimants in the case of M/s. Rotomac Global Pvt. Ltd. The restitution highlights the ED’s commitment to returning Proceeds of Crime to rightful claimants and victims.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/c67a3d2e-0a45-442c-a02c-f1a13a4aca38_Press%20Release-Restitution%20Order%20in%20Rotomac-19.11.2025%203.pdf",
+        "document_id": "doc_6752f7dad7bd46fd",
+        "matched_alias": "Rotomac Global",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "cox_kings",
+    "display_name": "Cox & Kings",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi",
+      "rbi",
+      "ed"
+    ],
+    "first_public_record": "2019-10-25",
+    "entries": [
+      {
+        "date": "2019-10-25",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Cox & Kings Ltd.",
+        "url": "https://ibbi.gov.in//uploads/announcement/67ee9da0248fe4a789b87ac740238877.pdf",
+        "document_id": "doc_2e1928f88102967e",
+        "matched_alias": "Cox & Kings",
+        "matched_in": "title"
+      },
+      {
+        "date": "2019-10-26",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: COX & KINGS LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/c6d9d4ee1b9811cb9944073a06837432.pdf",
+        "document_id": "doc_ecd5233a9c9ce981",
+        "matched_alias": "Cox & Kings",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-05-07",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Cox & Kings Financial Service Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/2021-05-17-120859-q8xz6-e0159f5966b415b8e63fbc2ed351bff5.pdf",
+        "document_id": "doc_19358415172e6c04",
+        "matched_alias": "Cox & Kings",
+        "matched_in": "title"
+      },
+      {
+        "date": "2021-12-20",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: Cox & Kings Limited",
+        "url": "https://ibbi.gov.in//uploads/announcement/6dcc730b2bed073245589f303ff36d14.pdf",
+        "document_id": "doc_37c7fce9c87c8607",
+        "matched_alias": "Cox & Kings",
+        "matched_in": "title"
+      },
+      {
+        "date": "2022-11-10",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: COX & KINGS FINANCIAL SERVICE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/e597d656503f106d879ea936312f3d2c.pdf",
+        "document_id": "doc_d788a554b81e78c1",
+        "matched_alias": "Cox & Kings",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-01-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: COX AND KINGS GLOBAL SERVICES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/23c35d19483d26b6784e8411660b8dbf.pdf",
+        "document_id": "doc_f5beb37d177cb8b1",
+        "matched_alias": "Cox and Kings",
+        "matched_in": "title"
+      },
+      {
+        "date": "2023-11-11",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: COX AND KINGS GLOBAL SERVICES PRIVATE LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/6c9d7a3dc6650e93c3e3d9823f7c287c.pdf",
+        "document_id": "doc_8ae96fe74a019a75",
+        "matched_alias": "Cox and Kings",
+        "matched_in": "title"
+      },
+      {
+        "date": "2024-02-09",
+        "source_id": "rbi",
+        "case_type": "rbi_cor_cancellation",
+        "proceeding_status": "registration_cancelled",
+        "title": "RBI cancels Certificate of Registration of Three NBFCs",
+        "url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=57298",
+        "document_id": "doc_69016cc9224b5a69",
+        "matched_alias": "Cox & Kings",
+        "matched_in": "text"
+      },
+      {
+        "date": "2025-11-28",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED, Mumbai Zonal Office has successfully ensured release of properties to Legitimate Claimant in the money laundering case against Cox & Kings Ltd. (CKL), its promoters and others. The Hon’ble Supreme Court, has ordered restoration of the Rs. 520.80 Crore deposit (along with accumulated interest) to the SRA under Section 8(8), PMLA. Importantly, the Hon’ble Supreme Court has expressly noted that: “We place on record our appreciation for the earnest efforts made by the officers of the Directorate of Enforcement in restoring the attached properties to secure the interests of justice.” ED remains firmly committed to ensuring confiscation of Proceeds of Crime and vigorous prosecution of those involved in money-laundering activities, while securing restitution of assets to rightful stakeholders in accordance with Section 8(8) of PMLA.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/46853e57-d707-4db9-b1c8-d60ac7c0d1cf_MBZO-1%20Press%20release%20restitution%20of%20properties%20to%20the%20Successful%20Resolution%20Applicant.pdf",
+        "document_id": "doc_f1590c436e32a5dd",
+        "matched_alias": "Cox & Kings",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "winsome",
+    "display_name": "Winsome Diamonds",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ibbi"
+    ],
+    "first_public_record": "2018-02-14",
+    "entries": [
+      {
+        "date": "2018-02-14",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Forever Precious Jewellery and Diamonds Ltd.",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_73da3853cd9e95b0",
+        "matched_alias": "Forever Precious Jewellery",
+        "matched_in": "title"
+      },
+      {
+        "date": "2018-02-15",
+        "source_id": "ibbi",
+        "case_type": "ibbi_cirp",
+        "proceeding_status": "cirp_initiated",
+        "title": "Public Announcement of Corporate Insolvency Resolution Process: Winsome Diamonds and Jewellery Limited",
+        "url": "https://ibbi.gov.in/public-announcement",
+        "document_id": "doc_d68edca1f357382b",
+        "matched_alias": "Winsome Diamonds",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-09-04",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: FOREVER PRECIOUS JEWELLERY AND DIAMONDS LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/0f73ce0e43f8b925db1a24b3cb66fa02.pdf",
+        "document_id": "doc_b08c24ae57dc33ee",
+        "matched_alias": "Forever Precious Jewellery",
+        "matched_in": "title"
+      },
+      {
+        "date": "2020-09-04",
+        "source_id": "ibbi",
+        "case_type": "ibbi_liquidation",
+        "proceeding_status": "liquidation",
+        "title": "Public Announcement of Liquidation Process: WINSOME DIAMONDS AND JEWELLERY LIMITED",
+        "url": "https://ibbi.gov.in//uploads/announcement/a6dff5b6532e0f023720aa77283a2742.pdf",
+        "document_id": "doc_002b47bb41796b2a",
+        "matched_alias": "Winsome Diamonds",
+        "matched_in": "title"
+      }
+    ]
+  },
+  {
+    "case_id": "adarsh",
+    "display_name": "Adarsh group",
+    "verification_status": "seed_candidate_unverified",
+    "sources": [
+      "ed"
+    ],
+    "first_public_record": "2024-12-10",
+    "entries": [
+      {
+        "date": "2024-12-10",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED, Jaipur has provisionally attached movable & immovable properties worth Rs. 135.06 Crore under the provisions of PMLA, 2002 on 09.12.2024 in the matter of M/s Adarsh Credit Co-operative Society Ltd & others. Total attachment in this case till date is stands at Rs.2210 Crore (approx.).",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/31019e7c-0c2d-4c19-aec5-2342b5a7866d_Press%20Release-Adarsh%20Credit%20Co-operative%20Society%20Ltd=-010122024%205.pdf",
+        "document_id": "doc_4ad16bc81e5625fe",
+        "matched_alias": "Adarsh Credit Co-operative",
+        "matched_in": "title"
+      },
+      {
+        "date": "2026-02-16",
+        "source_id": "ed",
+        "case_type": "ed_provisional_attachment",
+        "proceeding_status": "provisional_attachment",
+        "title": "ED, Jaipur has provisionally attached movable & immovable properties worth Rs. 7.72 Crore (approx.) under PMLA, 2002 on 12.02.2026 in the case of M/s Adarsh Credit Co-operative Society Ltd & others in a matter related to defrauding of gullible investors/members. Total attachment in this case stands at Rs. 2183.72 Crore (approx.) so far.",
+        "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/b9800212-72f6-4f7d-965d-587595b4f85d_Press%20Release-PAO-Adarsh-16022026%202.pdf",
+        "document_id": "doc_0069f7bac8a6b84d",
+        "matched_alias": "Adarsh Credit Co-operative",
+        "matched_in": "title"
+      }
+    ]
+  }
+]

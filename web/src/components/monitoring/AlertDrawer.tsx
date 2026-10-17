@@ -82,7 +82,7 @@ export function AlertDrawer({
       summary: alert.reason,
       priority: alert.priority,
       branchId: alert.branchId,
-      source: alert.source === 'monitoring' ? 'monitoring' : 'pre_disbursement',
+      source: alert.source === 'pre_disbursement' ? 'pre_disbursement' : 'monitoring',
       borrowerIds: alert.borrowerId === null ? [] : [alert.borrowerId],
       entityIds:
         alert.monitoring?.entityIds.map((e) => db.entities.find((x) => x.id === e)?.ownerId ?? e) ??
@@ -241,6 +241,10 @@ export function AlertDrawer({
               <section>
                 <h3 className="mb-1 font-semibold">What was observed</h3>
                 <p>{fnd.observed}</p>
+              </section>
+              <section>
+                <h3 className="mb-1 font-semibold">Why it matters</h3>
+                <p>{fnd.whyItMatters}</p>
               </section>
               <section>
                 <h3 className="mb-2 font-semibold">Source evidence</h3>

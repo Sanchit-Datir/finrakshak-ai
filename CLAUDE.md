@@ -1,8 +1,15 @@
 # Fund Tracker — Engineering Instructions
 
 Monorepo: **React + Vite web UI** (`web/`), **Firebase Cloud Functions** backend (`functions/`),
-shared **zod** schemas/types (`packages/shared/`). Data in **Firestore**; AI via **Gemini on
+shared **zod** schemas/types (`packages/shared/`), and the public-source **data pipeline** (`ingest/`,
+outputs in `data/` — read `ingest/README.md` and `data/README.md` before changing either). Data in **Firestore**; AI via **Gemini on
 Vertex AI**; hosted on **Firebase Hosting**. Language: **TypeScript only**.
+
+## Session handoff
+
+**Start every session by reading `docs/SESSION_NOTES.md`.** It records the current state, the owner's
+working rules (ask before committing; no PR; never change source data) and open decisions. Update it
+before the session ends.
 
 ## Web prototype layout (FundTrace AI)
 

@@ -1,0 +1,649 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Gitanjali Gems (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 13,
+      "edges": 20,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 5,
+      "node:bank": 1,
+      "node:person": 2,
+      "node:event": 5,
+      "edge:named_in": 4,
+      "basis:established": 18,
+      "strength:strong": 4,
+      "edge:mentioned_in": 1,
+      "basis:candidate": 2,
+      "strength:weak": 16,
+      "edge:insolvency_applicant_against": 6,
+      "edge:insolvency_professional_for": 8,
+      "edge:possible_same_entity": 1,
+      "hub_nodes": 2
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 4,
+      "seed_cases": [
+        "gitanjali"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 9,
+      "id": "ent_L36911MH1986PLC040689",
+      "kind": "company",
+      "label": "Gitanjali Gems Ltd.",
+      "detail": "L36911MH1986PLC040689",
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 7,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 88,
+      "id": "ent_825af0bd1de44d7d",
+      "kind": "bank",
+      "label": "ICICI Bank Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi",
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U36910MH2004PLC146406",
+      "kind": "company",
+      "label": "Nakshatra Brands Limited",
+      "detail": "U36910MH2004PLC146406 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "ent_ebf5a6aeb8fa7317",
+      "kind": "company",
+      "label": "LANCO VIDARBHA THERMAL POWER LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U01100MH1995PLC095425",
+      "kind": "company",
+      "label": "NAKSHATRA WORLD LIMITED",
+      "detail": "U01100MH1995PLC095425 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "ent_9a877f0c2ac7fe6a",
+      "kind": "company",
+      "label": "Lanco Vidarbha Thermal Power Pvt. Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 25,
+      "id": "per_a7e9e7bc735ca76f",
+      "kind": "person",
+      "label": "SANTANU T RAY",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "per_c3c330ff37b23ae9",
+      "kind": "person",
+      "label": "VIJAY KUMAR GARG",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-24",
+      "document_id": "doc_833aa5a5a2f8cf15",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_043661de483d6841",
+      "kind": "event",
+      "label": "In continuation to the ED’s ongoing efforts for restitution and restoration of assets, ED, Mumbai Zonal Office has facilitated the handing over of four (4) flats in Project Tatva, Urja – A Wing, Datthapada Road, Borivali",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-11-24",
+      "document_id": "doc_30b214713068d018",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_99ac1837b72361a2",
+      "kind": "event",
+      "label": "In continuation to the ED’s ongoing efforts for restitution and restoration of assets, ED, Mumbai Zonal Office has facilitated the handing over of four (4) flats in Project Tatva, Urja – A Wing, Datthapada Road, Borivali",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2024-12-10",
+      "document_id": "doc_3f0aaeb283f281f4",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_cc9136f088ef062f",
+      "kind": "event",
+      "label": "Hon’ble Special Court (PMLA), Mumbai allowed “monetisation of properties” amounting to Rs. 2565.90 Crore attached or seized by the ED, Mumbai in Mehul Choksi case (PNB fraud case). ED ongoing efforts for restitution of p",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2024-02-10",
+      "document_id": "doc_73431c3790a99e92",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_2dbd04522b53c316",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: GITANJALI GEMS LTD",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2018-10-09",
+      "document_id": "doc_ef2997663767b15b",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_d2ee49db570a8dcf",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Gitanjali Gems Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_69052b8e446e9b4e",
+      "from": "ent_L36911MH1986PLC040689",
+      "to": "evt_043661de483d6841",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-11-24",
+      "document_id": "doc_833aa5a5a2f8cf15",
+      "relationship_id": "rel_69052b8e446e9b4e",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_c63a5e75adc1e48f",
+      "from": "ent_L36911MH1986PLC040689",
+      "to": "evt_99ac1837b72361a2",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-11-24",
+      "document_id": "doc_30b214713068d018",
+      "relationship_id": "rel_c63a5e75adc1e48f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_5e401c8a8acd9522",
+      "from": "ent_L36911MH1986PLC040689",
+      "to": "evt_cc9136f088ef062f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-12-10",
+      "document_id": "doc_3f0aaeb283f281f4",
+      "relationship_id": "rel_5e401c8a8acd9522",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_df3dc642f6ae0088",
+      "from": "ent_L36911MH1986PLC040689",
+      "to": "evt_2dbd04522b53c316",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-02-10",
+      "document_id": "doc_73431c3790a99e92",
+      "relationship_id": "rel_df3dc642f6ae0088",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_ef28643ad94ab487",
+      "from": "ent_825af0bd1de44d7d",
+      "to": "ent_L36911MH1986PLC040689",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-02-10",
+      "document_id": "doc_73431c3790a99e92",
+      "relationship_id": "rel_ef28643ad94ab487",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_2f9e663359b3b997",
+      "from": "ent_825af0bd1de44d7d",
+      "to": "ent_U36910MH2004PLC146406",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-11-16",
+      "document_id": "doc_53559773ed449782",
+      "relationship_id": "rel_2f9e663359b3b997",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_7dedb36d3d889842",
+      "from": "ent_825af0bd1de44d7d",
+      "to": "ent_U01100MH1995PLC095425",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-06-29",
+      "document_id": "doc_0f08d5f461e27b17",
+      "relationship_id": "rel_7dedb36d3d889842",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_50420fbb3b2e1c28",
+      "from": "ent_825af0bd1de44d7d",
+      "to": "ent_U01100MH1995PLC095425",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-02-08",
+      "document_id": "doc_1ac2718f42271b83",
+      "relationship_id": "rel_50420fbb3b2e1c28",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_94def54fa3f6e1ec",
+      "from": "ent_825af0bd1de44d7d",
+      "to": "ent_U36910MH2004PLC146406",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-02-08",
+      "document_id": "doc_104a55be3a978fc8",
+      "relationship_id": "rel_94def54fa3f6e1ec",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_33d5aedc52500cc5",
+      "from": "ent_L36911MH1986PLC040689",
+      "to": "evt_d2ee49db570a8dcf",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-10-09",
+      "document_id": "doc_ef2997663767b15b",
+      "relationship_id": "rel_33d5aedc52500cc5",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_231e0be2a057e085",
+      "from": "ent_825af0bd1de44d7d",
+      "to": "ent_L36911MH1986PLC040689",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-10-09",
+      "document_id": "doc_ef2997663767b15b",
+      "relationship_id": "rel_231e0be2a057e085",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_a9555714f94b7644",
+      "from": "per_a7e9e7bc735ca76f",
+      "to": "ent_L36911MH1986PLC040689",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2024-02-10",
+      "document_id": "doc_73431c3790a99e92",
+      "relationship_id": "rel_a9555714f94b7644",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_aec285ccf1825554",
+      "from": "per_a7e9e7bc735ca76f",
+      "to": "ent_U36910MH2004PLC146406",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-11-16",
+      "document_id": "doc_53559773ed449782",
+      "relationship_id": "rel_aec285ccf1825554",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_36c132b9fa9e8daf",
+      "from": "per_c3c330ff37b23ae9",
+      "to": "ent_ebf5a6aeb8fa7317",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-07-05",
+      "document_id": "doc_e5fa5dd2031e1245",
+      "relationship_id": "rel_36c132b9fa9e8daf",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_4abd4cf3e9d56b25",
+      "from": "per_a7e9e7bc735ca76f",
+      "to": "ent_U01100MH1995PLC095425",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-06-29",
+      "document_id": "doc_0f08d5f461e27b17",
+      "relationship_id": "rel_4abd4cf3e9d56b25",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_ae77f57abd699ee4",
+      "from": "per_c3c330ff37b23ae9",
+      "to": "ent_9a877f0c2ac7fe6a",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-05",
+      "document_id": "doc_9679b2bb47cb81c7",
+      "relationship_id": "rel_ae77f57abd699ee4",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_f2bd2b530c866a36",
+      "from": "per_c3c330ff37b23ae9",
+      "to": "ent_U01100MH1995PLC095425",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-02-08",
+      "document_id": "doc_1ac2718f42271b83",
+      "relationship_id": "rel_f2bd2b530c866a36",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_2ad40ba7650d4ee3",
+      "from": "per_c3c330ff37b23ae9",
+      "to": "ent_U36910MH2004PLC146406",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-02-08",
+      "document_id": "doc_104a55be3a978fc8",
+      "relationship_id": "rel_2ad40ba7650d4ee3",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_6554e5e5b2cc272d",
+      "from": "per_c3c330ff37b23ae9",
+      "to": "ent_L36911MH1986PLC040689",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-10-09",
+      "document_id": "doc_ef2997663767b15b",
+      "relationship_id": "rel_6554e5e5b2cc272d",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_842b264301b4da0f",
+      "from": "ent_ebf5a6aeb8fa7317",
+      "to": "ent_9a877f0c2ac7fe6a",
+      "type": "possible_same_entity",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "graph_lab",
+      "date": null,
+      "document_id": null,
+      "relationship_id": null,
+      "confidence": 0.6
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_833aa5a5a2f8cf15",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/d4451431-2100-4fa1-a286-fe2b212e56ee_Press%20Release-%2024.11.2025%20(Mehul%20Choksi%20Monetisation)%203.pdf",
+      "title": "In continuation to the ED’s ongoing efforts for restitution and restoration of assets, ED, Mumbai Zonal Office has facilitated the handing over of four (4) flats in Project Tatva, Urja – A Wing, Datthapada Road, Borivali",
+      "date": "2025-11-24",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_30b214713068d018",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/f802a744-f3bd-467e-8809-85847a4f7b57_Press%20Release-%2024.11.2025%20(Mehul%20Choksi%20Monetisation)%203.pdf",
+      "title": "In continuation to the ED’s ongoing efforts for restitution and restoration of assets, ED, Mumbai Zonal Office has facilitated the handing over of four (4) flats in Project Tatva, Urja – A Wing, Datthapada Road, Borivali",
+      "date": "2025-11-24",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_3f0aaeb283f281f4",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/4849f701-4694-4dac-bb15-4147fa2ba635_Press%20Release-%20Monetisation%20Mehul%20Choksi%20-10122024%201.pdf",
+      "title": "Hon’ble Special Court (PMLA), Mumbai allowed “monetisation of properties” amounting to Rs. 2565.90 Crore attached or seized by the ED, Mumbai in Mehul Choksi case (PNB fraud case). ED ongoing efforts for restitution of p",
+      "date": "2024-12-10",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_73431c3790a99e92",
+      "url": "https://ibbi.gov.in//uploads/announcement/2024-02-12-112006-be27m-5c06ce6c0111806ecfd4fbad7e27f559.pdf",
+      "title": "Public Announcement of Liquidation Process: GITANJALI GEMS LTD",
+      "date": "2024-02-10",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_53559773ed449782",
+      "url": "https://ibbi.gov.in//uploads/announcement/1a8f037826420a40b7fe65134c6ba7c9.pdf",
+      "title": "Public Announcement of Liquidation Process: Nakshatra Brands Limited",
+      "date": "2021-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_e5fa5dd2031e1245",
+      "url": "https://ibbi.gov.in//uploads/announcement/0b7d84b4b1a8dd46c4faffbdc5de05b3.pdf",
+      "title": "Public Announcement of Liquidation Process: LANCO VIDARBHA THERMAL POWER LIMITED",
+      "date": "2021-07-05",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_0f08d5f461e27b17",
+      "url": "https://ibbi.gov.in//uploads/announcement/ab4c2fb23ca8638bfbd7d2006f263f98.pdf",
+      "title": "Public Announcement of Liquidation Process: NAKSHATRA WORLD LIMITED",
+      "date": "2021-06-29",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_9679b2bb47cb81c7",
+      "url": "https://ibbi.gov.in//uploads/announcement/6679e28b7bfef24563f6f5b72c955a47.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Lanco Vidarbha Thermal Power Pvt. Ltd.",
+      "date": "2019-10-05",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_1ac2718f42271b83",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Nakshatra World Ltd.",
+      "date": "2019-02-08",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_104a55be3a978fc8",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Nakshatra Brands Ltd.",
+      "date": "2019-02-08",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_ef2997663767b15b",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Gitanjali Gems Ltd.",
+      "date": "2018-10-09",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [],
+  "identity": [
+    {
+      "id": "idc_375a6843d7105784",
+      "a": "ent_ebf5a6aeb8fa7317",
+      "b": "ent_9a877f0c2ac7fe6a",
+      "name_a": "LANCO VIDARBHA THERMAL POWER LIMITED",
+      "name_b": "LANCO VIDARBHA THERMAL POWER PRIVATE LIMITED",
+      "similarity": 1,
+      "reasons": [
+        "similar_name"
+      ],
+      "status": "needs_review"
+    }
+  ]
+}

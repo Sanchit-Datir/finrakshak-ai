@@ -84,9 +84,10 @@ function emptyData(): ApplicationData {
       warehouseReceiptNo: '',
       collateralValueMinor: null,
     },
-    business: { businessName: '', registrationNo: '', gstin: '', udyamNo: '' },
+    business: { businessName: '', registrationNo: '', pan: '', gstin: '', udyamNo: '' },
     guarantor: { name: '', relation: '' },
     declaration: { purposeDeclared: false, remarks: '' },
+    receivables: { customers: [] },
   };
 }
 
@@ -107,6 +108,7 @@ function data(p: DeepPartial<ApplicationData>): ApplicationData {
     business: { ...base.business, ...p.business },
     guarantor: { ...base.guarantor, ...p.guarantor },
     declaration: { ...base.declaration, ...p.declaration },
+    receivables: { customers: [...(p.receivables?.customers ?? base.receivables.customers)] },
   };
 }
 
@@ -314,6 +316,7 @@ export function createDemoDb(now: Date = new Date()): Db {
     relationshipManager: manager,
     status: 'active',
     maskedIdentifier: masked,
+    registrationNo: '',
     createdAt: ago(createdDays),
     updatedAt: ago(Math.max(1, Math.floor(createdDays / 6))),
   });
@@ -563,6 +566,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       audit: [audit(created, officer, 'Application created', 'Created from branch counter (demo)')],
       checksRunAt: o.checks === false ? null : plus(created, 4),
       findingStates: {},
+      publicRecords: null,
     };
     if (submitted !== null)
       a.audit.push(
@@ -1735,6 +1739,120 @@ export function createDemoDb(now: Date = new Date()): Db {
     ),
   );
 
+  // TEST loan for the post-disbursement public-records scenario
+  // (e2e/scenarios/advantage-overseas-post-disbursement). The borrower is a real company so its
+  // public records (IBBI, ED) can be matched; the loan, amount and account are made up.
+  entities.push(
+    ent(
+      'c-advantage',
+      'company',
+      'Advantage Overseas Private Limited',
+      'TEST borrower — public-records scenario',
+      null,
+      'b-advantage',
+    ),
+    account('a-advantage', 'c-advantage', 'XXXX 0601'),
+    ent(
+      'loan:L-2023-0601',
+      'loan',
+      'L-2023-0601',
+      'Working capital (TEST loan)',
+      null,
+      'b-advantage',
+    ),
+  );
+  borrowers.push({
+    ...borrower(
+      'b-advantage',
+      'c-advantage',
+      'Advantage Overseas Private Limited',
+      'Advantage Overseas Private Limited',
+      'private_limited',
+      'br-shirur',
+      'CIN U05121MH2004PTC199195',
+      1240,
+    ),
+    registrationNo: 'U05121MH2004PTC199195',
+  });
+  loans.push({
+    id: 'L-2023-0601',
+    applicationId: null,
+    borrowerId: 'b-advantage',
+    product: 'msme_working_capital',
+    amountMinor: rupees(20_000_000),
+    disbursedAt: '2023-06-01T05:30:00.000Z',
+    purpose: 'Working capital (TEST loan for the public-records scenario)',
+    monitoringDays: 90,
+    accountEntityId: 'a-advantage',
+    dataSource: 'TEST loan — real borrower name, made-up loan values (public-records scenario)',
+    lastUpdated: ago(0, 7),
+    branchId: 'br-shirur',
+  });
+  relationships.push(
+    rel(
+      'c-advantage',
+      'loan:L-2023-0601',
+      'borrower_for',
+      'verified',
+      'Loan ledger (L-2023-0601)',
+      1240,
+      'Borrower on L-2023-0601',
+    ),
+  );
+
+  // TEST loan for the "clean borrower, sudden enforcement" public-records scenario
+  // (e2e/scenarios/jai-corp-sudden-enforcement). Real borrower; made-up loan values.
+  entities.push(
+    ent(
+      'c-jaicorp',
+      'company',
+      'Jai Corp Limited',
+      'TEST borrower — public-records scenario',
+      null,
+      'b-jaicorp',
+    ),
+    account('a-jaicorp', 'c-jaicorp', 'XXXX 0401'),
+    ent('loan:L-2024-0401', 'loan', 'L-2024-0401', 'Term loan (TEST loan)', null, 'b-jaicorp'),
+  );
+  borrowers.push({
+    ...borrower(
+      'b-jaicorp',
+      'c-jaicorp',
+      'Jai Corp Limited',
+      'Jai Corp Limited',
+      'private_limited',
+      'br-shirur',
+      'CIN L17120MH1985PLC036500',
+      930,
+    ),
+    registrationNo: 'L17120MH1985PLC036500',
+  });
+  loans.push({
+    id: 'L-2024-0401',
+    applicationId: null,
+    borrowerId: 'b-jaicorp',
+    product: 'msme_term',
+    amountMinor: rupees(50_000_000),
+    disbursedAt: '2024-04-01T05:30:00.000Z',
+    purpose: 'Term loan (TEST loan for the public-records scenario)',
+    monitoringDays: 90,
+    accountEntityId: 'a-jaicorp',
+    dataSource: 'TEST loan — real borrower name, made-up loan values (public-records scenario)',
+    lastUpdated: ago(0, 7),
+    branchId: 'br-shirur',
+  });
+  relationships.push(
+    rel(
+      'c-jaicorp',
+      'loan:L-2024-0401',
+      'borrower_for',
+      'verified',
+      'Loan ledger (L-2024-0401)',
+      930,
+      'Borrower on L-2024-0401',
+    ),
+  );
+
   // ---------- Alert states (others default to New) ----------
   const st = (
     status: AlertState['status'],
@@ -2117,6 +2235,7 @@ export function createDemoDb(now: Date = new Date()): Db {
     cases,
     settings: defaultSettings(),
     readAlertIds: [],
+    publicWatches: [],
     counters: { application: 1015, document: docSeq, case: 15 },
   };
 }
@@ -2135,6 +2254,7 @@ export function createEmptyDb(now: Date = new Date()): Db {
     transactions: [],
     alertStates: {},
     cases: [],
+    publicWatches: [],
     counters: { application: 1000, document: 0, case: 0 },
   };
 }

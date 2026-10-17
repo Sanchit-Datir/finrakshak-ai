@@ -1,0 +1,72 @@
+[
+  {
+    "name": "document_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "source_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "collection",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "item_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "url",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "title",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "publication_date",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  },
+  {
+    "name": "retrieval_date",
+    "mode": "NULLABLE",
+    "type": "TIMESTAMP"
+  },
+  {
+    "name": "checksum_sha256",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "file_location",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "content_type",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "text_chars",
+    "mode": "REQUIRED",
+    "type": "INT64"
+  },
+  {
+    "name": "page_count",
+    "mode": "REQUIRED",
+    "type": "INT64"
+  },
+  {
+    "name": "terms_note",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  }
+]

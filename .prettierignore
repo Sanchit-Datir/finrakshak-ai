@@ -4,6 +4,11 @@ lib
 coverage
 package-lock.json
 .firebase
-test-results
+
+# Generated datasets (ingest)
+data/
+
+# Playwright output (e2e)
 playwright-report
+test-results
 blob-report

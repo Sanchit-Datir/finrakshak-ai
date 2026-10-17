@@ -3,6 +3,7 @@ import { Suspense, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import { useThemeEffect } from '../../state/hooks.js';
 import { useSession } from '../../state/session.js';
+import { useAutoWatch } from '../../state/useAutoWatch.js';
 import { dismissLoadIssue, useStoreStatus } from '../../state/store.js';
 import { cn } from '../ui/cn.js';
 import { Notice, PageSkeleton } from '../ui/States.js';
@@ -27,6 +28,7 @@ export function AppShell(): React.JSX.Element {
   const [collapsed, setCollapsed] = useState(readCollapsed);
   const [drawer, setDrawer] = useState(false);
   useThemeEffect();
+  useAutoWatch(session?.name ?? null);
 
   // Close the mobile drawer whenever the route changes (derived during render, not in an effect).
   const [lastPath, setLastPath] = useState(location.pathname);

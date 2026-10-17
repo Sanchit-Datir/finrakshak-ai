@@ -1,0 +1,346 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Bhushan Steel (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 8,
+      "edges": 9,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 2,
+      "node:bank": 1,
+      "node:person": 1,
+      "node:event": 4,
+      "edge:named_in": 4,
+      "basis:established": 6,
+      "strength:strong": 4,
+      "edge:mentioned_in": 3,
+      "basis:candidate": 3,
+      "strength:weak": 5,
+      "edge:insolvency_applicant_against": 1,
+      "edge:insolvency_professional_for": 1,
+      "hub_nodes": 2
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 4,
+      "seed_cases": [
+        "bhushan_steel"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "ent_7151f75d6e967fa3",
+      "kind": "company",
+      "label": "Bhushan Steel Limited",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_19bd01b64d4c5fbc",
+      "kind": "company",
+      "label": "Hindustan Zinc Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 470,
+      "id": "ent_1edba887a60c30a3",
+      "kind": "bank",
+      "label": "State Bank of India",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 10,
+      "id": "per_575b2d90876a5e18",
+      "kind": "person",
+      "label": "VIJAY KUMAR V IYER",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-07-02",
+      "document_id": "doc_a4cddacbc7e86b0e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_38938d7b678597f3",
+      "kind": "event",
+      "label": "ED, Delhi Zonal Office has attached movable and immovable properties in the form of land and a part of residential property, situated in Indore, Madhya Pradesh, and equity shares and bank balances held in the name of Rit",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2024-03-08",
+      "document_id": "doc_618cde4fa5d047df",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_199feebb0bcfa4e1",
+      "kind": "event",
+      "label": "ED Delhi Zonal Office has attached movable and immovable properties of M/s Bhushan Steel Limited under the provisions of PMLA, 2002 amounting to about Rs. 367 Crore on 06.03.2024. The immovable properties were situated i",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2024-01-12",
+      "document_id": "doc_c4eca9c6e19d6665",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_19e7790d96d506f6",
+      "kind": "event",
+      "label": "ED has arrested 5 persons namely Ajay Mittal, Archana Mittal, Nittin Johri, Prem Tewari and Prem Agarwal on 11-01-2024 under PMLA, 2002 in connection with the money laundering investigations against Bhushan Steel Limited",
+      "detail": "Directorate of Enforcement · investigation · ed_arrest",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2017-07-26",
+      "document_id": "doc_6914e61503082485",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_d4626f3fd2064bae",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Bhushan Steel Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_6ed5f53899e5d60f",
+      "from": "ent_7151f75d6e967fa3",
+      "to": "evt_38938d7b678597f3",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2026-07-02",
+      "document_id": "doc_a4cddacbc7e86b0e",
+      "relationship_id": "rel_6ed5f53899e5d60f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_96537ca7ac9ccb8d",
+      "from": "ent_19bd01b64d4c5fbc",
+      "to": "evt_38938d7b678597f3",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2026-07-02",
+      "document_id": "doc_a4cddacbc7e86b0e",
+      "relationship_id": "rel_96537ca7ac9ccb8d",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_f2c1a2eb7245745f",
+      "from": "ent_7151f75d6e967fa3",
+      "to": "evt_199feebb0bcfa4e1",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2024-03-08",
+      "document_id": "doc_618cde4fa5d047df",
+      "relationship_id": "rel_f2c1a2eb7245745f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_75faff99e4a66028",
+      "from": "ent_19bd01b64d4c5fbc",
+      "to": "evt_199feebb0bcfa4e1",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-03-08",
+      "document_id": "doc_618cde4fa5d047df",
+      "relationship_id": "rel_75faff99e4a66028",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_39e2fb11d798dce2",
+      "from": "ent_7151f75d6e967fa3",
+      "to": "evt_19e7790d96d506f6",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2024-01-12",
+      "document_id": "doc_c4eca9c6e19d6665",
+      "relationship_id": "rel_39e2fb11d798dce2",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_773df96f83b29196",
+      "from": "ent_19bd01b64d4c5fbc",
+      "to": "evt_19e7790d96d506f6",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2024-01-12",
+      "document_id": "doc_c4eca9c6e19d6665",
+      "relationship_id": "rel_773df96f83b29196",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_fdffc3cd8855941a",
+      "from": "ent_7151f75d6e967fa3",
+      "to": "evt_d4626f3fd2064bae",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-26",
+      "document_id": "doc_6914e61503082485",
+      "relationship_id": "rel_fdffc3cd8855941a",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_3d89e17634f3b4b3",
+      "from": "ent_1edba887a60c30a3",
+      "to": "ent_7151f75d6e967fa3",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-26",
+      "document_id": "doc_6914e61503082485",
+      "relationship_id": "rel_3d89e17634f3b4b3",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_cc991e2d91a7bcb4",
+      "from": "per_575b2d90876a5e18",
+      "to": "ent_7151f75d6e967fa3",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-07-26",
+      "document_id": "doc_6914e61503082485",
+      "relationship_id": "rel_cc991e2d91a7bcb4",
+      "confidence": 0.85
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_a4cddacbc7e86b0e",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/170b0c4b-5307-4cfd-adad-e02bc575740e_Press%20Release-%20Ritu%20Singal%20PAO%20-272026%202.pdf",
+      "title": "ED, Delhi Zonal Office has attached movable and immovable properties in the form of land and a part of residential property, situated in Indore, Madhya Pradesh, and equity shares and bank balances held in the name of Rit",
+      "date": "2026-07-02",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_618cde4fa5d047df",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/c45e8bc1-58c6-460d-ae2e-6bdf1e66ccd9_Press%20release-%20Bhushan%20Steel%20PAO-832024.pdf",
+      "title": "ED Delhi Zonal Office has attached movable and immovable properties of M/s Bhushan Steel Limited under the provisions of PMLA, 2002 amounting to about Rs. 367 Crore on 06.03.2024. The immovable properties were situated i",
+      "date": "2024-03-08",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_c4eca9c6e19d6665",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/6830b79a-2e1f-4bb8-8cc6-1e30ed264462_Press%20Release-%20Bhushan%20Steel%20Arrests-12012024.pdf",
+      "title": "ED has arrested 5 persons namely Ajay Mittal, Archana Mittal, Nittin Johri, Prem Tewari and Prem Agarwal on 11-01-2024 under PMLA, 2002 in connection with the money laundering investigations against Bhushan Steel Limited",
+      "date": "2024-01-12",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_6914e61503082485",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Bhushan Steel Limited",
+      "date": "2017-07-26",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

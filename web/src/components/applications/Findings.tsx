@@ -1,4 +1,5 @@
-import { FileSearch, ListChecks } from 'lucide-react';
+import { ExternalLink, FileSearch, ListChecks } from 'lucide-react';
+import { safeExternalUrl } from '../../lib/safe-url.js';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { FINDING_STATUS_LABEL } from '../../domain/labels.js';
@@ -49,6 +50,17 @@ export function EvidenceList({
               >
                 Open application {e.appId}
               </Link>
+            )}
+            {safeExternalUrl(e.url) !== null && (
+              <a
+                href={safeExternalUrl(e.url) ?? undefined}
+                target="_blank"
+                rel="noreferrer"
+                className="text-primary inline-flex items-center gap-1 font-semibold hover:underline"
+              >
+                <ExternalLink className="size-3.5" aria-hidden /> Open public record
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
             )}
           </div>
         </li>

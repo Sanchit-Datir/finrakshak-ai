@@ -28,6 +28,10 @@ const BorrowerProfilePage = named(
   'BorrowerProfilePage',
 );
 const MonitoringPage = named(() => import('./pages/MonitoringPage.js'), 'MonitoringPage');
+const PublicRecordsWatchPage = named(
+  () => import('./pages/PublicRecordsWatchPage.js'),
+  'PublicRecordsWatchPage',
+);
 const InvestigationsPage = named(
   () => import('./pages/InvestigationsPage.js'),
   'InvestigationsPage',
@@ -37,6 +41,7 @@ const ReportsPage = named(() => import('./pages/ReportsPage.js'), 'ReportsPage')
 const AlertsPage = named(() => import('./pages/AlertsPage.js'), 'AlertsPage');
 const SettingsPage = named(() => import('./pages/SettingsPage.js'), 'SettingsPage');
 const HelpPage = named(() => import('./pages/HelpPage.js'), 'HelpPage');
+const GraphLabPage = named(() => import('./pages/GraphLabPage.js'), 'GraphLabPage');
 const NotFoundPage = named(() => import('./pages/NotFoundPage.js'), 'NotFoundPage');
 
 export function App(): React.JSX.Element {
@@ -56,12 +61,14 @@ export function App(): React.JSX.Element {
             <Route path="/borrowers" element={<BorrowersPage />} />
             <Route path="/borrowers/:borrowerId" element={<BorrowerProfilePage />} />
             <Route path="/monitoring" element={<MonitoringPage />} />
+            <Route path="/monitoring/public-records" element={<PublicRecordsWatchPage />} />
             <Route path="/investigations" element={<InvestigationsPage />} />
             <Route path="/investigations/:caseId" element={<CaseDetailPage />} />
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/alerts" element={<AlertsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/help" element={<HelpPage />} />
+            <Route path="/graph-lab" element={<GraphLabPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

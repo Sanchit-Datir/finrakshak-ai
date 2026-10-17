@@ -1,0 +1,30 @@
+{
+  "built_at": "2026-10-16T13:13:33.289Z",
+  "listed_items": {
+    "nfra": 118,
+    "sfio": 5,
+    "ed": 2100,
+    "sebi": 10,
+    "ibbi": 14952,
+    "rbi": 2439
+  },
+  "mca_master": {
+    "files": 5,
+    "rows": 766814,
+    "matched_by_cin": 6,
+    "matched_by_name": 2949
+  },
+  "rows": {
+    "documents": 19628,
+    "case_events": 19624,
+    "entities": 18286,
+    "persons": 2682,
+    "relationships": 57382,
+    "evidence_claims": 46907,
+    "risk_signals": 1110,
+    "case_seeds": 23,
+    "case_documents": 330,
+    "entity_match_candidates": 973,
+    "addresses": 2813
+  }
+}

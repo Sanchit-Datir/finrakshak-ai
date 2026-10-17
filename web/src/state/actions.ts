@@ -16,7 +16,11 @@ import type {
   FtDocument,
   Language,
   Priority,
+  PrSubject,
+  PublicRecordsSnapshot,
+  PublicWatch,
   Transaction,
+  WatchEvent,
 } from '../domain/schemas.js';
 import {
   APP_STATUS_LABEL,
@@ -72,6 +76,7 @@ export function createDraftApplication(actor: string, branchId: string): string 
       audit: [audit(actor, 'Application created', 'Draft started')],
       checksRunAt: null,
       findingStates: {},
+      publicRecords: null,
     });
   });
   return id;
@@ -118,6 +123,118 @@ export function recordChecksRun(appId: string, actor: string, summary: string): 
     const a = findApp(d, appId);
     a.checksRunAt = nowIso();
     a.audit.push(audit(actor, 'Checks run', summary));
+  });
+}
+
+/** Saves the facts a public-records check found, so findings are reproducible and audited. */
+export function recordPublicRecordsCheck(
+  appId: string,
+  actor: string,
+  snapshot: PublicRecordsSnapshot,
+): void {
+  mutate((d) => {
+    const a = findApp(d, appId);
+    a.publicRecords = snapshot;
+    const found = snapshot.exposures.length;
+    a.audit.push(
+      audit(
+        actor,
+        'Public-records check run',
+        `Local dataset built ${snapshot.datasetBuiltAt?.slice(0, 10) ?? 'unknown'}; ` +
+          `${snapshot.customersChecked.length} customer(s) checked; ` +
+          `${found} customer(s) in insolvency or liquidation`,
+      ),
+    );
+  });
+}
+
+export type NewWatch = Pick<
+  PublicWatch,
+  'loanRef' | 'borrowerName' | 'cin' | 'amountMinor' | 'disbursedOn' | 'branchId'
+>;
+
+/** Adds a disbursed loan's borrower to the public-records watch. Returns the watch id. */
+export function addPublicWatch(actor: string, input: NewWatch): string {
+  let id = '';
+  mutate((d) => {
+    id = `W-${d.publicWatches.length + 1}`;
+    const at = nowIso();
+    d.publicWatches.push({
+      ...input,
+      id,
+      loanId: null,
+      createdAt: at,
+      createdBy: actor,
+      lastCheck: null,
+      events: [],
+      audit: [audit(actor, 'Watch added', `${input.loanRef}, disbursed ${input.disbursedOn}`)],
+    });
+  });
+  return id;
+}
+
+/**
+ * Makes sure every disbursed loan in the loan book has a watch (idempotent). Watches are
+ * created from the loan and its borrower: no data entry. Returns how many were added.
+ */
+export function syncLoanWatches(actor: string): number {
+  let added = 0;
+  mutate((d) => {
+    const watched = new Set(d.publicWatches.map((w) => w.loanId));
+    for (const loan of d.loans) {
+      if (watched.has(loan.id)) continue;
+      const b = d.borrowers.find((x) => x.id === loan.borrowerId);
+      if (b === undefined) continue;
+      added += 1;
+      d.publicWatches.push({
+        id: `W-${d.publicWatches.length + 1}`,
+        loanId: loan.id,
+        loanRef: loan.id,
+        borrowerName: b.name,
+        cin: b.registrationNo,
+        amountMinor: loan.amountMinor,
+        disbursedOn: loan.disbursedAt.slice(0, 10),
+        branchId: loan.branchId,
+        createdAt: nowIso(),
+        createdBy: actor,
+        lastCheck: null,
+        events: [],
+        audit: [audit(actor, 'Watch added automatically', `From the loan book (${loan.id})`)],
+      });
+    }
+  });
+  return added;
+}
+
+/** Saves a watch check; new events are appended (never edited or removed). */
+export function recordWatchCheck(
+  watchId: string,
+  actor: string,
+  result: {
+    asOf: string;
+    subject: PrSubject;
+    newEvents: WatchEvent[];
+    datasetBuiltAt: string | null;
+  },
+): void {
+  mutate((d) => {
+    const w = d.publicWatches.find((x) => x.id === watchId);
+    if (w === undefined) throw new Error(`Watch ${watchId} not found`);
+    const checkedAt = nowIso();
+    w.lastCheck = {
+      checkedAt,
+      asOf: result.asOf,
+      datasetBuiltAt: result.datasetBuiltAt,
+      subject: result.subject,
+    };
+    w.events.push(...result.newEvents);
+    w.audit.push(
+      audit(
+        actor,
+        'Watch checked',
+        `As of ${result.asOf}: ${result.newEvents.length} new public record(s)`,
+      ),
+    );
   });
 }
 
@@ -729,6 +846,7 @@ export function submitApplication(appId: string, actor: string): void {
         relationshipManager: actor,
         status: 'active',
         maskedIdentifier: 'Not recorded',
+        registrationNo: a.data.business.registrationNo,
         createdAt: at,
         updatedAt: at,
       });

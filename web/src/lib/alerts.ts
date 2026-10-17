@@ -1,11 +1,12 @@
 import type { AlertState, AlertStatus, Db, Priority } from '../domain/schemas.js';
 import { CATEGORY_LABEL, runChecks, type Finding } from './checks.js';
 import { RULES, runMonitoring, type MonitoringAlert } from './monitoring.js';
+import { watchFinding } from './public-watch.js';
 
 /** One list of alerts from both workspaces (spec §14). */
 export interface UnifiedAlert {
   id: string;
-  source: 'monitoring' | 'pre_disbursement';
+  source: 'monitoring' | 'pre_disbursement' | 'public_records';
   title: string;
   reason: string;
   category: string;
@@ -28,10 +29,12 @@ export interface UnifiedAlert {
 export const SOURCE_LABEL: Record<UnifiedAlert['source'], string> = {
   monitoring: 'Transaction monitoring',
   pre_disbursement: 'Pre-disbursement checks',
+  public_records: 'Public-records watch',
 };
 
 const ACTIVE_APP = new Set(['documents_needed', 'processing', 'needs_review', 'ready_for_decision']);
 const ALERTABLE: ReadonlySet<Finding['category']> = new Set([
+  'counterparty_exposure',
   'document_inconsistency',
   'duplicate_identifier',
   'entity_relationship',
@@ -106,9 +109,41 @@ export function allAlerts(db: Db): UnifiedAlert[] {
     }
   }
 
+  out.push(...watchAlerts(db));
   out.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
   cache.set(db, out);
   return out;
+}
+
+/** One alert per public record raised by a post-disbursement watch. */
+function watchAlerts(db: Db): UnifiedAlert[] {
+  return db.publicWatches.flatMap((w) =>
+    w.events.map((ev): UnifiedAlert => {
+      const f = watchFinding(w, ev);
+      const state = db.alertStates[f.id];
+      return {
+        id: f.id,
+        source: 'public_records',
+        title: f.title,
+        reason: f.observed,
+        category: CATEGORY_LABEL[f.category],
+        priority: f.priority,
+        status: state?.status ?? 'new',
+        assignee: state?.assignee ?? null,
+        at: ev.raisedAt,
+        branchId: w.branchId,
+        borrowerId: null,
+        loanId: null,
+        applicationId: null,
+        linkedLabel: `${w.loanRef} · ${w.borrowerName}`,
+        linkedHref: `/monitoring/public-records?watch=${encodeURIComponent(w.id)}`,
+        nextAction: f.steps[0] ?? 'Review evidence',
+        state,
+        monitoring: null,
+        finding: f,
+      };
+    }),
+  );
 }
 
 export function isOpen(status: AlertStatus): boolean {

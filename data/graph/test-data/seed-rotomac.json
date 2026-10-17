@@ -1,0 +1,275 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Rotomac Global (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 6,
+      "edges": 7,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 1,
+      "node:bank": 1,
+      "node:person": 1,
+      "node:event": 3,
+      "edge:named_in": 3,
+      "basis:established": 7,
+      "strength:strong": 3,
+      "edge:insolvency_applicant_against": 2,
+      "strength:weak": 4,
+      "edge:insolvency_professional_for": 2,
+      "hub_nodes": 2
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 3,
+      "seed_cases": [
+        "rotomac"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_1286313204516e20",
+      "kind": "company",
+      "label": "Rotomac Global Pvt. Ltd.",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 112,
+      "id": "ent_b18d4e642b03f63c",
+      "kind": "bank",
+      "label": "Bank of Baroda",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 23,
+      "id": "per_3c815dcaf145e4fe",
+      "kind": "person",
+      "label": "ANIL GOEL",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-19",
+      "document_id": "doc_6752f7dad7bd46fd",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_12acc0b21416d313",
+      "kind": "event",
+      "label": "Directorate of Enforcement, Delhi Zonal Office, has successfully restituted assets worth Rs. 380 Crore (approx.) to the liquidator to proceed with liquidation for the benefit of victims, secured creditors and other legit",
+      "detail": "Directorate of Enforcement · assets restituted · ed_restitution",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2018-03-29",
+      "document_id": "doc_31acb35b3fb4a6c1",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_84e6e44a30b3cbb4",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: Rotomac Global Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2017-09-25",
+      "document_id": "doc_37f8e1ae794a5a71",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_d18f2b3b4710bd3c",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Rotomac Global Private Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_14862878197d7cca",
+      "from": "ent_1286313204516e20",
+      "to": "evt_12acc0b21416d313",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ed",
+      "date": "2025-11-19",
+      "document_id": "doc_6752f7dad7bd46fd",
+      "relationship_id": "rel_14862878197d7cca",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_208e8858f7c98445",
+      "from": "ent_1286313204516e20",
+      "to": "evt_84e6e44a30b3cbb4",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-03-29",
+      "document_id": "doc_31acb35b3fb4a6c1",
+      "relationship_id": "rel_208e8858f7c98445",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_eb9ec8a45627e5b1",
+      "from": "ent_b18d4e642b03f63c",
+      "to": "ent_1286313204516e20",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-03-29",
+      "document_id": "doc_31acb35b3fb4a6c1",
+      "relationship_id": "rel_eb9ec8a45627e5b1",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_292cc65c4c681ac0",
+      "from": "ent_1286313204516e20",
+      "to": "evt_d18f2b3b4710bd3c",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-09-25",
+      "document_id": "doc_37f8e1ae794a5a71",
+      "relationship_id": "rel_292cc65c4c681ac0",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_39e641987cade207",
+      "from": "ent_b18d4e642b03f63c",
+      "to": "ent_1286313204516e20",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-09-25",
+      "document_id": "doc_37f8e1ae794a5a71",
+      "relationship_id": "rel_39e641987cade207",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_4568c84397fbc853",
+      "from": "per_3c815dcaf145e4fe",
+      "to": "ent_1286313204516e20",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-03-29",
+      "document_id": "doc_31acb35b3fb4a6c1",
+      "relationship_id": "rel_4568c84397fbc853",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_87a454e45324b8a1",
+      "from": "per_3c815dcaf145e4fe",
+      "to": "ent_1286313204516e20",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-09-25",
+      "document_id": "doc_37f8e1ae794a5a71",
+      "relationship_id": "rel_87a454e45324b8a1",
+      "confidence": 0.85
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_6752f7dad7bd46fd",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/c67a3d2e-0a45-442c-a02c-f1a13a4aca38_Press%20Release-Restitution%20Order%20in%20Rotomac-19.11.2025%203.pdf",
+      "title": "Directorate of Enforcement, Delhi Zonal Office, has successfully restituted assets worth Rs. 380 Crore (approx.) to the liquidator to proceed with liquidation for the benefit of victims, secured creditors and other legit",
+      "date": "2025-11-19",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_31acb35b3fb4a6c1",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Liquidation Process: Rotomac Global Pvt. Ltd.",
+      "date": "2018-03-29",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_37f8e1ae794a5a71",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Rotomac Global Private Limited",
+      "date": "2017-09-25",
+      "source_id": "ibbi"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

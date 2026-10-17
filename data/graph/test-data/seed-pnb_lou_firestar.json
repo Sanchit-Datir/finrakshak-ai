@@ -1,0 +1,446 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: PNB letters-of-undertaking matter (Firestar group) (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 10,
+      "edges": 13,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:bank": 1,
+      "node:company": 2,
+      "node:person": 2,
+      "node:address": 1,
+      "node:event": 4,
+      "edge:named_in": 4,
+      "basis:established": 13,
+      "strength:strong": 5,
+      "edge:insolvency_applicant_against": 4,
+      "strength:weak": 8,
+      "edge:insolvency_professional_for": 4,
+      "edge:registered_at": 1,
+      "hub_nodes": 3
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 46,
+      "id": "ent_13df690f5d8d90bc",
+      "kind": "bank",
+      "label": "Corporation Bank",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "pnb_lou_firestar"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "ent_U51909MH2004PLC145478",
+      "kind": "company",
+      "label": "FIRESTAR INTERNATIONAL LIMITED",
+      "detail": "U51909MH2004PLC145478",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "pnb_lou_firestar"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U51909MH2006PTC164429",
+      "kind": "company",
+      "label": "Firestar Diamond International Private Limited",
+      "detail": "U51909MH2006PTC164429 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 25,
+      "id": "per_a7e9e7bc735ca76f",
+      "kind": "person",
+      "label": "SANTANU T RAY",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 21,
+      "id": "per_42164c339566ed3d",
+      "kind": "person",
+      "label": "RAM RATAN KANOONGO",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_5b917b3c28f24a7c",
+      "kind": "address",
+      "label": "UNIT NO.23, 3RD FLOOR, TOWER II, WING B, KOHINOOR   CITY, KIROL ROAD, OFF LBS MARG, KURLA WE,ST,MUMBAI,Mumbai City,Maharashtra,400070-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": "2021-08-20",
+      "document_id": "doc_7be5501f3083b1c7",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_b5d62a1a331b791d",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: FIRESTAR INTERNATIONAL LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2020-03-18",
+      "document_id": "doc_702ae42dd405a646",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_0b14f99f86688b4f",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Firestar International Ltd",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2020-03-03",
+      "document_id": "doc_075357f28dc51239",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_e23c331131beb653",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: Firestar Diamond International Private Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2019-10-11",
+      "document_id": "doc_5cb9baad6c30ce6a",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_47de563a37b99b38",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Firestar Diamond International Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_13883a140eaece59",
+      "from": "ent_U51909MH2004PLC145478",
+      "to": "evt_b5d62a1a331b791d",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-08-20",
+      "document_id": "doc_7be5501f3083b1c7",
+      "relationship_id": "rel_13883a140eaece59",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_d82a4a43950b6e5f",
+      "from": "ent_13df690f5d8d90bc",
+      "to": "ent_U51909MH2004PLC145478",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-08-20",
+      "document_id": "doc_7be5501f3083b1c7",
+      "relationship_id": "rel_d82a4a43950b6e5f",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_e6603eb4b0bab5b9",
+      "from": "ent_U51909MH2004PLC145478",
+      "to": "evt_0b14f99f86688b4f",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-18",
+      "document_id": "doc_702ae42dd405a646",
+      "relationship_id": "rel_e6603eb4b0bab5b9",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_2b35d847b2ce434f",
+      "from": "ent_13df690f5d8d90bc",
+      "to": "ent_U51909MH2004PLC145478",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-18",
+      "document_id": "doc_702ae42dd405a646",
+      "relationship_id": "rel_2b35d847b2ce434f",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_a23f03c3c7127b9f",
+      "from": "ent_U51909MH2006PTC164429",
+      "to": "evt_e23c331131beb653",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-03",
+      "document_id": "doc_075357f28dc51239",
+      "relationship_id": "rel_a23f03c3c7127b9f",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_1235a151d428aa3b",
+      "from": "ent_13df690f5d8d90bc",
+      "to": "ent_U51909MH2006PTC164429",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-03",
+      "document_id": "doc_075357f28dc51239",
+      "relationship_id": "rel_1235a151d428aa3b",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_67a13a59159cbfea",
+      "from": "ent_U51909MH2006PTC164429",
+      "to": "evt_47de563a37b99b38",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-11",
+      "document_id": "doc_5cb9baad6c30ce6a",
+      "relationship_id": "rel_67a13a59159cbfea",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_32b4b8ca14708f55",
+      "from": "ent_13df690f5d8d90bc",
+      "to": "ent_U51909MH2006PTC164429",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-11",
+      "document_id": "doc_5cb9baad6c30ce6a",
+      "relationship_id": "rel_32b4b8ca14708f55",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_46a56462c8798a01",
+      "from": "per_a7e9e7bc735ca76f",
+      "to": "ent_U51909MH2004PLC145478",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-08-20",
+      "document_id": "doc_7be5501f3083b1c7",
+      "relationship_id": "rel_46a56462c8798a01",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_6d4079a0053df9f7",
+      "from": "per_42164c339566ed3d",
+      "to": "ent_U51909MH2004PLC145478",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-18",
+      "document_id": "doc_702ae42dd405a646",
+      "relationship_id": "rel_6d4079a0053df9f7",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_05d0e5b843a85d78",
+      "from": "per_a7e9e7bc735ca76f",
+      "to": "ent_U51909MH2006PTC164429",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-03",
+      "document_id": "doc_075357f28dc51239",
+      "relationship_id": "rel_05d0e5b843a85d78",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_ca40010bca6d5638",
+      "from": "per_42164c339566ed3d",
+      "to": "ent_U51909MH2006PTC164429",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-10-11",
+      "document_id": "doc_5cb9baad6c30ce6a",
+      "relationship_id": "rel_ca40010bca6d5638",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_8af34d5783ce5416",
+      "from": "ent_U51909MH2006PTC164429",
+      "to": "adr_5b917b3c28f24a7c",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_8af34d5783ce5416",
+      "confidence": 0.8
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_7be5501f3083b1c7",
+      "url": "https://ibbi.gov.in//uploads/announcement/24d2928cb514023d700d71914536b8b4.pdf",
+      "title": "Public Announcement of Liquidation Process: FIRESTAR INTERNATIONAL LIMITED",
+      "date": "2021-08-20",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_702ae42dd405a646",
+      "url": "https://ibbi.gov.in//uploads/announcement/9a29396d601e556a15ff45d69d0c732f.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Firestar International Ltd",
+      "date": "2020-03-18",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_075357f28dc51239",
+      "url": "https://ibbi.gov.in//uploads/announcement/09152c75df7a281f417f14f30c9b16c7.pdf",
+      "title": "Public Announcement of Liquidation Process: Firestar Diamond International Private Limited",
+      "date": "2020-03-03",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_5cb9baad6c30ce6a",
+      "url": "https://ibbi.gov.in//uploads/announcement/68be83d76f637551de7316cd0a1c216b.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Firestar Diamond International Pvt. Ltd.",
+      "date": "2019-10-11",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_mca_company_master",
+      "url": "https://www.data.gov.in/resource/registrars-companies-roc-wise-company-master-data",
+      "title": "MCA RoC-wise company master data (company_master.part1of5.csv, company_master.part2of5.csv, company_master.part3of5.csv, company_master.part4of5.csv, company_master.part5of5.csv)",
+      "date": null,
+      "source_id": "mca_ogd"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

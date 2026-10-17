@@ -1,0 +1,79 @@
+[
+  {
+    "name": "event_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "case_type",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "authority",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "source_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "document_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "title",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "party_names",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "event_date",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  },
+  {
+    "name": "publication_date",
+    "mode": "NULLABLE",
+    "type": "DATE"
+  },
+  {
+    "name": "proceeding_status",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "outcome",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "appeal_status",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "amounts",
+    "mode": "REPEATED",
+    "type": "RECORD",
+    "fields": [
+      {
+        "name": "minor",
+        "mode": "REQUIRED",
+        "type": "INT64"
+      },
+      {
+        "name": "currency",
+        "mode": "REQUIRED",
+        "type": "STRING"
+      }
+    ]
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Karvy Stock Broking (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 2,
+      "edges": 1,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 1,
+      "node:event": 1,
+      "edge:named_in": 1,
+      "basis:established": 1,
+      "strength:strong": 1,
+      "hub_nodes": 0
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "karvy"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_8ea0de43ed5b4d5b",
+      "kind": "company",
+      "label": "Karvy Stock Broking Ltd",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2022-07-30",
+      "document_id": "doc_33f9959314dec2d5",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_2dd5adc82d80d62f",
+      "kind": "event",
+      "label": "ED has provisionally attached Immovable and movable assets worth Rs.110 Crore under PMLA, 2002 in the money laundering investigation against M/s Karvy Stock Broking Ltd (KSBL) and its Chairman Comandur Parthasarathy and ",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_da464034eecefe31",
+      "from": "ent_8ea0de43ed5b4d5b",
+      "to": "evt_2dd5adc82d80d62f",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2022-07-30",
+      "document_id": "doc_33f9959314dec2d5",
+      "relationship_id": "rel_da464034eecefe31",
+      "confidence": 0.85
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_33f9959314dec2d5",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/5e9b44c4-3f56-4cf6-8003-597b079d0470_PR%20-%20HYZO%20-%20Karvy%20PAO%20No%202.pdf",
+      "title": "ED has provisionally attached Immovable and movable assets worth Rs.110 Crore under PMLA, 2002 in the money laundering investigation against M/s Karvy Stock Broking Ltd (KSBL) and its Chairman Comandur Parthasarathy and ",
+      "date": "2022-07-30",
+      "source_id": "ed"
+    }
+  ],
+  "networks": [],
+  "identity": []
+}

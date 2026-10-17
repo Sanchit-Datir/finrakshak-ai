@@ -1,0 +1,14 @@
+{
+  "name": "e2e",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Browser scenarios for the web prototype (Playwright). Not part of npm run check: they need a built app and the published public-records graph.",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}

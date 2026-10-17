@@ -1,0 +1,27 @@
+[
+  {
+    "name": "person_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "name",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "name_variants",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "roles",
+    "mode": "REPEATED",
+    "type": "STRING"
+  },
+  {
+    "name": "sources",
+    "mode": "REPEATED",
+    "type": "STRING"
+  }
+]

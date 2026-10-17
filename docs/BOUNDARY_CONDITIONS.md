@@ -54,3 +54,20 @@ Claude (and humans) must flag any of these to the project owner when touched. Fo
 - **B-32 Firebase plan** → Functions + Vertex require the Blaze (pay-as-you-go) plan; confirm before deploy.
 - **B-33 Security-rule regressions** → every rules change needs emulator tests; default-deny must remain.
 - **B-34 Deployment region** → keep Functions, Firestore, and Vertex in compatible regions (latency, data residency).
+
+## Public-data ingestion (`ingest/`)
+
+- **B-35 Source access & terms** → honour robots.txt, never bypass CAPTCHA/login/403 blocks, keep ≥1.5 s per host and back off on 429/5xx; record terms on every raw artifact. ED and SFIO copyright policies require permission before reproduction — keep their documents internal (private bucket/repo) until permission is obtained. NSE/BSE need a licence.
+- **B-36 Evidence status** → every event/claim/edge carries `fact | finding | allegation | inference`. ED attachments, SEBI interim orders and show-cause notices are allegations; insolvency is not fraud; NFRA findings concern auditors. Never upgrade a status in UI or Gemini output.
+- **B-37 Entity resolution** → merge only on exact CIN or exact normalised name; fuzzy similarity only writes `entity_match_candidates` for human review. Common names (e.g. "The Urban Co-operative Bank Ltd.") keep the town to avoid false merges.
+- **B-38 Personal data** → store people only in public professional roles (insolvency professional, audit engagement partner). Individual noticees/accused named in orders are not extracted. MCA registered-office addresses of small companies/LLPs are often residences: use them only to link companies, never publish them.
+- **B-39 Large rupee amounts** → amounts are INR paise integers; values above `Number.MAX_SAFE_INTEGER` (~₹90 lakh crore) or with sub-paisa precision are rejected, not rounded.
+
+## Relationship graph (graph lab, `ingest/src/graph`, `/graph-lab`)
+
+- **B-40 Hubs and non-specific connectors** → big banks, regulators filing insolvency (e.g. RBI), batch notices naming many parties, busy insolvency professionals and shared service addresses connect thousands of unrelated companies. Their links are shown as weak and never chain networks; limits are `THRESHOLDS` in `ingest/src/graph/edges.ts` and need calibration on reviewed cases. A connection is never evidence of wrongdoing.
+- **B-41 Graph size in the browser** → the graph lab loads one whole bundle (~36 MB JSON / ~5 MB gzip, 43k nodes for Maharashtra MCA + seed cases). National MCA coverage would multiply it; serve subgraphs from a backend before scaling, and keep the in-browser layout capped (`LAYOUT_CAP`).
+- **B-42 Party role in proceedings** → `named_in` records that an organisation appears in an order or press release, not whether it is the accused, the victim or the complainant (e.g. a lender defrauded in a vehicle-loan case, or a company whose ex-director was arrested for cheating it). Any lending-risk flag built on enforcement records must show the source text for review and must not treat "named in" as "accused" until the role is extracted.
+- **B-43 Public-record snapshot age and conflicting sources** → the application's public-records check reads a local snapshot (`data/graph`), not live MCA21/IBBI. Every result shows the dataset build date and is saved with it; when MCA status and IBBI records disagree (e.g. "Active" in MCA but in liquidation per IBBI) both are shown. Re-verify on the live registry by CIN before a lending decision.
+- **B-44 Untrusted links, uploads and redirects** → render data-supplied URLs only through `safeExternalUrl` (http/https only), follow return paths only through `safeInternalPath`, cap upload and decompressed sizes, and keep the CSP strict (`web/security-headers.ts` = `firebase.json`). See SECURITY.md.
+- **B-45 Vulnerable dependencies (SCA)** → CI fails on any known vulnerability in production dependencies (`npm run audit:prod`); Dependabot proposes weekly updates. Development-only advisories without an upstream fix are listed and accepted in SECURITY.md until fixed.

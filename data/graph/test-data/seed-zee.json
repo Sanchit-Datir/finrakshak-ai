@@ -1,0 +1,544 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Zee Entertainment Enterprises (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 14,
+      "edges": 13,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 4,
+      "node:bank": 1,
+      "node:person": 3,
+      "node:address": 2,
+      "node:event": 4,
+      "edge:named_in": 4,
+      "basis:established": 13,
+      "strength:strong": 8,
+      "edge:insolvency_applicant_against": 3,
+      "strength:weak": 5,
+      "edge:insolvency_professional_for": 4,
+      "edge:registered_at": 2,
+      "hub_nodes": 1
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "zee"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_L92132MH1982PLC028767",
+      "kind": "company",
+      "label": "Zee Entertainment Enterprises Limited",
+      "detail": "L92132MH1982PLC028767 · Active",
+      "sources": [
+        "nfra",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 5,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 21,
+      "id": "ent_L65191PN1994PLC076333",
+      "kind": "bank",
+      "label": "IndusInd Bank Limited",
+      "detail": "L65191PN1994PLC076333 · Active",
+      "sources": [
+        "ibbi",
+        "rbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U24100MH1999PTC121908",
+      "kind": "company",
+      "label": "Saisons Trade & Industry Pvt Ltd",
+      "detail": "U24100MH1999PTC121908 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_U74999MH2017PTC289490",
+      "kind": "company",
+      "label": "Jupiter Broadcast Pvt. Ltd.",
+      "detail": "U74999MH2017PTC289490 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_bd32abef7b0d9c60",
+      "kind": "company",
+      "label": "Tanjara Trading Pvt. Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "per_97c72533f479c46e",
+      "kind": "person",
+      "label": "SANJEEV KUMAR JALAN",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "per_4951351de517fce6",
+      "kind": "person",
+      "label": "PARTHA SARATHY SARKAR",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "per_72c8c15870266d9d",
+      "kind": "person",
+      "label": "MALATHI GOPI",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_6f0750f271a83ae9",
+      "kind": "address",
+      "label": "18th Floor, 'A' wing, Marathon Futurex   NM Joshi Marg, Lower Parel,Mumbai,Mumbai City,Maharashtra,400013-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_fc6fab1d021f7f7f",
+      "kind": "address",
+      "label": "FLAT NO 309, 3RD FLOOR, KALPATRU PLAZA,   CHINCHOLI BUNDER ROAD, MALAD WEST,,MUMBAI,Mumbai City,Maharashtra,400064-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": "2024-12-23",
+      "document_id": "doc_c70469f37548b6de",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_641e753fe2a58869",
+      "kind": "event",
+      "label": "Errata – Order in the matter of Zee Entertainment Enterprises Limited for the FY 2018-19 and 2019- 20",
+      "detail": "National Financial Reporting Authority · erratum · nfra_order_erratum",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2023-02-22",
+      "document_id": "doc_27c4a75c6ea59234",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_4de6017aaa3256a2",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Zee Entertainment Enterprises Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2019-09-25",
+      "document_id": "doc_0a2afd38c9ed77f6",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_321024f6efb52d11",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Jupiter Broadcast Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2019-06-30",
+      "document_id": "doc_bc95355399ab8851",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_5e421f79be607d4b",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: Tanjara Trading Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_d7cabbf5271d3c19",
+      "from": "ent_L92132MH1982PLC028767",
+      "to": "evt_641e753fe2a58869",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2024-12-23",
+      "document_id": "doc_c70469f37548b6de",
+      "relationship_id": "rel_d7cabbf5271d3c19",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_a1ca95b2d9a53f07",
+      "from": "ent_L92132MH1982PLC028767",
+      "to": "evt_4de6017aaa3256a2",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-02-22",
+      "document_id": "doc_27c4a75c6ea59234",
+      "relationship_id": "rel_a1ca95b2d9a53f07",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_2bcb4b94e984fef1",
+      "from": "ent_L65191PN1994PLC076333",
+      "to": "ent_L92132MH1982PLC028767",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-02-22",
+      "document_id": "doc_27c4a75c6ea59234",
+      "relationship_id": "rel_2bcb4b94e984fef1",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_026c3f1f017d0fcd",
+      "from": "ent_U74999MH2017PTC289490",
+      "to": "evt_321024f6efb52d11",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-09-25",
+      "document_id": "doc_0a2afd38c9ed77f6",
+      "relationship_id": "rel_026c3f1f017d0fcd",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_214dfb043f3d3615",
+      "from": "ent_L92132MH1982PLC028767",
+      "to": "ent_U74999MH2017PTC289490",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-09-25",
+      "document_id": "doc_0a2afd38c9ed77f6",
+      "relationship_id": "rel_214dfb043f3d3615",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_18e6f71fa49c5bd9",
+      "from": "ent_bd32abef7b0d9c60",
+      "to": "evt_5e421f79be607d4b",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-06-30",
+      "document_id": "doc_bc95355399ab8851",
+      "relationship_id": "rel_18e6f71fa49c5bd9",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_a94a83a7521b6481",
+      "from": "ent_L92132MH1982PLC028767",
+      "to": "ent_bd32abef7b0d9c60",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-06-30",
+      "document_id": "doc_bc95355399ab8851",
+      "relationship_id": "rel_a94a83a7521b6481",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_002bc061384b56f4",
+      "from": "per_97c72533f479c46e",
+      "to": "ent_L92132MH1982PLC028767",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-02-22",
+      "document_id": "doc_27c4a75c6ea59234",
+      "relationship_id": "rel_002bc061384b56f4",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_6be9ceafda530017",
+      "from": "per_97c72533f479c46e",
+      "to": "ent_U24100MH1999PTC121908",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-04-25",
+      "document_id": "doc_f7c848684cf7afab",
+      "relationship_id": "rel_6be9ceafda530017",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_027062f88efed091",
+      "from": "per_4951351de517fce6",
+      "to": "ent_U74999MH2017PTC289490",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-09-25",
+      "document_id": "doc_0a2afd38c9ed77f6",
+      "relationship_id": "rel_027062f88efed091",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_3f6d4e40f35bd916",
+      "from": "per_72c8c15870266d9d",
+      "to": "ent_bd32abef7b0d9c60",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-06-30",
+      "document_id": "doc_bc95355399ab8851",
+      "relationship_id": "rel_3f6d4e40f35bd916",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_2605b294fb808e74",
+      "from": "ent_L92132MH1982PLC028767",
+      "to": "adr_6f0750f271a83ae9",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_2605b294fb808e74",
+      "confidence": 0.8
+    },
+    {
+      "id": "edg_rel_646f8a1c64c9058a",
+      "from": "ent_U74999MH2017PTC289490",
+      "to": "adr_fc6fab1d021f7f7f",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_646f8a1c64c9058a",
+      "confidence": 0.8
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_c70469f37548b6de",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2024/12/202412271758055001.pdf",
+      "title": "Errata – Order in the matter of Zee Entertainment Enterprises Limited for the FY 2018-19 and 2019- 20",
+      "date": "2024-12-23",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_27c4a75c6ea59234",
+      "url": "https://ibbi.gov.in//uploads/announcement/bc998a7bf91bc6d25821f3390f362aef.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Zee Entertainment Enterprises Limited",
+      "date": "2023-02-22",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_f7c848684cf7afab",
+      "url": "https://ibbi.gov.in//uploads/announcement/b34f14c83a40b5b5922704d92fdd9551.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: SAISONS TRADE & INDUSTRY PRIVATE LIMITED",
+      "date": "2022-04-25",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_0a2afd38c9ed77f6",
+      "url": "https://ibbi.gov.in//uploads/announcement/ac399db81771d62f61dfc6b604133351.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Jupiter Broadcast Pvt. Ltd.",
+      "date": "2019-09-25",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_bc95355399ab8851",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Liquidation Process: Tanjara Trading Pvt. Ltd.",
+      "date": "2019-06-30",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_mca_company_master",
+      "url": "https://www.data.gov.in/resource/registrars-companies-roc-wise-company-master-data",
+      "title": "MCA RoC-wise company master data (company_master.part1of5.csv, company_master.part2of5.csv, company_master.part3of5.csv, company_master.part4of5.csv, company_master.part5of5.csv)",
+      "date": null,
+      "source_id": "mca_ogd"
+    }
+  ],
+  "networks": [
+    {
+      "id": "net_40ba0b035aabe1ab",
+      "node_ids": [
+        "ent_L92132MH1982PLC028767",
+        "adr_6f0750f271a83ae9",
+        "ent_bd32abef7b0d9c60",
+        "evt_5e421f79be607d4b",
+        "ent_U74999MH2017PTC289490",
+        "adr_fc6fab1d021f7f7f",
+        "evt_321024f6efb52d11",
+        "evt_4de6017aaa3256a2",
+        "evt_641e753fe2a58869"
+      ],
+      "organisation_count": 3,
+      "adverse_organisation_count": 3,
+      "sources": [
+        "ibbi",
+        "mca_ogd",
+        "nfra"
+      ],
+      "seed_cases": [
+        "zee"
+      ],
+      "score": 9,
+      "summary": "3 organisations connected by established records (4 named in, 2 insolvency applicant against, 2 registered at). A connection is not evidence of wrongdoing."
+    }
+  ],
+  "identity": []
+}

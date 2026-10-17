@@ -1,0 +1,4086 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: IL&FS group (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 109,
+      "edges": 125,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:audit_firm": 1,
+      "node:company": 40,
+      "node:bank": 1,
+      "node:other_org": 1,
+      "node:person": 15,
+      "node:address": 6,
+      "node:event": 45,
+      "edge:named_in": 47,
+      "basis:established": 120,
+      "strength:strong": 60,
+      "edge:auditor_of": 2,
+      "edge:mentioned_in": 5,
+      "basis:candidate": 5,
+      "strength:weak": 65,
+      "edge:insolvency_applicant_against": 30,
+      "edge:insolvency_professional_for": 34,
+      "edge:registered_at": 7,
+      "hub_nodes": 16
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "ent_69cea0ab6e766c37",
+      "kind": "audit_firm",
+      "label": "SRBC & Co LLP",
+      "detail": null,
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "ilfs"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_L65990MH1987PLC044571",
+      "kind": "company",
+      "label": "Infrastructure Leasing & Financial Services Limited",
+      "detail": "L65990MH1987PLC044571 · Active",
+      "sources": [
+        "nfra",
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_bfcc343d59a65128",
+      "kind": "company",
+      "label": "FS Transportation Networks Limited",
+      "detail": null,
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 4,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 8,
+      "id": "ent_e641146c7f01a521",
+      "kind": "company",
+      "label": "FS Financial Services Ltd",
+      "detail": null,
+      "sources": [
+        "nfra",
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 9,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 14,
+      "id": "ent_00a5b74186a41cba",
+      "kind": "company",
+      "label": "Ansal Properties & Infrastructure Ltd.",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_169bae059ba1c960",
+      "kind": "company",
+      "label": "Vadraj Cement Limited",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_ff4d0edcbae7b346",
+      "kind": "company",
+      "label": "Rs 952 Crore of Vadraj Cement Limited",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_ac334d0ac1e352f4",
+      "kind": "company",
+      "label": "ABG Cement Ltd.",
+      "detail": null,
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 19,
+      "id": "ent_L26940MH1999PLC118229",
+      "kind": "company",
+      "label": "Nuvoco Vistas Corporation Ltd.",
+      "detail": "L26940MH1999PLC118229 · Active",
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 46,
+      "id": "ent_3a8a7a07cf2f48e0",
+      "kind": "bank",
+      "label": "Indian Bank",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "ent_L74999DL2007PLC277039",
+      "kind": "company",
+      "label": "ADHUNIK MEGHALAYA STEELS PRIVATE LIMITED",
+      "detail": "L74999DL2007PLC277039",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "ilfs"
+      ],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 26,
+      "id": "ent_U65990MH1995PLC093241",
+      "kind": "company",
+      "label": "IL & FS FINANCIAL SERVICES LIMITED",
+      "detail": "U65990MH1995PLC093241 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 5,
+      "id": "ent_U40300MH2011PLC220218",
+      "kind": "company",
+      "label": "ROHTAS BIO ENERGY LIMITED",
+      "detail": "U40300MH2011PLC220218 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "ent_c520de8d536d09a9",
+      "kind": "company",
+      "label": "BHARAT WATERFRONT PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_efcd71309c04d3aa",
+      "kind": "company",
+      "label": "SATLUJ REAL ESTATES PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_17efc669a96d0517",
+      "kind": "company",
+      "label": "SARVATRA REALTORS PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_bc3809d95d933ce9",
+      "kind": "company",
+      "label": "KUSHMANDA PROPERTIES PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_16f85670ab16120b",
+      "kind": "company",
+      "label": "KAVERI REALTORS PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_b733ea4c2bc628eb",
+      "kind": "company",
+      "label": "KATRA REALTORS PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_83187cbc63a2fd38",
+      "kind": "company",
+      "label": "KATRA REAL ESTATES PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_3d93fb7cc3b4b717",
+      "kind": "company",
+      "label": "KAILASH REALTORS PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_e1600d213ec21896",
+      "kind": "company",
+      "label": "ICON BUILDCON PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_855e03f5cab3000c",
+      "kind": "company",
+      "label": "GHARONDHA REALTORS PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_02ad2925132f39c6",
+      "kind": "company",
+      "label": "ELITIST REALTORS PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_475557e7c0993cc0",
+      "kind": "company",
+      "label": "CHAKRADHARI PROPERTIES PVT LTD",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_ab2dd5fd1cf62db0",
+      "kind": "company",
+      "label": "BAJRANG REALTORS PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_2a2e1053e6df2f9d",
+      "kind": "company",
+      "label": "APNA GHAR PROPERTIES PRIVATE LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_726e7fc916a6c657",
+      "kind": "company",
+      "label": "IF&FS FINANCIAL SERVICES LIMITED",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_abc356af0d0fafee",
+      "kind": "company",
+      "label": "Attivo Economic Zone (Mumbai) Private Limited",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "ent_L51109WB1998PLC087076",
+      "kind": "company",
+      "label": "McLeod Russel India Limited",
+      "detail": "L51109WB1998PLC087076",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "ilfs"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_de0668ae919e0190",
+      "kind": "other_org",
+      "label": "IL & FS Infrastructure Debt Fund",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_909e5f783a786753",
+      "kind": "company",
+      "label": "E Village Kendra Limited",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U70103MH2007PTC173581",
+      "kind": "company",
+      "label": "G. C. Property Private Limited",
+      "detail": "U70103MH2007PTC173581 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_05a0e5db4b301e5e",
+      "kind": "company",
+      "label": "Techno Electric & Engineering Co. Ltd",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "ilfs"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_U74140MH2006PLC165363",
+      "kind": "company",
+      "label": "IL&FS PORTFOLIO MANAGEMENT SERVICES LIMITED",
+      "detail": "U74140MH2006PLC165363 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_bd00a8e3dbeed092",
+      "kind": "company",
+      "label": "KVK Energy and Infrastructure Pvt. Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_691280266e521961",
+      "kind": "company",
+      "label": "Emerald Lands (India) Pvt. Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_d6c40a8a4bbd5c6a",
+      "kind": "company",
+      "label": "Nandi Engineering Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "ilfs"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_628cae91287bb5a1",
+      "kind": "company",
+      "label": "IL & FS Engineering and Construction Co. Pvt. Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "ilfs"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_U67120MH2009PTC191131",
+      "kind": "company",
+      "label": "IL & FS Broking Services Pvt. Ltd.",
+      "detail": "U67120MH2009PTC191131 · Dissolved under section 59(8)",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 3,
+      "id": "ent_a273d56b4529c21d",
+      "kind": "company",
+      "label": "Golden Glow Estates Pvt. Ltd.",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "ent_U99999MH1996PTC102913",
+      "kind": "company",
+      "label": "La-Fin Financial Services Pvt. Ltd.",
+      "detail": "U99999MH1996PTC102913 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [
+        "ilfs"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "ent_25a04b3bdd358e7c",
+      "kind": "company",
+      "label": "IL&FS Capital Advisors Limited",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 8,
+      "id": "per_5f370ecc03f03da6",
+      "kind": "person",
+      "label": "MAHADEV TIRUNAGARI",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 17,
+      "id": "per_ea9a1cb62a467153",
+      "kind": "person",
+      "label": "NAVNEET KUMAR GUPTA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 8,
+      "id": "per_658f46b6b19792b0",
+      "kind": "person",
+      "label": "SANJAY KUMAR PODDAR",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 25,
+      "id": "per_b7917b4f8f799724",
+      "kind": "person",
+      "label": "KANCHAN DUTTA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 12,
+      "id": "per_116e71558f54367b",
+      "kind": "person",
+      "label": "RAJESH JHUNJHUNWALA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 28,
+      "id": "per_a3b022e4dc109b81",
+      "kind": "person",
+      "label": "RITESH PRAKASH ADATIYA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 7,
+      "id": "per_d53bba1483a08090",
+      "kind": "person",
+      "label": "MURALI MOHAN CHEVUTURI",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 7,
+      "id": "per_f394c446522eb1cc",
+      "kind": "person",
+      "label": "GOLLA RAMAKANTHA RAO",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 17,
+      "id": "per_445d685e9f79aad5",
+      "kind": "person",
+      "label": "CHANDRA PRAKASH",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 10,
+      "id": "per_f35807d2bcf644d6",
+      "kind": "person",
+      "label": "BIMAL KANTI CHOUDHURY",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 23,
+      "id": "per_ed74d79fb45aa305",
+      "kind": "person",
+      "label": "UDAYRAJ PATWARDHAN",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "per_d98f37db5ad18134",
+      "kind": "person",
+      "label": "ASHWANI KUMAR SINGLA",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 15,
+      "id": "per_b0ad929dd5716158",
+      "kind": "person",
+      "label": "VINOD KUMAR KOTHARI",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 8,
+      "id": "per_826b73d220553829",
+      "kind": "person",
+      "label": "SETHURATHNAM RAVI",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 4,
+      "id": "per_6d9aaf8359fecaed",
+      "kind": "person",
+      "label": "MANJULA B S",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_a7767b2ab11b2f18",
+      "kind": "address",
+      "label": "THE IL &FS FINANACIAL CENTREPLOT NO C-22 G BLOCK   BANDRA-KURLA COMPLEX,MUMBAI,Maharashtra,400051-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_80156c4d479e3603",
+      "kind": "address",
+      "label": "II & FS FINANCIAL CENTREPLOT NO C-22 G BLOCK   BANDRA KURLA COMPLEX BANDRA E,MUMBAI,Maharashtra,400051-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "adr_6987fcdc1cbe25c3",
+      "kind": "address",
+      "label": "THE IL&FS FINANCIAL CENTRE, PLOT NO. C-22   G BLOCK, BANDRA - KURLA COMPLEX, BANDRA-, EAST,MUMBAI,Maharashtra,400051-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_6313d90fbb2bf7eb",
+      "kind": "address",
+      "label": "BHUPATI CHAMBERS, 5TH FLOOR,   13, MATHEWS ROAD, CHARNI ROAD,,MUMBAI,Maharashtra,400004-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_fa4b21bb7131c048",
+      "kind": "address",
+      "label": "The IL&FS Financial Centre, 3rd Floor, Plot C - 22   G - Block, Bandra Kurla Complex, Bandra,(East),,Mumbai,Mumbai City,Maharashtra,400051-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_1ee1cccce8c794b8",
+      "kind": "address",
+      "label": "R-Square, Plot No.29, Jai Hind Chs Ltd,   N S Road No.12, JVPD Scheme, Vile Parle,(W),Mumbai,Mumbai City,Maharashtra,400049-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": "2022-06-22",
+      "document_id": "doc_361afc2ea7691c9a",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_d2698a06363d2428",
+      "kind": "event",
+      "label": "Audit Quality Review (AQR) Report in respect of Statutory Audit done by SRBC & Co LLP, Chartered Accountants Firm Registration Number (FRN:324982E(slash)E300003) of Infrastructure Leasing & Financial Services Limited (IL",
+      "detail": "National Financial Reporting Authority · review report · nfra_audit_quality_review",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2021-09-23",
+      "document_id": "doc_eae8d3d5d7949498",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_d5745bf8436f151a",
+      "kind": "event",
+      "label": "Audit Quality Review (AQR) Report in respect of Statutory Audit done by SRBC & Co LLP, Chartered Accountants Firm Registration Number (FRN:324982E(slash)E300003) of IL&FS Transportation Networks Limited (ITNL) for the Fi",
+      "detail": "National Financial Reporting Authority · review report · nfra_audit_quality_review",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "document_id": "doc_08ebdd4166121799",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_4999a7ce1055b034",
+      "kind": "event",
+      "label": "M/s SRBC & Co. LLP – Inspection Report No.132.2-2024-02",
+      "detail": "National Financial Reporting Authority · inspection report · nfra_inspection_report",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2025-03-27",
+      "document_id": "doc_567cc62b87fca369",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 2,
+      "id": "evt_bd17c43bf9758599",
+      "kind": "event",
+      "label": "M/s SRBC & Co. LLP – Inspection Report No.132.2-2023-05",
+      "detail": "National Financial Reporting Authority · inspection report · nfra_inspection_report",
+      "sources": [
+        "nfra"
+      ]
+    },
+    {
+      "date": "2026-03-11",
+      "document_id": "doc_c067799ecdb0374b",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_afc3849ee2132aa0",
+      "kind": "event",
+      "label": "ED, Lucknow Zonal Office, has provisionally attached immovable properties consist of residential land parcels spanning 9.08 hectares, located in Agra, valued at Rs. 313.12 Crore (approx.) held in the name of associated c",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2026-02-25",
+      "document_id": "doc_580c0a91309a6fbc",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_09c653e876f71e43",
+      "kind": "event",
+      "label": "ED, HIU-II has provisionally attached immovable properties in the form of land worth more than Rs. 598 Crore situated in Agra, Uttar Pradesh, under PMLA, 2002, in the case of M/s Ansal Properties & Infrastructure Ltd. (A",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-12-16",
+      "document_id": "doc_0386ac1fffb694f6",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_4bc8458262fa9ce0",
+      "kind": "event",
+      "label": "ED, Gurugram Zonal Office has filed a Prosecution Complaint dated 16.12.2025 before the Hon’ble Special Court (PMLA), against M/s Ansal Properties and Infrastructure Ltd. (APIL) and its directors/shareholders viz. Sushil",
+      "detail": "Directorate of Enforcement · prosecution complaint filed · ed_prosecution_complaint",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-10-01",
+      "document_id": "doc_aff8af4021bbb35c",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_afeece884e079854",
+      "kind": "event",
+      "label": "ED, Gurugram has provisionally attached 06 immovable properties under PMLA, 2002, valued at Rs. 10.55 Crore, situated in Gurugram (Haryana), Greater Noida (UP) and Ludhiana (Punjab) held by Directors/shareholders/benefic",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-06-28",
+      "document_id": "doc_a468efd9476c6cd9",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 6,
+      "id": "evt_4036ad4e118e626f",
+      "kind": "event",
+      "label": "In continuation to the ED’s ongoing efforts for restitution of properties to their rightful owners and in order to put the productive assets to use enabling financial institutes to monetize the assets attached or seized/",
+      "detail": "Directorate of Enforcement · provisional attachment · ed_provisional_attachment",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2025-05-02",
+      "document_id": "doc_f7f3821d36fcb52b",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_72d2efe16612acb4",
+      "kind": "event",
+      "label": "ED, Lucknow Zonal Office has conducted search operations under the provisions of the PMLA, 2002 at five premises across Ghaziabad, Lucknow and New Delhi on 30.04.2025 in the case of M/s Ansal Properties & Infrastructure ",
+      "detail": "Directorate of Enforcement · investigation · ed_search_seizure",
+      "sources": [
+        "ed"
+      ]
+    },
+    {
+      "date": "2026-07-29",
+      "document_id": "doc_811804d4f543f594",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_d4cab843a69035d6",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ADHUNIK MEGHALAYA STEELS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2026-07-24",
+      "document_id": "doc_1b6fdc9a400614a8",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_487dfa1b0c9a4c1e",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ADHUNIK MEGHALAYA STEELS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-12-06",
+      "document_id": "doc_16ded6fd5e04c3e9",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_e08ce77b0682d8ff",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: BHARAT WATERFRONT PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_6632636307831de3",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_a5a96990b9125a13",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: SATLUJ REAL ESTATES PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_0e24edfde2a041cb",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_aef8ac38d3899d42",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: SARVATRA REALTORS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_e4293256d5676ea4",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_3118d0104a00b064",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: KUSHMANDA PROPERTIES PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_235e0dc86f1d4299",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_43cfeea2d4dce827",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: KAVERI REALTORS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_fcdd2f5579aac4f9",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_2dfcfeac18071288",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: KATRA REALTORS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_dfd9e337ccf21e8c",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_a4005c3148687079",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: KATRA REAL ESTATES PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_64b70c863645c209",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_94eefc016f3ae623",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: KAILASH REALTORS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_aa4dc15d6cae6110",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_11b74da0b5d254a5",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ICON BUILDCON PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_f0930122033cc498",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_91ccda7dfb1a8798",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: GHARONDHA REALTORS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_475d8f87259e572e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_49bdfcbce29f1ece",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ELITIST REALTORS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_92d133ede6f77bcf",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_713df3027776ea28",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: CHAKRADHARI PROPERTIES PVT LTD",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_5d080ba5c5c30d3d",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_cb1180e0e09661d5",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: BAJRANG REALTORS PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "document_id": "doc_5341dcfac54ef29e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_047fd27bce92fb30",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: APNA GHAR PROPERTIES PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2025-02-28",
+      "document_id": "doc_f67c2ec8fa67acc1",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_8a5e9789274840a6",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2023-10-23",
+      "document_id": "doc_f45ba297a851906c",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_880a6e53be271927",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2023-10-06",
+      "document_id": "doc_0d1159bc6698d58f",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_cc0962a4aae37dab",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: BHARAT WATERFRONT PRIVATE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2023-06-11",
+      "document_id": "doc_d1ad96617ce539c3",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_b8c3590f45a91686",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Attivo Economic Zone (Mumbai) Private Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2023-02-13",
+      "document_id": "doc_11cbac28f9d04ad1",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_fa37735ef5942fd5",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: McLeod Russel India Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2022-11-20",
+      "document_id": "doc_308e910d85f4f887",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_77be1835d3ce448c",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LTD",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2022-10-31",
+      "document_id": "doc_b21f32d81515bde1",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_4344a9da88568a6f",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: E Village Kendra Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2022-07-14",
+      "document_id": "doc_5e62f6c144cc13ce",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_1a1e4b6b4cb4fcb4",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: G. C. Property Private Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2022-03-22",
+      "document_id": "doc_448a5cf2d3772790",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_a8632ed5aa5a835d",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: G C Property Private Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2021-08-09",
+      "document_id": "doc_b3e1d1e9be6a57c1",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_089130f57505626f",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: McLeod Russel India Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2020-03-18",
+      "document_id": "doc_48e618e9396f0a8a",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_ca3b3e63a2e3f2fc",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2020-03-18",
+      "document_id": "doc_5472955687b2da1e",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_725d02b9fd37040c",
+      "kind": "event",
+      "label": "Public Announcement of Voluntary Liquidation Process: IL&FS PORTFOLIO MANAGEMENT SERVICES LIMITED",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · voluntary liquidation · ibbi_voluntary_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2020-01-23",
+      "document_id": "doc_9a67fd325a8cd8e2",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_ea9cee87feb8a48a",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: KVK Energy and Infrastructure Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2020-01-10",
+      "document_id": "doc_03cccd0b35620849",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_b73dca2130cd2e3b",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Emerald Lands (India) Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2019-01-07",
+      "document_id": "doc_068b8475b6748ac3",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_5444d1e928143edf",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Nandi Engineering Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2018-12-10",
+      "document_id": "doc_e4732faec17d4f12",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_68dc79b25d73d0f5",
+      "kind": "event",
+      "label": "Public Announcement of Voluntary Liquidation Process: IL & FS Broking Services Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · voluntary liquidation · ibbi_voluntary_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2018-11-29",
+      "document_id": "doc_9d0b20a5f9ce28e5",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_1dc9d65fb9edde59",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Golden Glow Estates Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2018-08-30",
+      "document_id": "doc_68684f8ff0808577",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_64690e9ea13e3111",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: La-Fin Financial Services Pvt. Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2017-04-29",
+      "document_id": "doc_9fbe74a56c1e533d",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_650ea9d22b329868",
+      "kind": "event",
+      "label": "Public Announcement of Voluntary Liquidation Process: IL&FS Capital Advisors Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · voluntary liquidation · ibbi_voluntary_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_1a622bedf4eac824",
+      "from": "ent_69cea0ab6e766c37",
+      "to": "evt_d2698a06363d2428",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2022-06-22",
+      "document_id": "doc_361afc2ea7691c9a",
+      "relationship_id": "rel_1a622bedf4eac824",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_5c963bd20ba0b67b",
+      "from": "ent_69cea0ab6e766c37",
+      "to": "ent_L65990MH1987PLC044571",
+      "type": "auditor_of",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2022-06-22",
+      "document_id": "doc_361afc2ea7691c9a",
+      "relationship_id": "rel_5c963bd20ba0b67b",
+      "confidence": 0.6
+    },
+    {
+      "id": "edg_rel_c7f3313f1544240f",
+      "from": "ent_L65990MH1987PLC044571",
+      "to": "evt_d2698a06363d2428",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2022-06-22",
+      "document_id": "doc_361afc2ea7691c9a",
+      "relationship_id": "rel_c7f3313f1544240f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_fd682f31df3481f2",
+      "from": "ent_69cea0ab6e766c37",
+      "to": "evt_d5745bf8436f151a",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2021-09-23",
+      "document_id": "doc_eae8d3d5d7949498",
+      "relationship_id": "rel_fd682f31df3481f2",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_10b05a4df88f5584",
+      "from": "ent_69cea0ab6e766c37",
+      "to": "ent_bfcc343d59a65128",
+      "type": "auditor_of",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "nfra",
+      "date": "2021-09-23",
+      "document_id": "doc_eae8d3d5d7949498",
+      "relationship_id": "rel_10b05a4df88f5584",
+      "confidence": 0.6
+    },
+    {
+      "id": "edg_rel_e210e45303551a89",
+      "from": "ent_bfcc343d59a65128",
+      "to": "evt_d5745bf8436f151a",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2021-09-23",
+      "document_id": "doc_eae8d3d5d7949498",
+      "relationship_id": "rel_e210e45303551a89",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_dc295eb4a9a1f9a2",
+      "from": "ent_69cea0ab6e766c37",
+      "to": "evt_4999a7ce1055b034",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2026-03-16",
+      "document_id": "doc_08ebdd4166121799",
+      "relationship_id": "rel_dc295eb4a9a1f9a2",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_3c7fc1d3fea19a38",
+      "from": "ent_69cea0ab6e766c37",
+      "to": "evt_bd17c43bf9758599",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "finding",
+      "source_id": "nfra",
+      "date": "2025-03-27",
+      "document_id": "doc_567cc62b87fca369",
+      "relationship_id": "rel_3c7fc1d3fea19a38",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_5393fe0445536e60",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_afc3849ee2132aa0",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2026-03-11",
+      "document_id": "doc_c067799ecdb0374b",
+      "relationship_id": "rel_5393fe0445536e60",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_bfa8bc7239a4493e",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_09c653e876f71e43",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2026-02-25",
+      "document_id": "doc_580c0a91309a6fbc",
+      "relationship_id": "rel_bfa8bc7239a4493e",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_6d062af1b44a3ea7",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_4bc8458262fa9ce0",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-12-16",
+      "document_id": "doc_0386ac1fffb694f6",
+      "relationship_id": "rel_6d062af1b44a3ea7",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_b538979c36c23460",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_afeece884e079854",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-10-01",
+      "document_id": "doc_aff8af4021bbb35c",
+      "relationship_id": "rel_b538979c36c23460",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_1eb624504754d570",
+      "from": "ent_169bae059ba1c960",
+      "to": "evt_4036ad4e118e626f",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-06-28",
+      "document_id": "doc_a468efd9476c6cd9",
+      "relationship_id": "rel_1eb624504754d570",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_003635a7e2a24ea3",
+      "from": "ent_ff4d0edcbae7b346",
+      "to": "evt_4036ad4e118e626f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-06-28",
+      "document_id": "doc_a468efd9476c6cd9",
+      "relationship_id": "rel_003635a7e2a24ea3",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_0833aa06f2773f20",
+      "from": "ent_L65990MH1987PLC044571",
+      "to": "evt_4036ad4e118e626f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-06-28",
+      "document_id": "doc_a468efd9476c6cd9",
+      "relationship_id": "rel_0833aa06f2773f20",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_d527debd2ffbf97e",
+      "from": "ent_ac334d0ac1e352f4",
+      "to": "evt_4036ad4e118e626f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-06-28",
+      "document_id": "doc_a468efd9476c6cd9",
+      "relationship_id": "rel_d527debd2ffbf97e",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_fa8fb8dc87478629",
+      "from": "ent_e641146c7f01a521",
+      "to": "evt_4036ad4e118e626f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-06-28",
+      "document_id": "doc_a468efd9476c6cd9",
+      "relationship_id": "rel_fa8fb8dc87478629",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_8f7b10262002c969",
+      "from": "ent_L26940MH1999PLC118229",
+      "to": "evt_4036ad4e118e626f",
+      "type": "mentioned_in",
+      "basis": "candidate",
+      "strength": "weak",
+      "evidence_status": "inference",
+      "source_id": "ed",
+      "date": "2025-06-28",
+      "document_id": "doc_a468efd9476c6cd9",
+      "relationship_id": "rel_8f7b10262002c969",
+      "confidence": 0.5
+    },
+    {
+      "id": "edg_rel_7d288ba6baf8b767",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_72d2efe16612acb4",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "allegation",
+      "source_id": "ed",
+      "date": "2025-05-02",
+      "document_id": "doc_f7f3821d36fcb52b",
+      "relationship_id": "rel_7d288ba6baf8b767",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_c014e0a55326747b",
+      "from": "ent_L74999DL2007PLC277039",
+      "to": "evt_d4cab843a69035d6",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-07-29",
+      "document_id": "doc_811804d4f543f594",
+      "relationship_id": "rel_c014e0a55326747b",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_b2c7beb03fb80a09",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_L74999DL2007PLC277039",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-07-29",
+      "document_id": "doc_811804d4f543f594",
+      "relationship_id": "rel_b2c7beb03fb80a09",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_bd40c1d5fe20f64b",
+      "from": "ent_L74999DL2007PLC277039",
+      "to": "evt_487dfa1b0c9a4c1e",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-07-24",
+      "document_id": "doc_1b6fdc9a400614a8",
+      "relationship_id": "rel_bd40c1d5fe20f64b",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_6106a57ec4b2ad17",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_L74999DL2007PLC277039",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-07-24",
+      "document_id": "doc_1b6fdc9a400614a8",
+      "relationship_id": "rel_6106a57ec4b2ad17",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_fac0593d91ea6a34",
+      "from": "ent_c520de8d536d09a9",
+      "to": "evt_e08ce77b0682d8ff",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-12-06",
+      "document_id": "doc_16ded6fd5e04c3e9",
+      "relationship_id": "rel_fac0593d91ea6a34",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_9061a0d3fd07ed9c",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_c520de8d536d09a9",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-12-06",
+      "document_id": "doc_16ded6fd5e04c3e9",
+      "relationship_id": "rel_9061a0d3fd07ed9c",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_ca1cccc3c3775b40",
+      "from": "ent_efcd71309c04d3aa",
+      "to": "evt_a5a96990b9125a13",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_6632636307831de3",
+      "relationship_id": "rel_ca1cccc3c3775b40",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_1dff77420de114f5",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_efcd71309c04d3aa",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_6632636307831de3",
+      "relationship_id": "rel_1dff77420de114f5",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_11d555abd738c552",
+      "from": "ent_17efc669a96d0517",
+      "to": "evt_aef8ac38d3899d42",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_0e24edfde2a041cb",
+      "relationship_id": "rel_11d555abd738c552",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_14b50328bdda2d9f",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_17efc669a96d0517",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_0e24edfde2a041cb",
+      "relationship_id": "rel_14b50328bdda2d9f",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_f36f158488ffb0ed",
+      "from": "ent_bc3809d95d933ce9",
+      "to": "evt_3118d0104a00b064",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_e4293256d5676ea4",
+      "relationship_id": "rel_f36f158488ffb0ed",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_9b9d3669e6aebbf3",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_bc3809d95d933ce9",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_e4293256d5676ea4",
+      "relationship_id": "rel_9b9d3669e6aebbf3",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_133bb1b732977ea6",
+      "from": "ent_16f85670ab16120b",
+      "to": "evt_43cfeea2d4dce827",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_235e0dc86f1d4299",
+      "relationship_id": "rel_133bb1b732977ea6",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_3c6bc7614b2cb96a",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_16f85670ab16120b",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_235e0dc86f1d4299",
+      "relationship_id": "rel_3c6bc7614b2cb96a",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_b6778fa8f5232213",
+      "from": "ent_b733ea4c2bc628eb",
+      "to": "evt_2dfcfeac18071288",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_fcdd2f5579aac4f9",
+      "relationship_id": "rel_b6778fa8f5232213",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_549a186a430dc6b7",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_b733ea4c2bc628eb",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_fcdd2f5579aac4f9",
+      "relationship_id": "rel_549a186a430dc6b7",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_963323c18dba80d2",
+      "from": "ent_83187cbc63a2fd38",
+      "to": "evt_a4005c3148687079",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_dfd9e337ccf21e8c",
+      "relationship_id": "rel_963323c18dba80d2",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_26357faf1f215fcc",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_83187cbc63a2fd38",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_dfd9e337ccf21e8c",
+      "relationship_id": "rel_26357faf1f215fcc",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_498d38a92aa1f791",
+      "from": "ent_3d93fb7cc3b4b717",
+      "to": "evt_94eefc016f3ae623",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_64b70c863645c209",
+      "relationship_id": "rel_498d38a92aa1f791",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_1c1f12ec0efbdad1",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_3d93fb7cc3b4b717",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_64b70c863645c209",
+      "relationship_id": "rel_1c1f12ec0efbdad1",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_36d96b910401c0be",
+      "from": "ent_e1600d213ec21896",
+      "to": "evt_11b74da0b5d254a5",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_aa4dc15d6cae6110",
+      "relationship_id": "rel_36d96b910401c0be",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_96620ad4f476b23e",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_e1600d213ec21896",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_aa4dc15d6cae6110",
+      "relationship_id": "rel_96620ad4f476b23e",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_309fdeebea6cac68",
+      "from": "ent_855e03f5cab3000c",
+      "to": "evt_91ccda7dfb1a8798",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_f0930122033cc498",
+      "relationship_id": "rel_309fdeebea6cac68",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_6cd3de2e46d288f5",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_855e03f5cab3000c",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_f0930122033cc498",
+      "relationship_id": "rel_6cd3de2e46d288f5",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_784378610f563cce",
+      "from": "ent_02ad2925132f39c6",
+      "to": "evt_49bdfcbce29f1ece",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_475d8f87259e572e",
+      "relationship_id": "rel_784378610f563cce",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_b52d0a4b9eb600c2",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_02ad2925132f39c6",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_475d8f87259e572e",
+      "relationship_id": "rel_b52d0a4b9eb600c2",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_3fccb01b3ecd3bba",
+      "from": "ent_475557e7c0993cc0",
+      "to": "evt_713df3027776ea28",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_92d133ede6f77bcf",
+      "relationship_id": "rel_3fccb01b3ecd3bba",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_6aa9f1effbd56706",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_475557e7c0993cc0",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_92d133ede6f77bcf",
+      "relationship_id": "rel_6aa9f1effbd56706",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_9646a30164ac3a3e",
+      "from": "ent_ab2dd5fd1cf62db0",
+      "to": "evt_cb1180e0e09661d5",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_5d080ba5c5c30d3d",
+      "relationship_id": "rel_9646a30164ac3a3e",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_0b07cb4aee240b74",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_ab2dd5fd1cf62db0",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_5d080ba5c5c30d3d",
+      "relationship_id": "rel_0b07cb4aee240b74",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_0b686ea61b02ce46",
+      "from": "ent_2a2e1053e6df2f9d",
+      "to": "evt_047fd27bce92fb30",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_5341dcfac54ef29e",
+      "relationship_id": "rel_0b686ea61b02ce46",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_168e4ede49bbe0b2",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_2a2e1053e6df2f9d",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_5341dcfac54ef29e",
+      "relationship_id": "rel_168e4ede49bbe0b2",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_f8803e7ea915c604",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_8a5e9789274840a6",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-02-28",
+      "document_id": "doc_f67c2ec8fa67acc1",
+      "relationship_id": "rel_f8803e7ea915c604",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_66b6b3fd0351cb4a",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_00a5b74186a41cba",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-02-28",
+      "document_id": "doc_f67c2ec8fa67acc1",
+      "relationship_id": "rel_66b6b3fd0351cb4a",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_2b92aa9c85f7d150",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_880a6e53be271927",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-10-23",
+      "document_id": "doc_f45ba297a851906c",
+      "relationship_id": "rel_2b92aa9c85f7d150",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_ce5b1347bfbf34b2",
+      "from": "ent_3a8a7a07cf2f48e0",
+      "to": "ent_00a5b74186a41cba",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-10-23",
+      "document_id": "doc_f45ba297a851906c",
+      "relationship_id": "rel_ce5b1347bfbf34b2",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_45fbaff8e5f0d6b5",
+      "from": "ent_c520de8d536d09a9",
+      "to": "evt_cc0962a4aae37dab",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-10-06",
+      "document_id": "doc_0d1159bc6698d58f",
+      "relationship_id": "rel_45fbaff8e5f0d6b5",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_559bde91d64342b9",
+      "from": "ent_726e7fc916a6c657",
+      "to": "ent_c520de8d536d09a9",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-10-06",
+      "document_id": "doc_0d1159bc6698d58f",
+      "relationship_id": "rel_559bde91d64342b9",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_a4dad3395cbb4213",
+      "from": "ent_abc356af0d0fafee",
+      "to": "evt_b8c3590f45a91686",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-06-11",
+      "document_id": "doc_d1ad96617ce539c3",
+      "relationship_id": "rel_a4dad3395cbb4213",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_91d79f4c22c82059",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_abc356af0d0fafee",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-06-11",
+      "document_id": "doc_d1ad96617ce539c3",
+      "relationship_id": "rel_91d79f4c22c82059",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_d5a33752e336f650",
+      "from": "ent_L51109WB1998PLC087076",
+      "to": "evt_fa37735ef5942fd5",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-02-13",
+      "document_id": "doc_11cbac28f9d04ad1",
+      "relationship_id": "rel_d5a33752e336f650",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_18f03ad46809ecd9",
+      "from": "ent_de0668ae919e0190",
+      "to": "ent_L51109WB1998PLC087076",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-02-13",
+      "document_id": "doc_11cbac28f9d04ad1",
+      "relationship_id": "rel_18f03ad46809ecd9",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_30578546464c289e",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_77be1835d3ce448c",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-11-20",
+      "document_id": "doc_308e910d85f4f887",
+      "relationship_id": "rel_30578546464c289e",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_02e5f6d9761029f2",
+      "from": "ent_909e5f783a786753",
+      "to": "evt_4344a9da88568a6f",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-10-31",
+      "document_id": "doc_b21f32d81515bde1",
+      "relationship_id": "rel_02e5f6d9761029f2",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_8e6a5b43da33564a",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_909e5f783a786753",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-10-31",
+      "document_id": "doc_b21f32d81515bde1",
+      "relationship_id": "rel_8e6a5b43da33564a",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_4d7e56ef4b0e0a76",
+      "from": "ent_U70103MH2007PTC173581",
+      "to": "evt_1a1e4b6b4cb4fcb4",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-07-14",
+      "document_id": "doc_5e62f6c144cc13ce",
+      "relationship_id": "rel_4d7e56ef4b0e0a76",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_66622a8b3f34faba",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_U70103MH2007PTC173581",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-07-14",
+      "document_id": "doc_5e62f6c144cc13ce",
+      "relationship_id": "rel_66622a8b3f34faba",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_38703cada749c5d9",
+      "from": "ent_U70103MH2007PTC173581",
+      "to": "evt_a8632ed5aa5a835d",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-03-22",
+      "document_id": "doc_448a5cf2d3772790",
+      "relationship_id": "rel_38703cada749c5d9",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_6e55398a9980f8c4",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_U70103MH2007PTC173581",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-03-22",
+      "document_id": "doc_448a5cf2d3772790",
+      "relationship_id": "rel_6e55398a9980f8c4",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_2660bf95edc39f6e",
+      "from": "ent_L51109WB1998PLC087076",
+      "to": "evt_089130f57505626f",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-08-09",
+      "document_id": "doc_b3e1d1e9be6a57c1",
+      "relationship_id": "rel_2660bf95edc39f6e",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_fd34a1abb3342049",
+      "from": "ent_05a0e5db4b301e5e",
+      "to": "ent_L51109WB1998PLC087076",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-08-09",
+      "document_id": "doc_b3e1d1e9be6a57c1",
+      "relationship_id": "rel_fd34a1abb3342049",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_eb37a7f0b836f244",
+      "from": "ent_00a5b74186a41cba",
+      "to": "evt_ca3b3e63a2e3f2fc",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-18",
+      "document_id": "doc_48e618e9396f0a8a",
+      "relationship_id": "rel_eb37a7f0b836f244",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_0392133d8459e462",
+      "from": "ent_U74140MH2006PLC165363",
+      "to": "evt_725d02b9fd37040c",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-18",
+      "document_id": "doc_5472955687b2da1e",
+      "relationship_id": "rel_0392133d8459e462",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_af3c14239c486be9",
+      "from": "ent_bd00a8e3dbeed092",
+      "to": "evt_ea9cee87feb8a48a",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-01-23",
+      "document_id": "doc_9a67fd325a8cd8e2",
+      "relationship_id": "rel_af3c14239c486be9",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_11bbad4230a05166",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_bd00a8e3dbeed092",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-01-23",
+      "document_id": "doc_9a67fd325a8cd8e2",
+      "relationship_id": "rel_11bbad4230a05166",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_521a5d8810eb55fd",
+      "from": "ent_691280266e521961",
+      "to": "evt_b73dca2130cd2e3b",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-01-10",
+      "document_id": "doc_03cccd0b35620849",
+      "relationship_id": "rel_521a5d8810eb55fd",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_daa84a7d6f19ec27",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_691280266e521961",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-01-10",
+      "document_id": "doc_03cccd0b35620849",
+      "relationship_id": "rel_daa84a7d6f19ec27",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_a7b6cca6375be022",
+      "from": "ent_d6c40a8a4bbd5c6a",
+      "to": "evt_5444d1e928143edf",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-01-07",
+      "document_id": "doc_068b8475b6748ac3",
+      "relationship_id": "rel_a7b6cca6375be022",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_ce1bb6670a01f1b4",
+      "from": "ent_628cae91287bb5a1",
+      "to": "ent_d6c40a8a4bbd5c6a",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-01-07",
+      "document_id": "doc_068b8475b6748ac3",
+      "relationship_id": "rel_ce1bb6670a01f1b4",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_e549485285d77737",
+      "from": "ent_U67120MH2009PTC191131",
+      "to": "evt_68dc79b25d73d0f5",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-12-10",
+      "document_id": "doc_e4732faec17d4f12",
+      "relationship_id": "rel_e549485285d77737",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_409ab63573f1870c",
+      "from": "ent_a273d56b4529c21d",
+      "to": "evt_1dc9d65fb9edde59",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-11-29",
+      "document_id": "doc_9d0b20a5f9ce28e5",
+      "relationship_id": "rel_409ab63573f1870c",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_b57da99634b3a0b0",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_a273d56b4529c21d",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-11-29",
+      "document_id": "doc_9d0b20a5f9ce28e5",
+      "relationship_id": "rel_b57da99634b3a0b0",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_f8545b120235e5a1",
+      "from": "ent_U99999MH1996PTC102913",
+      "to": "evt_64690e9ea13e3111",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-08-30",
+      "document_id": "doc_68684f8ff0808577",
+      "relationship_id": "rel_f8545b120235e5a1",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_80272c4dd7641a3a",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "ent_U99999MH1996PTC102913",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-08-30",
+      "document_id": "doc_68684f8ff0808577",
+      "relationship_id": "rel_80272c4dd7641a3a",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_3f70c9d93ddd0027",
+      "from": "ent_25a04b3bdd358e7c",
+      "to": "evt_650ea9d22b329868",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-04-29",
+      "document_id": "doc_9fbe74a56c1e533d",
+      "relationship_id": "rel_3f70c9d93ddd0027",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_337ddd3b7d4a3675",
+      "from": "per_658f46b6b19792b0",
+      "to": "ent_L74999DL2007PLC277039",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-07-29",
+      "document_id": "doc_811804d4f543f594",
+      "relationship_id": "rel_337ddd3b7d4a3675",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_dce502beff1b092f",
+      "from": "per_658f46b6b19792b0",
+      "to": "ent_L74999DL2007PLC277039",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2026-07-24",
+      "document_id": "doc_1b6fdc9a400614a8",
+      "relationship_id": "rel_dce502beff1b092f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_6b21aef01fd4d621",
+      "from": "per_f394c446522eb1cc",
+      "to": "ent_c520de8d536d09a9",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-12-06",
+      "document_id": "doc_16ded6fd5e04c3e9",
+      "relationship_id": "rel_6b21aef01fd4d621",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_3b8735a1834c4485",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_efcd71309c04d3aa",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_6632636307831de3",
+      "relationship_id": "rel_3b8735a1834c4485",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_1d26406aebde25f8",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_17efc669a96d0517",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_0e24edfde2a041cb",
+      "relationship_id": "rel_1d26406aebde25f8",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_ee604987d24e7bfc",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_bc3809d95d933ce9",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_e4293256d5676ea4",
+      "relationship_id": "rel_ee604987d24e7bfc",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_abf287ee87bceeb7",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_16f85670ab16120b",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_235e0dc86f1d4299",
+      "relationship_id": "rel_abf287ee87bceeb7",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_4e7219fb973c93e9",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_b733ea4c2bc628eb",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_fcdd2f5579aac4f9",
+      "relationship_id": "rel_4e7219fb973c93e9",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_4eaf80b6d793e16f",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_83187cbc63a2fd38",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_dfd9e337ccf21e8c",
+      "relationship_id": "rel_4eaf80b6d793e16f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_a72b103fefef7e2f",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_3d93fb7cc3b4b717",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_64b70c863645c209",
+      "relationship_id": "rel_a72b103fefef7e2f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_7aefb63ae5329ca4",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_e1600d213ec21896",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_aa4dc15d6cae6110",
+      "relationship_id": "rel_7aefb63ae5329ca4",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_01178ac256cbcf85",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_855e03f5cab3000c",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_f0930122033cc498",
+      "relationship_id": "rel_01178ac256cbcf85",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_77470d5391759766",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_02ad2925132f39c6",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_475d8f87259e572e",
+      "relationship_id": "rel_77470d5391759766",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_d64b9e87ece659f5",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_475557e7c0993cc0",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_92d133ede6f77bcf",
+      "relationship_id": "rel_d64b9e87ece659f5",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_d9b5cdd603159eb5",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_ab2dd5fd1cf62db0",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_5d080ba5c5c30d3d",
+      "relationship_id": "rel_d9b5cdd603159eb5",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_f7a4ccf7d91360f8",
+      "from": "per_445d685e9f79aad5",
+      "to": "ent_2a2e1053e6df2f9d",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-11-16",
+      "document_id": "doc_5341dcfac54ef29e",
+      "relationship_id": "rel_f7a4ccf7d91360f8",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_635d6bf4bf2f99fc",
+      "from": "per_ea9a1cb62a467153",
+      "to": "ent_00a5b74186a41cba",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2025-02-28",
+      "document_id": "doc_f67c2ec8fa67acc1",
+      "relationship_id": "rel_635d6bf4bf2f99fc",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_001d4259e5672c5d",
+      "from": "per_ea9a1cb62a467153",
+      "to": "ent_00a5b74186a41cba",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-10-23",
+      "document_id": "doc_f45ba297a851906c",
+      "relationship_id": "rel_001d4259e5672c5d",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_4b0dac9954dd5940",
+      "from": "per_d53bba1483a08090",
+      "to": "ent_c520de8d536d09a9",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-10-06",
+      "document_id": "doc_0d1159bc6698d58f",
+      "relationship_id": "rel_4b0dac9954dd5940",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_c8048be4f51a02a8",
+      "from": "per_f35807d2bcf644d6",
+      "to": "ent_abc356af0d0fafee",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-06-11",
+      "document_id": "doc_d1ad96617ce539c3",
+      "relationship_id": "rel_c8048be4f51a02a8",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_d84118b4a698e654",
+      "from": "per_a3b022e4dc109b81",
+      "to": "ent_L51109WB1998PLC087076",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2023-02-13",
+      "document_id": "doc_11cbac28f9d04ad1",
+      "relationship_id": "rel_d84118b4a698e654",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_2d67db0bc039482c",
+      "from": "per_d98f37db5ad18134",
+      "to": "ent_00a5b74186a41cba",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-11-20",
+      "document_id": "doc_308e910d85f4f887",
+      "relationship_id": "rel_2d67db0bc039482c",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_36e0588e55d9db37",
+      "from": "per_f35807d2bcf644d6",
+      "to": "ent_909e5f783a786753",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-10-31",
+      "document_id": "doc_b21f32d81515bde1",
+      "relationship_id": "rel_36e0588e55d9db37",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_1f1fb346704efc0c",
+      "from": "per_116e71558f54367b",
+      "to": "ent_U70103MH2007PTC173581",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-07-14",
+      "document_id": "doc_5e62f6c144cc13ce",
+      "relationship_id": "rel_1f1fb346704efc0c",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_56dbc5194b135d9f",
+      "from": "per_116e71558f54367b",
+      "to": "ent_U70103MH2007PTC173581",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2022-03-22",
+      "document_id": "doc_448a5cf2d3772790",
+      "relationship_id": "rel_56dbc5194b135d9f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_d01117408e02a5ee",
+      "from": "per_b7917b4f8f799724",
+      "to": "ent_L51109WB1998PLC087076",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-08-09",
+      "document_id": "doc_b3e1d1e9be6a57c1",
+      "relationship_id": "rel_d01117408e02a5ee",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_72210dc33e8d1d4c",
+      "from": "per_b0ad929dd5716158",
+      "to": "ent_U74140MH2006PLC165363",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-03-18",
+      "document_id": "doc_5472955687b2da1e",
+      "relationship_id": "rel_72210dc33e8d1d4c",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_9d9895c9c51becc7",
+      "from": "per_5f370ecc03f03da6",
+      "to": "ent_bd00a8e3dbeed092",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-01-23",
+      "document_id": "doc_9a67fd325a8cd8e2",
+      "relationship_id": "rel_9d9895c9c51becc7",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_8f5231c3263e5431",
+      "from": "per_ea9a1cb62a467153",
+      "to": "ent_691280266e521961",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2020-01-10",
+      "document_id": "doc_03cccd0b35620849",
+      "relationship_id": "rel_8f5231c3263e5431",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_9f3794d1812bb087",
+      "from": "per_6d9aaf8359fecaed",
+      "to": "ent_d6c40a8a4bbd5c6a",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-01-07",
+      "document_id": "doc_068b8475b6748ac3",
+      "relationship_id": "rel_9f3794d1812bb087",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_fdbe0d8fe3c1dd42",
+      "from": "per_b0ad929dd5716158",
+      "to": "ent_U67120MH2009PTC191131",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-12-10",
+      "document_id": "doc_e4732faec17d4f12",
+      "relationship_id": "rel_fdbe0d8fe3c1dd42",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_db00c196968d5816",
+      "from": "per_ed74d79fb45aa305",
+      "to": "ent_a273d56b4529c21d",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-11-29",
+      "document_id": "doc_9d0b20a5f9ce28e5",
+      "relationship_id": "rel_db00c196968d5816",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_5c09fa3f1e25da7d",
+      "from": "per_826b73d220553829",
+      "to": "ent_U99999MH1996PTC102913",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-08-30",
+      "document_id": "doc_68684f8ff0808577",
+      "relationship_id": "rel_5c09fa3f1e25da7d",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_f2e1ddf2acc13cbc",
+      "from": "per_b0ad929dd5716158",
+      "to": "ent_25a04b3bdd358e7c",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2017-04-29",
+      "document_id": "doc_9fbe74a56c1e533d",
+      "relationship_id": "rel_f2e1ddf2acc13cbc",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_200de707219eddda",
+      "from": "ent_L65990MH1987PLC044571",
+      "to": "adr_a7767b2ab11b2f18",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_200de707219eddda",
+      "confidence": 0.8
+    },
+    {
+      "id": "edg_rel_97e25bb646d4222f",
+      "from": "ent_U65990MH1995PLC093241",
+      "to": "adr_80156c4d479e3603",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_97e25bb646d4222f",
+      "confidence": 0.8
+    },
+    {
+      "id": "edg_rel_36d316c9dc2eb701",
+      "from": "ent_U40300MH2011PLC220218",
+      "to": "adr_6987fcdc1cbe25c3",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_36d316c9dc2eb701",
+      "confidence": 0.8
+    },
+    {
+      "id": "edg_rel_f26c9e2fe543050d",
+      "from": "ent_U70103MH2007PTC173581",
+      "to": "adr_6313d90fbb2bf7eb",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_f26c9e2fe543050d",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_0d142c0378248ab5",
+      "from": "ent_U74140MH2006PLC165363",
+      "to": "adr_6987fcdc1cbe25c3",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_0d142c0378248ab5",
+      "confidence": 0.8
+    },
+    {
+      "id": "edg_rel_85fa579a98a16101",
+      "from": "ent_U67120MH2009PTC191131",
+      "to": "adr_fa4b21bb7131c048",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_85fa579a98a16101",
+      "confidence": 0.8
+    },
+    {
+      "id": "edg_rel_c609fc41b8d02982",
+      "from": "ent_U99999MH1996PTC102913",
+      "to": "adr_1ee1cccce8c794b8",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_c609fc41b8d02982",
+      "confidence": 0.8
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_361afc2ea7691c9a",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010583.pdf",
+      "title": "Audit Quality Review (AQR) Report in respect of Statutory Audit done by SRBC & Co LLP, Chartered Accountants Firm Registration Number (FRN:324982E(slash)E300003) of Infrastructure Leasing & Financial Services Limited (IL",
+      "date": "2022-06-22",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_eae8d3d5d7949498",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2023/01/2023010562.pdf",
+      "title": "Audit Quality Review (AQR) Report in respect of Statutory Audit done by SRBC & Co LLP, Chartered Accountants Firm Registration Number (FRN:324982E(slash)E300003) of IL&FS Transportation Networks Limited (ITNL) for the Fi",
+      "date": "2021-09-23",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_08ebdd4166121799",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2026/03/20260316322158579.pdf",
+      "title": "M/s SRBC & Co. LLP – Inspection Report No.132.2-2024-02",
+      "date": "2026-03-16",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_567cc62b87fca369",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e2ad76f2326fbc6b56a45a56c59fafdb/uploads/2025/03/20250401370299066.pdf",
+      "title": "M/s SRBC & Co. LLP – Inspection Report No.132.2-2023-05",
+      "date": "2025-03-27",
+      "source_id": "nfra"
+    },
+    {
+      "id": "doc_c067799ecdb0374b",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/2fc43ce9-81be-4326-af00-4aa2fc4dc0bb_Press%20Release-PAO-APIL-1132026-1.pdf",
+      "title": "ED, Lucknow Zonal Office, has provisionally attached immovable properties consist of residential land parcels spanning 9.08 hectares, located in Agra, valued at Rs. 313.12 Crore (approx.) held in the name of associated c",
+      "date": "2026-03-11",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_580c0a91309a6fbc",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/118a2df6-bc80-4b37-a484-24a7a73a8e9a_Press%20release%20APIL-PAO-2522026%202.pdf",
+      "title": "ED, HIU-II has provisionally attached immovable properties in the form of land worth more than Rs. 598 Crore situated in Agra, Uttar Pradesh, under PMLA, 2002, in the case of M/s Ansal Properties & Infrastructure Ltd. (A",
+      "date": "2026-02-25",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_0386ac1fffb694f6",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/332c0d53-39d3-47e7-8878-89b1cdca4b60_Press%20release-PC%20in%20Ansal-16.12.2025%205.pdf",
+      "title": "ED, Gurugram Zonal Office has filed a Prosecution Complaint dated 16.12.2025 before the Hon’ble Special Court (PMLA), against M/s Ansal Properties and Infrastructure Ltd. (APIL) and its directors/shareholders viz. Sushil",
+      "date": "2025-12-16",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_aff8af4021bbb35c",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/2f1346d7-09e5-438b-ab74-3a5b38a46e1d_Press%20release-PAO%20in%20Ansal-1.10.2025.pdf",
+      "title": "ED, Gurugram has provisionally attached 06 immovable properties under PMLA, 2002, valued at Rs. 10.55 Crore, situated in Gurugram (Haryana), Greater Noida (UP) and Ludhiana (Punjab) held by Directors/shareholders/benefic",
+      "date": "2025-10-01",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_a468efd9476c6cd9",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/0e57bb2f-015d-4b4d-8a30-88b9619cfb66_Press_Release_Restoration-Vadraj_Cement_2862025-4.pdf",
+      "title": "In continuation to the ED’s ongoing efforts for restitution of properties to their rightful owners and in order to put the productive assets to use enabling financial institutes to monetize the assets attached or seized/",
+      "date": "2025-06-28",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_f7f3821d36fcb52b",
+      "url": "https://enforcementdirectorate.gov.in/media/press-release-documents/5411c9a1-f0a7-499d-8727-945322fd60d0_Press%20Release-Ansal-%20Search-252025.pdf",
+      "title": "ED, Lucknow Zonal Office has conducted search operations under the provisions of the PMLA, 2002 at five premises across Ghaziabad, Lucknow and New Delhi on 30.04.2025 in the case of M/s Ansal Properties & Infrastructure ",
+      "date": "2025-05-02",
+      "source_id": "ed"
+    },
+    {
+      "id": "doc_811804d4f543f594",
+      "url": "https://ibbi.gov.in//uploads/announcement/2213f1dce367ab262cc7871110ea0369.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ADHUNIK MEGHALAYA STEELS PRIVATE LIMITED",
+      "date": "2026-07-29",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_1b6fdc9a400614a8",
+      "url": "https://ibbi.gov.in//uploads/announcement/db61be349cae5774fe37c8755a0f17e4.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ADHUNIK MEGHALAYA STEELS PRIVATE LIMITED",
+      "date": "2026-07-24",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_16ded6fd5e04c3e9",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-12-08-130130-5epg8-e529a9cea4a728eb9c5828b13b22844c.pdf",
+      "title": "Public Announcement of Liquidation Process: BHARAT WATERFRONT PRIVATE LIMITED",
+      "date": "2025-12-06",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_6632636307831de3",
+      "url": "https://ibbi.gov.in//uploads/announcement/f97a6afcb84f891d10c2cd49395a209b.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: SATLUJ REAL ESTATES PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_0e24edfde2a041cb",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-165415-a3jpy-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: SARVATRA REALTORS PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_e4293256d5676ea4",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-165918-ydi57-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: KUSHMANDA PROPERTIES PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_235e0dc86f1d4299",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-170409-usm7i-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: KAVERI REALTORS PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_fcdd2f5579aac4f9",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173220-k2aqb-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: KATRA REALTORS PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_dfd9e337ccf21e8c",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173425-9u6d3-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: KATRA REAL ESTATES PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_64b70c863645c209",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173546-td3zu-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: KAILASH REALTORS PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_aa4dc15d6cae6110",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173755-ncr8o-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ICON BUILDCON PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_f0930122033cc498",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-173907-vhktu-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: GHARONDHA REALTORS PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_475d8f87259e572e",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-174029-elzkx-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ELITIST REALTORS PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_92d133ede6f77bcf",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-174200-3h0s7-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: CHAKRADHARI PROPERTIES PVT LTD",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_5d080ba5c5c30d3d",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-174311-evuac-bef86e1aa2c2ba6b73d3a481f88c6c4e.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: BAJRANG REALTORS PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_5341dcfac54ef29e",
+      "url": "https://ibbi.gov.in//uploads/announcement/2025-11-19-174503-kl46b-3b2339050f45f034ee0fda92f65f1263.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: APNA GHAR PROPERTIES PRIVATE LIMITED",
+      "date": "2025-11-16",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_f67c2ec8fa67acc1",
+      "url": "https://ibbi.gov.in//uploads/announcement/66a05cd28816549c62eeb74fd2457910.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LIMITED",
+      "date": "2025-02-28",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_f45ba297a851906c",
+      "url": "https://ibbi.gov.in//uploads/announcement/d567de354d460e98f8b42846ad6b89cd.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LIMITED",
+      "date": "2023-10-23",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_0d1159bc6698d58f",
+      "url": "https://ibbi.gov.in//uploads/announcement/8557cbef186e68c3ea6c26d8ff0f8199.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: BHARAT WATERFRONT PRIVATE LIMITED",
+      "date": "2023-10-06",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_d1ad96617ce539c3",
+      "url": "https://ibbi.gov.in//uploads/announcement/17231048a9e92df47df2b6ebd43e5d99.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Attivo Economic Zone (Mumbai) Private Limited",
+      "date": "2023-06-11",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_11cbac28f9d04ad1",
+      "url": "https://ibbi.gov.in//uploads/announcement/164c85030375f0f37ee837dc55bac0ab.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: McLeod Russel India Limited",
+      "date": "2023-02-13",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_308e910d85f4f887",
+      "url": "https://ibbi.gov.in//uploads/announcement/2022-11-24-164037-bn2mw-c0cf80b6ddc72720c5c252c603eba1ec.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LTD",
+      "date": "2022-11-20",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_b21f32d81515bde1",
+      "url": "https://ibbi.gov.in//uploads/announcement/5ddcafb24e0e8f35829cf4a76a5e9feb.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: E Village Kendra Limited",
+      "date": "2022-10-31",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_5e62f6c144cc13ce",
+      "url": "https://ibbi.gov.in//uploads/announcement/c3003179b444449256e9b2d481e60b0a.pdf",
+      "title": "Public Announcement of Liquidation Process: G. C. Property Private Limited",
+      "date": "2022-07-14",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_448a5cf2d3772790",
+      "url": "https://ibbi.gov.in//uploads/announcement/d9746e9485d33d29b425d4022ea931c5.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: G C Property Private Limited",
+      "date": "2022-03-22",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_b3e1d1e9be6a57c1",
+      "url": "https://ibbi.gov.in//uploads/announcement/e4b6bd0db48e63174c49664c38535d22.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: McLeod Russel India Limited",
+      "date": "2021-08-09",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_48e618e9396f0a8a",
+      "url": "https://ibbi.gov.in//uploads/announcement/24c245c595fb6dfc20267d647a49b61c.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: ANSAL PROPERTIES AND INFRASTRUCTURE LIMITED",
+      "date": "2020-03-18",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_5472955687b2da1e",
+      "url": "https://ibbi.gov.in//uploads/announcement/2994bcffc09920427962db97136f0b13.pdf",
+      "title": "Public Announcement of Voluntary Liquidation Process: IL&FS PORTFOLIO MANAGEMENT SERVICES LIMITED",
+      "date": "2020-03-18",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_9a67fd325a8cd8e2",
+      "url": "https://ibbi.gov.in//uploads/announcement/47dad7f2a0682e840c8bc177fddefb3f.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: KVK Energy and Infrastructure Pvt. Ltd.",
+      "date": "2020-01-23",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_03cccd0b35620849",
+      "url": "https://ibbi.gov.in//uploads/announcement/b7f6f4006db9a57c8c1d674146ddac93.pdf",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Emerald Lands (India) Pvt. Ltd.",
+      "date": "2020-01-10",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_068b8475b6748ac3",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Nandi Engineering Ltd.",
+      "date": "2019-01-07",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_e4732faec17d4f12",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Voluntary Liquidation Process: IL & FS Broking Services Pvt. Ltd.",
+      "date": "2018-12-10",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_9d0b20a5f9ce28e5",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Golden Glow Estates Pvt. Ltd.",
+      "date": "2018-11-29",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_68684f8ff0808577",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: La-Fin Financial Services Pvt. Ltd.",
+      "date": "2018-08-30",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_9fbe74a56c1e533d",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Voluntary Liquidation Process: IL&FS Capital Advisors Limited",
+      "date": "2017-04-29",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_mca_company_master",
+      "url": "https://www.data.gov.in/resource/registrars-companies-roc-wise-company-master-data",
+      "title": "MCA RoC-wise company master data (company_master.part1of5.csv, company_master.part2of5.csv, company_master.part3of5.csv, company_master.part4of5.csv, company_master.part5of5.csv)",
+      "date": null,
+      "source_id": "mca_ogd"
+    }
+  ],
+  "networks": [
+    {
+      "id": "net_8249586e1f6a930e",
+      "node_ids": [
+        "ent_L51109WB1998PLC087076",
+        "ent_05a0e5db4b301e5e",
+        "evt_089130f57505626f",
+        "ent_de0668ae919e0190",
+        "evt_fa37735ef5942fd5"
+      ],
+      "organisation_count": 3,
+      "adverse_organisation_count": 1,
+      "sources": [
+        "ibbi"
+      ],
+      "seed_cases": [
+        "ilfs"
+      ],
+      "score": 5,
+      "summary": "3 organisations connected by established records (2 named in, 2 insolvency applicant against). A connection is not evidence of wrongdoing."
+    },
+    {
+      "id": "net_7e6db56ed85f61aa",
+      "node_ids": [
+        "ent_d6c40a8a4bbd5c6a",
+        "ent_628cae91287bb5a1",
+        "evt_5444d1e928143edf"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 1,
+      "sources": [
+        "ibbi"
+      ],
+      "seed_cases": [
+        "ilfs"
+      ],
+      "score": 5,
+      "summary": "2 organisations connected by established records (1 named in, 1 insolvency applicant against). A connection is not evidence of wrongdoing."
+    },
+    {
+      "id": "net_bc4c49f3caac1a60",
+      "node_ids": [
+        "ent_c520de8d536d09a9",
+        "ent_726e7fc916a6c657",
+        "evt_cc0962a4aae37dab",
+        "evt_e08ce77b0682d8ff"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 1,
+      "sources": [
+        "ibbi"
+      ],
+      "seed_cases": [],
+      "score": 2,
+      "summary": "2 organisations connected by established records (2 named in, 1 insolvency applicant against). A connection is not evidence of wrongdoing."
+    }
+  ],
+  "identity": []
+}

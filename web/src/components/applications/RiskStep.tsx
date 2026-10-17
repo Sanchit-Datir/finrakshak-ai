@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { DISCLAIMERS, PRIORITY_HELP } from '../../domain/labels.js';
 import type { Application, Db } from '../../domain/schemas.js';
 import { CHECK_NAMES, reviewPriority, runChecks } from '../../lib/checks.js';
-import { recordChecksRun } from '../../state/actions.js';
+import { checkPublicRecords, loadPublicRecords } from '../../lib/public-records.js';
+import { publicRecordsInputsKey } from '../../lib/public-records-findings.js';
+import { recordChecksRun, recordPublicRecordsCheck } from '../../state/actions.js';
 import { useFormat } from '../../state/hooks.js';
 import { useToast } from '../../state/toast.js';
 import { Button } from '../ui/Button.js';
@@ -11,6 +13,7 @@ import { Card, CardHeader } from '../ui/Card.js';
 import { Notice } from '../ui/States.js';
 import { PriorityBadge } from '../ui/StatusBadges.js';
 import { FindingsTable } from './Findings.js';
+import { PublicRecordsCheck } from './PublicRecordsCheck.js';
 
 export function RiskStep({
   app,
@@ -30,17 +33,48 @@ export function RiskStep({
   const [ran, setRan] = useState(app.checksRunAt !== null);
   const findings = runChecks(app, db);
   const priority = reviewPriority(app, db);
-  const run = (): void => {
+  const [running, setRunning] = useState(false);
+  // Business applicants: Run checks also runs the public-records check when missing or stale.
+  const needsPublicRecords =
+    app.data.business.businessName.trim() !== '' &&
+    app.publicRecords?.inputsKey !== publicRecordsInputsKey(app.data);
+  const runPublicRecords = async (): Promise<boolean> => {
+    try {
+      const ix = await loadPublicRecords();
+      recordPublicRecordsCheck(
+        app.id,
+        actor,
+        checkPublicRecords(ix, app.data, new Date().toISOString()),
+      );
+      return true;
+    } catch (e: unknown) {
+      console.warn(
+        'Public-records check failed:',
+        e instanceof Error ? e.message : 'unknown error',
+      );
+      toast.push({
+        tone: 'error',
+        title: 'Public-records check could not run',
+        detail:
+          'The other checks ran. Publish the dataset (node ingest/dist/graphCli.js --web) and re-run.',
+      });
+      return false;
+    }
+  };
+  const run = async (): Promise<void> => {
+    setRunning(true);
+    const withRecords = needsPublicRecords && (await runPublicRecords());
     recordChecksRun(
       app.id,
       actor,
-      `${CHECK_NAMES.length} deterministic checks; ${findings.length} finding(s)`,
+      `${CHECK_NAMES.length} deterministic checks${withRecords ? ' incl. public-records check' : ''}`,
     );
     setRan(true);
+    setRunning(false);
     toast.push({
       tone: 'success',
       title: 'Checks completed',
-      detail: `${findings.length} finding(s) to review. Gemini analysis was not run (not connected).`,
+      detail: `Findings updated${withRecords ? ', including the public-records check' : ''}. Gemini analysis was not run (not connected).`,
     });
   };
   return (
@@ -65,7 +99,14 @@ export function RiskStep({
             ))}
           </ul>
           <div className="border-line flex flex-wrap items-center gap-3 border-t px-5 py-3">
-            <Button variant="primary" icon={Play} onClick={run}>
+            <Button
+              variant="primary"
+              icon={Play}
+              loading={running}
+              onClick={() => {
+                void run();
+              }}
+            >
               {ran ? 'Re-run checks' : 'Run checks'}
             </Button>
             {app.checksRunAt !== null && (
@@ -91,6 +132,8 @@ export function RiskStep({
           </div>
         </Card>
       </div>
+
+      <PublicRecordsCheck app={app} actor={actor} />
 
       {ran && (
         <>

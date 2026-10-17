@@ -1,0 +1,624 @@
+{
+  "meta": {
+    "generated_at": "2026-10-16T14:21:46.075Z",
+    "synthetic": false,
+    "label": "Seed case: Sterling Biotech (Sandesara group) (2 hops)",
+    "dataset_built_at": "2026-10-16T13:13:33.289Z",
+    "thresholds": {
+      "event_party_hub": 6,
+      "creditor_hub": 5,
+      "person_hub": 5,
+      "address_hub": 10,
+      "max_path_hops": 6
+    },
+    "counts": {
+      "nodes": 15,
+      "edges": 17,
+      "networks": 0,
+      "identity_candidates": 0,
+      "node:company": 3,
+      "node:bank": 2,
+      "node:person": 3,
+      "node:address": 2,
+      "node:event": 5,
+      "edge:named_in": 5,
+      "basis:established": 17,
+      "strength:strong": 8,
+      "edge:insolvency_applicant_against": 5,
+      "strength:weak": 9,
+      "edge:insolvency_professional_for": 5,
+      "edge:registered_at": 2,
+      "hub_nodes": 5
+    },
+    "notes": [
+      "Exploratory graph of public records. A connection is not evidence of wrongdoing.",
+      "established = stated in a source record; candidate = inferred (text mention, similar name) and needs review.",
+      "weak edges (hub routes, text mentions, insolvency professionals, identity candidates) are shown but never chain networks.",
+      "No director data is available, so shared-director links cannot be established.",
+      "score = distinct sources + organisations named in adverse records + 3 × seed cases"
+    ]
+  },
+  "nodes": [
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 1,
+      "seed_cases": [
+        "srei"
+      ],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 25,
+      "id": "ent_c27da3ee4c577d65",
+      "kind": "company",
+      "label": "SREI Infrastructure Finance Ltd.",
+      "detail": null,
+      "sources": [
+        "ed",
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 2,
+      "seed_cases": [
+        "sterling_biotech"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 7,
+      "id": "ent_U45201MH2006PLC162784",
+      "kind": "company",
+      "label": "Sterling SEZ and Infrastructure Limited",
+      "detail": "U45201MH2006PLC162784 · Under Liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 3,
+      "seed_cases": [
+        "sterling_biotech"
+      ],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 10,
+      "id": "ent_L51900MH1985PLC035738",
+      "kind": "company",
+      "label": "Sterling Biotech Ltd.",
+      "detail": "L51900MH1985PLC035738 · Active",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "ent_1548f148cfaeb779",
+      "kind": "bank",
+      "label": "Union Bank of India (erstwhile Andhra Bank)",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "creditor"
+      ],
+      "degree": 14,
+      "id": "ent_dc55b399debe6384",
+      "kind": "bank",
+      "label": "Andhra Bank",
+      "detail": null,
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 22,
+      "id": "per_a2f45fbdd95f17d7",
+      "kind": "person",
+      "label": "MAMTA BINANI",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 15,
+      "id": "per_26ddc98694e0d92f",
+      "kind": "person",
+      "label": "VISHAL GHISULAL JAIN",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": true,
+      "hub_roles": [
+        "person"
+      ],
+      "degree": 8,
+      "id": "per_1818e54124c31a64",
+      "kind": "person",
+      "label": "SUNDARESH BHAT",
+      "detail": "insolvency professional",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_42e4e18d0a3ccdbc",
+      "kind": "address",
+      "label": "C-25, LAXMI TOWER, 'A',-601, 6TH FLOOR,   BANDRA KURLA COMPLEX,BANDRA (EAST),MUMBAI,Maharashtra,400051-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": null,
+      "document_id": null,
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "adr_452cdf666d90a595",
+      "kind": "address",
+      "label": "201-202, Midas, Sahar Plaza,,Andheri Kurla Road, Andheri East,Mumbai,Mumbai,Maharashtra,400059-India",
+      "detail": "maharashtra",
+      "sources": [
+        "mca_ogd"
+      ]
+    },
+    {
+      "date": "2021-11-19",
+      "document_id": "doc_03ebabc4b6de39b2",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_4a00a75f4fd55305",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: Sterling SEZ and Infrastructure Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2021-02-27",
+      "document_id": "doc_ff242cb36bbd31f4",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_f94f7ad7ff425148",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: Sterling Biotech Limited",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2019-05-15",
+      "document_id": "doc_e1f6fbcbd3db3abd",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_82488c0f4017ff9c",
+      "kind": "event",
+      "label": "Public Announcement of Liquidation Process: Sterling Biotech Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · liquidation · ibbi_liquidation",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2018-07-25",
+      "document_id": "doc_604c32fb5070795c",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_66d9ee4279a7ae62",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Sterling SEZ and Infrastructure Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    },
+    {
+      "date": "2018-06-27",
+      "document_id": "doc_9b59912e4e06fd59",
+      "evidence_status": null,
+      "adverse_events": 0,
+      "seed_cases": [],
+      "hub": false,
+      "hub_roles": [],
+      "degree": 1,
+      "id": "evt_7ca0425839bb7716",
+      "kind": "event",
+      "label": "Public Announcement of Corporate Insolvency Resolution Process: Sterling Biotech Ltd.",
+      "detail": "IBBI / Adjudicating Authority (NCLT) · cirp initiated · ibbi_cirp",
+      "sources": [
+        "ibbi"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edg_rel_fde4fff777242823",
+      "from": "ent_U45201MH2006PLC162784",
+      "to": "evt_4a00a75f4fd55305",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-11-19",
+      "document_id": "doc_03ebabc4b6de39b2",
+      "relationship_id": "rel_fde4fff777242823",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_97f2a48044433bf3",
+      "from": "ent_c27da3ee4c577d65",
+      "to": "ent_U45201MH2006PLC162784",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-11-19",
+      "document_id": "doc_03ebabc4b6de39b2",
+      "relationship_id": "rel_97f2a48044433bf3",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_e06a65f105f052c3",
+      "from": "ent_L51900MH1985PLC035738",
+      "to": "evt_f94f7ad7ff425148",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-02-27",
+      "document_id": "doc_ff242cb36bbd31f4",
+      "relationship_id": "rel_e06a65f105f052c3",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_ff08b1ebbb0e9085",
+      "from": "ent_1548f148cfaeb779",
+      "to": "ent_L51900MH1985PLC035738",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-02-27",
+      "document_id": "doc_ff242cb36bbd31f4",
+      "relationship_id": "rel_ff08b1ebbb0e9085",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_800915c4998ae616",
+      "from": "ent_L51900MH1985PLC035738",
+      "to": "evt_82488c0f4017ff9c",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-05-15",
+      "document_id": "doc_e1f6fbcbd3db3abd",
+      "relationship_id": "rel_800915c4998ae616",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_726f42d2dced026c",
+      "from": "ent_dc55b399debe6384",
+      "to": "ent_L51900MH1985PLC035738",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-05-15",
+      "document_id": "doc_e1f6fbcbd3db3abd",
+      "relationship_id": "rel_726f42d2dced026c",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_6fe2dfe706956099",
+      "from": "ent_U45201MH2006PLC162784",
+      "to": "evt_66d9ee4279a7ae62",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-07-25",
+      "document_id": "doc_604c32fb5070795c",
+      "relationship_id": "rel_6fe2dfe706956099",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_3d6fd0d222efa0d4",
+      "from": "ent_c27da3ee4c577d65",
+      "to": "ent_U45201MH2006PLC162784",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-07-25",
+      "document_id": "doc_604c32fb5070795c",
+      "relationship_id": "rel_3d6fd0d222efa0d4",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_1bb1319d3b6a3c58",
+      "from": "ent_L51900MH1985PLC035738",
+      "to": "evt_7ca0425839bb7716",
+      "type": "named_in",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-06-27",
+      "document_id": "doc_9b59912e4e06fd59",
+      "relationship_id": "rel_1bb1319d3b6a3c58",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_8985fade692c0396",
+      "from": "ent_dc55b399debe6384",
+      "to": "ent_L51900MH1985PLC035738",
+      "type": "insolvency_applicant_against",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-06-27",
+      "document_id": "doc_9b59912e4e06fd59",
+      "relationship_id": "rel_8985fade692c0396",
+      "confidence": 0.9
+    },
+    {
+      "id": "edg_rel_62e9db835c279e0f",
+      "from": "per_26ddc98694e0d92f",
+      "to": "ent_U45201MH2006PLC162784",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-11-19",
+      "document_id": "doc_03ebabc4b6de39b2",
+      "relationship_id": "rel_62e9db835c279e0f",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_65b9f4f16c216b80",
+      "from": "per_a2f45fbdd95f17d7",
+      "to": "ent_L51900MH1985PLC035738",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2021-02-27",
+      "document_id": "doc_ff242cb36bbd31f4",
+      "relationship_id": "rel_65b9f4f16c216b80",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_bf30951865261c4b",
+      "from": "per_a2f45fbdd95f17d7",
+      "to": "ent_L51900MH1985PLC035738",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2019-05-15",
+      "document_id": "doc_e1f6fbcbd3db3abd",
+      "relationship_id": "rel_bf30951865261c4b",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_3c5478d839b5a0df",
+      "from": "per_26ddc98694e0d92f",
+      "to": "ent_U45201MH2006PLC162784",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-07-25",
+      "document_id": "doc_604c32fb5070795c",
+      "relationship_id": "rel_3c5478d839b5a0df",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_476d4883ea7f6807",
+      "from": "per_1818e54124c31a64",
+      "to": "ent_L51900MH1985PLC035738",
+      "type": "insolvency_professional_for",
+      "basis": "established",
+      "strength": "weak",
+      "evidence_status": "fact",
+      "source_id": "ibbi",
+      "date": "2018-06-27",
+      "document_id": "doc_9b59912e4e06fd59",
+      "relationship_id": "rel_476d4883ea7f6807",
+      "confidence": 0.85
+    },
+    {
+      "id": "edg_rel_ad5e87dca8576bc4",
+      "from": "ent_U45201MH2006PLC162784",
+      "to": "adr_42e4e18d0a3ccdbc",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_ad5e87dca8576bc4",
+      "confidence": 0.95
+    },
+    {
+      "id": "edg_rel_a3f5a7cb54add21a",
+      "from": "ent_L51900MH1985PLC035738",
+      "to": "adr_452cdf666d90a595",
+      "type": "registered_at",
+      "basis": "established",
+      "strength": "strong",
+      "evidence_status": "fact",
+      "source_id": "mca_ogd",
+      "date": null,
+      "document_id": "doc_mca_company_master",
+      "relationship_id": "rel_a3f5a7cb54add21a",
+      "confidence": 0.8
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_03ebabc4b6de39b2",
+      "url": "https://ibbi.gov.in//uploads/announcement/27a5f8bf33e79b2175ac1472f689a8f7.pdf",
+      "title": "Public Announcement of Liquidation Process: Sterling SEZ and Infrastructure Limited",
+      "date": "2021-11-19",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_ff242cb36bbd31f4",
+      "url": "https://ibbi.gov.in//uploads/announcement/08b7e3e13297ac353a05efe57bdfbc49.pdf",
+      "title": "Public Announcement of Liquidation Process: Sterling Biotech Limited",
+      "date": "2021-02-27",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_e1f6fbcbd3db3abd",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Liquidation Process: Sterling Biotech Ltd.",
+      "date": "2019-05-15",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_604c32fb5070795c",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Sterling SEZ and Infrastructure Ltd.",
+      "date": "2018-07-25",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_9b59912e4e06fd59",
+      "url": "https://ibbi.gov.in/public-announcement",
+      "title": "Public Announcement of Corporate Insolvency Resolution Process: Sterling Biotech Ltd.",
+      "date": "2018-06-27",
+      "source_id": "ibbi"
+    },
+    {
+      "id": "doc_mca_company_master",
+      "url": "https://www.data.gov.in/resource/registrars-companies-roc-wise-company-master-data",
+      "title": "MCA RoC-wise company master data (company_master.part1of5.csv, company_master.part2of5.csv, company_master.part3of5.csv, company_master.part4of5.csv, company_master.part5of5.csv)",
+      "date": null,
+      "source_id": "mca_ogd"
+    }
+  ],
+  "networks": [
+    {
+      "id": "net_bd67022022e072be",
+      "node_ids": [
+        "ent_L51900MH1985PLC035738",
+        "adr_452cdf666d90a595",
+        "evt_7ca0425839bb7716",
+        "evt_82488c0f4017ff9c",
+        "ent_1548f148cfaeb779",
+        "evt_f94f7ad7ff425148"
+      ],
+      "organisation_count": 2,
+      "adverse_organisation_count": 1,
+      "sources": [
+        "ibbi",
+        "mca_ogd"
+      ],
+      "seed_cases": [
+        "sterling_biotech"
+      ],
+      "score": 6,
+      "summary": "2 organisations connected by established records (3 named in, 1 insolvency applicant against, 1 registered at). A connection is not evidence of wrongdoing."
+    }
+  ],
+  "identity": []
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "address_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "normalized_address",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "raw_address",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "state",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "normalization_confidence",
+    "mode": "REQUIRED",
+    "type": "FLOAT64"
+  },
+  {
+    "name": "entity_count",
+    "mode": "REQUIRED",
+    "type": "INT64"
+  }
+]

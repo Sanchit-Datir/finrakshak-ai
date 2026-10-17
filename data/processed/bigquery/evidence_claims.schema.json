@@ -1,0 +1,84 @@
+[
+  {
+    "name": "claim_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "subject_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "predicate",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "object_value",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "amount",
+    "mode": "NULLABLE",
+    "type": "RECORD",
+    "fields": [
+      {
+        "name": "minor",
+        "mode": "REQUIRED",
+        "type": "INT64"
+      },
+      {
+        "name": "currency",
+        "mode": "REQUIRED",
+        "type": "STRING"
+      }
+    ]
+  },
+  {
+    "name": "document_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "source_id",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "page",
+    "mode": "NULLABLE",
+    "type": "INT64"
+  },
+  {
+    "name": "excerpt",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "extraction_method",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "extractor_version",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "extracted_at",
+    "mode": "REQUIRED",
+    "type": "TIMESTAMP"
+  },
+  {
+    "name": "status",
+    "mode": "REQUIRED",
+    "type": "STRING"
+  },
+  {
+    "name": "confidence",
+    "mode": "REQUIRED",
+    "type": "FLOAT64"
+  }
+]
