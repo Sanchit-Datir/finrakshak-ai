@@ -5,6 +5,7 @@
 # deploy service accounts with different powers:
 #   github-preview  any branch/PR in the repo  → Hosting preview channels only
 #   github-deployer only refs/heads/main       → Hosting, Functions, Firestore rules/indexes
+#   github-emergency-stop  only emergency-stop.yml on main → make Cloud Run services private, switch an API off
 # A pull-request branch can therefore never deploy Functions or change rules.
 #
 # Usage: scripts/setup-gcp.sh <firebase-project-id> [github-owner/repo]
@@ -17,6 +18,7 @@ POOL="github"
 PROVIDER="github-oidc"
 PREVIEW_SA="github-preview@${PROJECT_ID}.iam.gserviceaccount.com"
 DEPLOY_SA="github-deployer@${PROJECT_ID}.iam.gserviceaccount.com"
+STOP_SA="github-emergency-stop@${PROJECT_ID}.iam.gserviceaccount.com"
 
 PROJECT_NUMBER="$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')"
 # Gen2 functions run as one of these default accounts, depending on the firebase-tools version
@@ -26,6 +28,9 @@ RUNTIME_SAS=(
   "${PROJECT_ID}@appspot.gserviceaccount.com"
 )
 POOL_PATH="projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/$POOL"
+# job_workflow_ref names the exact workflow file (and branch) a run came from, so one workflow file can be
+# trusted with a special account without trusting every other workflow in the repo.
+ATTRIBUTE_MAPPING="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.ref=assertion.ref,attribute.job_workflow_ref=assertion.job_workflow_ref"
 
 ensure_sa() { # <email> <display name>
   gcloud iam service-accounts describe "$1" --project "$PROJECT_ID" >/dev/null 2>&1 ||
@@ -54,6 +59,7 @@ gcloud services enable iamcredentials.googleapis.com sts.googleapis.com \
 echo "› Service accounts"
 ensure_sa "$PREVIEW_SA" "GitHub Actions: Hosting previews"
 ensure_sa "$DEPLOY_SA" "GitHub Actions: deploy from main"
+ensure_sa "$STOP_SA" "GitHub Actions: emergency stop"
 
 echo "› Roles (least privilege)"
 grant "$PREVIEW_SA" roles/firebasehosting.admin roles/firebase.viewer \
@@ -83,6 +89,20 @@ for runtime_sa in "${RUNTIME_SAS[@]}"; do
     --member "serviceAccount:$DEPLOY_SA" --role roles/iam.serviceAccountUser >/dev/null
 done
 
+# Emergency stop (scripts/emergency-stop.sh): may only change who can call Cloud Run services and switch an
+# API off. It cannot deploy, delete, read data or secrets, change billing, or turn anything ON.
+STOP_ROLE="emergencyStop"
+STOP_PERMISSIONS="run.services.list,run.services.get,run.services.getIamPolicy,run.services.setIamPolicy,serviceusage.services.list,serviceusage.services.get,serviceusage.services.disable,serviceusage.services.use"
+if gcloud iam roles describe "$STOP_ROLE" --project "$PROJECT_ID" >/dev/null 2>&1; then
+  gcloud iam roles update "$STOP_ROLE" --project "$PROJECT_ID" --permissions "$STOP_PERMISSIONS" --quiet >/dev/null
+else
+  gcloud iam roles create "$STOP_ROLE" --project "$PROJECT_ID" --stage GA \
+    --title "Emergency stop" \
+    --description "Lets the emergency-stop workflow make Cloud Run services private and switch an API off. Nothing else." \
+    --permissions "$STOP_PERMISSIONS" >/dev/null
+fi
+grant "$STOP_SA" "projects/$PROJECT_ID/roles/$STOP_ROLE"
+
 echo "› Workload Identity pool + GitHub OIDC provider (only $REPO may use it)"
 gcloud iam workload-identity-pools describe "$POOL" --location global --project "$PROJECT_ID" >/dev/null 2>&1 ||
   gcloud iam workload-identity-pools create "$POOL" --location global --project "$PROJECT_ID" \
@@ -92,8 +112,12 @@ gcloud iam workload-identity-pools providers describe "$PROVIDER" --location glo
   gcloud iam workload-identity-pools providers create-oidc "$PROVIDER" --location global \
     --workload-identity-pool "$POOL" --project "$PROJECT_ID" \
     --issuer-uri "https://token.actions.githubusercontent.com" \
-    --attribute-mapping "google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.ref=assertion.ref" \
+    --attribute-mapping "$ATTRIBUTE_MAPPING" \
     --attribute-condition "assertion.repository == '$REPO'"
+# Providers created by an older version of this script lack the workflow claim: add it (safe to repeat).
+gcloud iam workload-identity-pools providers update-oidc "$PROVIDER" --location global \
+  --workload-identity-pool "$POOL" --project "$PROJECT_ID" \
+  --attribute-mapping "$ATTRIBUTE_MAPPING" >/dev/null
 
 # Previews: any run from this repo. Deploys: only runs on main (the provider already pins the repo).
 gcloud iam service-accounts add-iam-policy-binding "$PREVIEW_SA" --project "$PROJECT_ID" \
@@ -103,6 +127,11 @@ gcloud iam service-accounts add-iam-policy-binding "$DEPLOY_SA" --project "$PROJ
   --role roles/iam.workloadIdentityUser \
   --member "principalSet://iam.googleapis.com/$POOL_PATH/attribute.ref/refs/heads/main" >/dev/null
 
+# The stop account can be used ONLY by .github/workflows/emergency-stop.yml running on main.
+gcloud iam service-accounts add-iam-policy-binding "$STOP_SA" --project "$PROJECT_ID" \
+  --role roles/iam.workloadIdentityUser \
+  --member "principalSet://iam.googleapis.com/$POOL_PATH/attribute.job_workflow_ref/$REPO/.github/workflows/emergency-stop.yml@refs/heads/main" >/dev/null
+
 cat <<OUT
 
 Done. The workflow has these values as defaults; override them with GitHub repo variables
@@ -111,6 +140,7 @@ Done. The workflow has these values as defaults; override them with GitHub repo 
   WIF_PROVIDER        = $POOL_PATH/providers/$PROVIDER
   PREVIEW_SA          = $PREVIEW_SA
   DEPLOY_SA           = $DEPLOY_SA
+  STOP_SA             = $STOP_SA
 Web app config (public, not secret) from Firebase console → Project settings → Your apps:
   VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_APP_ID
 OUT
