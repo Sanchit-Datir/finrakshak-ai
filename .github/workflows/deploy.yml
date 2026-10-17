@@ -5,7 +5,8 @@
 # One-time GCP setup: scripts/setup-gcp.sh. The defaults below match that setup; override them with
 # repo variables (Settings → Secrets and variables → Actions → Variables) only if you change it:
 #   FIREBASE_PROJECT_ID, WIF_PROVIDER, PREVIEW_SA, DEPLOY_SA,
-#   VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_APP_ID (public web config)
+#   VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_APP_ID, VITE_RECAPTCHA_SITE_KEY
+#   (public web config; the reCAPTCHA key ID is what App Check needs)
 # Cost: docs-only changes skip deploys, and a newer push cancels a superseded preview run.
 name: Deploy
 on:
@@ -28,6 +29,7 @@ env:
   VITE_FIREBASE_API_KEY: ${{ vars.VITE_FIREBASE_API_KEY }}
   VITE_FIREBASE_AUTH_DOMAIN: ${{ vars.VITE_FIREBASE_AUTH_DOMAIN }}
   VITE_FIREBASE_APP_ID: ${{ vars.VITE_FIREBASE_APP_ID }}
+  VITE_RECAPTCHA_SITE_KEY: ${{ vars.VITE_RECAPTCHA_SITE_KEY }}
 jobs:
   preview:
     # Fork PRs get no OIDC token; CI covers them.
