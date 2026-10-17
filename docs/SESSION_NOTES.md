@@ -105,6 +105,11 @@ owner decided. Only the borrowers are real; the loan values are made up.
   with Hosting (fixes "dataset could not be loaded" on the live app). Public, no sign-in. Remove it once the
   cloud `/data/**` feed is live.
 
+- **Prototype performance report / benchmarking (planned, not built):** plan in
+  `docs/plans/PROTOTYPE_PERFORMANCE_BENCHMARK_PLAN.md` on branch `prototype-performance-report`
+  (not merged to `main` on purpose). Five phases; Phase 1 needs no new data. Open: owner to label
+  the AI-extraction golden set and a graph review sample.
+
 ## Quick start in a new session
 
 ```bash
