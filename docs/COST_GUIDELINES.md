@@ -72,4 +72,5 @@ uses, and what stops it from growing without bound (quota, cap, or budget).
   counted in the `usage` collection) that applies only to billed providers. The Firestore counter is
   unit-tested with an in-memory store but has not yet been run against a Firestore emulator.
 - The count is not refunded when the model call fails, so a flaky upstream can use up a user's day.
-- The budget alert only emails; it does not stop spending.
+- The budget alert only emails; it does not stop spending. For that there is a one-click soft stop and a
+  hard-stop command: see `docs/EMERGENCY_STOP.md`. Rehearse it now and then.

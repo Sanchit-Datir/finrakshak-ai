@@ -1,0 +1,41 @@
+# One-click EMERGENCY SOFT STOP (Actions tab → "Emergency stop" → Run workflow).
+# Makes every Cloud Run service private and switches Vertex AI off, to cap spending fast. Deletes nothing.
+# Restoring is deliberately NOT a button: the project owner runs scripts/emergency-restore.sh.
+# Tick "Rehearsal" to see exactly what it would do without changing anything (do this now and then).
+# Runs as github-emergency-stop, a Google account that can do nothing else (see scripts/setup-gcp.sh) and
+# that Google only lets THIS file on main use, so changing it needs a reviewed merge.
+# See docs/EMERGENCY_STOP.md.
+name: Emergency stop
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Confirmation (pre-filled; leave as STOP and press Run)'
+        required: true
+        default: 'STOP'
+      rehearsal:
+        description: 'Rehearsal: show what would change, change nothing'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: emergency-stop
+  cancel-in-progress: false
+env:
+  FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID || 'fund-tracer' }}
+  WIF_PROVIDER: ${{ vars.WIF_PROVIDER || 'projects/728958349363/locations/global/workloadIdentityPools/github/providers/github-oidc' }}
+jobs:
+  stop:
+    if: github.ref == 'refs/heads/main' && inputs.confirm == 'STOP'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ vars.STOP_SA || format('github-emergency-stop@{0}.iam.gserviceaccount.com', env.FIREBASE_PROJECT_ID) }}
+      - name: Stop
+        run: scripts/emergency-stop.sh "$FIREBASE_PROJECT_ID" ${{ inputs.rehearsal && '--dry-run' || '' }}
