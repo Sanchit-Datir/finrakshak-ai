@@ -14,9 +14,9 @@ import {
   type Entity,
   type ListingItem,
 } from '@fund-tracker/shared';
-import type { z } from 'zod';
-import { listingFile } from '../acquire.js';
-import { dataPath } from '../config.js';
+import { z } from 'zod';
+import { listingKey } from '../acquire.js';
+import { dataKey } from '../config.js';
 import { documentArtifacts } from '../extract/documentArtifacts.js';
 import { readText } from '../extract/runExtract.js';
 import { log } from '../log.js';
@@ -25,7 +25,7 @@ import { downloadPriority, matchSeeds } from '../select/relevance.js';
 import type { SourceAdapter } from '../sources/types.js';
 import { readJsonl, writeJson, writeJsonl } from '../store/jsonl.js';
 import { RawStore } from '../store/rawStore.js';
-import { bigQuerySchema } from './bigquery.js';
+import { bigQuerySchema, type BqField } from './bigquery.js';
 import { classify } from './classify.js';
 import { enrichFromMca } from './mca.js';
 import { DatasetCollector, type DocWithText } from './collector.js';
@@ -43,7 +43,7 @@ async function collectSource(
   adapter: SourceAdapter,
   adverse: Set<string>,
 ): Promise<number> {
-  const items = (await readJsonl(listingFile(adapter.id), ListingItemSchema)).filter(include);
+  const items = (await readJsonl(listingKey(adapter.id), ListingItemSchema)).filter(include);
   const store = await RawStore.open(adapter.id);
   const docsByItem = new Map<string, DocWithText[]>();
   for (const { item, url, artifact } of await documentArtifacts(adapter.id, store)) {
@@ -85,7 +85,15 @@ const TABLES = {
   entity_match_candidates: EntityMatchCandidateSchema,
   addresses: AddressSchema,
 } as const satisfies Record<string, z.AnyZodObject>;
-type TableName = keyof typeof TABLES;
+export type TableName = keyof typeof TABLES;
+
+/** Every canonical table, in load order (BigQuery, publish gates). */
+export const TABLE_NAMES = Object.keys(TABLES) as readonly TableName[];
+
+export const tableKey = (name: TableName): string => dataKey('processed', `${name}.jsonl`);
+export const tableBigQuerySchema = (name: TableName): BqField[] => bigQuerySchema(TABLES[name]);
+export const tableSchemaKey = (name: TableName): string =>
+  dataKey('processed', 'bigquery', `${name}.schema.json`);
 
 async function writeTable(name: TableName, rows: readonly unknown[]): Promise<number> {
   const schema = TABLES[name];
@@ -94,13 +102,23 @@ async function writeTable(name: TableName, rows: readonly unknown[]): Promise<nu
     if (!parsed.success) throw new Error(`Invalid ${name} row ${i}: ${parsed.error.message}`);
     return parsed.data;
   });
-  await writeJsonl(dataPath('processed', `${name}.jsonl`), valid);
-  await writeJson(dataPath('processed', 'bigquery', `${name}.schema.json`), bigQuerySchema(schema));
+  await writeJsonl(tableKey(name), valid);
+  await writeJson(tableSchemaKey(name), bigQuerySchema(schema));
   return valid.length;
 }
 
+export const DatasetStatsSchema = z.object({
+  built_at: z.string().datetime(),
+  listed_items: z.record(z.string(), z.number().int().nonnegative()),
+  mca_master: z.unknown(),
+  rows: z.record(z.string(), z.number().int().nonnegative()),
+});
+export type DatasetStats = z.infer<typeof DatasetStatsSchema>;
+
+export const statsKey = (): string => dataKey('processed', 'stats.json');
+
 /** Builds every canonical table (brief section 8) from listings, documents and text. */
-export async function buildDataset(adapters: readonly SourceAdapter[]): Promise<void> {
+export async function buildDataset(adapters: readonly SourceAdapter[]): Promise<DatasetStats> {
   const c = new DatasetCollector();
   const adverse = new Set<string>();
   const listed: Record<string, number> = {};
@@ -128,14 +146,16 @@ export async function buildDataset(adapters: readonly SourceAdapter[]): Promise<
     addresses: await writeTable('addresses', mca.addresses),
   };
   await writeJson(
-    dataPath('processed', 'case_timelines.json'),
+    dataKey('processed', 'case_timelines.json'),
     buildTimelines(c.caseLinks, c.events, c.documents),
   );
-  await writeJson(dataPath('processed', 'stats.json'), {
+  const stats: DatasetStats = {
     built_at: new Date().toISOString(),
     listed_items: listed,
     mca_master: mca.stats,
     rows: counts,
-  });
+  };
+  await writeJson(statsKey(), stats);
   log.info('dataset built', counts);
+  return stats;
 }

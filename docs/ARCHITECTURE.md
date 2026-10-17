@@ -19,6 +19,12 @@ data.gov.in ──(manual download)───────────────
                                                 ingest build   ──▶ data/processed/*.jsonl + bigquery/*.schema.json ──▶ BigQuery
 ```
 
-- Runs offline as a Node CLI (later a Cloud Run job + Cloud Scheduler); it does not go through callables.
+- Runs in Google Cloud: Cloud Scheduler → Cloud Workflows `ingest-daily` → Cloud Run jobs
+  `ingest-acquire` (one task per source) and `ingest-build` (build, publish gates, versioned
+  publish, BigQuery loads). The same code runs locally as a CLI on the file system. It does not
+  go through callables. Storage is one port (`ingest/src/storage/`): local disk or Cloud Storage
+  with create-only raw files and compare-and-swap listing writes; leases and run records are
+  Firestore in the cloud (`ingest/src/coordination/`). Plan and diagrams:
+  `docs/plans/GCP_INGESTION_AGENT_PLAN.md`; operations: `docs/DEPLOY.md` → Cloud ingestion.
 - The data model lives in `packages/shared/src/evidence/` (zod); BigQuery schemas are generated from it.
 - Storage rules (what is in git vs Cloud Storage) are documented in `data/README.md`.

@@ -9,10 +9,15 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",
+    "test:emulator": "vitest run --config vitest.emulator.config.ts",
     "cli": "node dist/cli.js"
   },
   "dependencies": {
     "@fund-tracker/shared": "*",
+    "@google-cloud/bigquery": "^9.3.0",
+    "@google-cloud/firestore": "^9.3.1",
+    "@google-cloud/storage": "^8.4.0",
+    "@google/genai": "^1.52.0",
     "cheerio": "^1.2.0",
     "pdfjs-dist": "^6.4.299",
     "zod": "^3.24.0"

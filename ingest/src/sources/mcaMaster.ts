@@ -1,9 +1,7 @@
-import { createReadStream } from 'node:fs';
-import { readdir } from 'node:fs/promises';
-import path from 'node:path';
 import { createInterface } from 'node:readline';
-import { dataPath } from '../config.js';
-import { isNotFound } from '../store/jsonl.js';
+import { Readable } from 'node:stream';
+import { dataKey } from '../config.js';
+import { blobs } from '../storage/index.js';
 import { parseDate } from '../util/dates.js';
 import { normalizeCompanyName } from '../resolve/names.js';
 
@@ -109,16 +107,20 @@ export interface McaIndex {
   readonly byName: Map<string, McaCompany[]>;
 }
 
+/** CSV parts under `raw/mca_ogd/` (on disk, or uploaded by the owner to the state bucket). */
 async function csvFiles(): Promise<string[]> {
-  try {
-    const dir = dataPath('raw', 'mca_ogd');
-    return (await readdir(dir))
-      .filter((f) => f.toLowerCase().endsWith('.csv'))
-      .map((f) => path.join(dir, f));
-  } catch (e) {
-    if (isNotFound(e)) return [];
-    throw e;
-  }
+  return (await blobs().list(dataKey('raw', 'mca_ogd')))
+    .map((info) => info.key)
+    .filter((key) => key.toLowerCase().endsWith('.csv'));
+}
+
+async function csvLines(key: string): Promise<AsyncIterable<string>> {
+  const blob = await blobs().read(key);
+  if (!blob) throw new Error(`MCA file disappeared: ${key}`);
+  return createInterface({
+    input: Readable.from([blob.data.toString('utf8')]),
+    crlfDelay: Infinity,
+  });
 }
 
 /** Streams every CSV, keeping only companies whose CIN or normalised name is wanted. */
@@ -133,10 +135,7 @@ export async function loadMcaMaster(
   for (const file of files) {
     let idx: Map<keyof McaCompany, number> | null = null;
     let pending = '';
-    for await (const line of createInterface({
-      input: createReadStream(file, 'utf8'),
-      crlfDelay: Infinity,
-    })) {
+    for await (const line of await csvLines(file)) {
       pending = pending ? `${pending}\n${line}` : line;
       if ((pending.match(/"/g)?.length ?? 0) % 2 === 1) continue; // quoted newline: keep reading
       const cells = splitCsv(pending.replace(/^\uFEFF/, ''));

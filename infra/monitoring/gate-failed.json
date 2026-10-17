@@ -1,0 +1,23 @@
+{
+  "displayName": "Ingest: publish gate failed",
+  "documentation": {
+    "content": "A rebuilt dataset failed a publish gate (empty table, large drop, oversized bundle, lost seed case). Nothing was published; the app keeps the previous version. See `ingestRuns/<runId>.build.gates`.",
+    "mimeType": "text/markdown"
+  },
+  "combiner": "OR",
+  "conditions": [
+    {
+      "displayName": "ingest_publish_gate_failed > 0",
+      "conditionThreshold": {
+        "filter": "resource.type = \"cloud_run_job\" AND metric.type = \"logging.googleapis.com/user/ingest_publish_gate_failed\"",
+        "aggregations": [{ "alignmentPeriod": "300s", "perSeriesAligner": "ALIGN_SUM" }],
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 0,
+        "duration": "0s",
+        "trigger": { "count": 1 }
+      }
+    }
+  ],
+  "alertStrategy": { "autoClose": "86400s" },
+  "enabled": true
+}

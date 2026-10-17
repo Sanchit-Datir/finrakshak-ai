@@ -1,6 +1,6 @@
-import { ListingItemSchema, type ListingItem, type SourceId } from '@fund-tracker/shared';
+import { istDate, ListingItemSchema, type ListingItem, type SourceId } from '@fund-tracker/shared';
 import { z } from 'zod';
-import { dataPath, getConfig } from './config.js';
+import { dataKey, getConfig, SOURCE_MIN_DELAY_MS } from './config.js';
 import { diffListings, mergeListing, type ListingDelta } from './delta/diff.js';
 import { assertPlausibleListing } from './delta/guards.js';
 import { chooseMode, FULL_PLAN, makePlan } from './delta/policy.js';
@@ -10,7 +10,8 @@ import { PoliteFetcher } from './http/fetcher.js';
 import { errorMessage, log } from './log.js';
 import { selectForDownload } from './select/relevance.js';
 import type { SourceAdapter, SourceContext } from './sources/types.js';
-import { appendJsonl, readJsonl, writeJsonl } from './store/jsonl.js';
+import { JsonlAppender, readJsonl, readJsonlVersioned, sameAs, writeJsonl } from './store/jsonl.js';
+import type { Generation } from './storage/index.js';
 import { RawStore } from './store/rawStore.js';
 
 export const ItemDocumentsSchema = z.object({
@@ -21,9 +22,9 @@ export const ItemDocumentsSchema = z.object({
 });
 export type ItemDocuments = z.infer<typeof ItemDocumentsSchema>;
 
-export const listingFile = (s: SourceId): string => dataPath('interim', 'listings', `${s}.jsonl`);
-export const itemDocsFile = (s: SourceId): string =>
-  dataPath('interim', 'item_documents', `${s}.jsonl`);
+export const listingKey = (s: SourceId): string => dataKey('interim', 'listings', `${s}.jsonl`);
+export const itemDocsKey = (s: SourceId): string =>
+  dataKey('interim', 'item_documents', `${s}.jsonl`);
 
 export async function makeContext(
   sourceId: SourceId,
@@ -31,7 +32,10 @@ export async function makeContext(
   runAt = new Date().toISOString(),
 ): Promise<SourceContext> {
   const base = {
-    fetcher: new PoliteFetcher(getConfig()),
+    fetcher: new PoliteFetcher({
+      ...getConfig(),
+      minDelayMs: Math.max(getConfig().minDelayMs, SOURCE_MIN_DELAY_MS[sourceId] ?? 0),
+    }),
     store: await RawStore.open(sourceId),
     runAt,
     listing: FULL_PLAN,
@@ -55,7 +59,8 @@ export async function runListing(
   ctx: SourceContext,
   options: ListingOptions = {},
 ): Promise<DeltaReport> {
-  const previous = await readJsonl(listingFile(adapter.id), ListingItemSchema);
+  const stored = await readJsonlVersioned(listingKey(adapter.id), ListingItemSchema);
+  const previous = stored.value;
   const state = await readState(adapter.id);
   const mode = chooseMode(adapter.id, state, ctx.runAt, options.forceFull ?? false);
   // A capped run (`maxItems`, e.g. the SEBI sample) cannot tell what disappeared from the source.
@@ -83,7 +88,10 @@ export async function runListing(
     totalAfter: merged.length,
     delta,
   });
-  await saveListing(adapter.id, ctx.runAt, merged, items, report);
+  await saveListing(
+    { source: adapter.id, runAt: ctx.runAt, merged, fetched: items, report },
+    stored.generation,
+  );
   await writeState({
     source_id: adapter.id,
     last_success_at: ctx.runAt,
@@ -100,20 +108,26 @@ export async function runListing(
   return report;
 }
 
-/** Writes the merged listing, this run's snapshot and its delta report (state is written last). */
-async function saveListing(
-  source: SourceId,
-  runAt: string,
-  merged: readonly ListingItem[],
-  fetched: readonly ListingItem[],
-  report: DeltaReport,
-): Promise<void> {
-  await writeJsonl(listingFile(source), merged);
+interface ListingWrite {
+  readonly source: SourceId;
+  readonly runAt: string;
+  readonly merged: readonly ListingItem[];
+  readonly fetched: readonly ListingItem[];
+  readonly report: DeltaReport;
+}
+
+/**
+ * Writes the merged listing over exactly the version this run read (another writer in between
+ * makes the write fail instead of losing its update), then this run's snapshot and delta report.
+ * The state watermark is written last, by the caller.
+ */
+async function saveListing(w: ListingWrite, readAt: Generation | null): Promise<void> {
+  await writeJsonl(listingKey(w.source), w.merged, sameAs(readAt));
   await writeJsonl(
-    dataPath('interim', 'listings', 'history', source, `${runAt.slice(0, 10)}.jsonl`),
-    fetched,
+    dataKey('interim', 'listings', 'history', w.source, `${istDate(w.runAt)}.jsonl`),
+    w.fetched,
   );
-  await writeReport(report);
+  await writeReport(w.report);
 }
 
 /** Items flagged as missing: kept while still absent from a full relist, cleared when they return. */
@@ -159,35 +173,58 @@ export async function runDownloads(
   max: number,
   refresh: ReadonlySet<string> = new Set(),
 ): Promise<void> {
-  const items = await readJsonl(listingFile(adapter.id), ListingItemSchema);
+  const items = await readJsonl(listingKey(adapter.id), ListingItemSchema);
   const resolved = new Map(
-    (await readJsonl(itemDocsFile(adapter.id), ItemDocumentsSchema)).map((r) => [r.item_id, r]),
+    (await readJsonl(itemDocsKey(adapter.id), ItemDocumentsSchema)).map((r) => [r.item_id, r]),
   );
-  const selected = selectForDownload(adapter.id, items, max);
-  log.info('downloading', { source: adapter.id, selected: selected.length, listed: items.length });
+  // The cap applies to items that still need work, so a capped daily run keeps moving through a
+  // backlog instead of re-selecting the same already-downloaded items (paced backfill, D8).
+  const pending = items.filter(
+    (i) => refresh.has(i.item_id) || !isComplete(resolved.get(i.item_id), ctx),
+  );
+  const selected = selectForDownload(adapter.id, pending, max);
+  log.info('downloading', {
+    source: adapter.id,
+    selected: selected.length,
+    pending: pending.length,
+    listed: items.length,
+  });
+  const itemDocs = new JsonlAppender(itemDocsKey(adapter.id));
   let ok = 0;
   let failed = 0;
-  for (const [index, item] of selected.entries()) {
-    const force = refresh.has(item.item_id);
-    try {
-      const cached = force ? undefined : resolved.get(item.item_id)?.document_urls;
-      const urls = cached ?? (await resolveAndRecord(adapter, item, ctx));
-      for (const url of urls) if (await downloadOne(adapter, url, ctx, force)) ok++;
-    } catch (e) {
-      failed++;
-      log.warn('item failed', { source: adapter.id, item: item.item_id, error: errorMessage(e) });
+  try {
+    for (const [index, item] of selected.entries()) {
+      const force = refresh.has(item.item_id);
+      try {
+        const cached = force ? undefined : resolved.get(item.item_id)?.document_urls;
+        const urls = cached ?? (await resolveAndRecord(adapter, item, ctx, itemDocs));
+        for (const url of urls) if (await downloadOne(adapter, url, ctx, force)) ok++;
+      } catch (e) {
+        failed++;
+        log.warn('item failed', { source: adapter.id, item: item.item_id, error: errorMessage(e) });
+      }
+      if (index % 50 === 0) log.info('progress', { source: adapter.id, index, ok, failed });
     }
-    if (index % 50 === 0) log.info('progress', { source: adapter.id, index, ok, failed });
+  } finally {
+    // Batched manifest and item→document lines must reach storage even when the loop throws.
+    await itemDocs.flush();
+    await ctx.store.flush();
   }
   log.info('downloads done', { source: adapter.id, ok, failed });
   if (failed > 0 && ok === 0 && failed === selected.length)
     throw new Error(`${adapter.id}: all ${failed} selected items failed to download`);
 }
 
+/** Resolved before and every document already stored (an item with no documents is complete). */
+function isComplete(resolved: ItemDocuments | undefined, ctx: SourceContext): boolean {
+  return resolved?.document_urls.every((url) => ctx.store.get(url) !== undefined) ?? false;
+}
+
 async function resolveAndRecord(
   adapter: SourceAdapter,
   item: ListingItem,
   ctx: SourceContext,
+  itemDocs: JsonlAppender,
 ): Promise<string[]> {
   const urls = await adapter.resolveDocuments(item, ctx);
   const row: ItemDocuments = {
@@ -196,7 +233,7 @@ async function resolveAndRecord(
     document_urls: urls,
     resolved_at: new Date().toISOString(),
   };
-  await appendJsonl(itemDocsFile(adapter.id), row);
+  await itemDocs.add(row);
   return urls;
 }
 

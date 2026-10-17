@@ -1,6 +1,6 @@
-import { SourceIdSchema, type SourceId } from '@fund-tracker/shared';
+import { SourceIdSchema, SourceRunResultSchema, type SourceId } from '@fund-tracker/shared';
 import { z } from 'zod';
-import { dataPath } from '../config.js';
+import { dataKey } from '../config.js';
 import { writeJson } from '../store/jsonl.js';
 import type { ListingDelta } from './diff.js';
 import type { ListingMode } from './policy.js';
@@ -46,34 +46,27 @@ export function makeReport(input: ReportInput): DeltaReport {
   };
 }
 
-const stamp = (runAt: string): string => runAt.replace(/[:.]/g, '-');
+/** Run timestamp as a key-safe stamp (`2026-10-17T03-05-00-000Z`). */
+export const stamp = (runAt: string): string => runAt.replace(/[:.]/g, '-');
+
+export const reportKey = (source: SourceId, runAt: string): string =>
+  dataKey('interim', 'delta', source, `${stamp(runAt)}.json`);
 
 /** One file per source and run (timestamped, so a quiet run never hides an earlier change). */
 export async function writeReport(report: DeltaReport): Promise<void> {
-  await writeJson(
-    dataPath('interim', 'delta', report.source_id, `${stamp(report.run_at)}.json`),
-    report,
-  );
+  await writeJson(reportKey(report.source_id, report.run_at), report);
 }
+
+export { SourceRunResultSchema, type SourceRunResult } from '@fund-tracker/shared';
 
 export const RunSummarySchema = z.object({
   run_at: z.string().datetime(),
-  sources: z.array(
-    z.object({
-      source_id: SourceIdSchema,
-      status: z.enum(['ok', 'failed']),
-      mode: z.enum(['full', 'incremental']).nullable(),
-      added: z.number().int().nonnegative(),
-      changed: z.number().int().nonnegative(),
-      removed: z.number().int().nonnegative(),
-      error: z.string().nullable(),
-    }),
-  ),
+  sources: z.array(SourceRunResultSchema),
 });
 export type RunSummary = z.infer<typeof RunSummarySchema>;
 
 export async function writeRunSummary(summary: RunSummary): Promise<void> {
-  await writeJson(dataPath('interim', 'delta', 'runs', `${stamp(summary.run_at)}.json`), summary);
+  await writeJson(dataKey('interim', 'delta', 'runs', `${stamp(summary.run_at)}.json`), summary);
 }
 
 export const hasChanges = (r: DeltaReport): boolean =>

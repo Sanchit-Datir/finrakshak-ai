@@ -3,7 +3,7 @@
 Read this first in a new session. It records what has been built, the rules the owner has set,
 and what is open. Update it at the end of every session.
 
-_Last updated: 16 Oct 2026. Branch `feat/public-data-ingest` (pushed). No PR has been opened._
+_Last updated: 17 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
 
 ## Owner's working rules (keep following them)
 
@@ -13,8 +13,9 @@ _Last updated: 16 Oct 2026. Branch `feat/public-data-ingest` (pushed). No PR has
 - **Data:** never change `data/raw`, `data/processed` or `data/registry`. Derived output goes in
   new files (e.g. `data/graph/`). Checksums of the 30 source files were verified unchanged after
   every change.
-- **Cloud and AI:** no cloud deployment, Gemini, BigQuery or Firebase backend work until the owner
-  approves the local results.
+- **Cloud and AI:** the owner approved the cloud ingestion plan (`docs/plans/GCP_INGESTION_AGENT_PLAN.md`)
+  on 17 Oct 2026: MVPs are built on branch `ingestion-agent`, one commit per MVP. Creating GCP
+  resources (`scripts/setup-ingest-gcp.sh`) and enabling publishing stay the owner's steps.
 - **Definition of done:** `npm run check && npm run build` (CLAUDE.md), plus `npm run e2e` for UI
   scenarios.
 - **Wording:** leads, never verdicts ("Urgent review / Needs attention / Routine review"; never
@@ -45,6 +46,8 @@ owner decided. Only the borrowers are real; the loan values are made up.
 
 ## Open decisions and next ideas
 
+- **Budget alert (parked):** not created on purpose. When ready, rerun
+  `BILLING_ACCOUNT=… BUDGET_USD=… scripts/setup-ingest-gcp.sh fund-tracer` (plan D7, B-15).
 - **Urgent threshold:** confirm `URGENT_RECEIVABLE_SHARE_PERCENT = 20`
   (`web/src/lib/public-records-findings.ts`).
 - **Alert levels:** confirm every insolvency, liquidation or ED record after disbursement is
@@ -56,12 +59,40 @@ owner decided. Only the borrowers are real; the loan values are made up.
 - **Later (needs owner approval):**
   - sync the loan book from the bank's system
   - a scheduled daily check on a backend with a live feed
+- **Cloud ingestion MVP 1 (branch `ingestion-agent`):** storage port (disk / Cloud Storage),
+  Firestore leases and run records, Cloud Run job entrypoints (`ingest/src/cloud/`), publish gates,
+  versioned publish, BigQuery loads, container (`ingest/Dockerfile`), `scripts/setup-ingest-gcp.sh`,
+  `scripts/deploy-ingest.sh`, workflow `infra/workflows/ingest-daily.yaml`. Verified locally on disk
+  and against Cloud Storage + Firestore emulators; BigQuery loads untested (no emulator).
+- **Cloud ingestion MVP 2 (same branch):** `ingest-agent` job (`ingest/src/agent/`, `ingest/src/ai/`):
+  code-computed findings and baselines, Gemini tool loop (mock by default), proposals with an
+  approval flow (`decideProposal` callable, Firestore console until sign-in), automatic re-run of
+  transient failures in the workflow, rollback. App: `publicData` function behind Hosting `/data/**`
+  (signed-in only), web loader falls back to `/graph-lab/`. D2 confirmed as Vertex AI by default.
+- **After merging `main` (real sign-in):** D3 is wired: a signed-in person with a usable profile
+  gets the cloud data (`web/src/lib/cloud/data-access.ts` sends the ID token + App Check token;
+  `publicData` verifies both, except in the emulator). `publicData` has its own config
+  (`getPublicDataConfig`), so it works without a Gemini key.
+- **Tests (this session):** unit tests for storage, store, cloud, coordination, agent, AI,
+  extraction, functions and web; Firestore rules and the pipeline's Firestore code run against the
+  emulator with `npm run test:emulators` (CI job `emulators`). Bugs found and fixed: lost writes in
+  the local blob store under concurrency (per-key lock), `createProposal` failing on a retried run
+  after the owner had decided (now a no-op, like the disk store), tool handlers throwing instead of
+  rejecting.
+- **GCP resources not created yet:** this cloud container has no Google credentials. The owner runs
+  `SEED=1 scripts/setup-ingest-gcp.sh fund-tracer` in Cloud Shell, then sets `INGEST_ENABLED=true`
+  (see `docs/DEPLOY.md` → Cloud ingestion, including the one-time invoker step).
+- **Cloud ingestion MVP 3 (same branch):** AI evidence extraction in shadow mode
+  (`ingest/src/extract/ai/`, job `ingest-extract`, off by default), quality-gate harness
+  (`eval-ai`, `ingest/eval/README.md`; golden set still to be curated by the owner), SEBI full index
+  in the cloud (incremental), layout diagnostics saved for the agent (`get_diagnostic_page`).
+  Next: curate the golden set, run the gate, then decide whether AI claims may enter the graph.
 - **Daily delta ingestion (GCP plan, MVP 1+2 done locally):** `acquire` now diffs and merges listings
   (`ingest/src/delta/`), pages incrementally for IBBI/NFRA/SFIO/RBI with a weekly/monthly full relist,
   and writes change reports to `data/interim/delta/`; guards stop empty, broken or shrunken listings from
   overwriting data, changed items re-fetch their documents, and a lock allows one `acquire` at a time.
   See `ingest/README.md` → "Daily delta". Next MVPs
-  (storage abstraction, publish step, Cloud Run job) need the GCP project; B-27 (timezone of "a day") is open.
+  (storage abstraction, publish step, Cloud Run job) need the GCP project; B-27 decided: a day is an IST day (`istDate` in packages/shared).
 - **Merge with `main`:** `main` has a separate Playwright setup under `web/e2e/`
   (`Sanchit-Datir/fund-tracer#3`). Expect conflicts in `package.json`, the lockfile,
   `.gitignore` and `.prettierignore` when merging.

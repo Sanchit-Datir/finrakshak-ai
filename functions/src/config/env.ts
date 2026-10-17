@@ -79,6 +79,34 @@ export function getProfileSource(): ProfileSource {
   return parsed.success ? parsed.data : defaultProfileSource(process.env);
 }
 
+const PublicDataEnvSchema = z.object({
+  GCLOUD_PROJECT: z.string().min(1),
+  /** Bucket the cloud ingestion publishes to (default `<project>-ingest-publish`). */
+  PUBLIC_DATA_BUCKET: z.string().min(3).optional(),
+  /** `live` for the app; `dry-run` only to inspect the dry run. */
+  PUBLIC_DATA_CHANNEL: z.enum(['live', 'dry-run']).default('live'),
+});
+
+export interface PublicDataConfig {
+  readonly bucket: string;
+  readonly channel: 'live' | 'dry-run';
+  /** App Check is verified everywhere except the local emulator, which cannot verify it. */
+  readonly requireAppCheck: boolean;
+}
+
+/**
+ * Settings of the `publicData` function on their own: it does not use Gemini, so it must not fail
+ * when the Gemini key is absent (the same reason as getProfileSource).
+ */
+export function getPublicDataConfig(source: NodeJS.ProcessEnv = process.env): PublicDataConfig {
+  const env = PublicDataEnvSchema.parse(source);
+  return {
+    bucket: env.PUBLIC_DATA_BUCKET ?? `${env.GCLOUD_PROJECT}-ingest-publish`,
+    channel: env.PUBLIC_DATA_CHANNEL,
+    requireAppCheck: source['FUNCTIONS_EMULATOR'] !== 'true',
+  };
+}
+
 /** Test helper: drop the cached value so a test can change process.env. */
 export function resetEnvCache(): void {
   cached = undefined;

@@ -1,8 +1,9 @@
-import { copyFile, mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { buildAdjacency, neighbourhood, type GraphLabBundle } from '@fund-tracker/shared';
 import { CASE_SEEDS } from '../seed/cases.js';
+import { blobs, joinKey } from '../storage/index.js';
 import { writeJson, writeJsonl } from '../store/jsonl.js';
 import { subBundle } from './bundle.js';
 import { computeInsights } from './insights.js';
@@ -18,9 +19,13 @@ const SEED_HOPS = 2;
 const SEED_CAP = 400;
 const TOP_NETWORKS = 10;
 
-async function writeGz(file: string, value: unknown): Promise<void> {
-  await mkdir(path.dirname(file), { recursive: true });
-  await writeFile(file, gzipSync(Buffer.from(JSON.stringify(value)), { level: 9 }));
+async function writeGz(key: string, value: unknown): Promise<void> {
+  const body = gzipSync(Buffer.from(JSON.stringify(value)), { level: 9 });
+  await blobs().write(key, body, { contentType: 'application/gzip' });
+}
+
+async function writeText(key: string, text: string): Promise<void> {
+  await blobs().write(key, text, { contentType: 'text/markdown; charset=utf-8' });
 }
 
 /** Small, self-contained bundles that can be loaded in the viewer or used as app test data. */
@@ -42,21 +47,21 @@ function testBundles(full: GraphLabBundle): { name: string; bundle: GraphLabBund
   return out;
 }
 
-/** Writes everything under `dir` (data/graph); nothing outside it is modified. */
+/** Writes everything under the `dir` key prefix (`graph`); nothing outside it is modified. */
 export async function writeGraphOutputs(
   dir: string,
   full: GraphLabBundle,
   scenarios: GraphLabBundle,
 ): Promise<BundleIndexEntry[]> {
   const insights = computeInsights(full);
-  await writeGz(path.join(dir, 'graph-lab.json.gz'), full);
-  await writeJsonl(path.join(dir, 'networks.jsonl'), full.networks);
-  await writeJsonl(path.join(dir, 'identity_candidates.jsonl'), full.identity);
-  await writeJson(path.join(dir, 'summary.json'), { meta: full.meta, insights });
-  await writeFile(path.join(dir, 'REPORT.md'), renderReport(full, insights));
-  await writeJson(path.join(dir, 'test-scenarios', 'synthetic-scenarios.json'), scenarios);
-  await writeFile(
-    path.join(dir, 'test-scenarios', 'REPORT.md'),
+  await writeGz(joinKey(dir, 'graph-lab.json.gz'), full);
+  await writeJsonl(joinKey(dir, 'networks.jsonl'), full.networks);
+  await writeJsonl(joinKey(dir, 'identity_candidates.jsonl'), full.identity);
+  await writeJson(joinKey(dir, 'summary.json'), { meta: full.meta, insights });
+  await writeText(joinKey(dir, 'REPORT.md'), renderReport(full, insights));
+  await writeJson(joinKey(dir, 'test-scenarios', 'synthetic-scenarios.json'), scenarios);
+  await writeText(
+    joinKey(dir, 'test-scenarios', 'REPORT.md'),
     renderReport(scenarios, computeInsights(scenarios)),
   );
   const index: BundleIndexEntry[] = [
@@ -68,10 +73,10 @@ export async function writeGraphOutputs(
     },
   ];
   for (const { name, bundle } of testBundles(full)) {
-    await writeJson(path.join(dir, 'test-data', `${name}.json`), bundle);
+    await writeJson(joinKey(dir, 'test-data', `${name}.json`), bundle);
     index.push({ file: `test-data/${name}.json`, label: bundle.meta.label, synthetic: false });
   }
-  await writeJson(path.join(dir, 'index.json'), index);
+  await writeJson(joinKey(dir, 'index.json'), index);
   return index;
 }
 
@@ -82,8 +87,10 @@ export async function publishToWeb(
   index: readonly BundleIndexEntry[],
 ): Promise<void> {
   for (const entry of [...index, { file: 'index.json' }]) {
-    const target = path.join(webDir, entry.file);
+    const blob = await blobs().read(joinKey(dir, entry.file));
+    if (!blob) throw new Error(`Missing graph output ${entry.file}`);
+    const target = path.join(webDir, ...entry.file.split('/'));
     await mkdir(path.dirname(target), { recursive: true });
-    await copyFile(path.join(dir, entry.file), target);
+    await writeFile(target, blob.data);
   }
 }

@@ -19,3 +19,23 @@ jobs:
       - run: npm run audit:prod
       - run: npm run check
       - run: npm run build
+  # Firestore security rules and the pipeline's Firestore code against the local emulator
+  # (demo project: no credentials, no billed calls).
+  emulators:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/firebase/emulators
+          key: firebase-emulators-${{ hashFiles('package-lock.json') }}
+      - run: npm ci
+      - run: npm run test:emulators

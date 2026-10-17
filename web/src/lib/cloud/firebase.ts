@@ -8,6 +8,8 @@ export interface Cloud {
   functions: Functions;
   /** False when no App Check provider could be set up; the deployed backend will then refuse calls. */
   appCheckActive: boolean;
+  /** A current App Check token for plain `fetch` calls (callables attach it themselves), or null. */
+  appCheckToken: () => Promise<string | null>;
 }
 
 /** The connection settings from the build environment, or null when running in demo mode. */
@@ -57,9 +59,9 @@ export function connectCloud(config: CloudConfig): Promise<Cloud> {
       appId: config.appId,
     });
 
-    let appCheckActive = false;
+    let appCheck: ReturnType<typeof appCheckLib.initializeAppCheck> | null = null;
     if (config.useEmulators) {
-      appCheckLib.initializeAppCheck(app, {
+      appCheck = appCheckLib.initializeAppCheck(app, {
         provider: new appCheckLib.CustomProvider({
           getToken: () =>
             Promise.resolve({
@@ -68,14 +70,20 @@ export function connectCloud(config: CloudConfig): Promise<Cloud> {
             }),
         }),
       });
-      appCheckActive = true;
     } else if (config.recaptchaSiteKey !== null) {
-      appCheckLib.initializeAppCheck(app, {
+      appCheck = appCheckLib.initializeAppCheck(app, {
         provider: new appCheckLib.ReCaptchaEnterpriseProvider(config.recaptchaSiteKey),
         isTokenAutoRefreshEnabled: true,
       });
-      appCheckActive = true;
     }
+    const appCheckToken = async (): Promise<string | null> => {
+      if (appCheck === null) return null;
+      try {
+        return (await appCheckLib.getToken(appCheck, false)).token;
+      } catch {
+        return null; // the backend then refuses the request with a clear status
+      }
+    };
 
     const auth = authLib.initializeAuth(app, {
       // Look in every place a sign-in may have been saved: long-term ("remember me") or this tab only.
@@ -90,7 +98,7 @@ export function connectCloud(config: CloudConfig): Promise<Cloud> {
       authLib.connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
       fnLib.connectFunctionsEmulator(functions, '127.0.0.1', 5001);
     }
-    return { config, auth, functions, appCheckActive };
+    return { config, auth, functions, appCheckActive: appCheck !== null, appCheckToken };
   })();
   return pending;
 }

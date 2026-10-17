@@ -106,6 +106,8 @@ describe('devProfileStore and the default choice', () => {
 
   it('is used locally when there is no Firestore emulator, so real data is never read', () => {
     vi.stubEnv('FUNCTIONS_EMULATOR', 'true');
+    // Also true when the suite itself runs under `firebase emulators:exec`.
+    vi.stubEnv('FIRESTORE_EMULATOR_HOST', '');
     expect(defaultProfileStore()).toBe(devProfileStore);
   });
 

@@ -4,7 +4,7 @@ import {
   type RawArtifact,
   type SourceId,
 } from '@fund-tracker/shared';
-import { ItemDocumentsSchema, itemDocsFile, listingFile } from '../acquire.js';
+import { ItemDocumentsSchema, itemDocsKey, listingKey } from '../acquire.js';
 import { readJsonl } from '../store/jsonl.js';
 import type { RawStore } from '../store/rawStore.js';
 
@@ -23,9 +23,9 @@ export async function documentArtifacts(
   store: RawStore,
 ): Promise<ItemArtifact[]> {
   const items = new Map(
-    (await readJsonl(listingFile(source), ListingItemSchema)).map((i) => [i.item_id, i]),
+    (await readJsonl(listingKey(source), ListingItemSchema)).map((i) => [i.item_id, i]),
   );
-  const resolved = await readJsonl(itemDocsFile(source), ItemDocumentsSchema);
+  const resolved = await readJsonl(itemDocsKey(source), ItemDocumentsSchema);
   const out: ItemArtifact[] = [];
   const seen = new Set<string>();
   for (const row of resolved) {

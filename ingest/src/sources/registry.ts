@@ -53,7 +53,7 @@ const ENTRIES: readonly SourceRegistryEntry[] = [
     refresh_cadence: 'Daily (orders published as passed).',
     collections: ['sebi.orders.*'],
     known_gaps: [
-      'Currently a 10-order sample (SOURCE_ITEM_CAPS); full index is ~24.5k orders — raise the cap to collect all.',
+      '10-order sample locally (FUNDTRACE_SEBI_SAMPLE=true, the default); the cloud lists the full ~24.5k-order index, incrementally after the first run.',
       'Interim/ex-parte orders and settlements are not findings; SAT appeal references are captured from listings when shown.',
     ],
     last_checked: CHECKED,

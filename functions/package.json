@@ -10,6 +10,7 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",
+    "test:emulator": "vitest run --config vitest.emulator.config.ts",
     "serve": "npm run build && firebase emulators:start --only functions,auth",
     "serve:live": "npm run build && GEMINI_PROVIDER=apikey firebase emulators:start --only functions,auth"
   },
