@@ -55,6 +55,16 @@ owner decided. Only the borrowers are real; the loan values are made up.
   the plan index, the 17-step build order with a status per step (steps 1–4 done), the decisions taken and
   the checkpoints that need the owner. Work is on the local branch `plan/synthetic-transactions` (not
   pushed, no PR). Update the status in that README when a step finishes.
+- **Risk scoring steps 8 and 9 (17 Oct 2026, branch `risk-scoring-job` from `plan/synthetic-transactions`):**
+  scoring core, settings v1, alert decision, reason text and "what changed" block, hand-written pattern
+  library v1, file input port, replay and evaluation (`npm run synth && npm run score`). What is built and
+  the first replay's numbers: `docs/RISK_SCORING.md`. B-55, B-56 and B-58 added. **Next: checkpoint 2.**
+  Under the agreed weights slow-burn and fund-diversion loans cannot reach Needs attention (behaviour max
+  10; typology patterns 18), so they never alert; the owner tunes the weights, the 15-point step and the
+  3% budget from the replay. Owner's answers to the scorer brief: EMIs inferred from repayments (grace 5
+  days, partial below 90%); monitoring rules feed the pattern layer only; direct layer 10 for 2+
+  proceedings, 15 for 3+ sources, counterparties left out, status weights 100% in v1; a missing seed
+  review means support 0.6 everywhere; `noMatcher` until step 7; months scored on their last IST day.
 - **Budget alert (parked):** not created on purpose. When ready, rerun
   `BILLING_ACCOUNT=… BUDGET_USD=… scripts/setup-ingest-gcp.sh fund-tracer` (plan D7, B-15).
 - **Urgent threshold:** confirm `URGENT_RECEIVABLE_SHARE_PERCENT = 20`

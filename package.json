@@ -26,6 +26,7 @@
     "ingest": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/cli.js",
     "miner": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/minerCli.js",
     "synth": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/synthCli.js",
+    "score": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/risk/scoreCli.js",
     "e2e": "npm run test:e2e -w e2e --",
     "audit:prod": "npm audit --omit=dev --audit-level=low",
     "audit:all": "npm audit --audit-level=critical",

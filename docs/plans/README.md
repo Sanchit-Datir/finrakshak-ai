@@ -37,13 +37,13 @@ The steps run in four phases. A phase ends with something you can see working.
 
 ### Phase B: first end-to-end result (local, no cloud)
 
-| #   | Step                                                                                                                             | Needs from the owner                               | Status |
-| --- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------ |
-| 5   | S2 Population, flags, labels, CLI, contract sample and web contract test, first archetypes                                       |                                                    | [ ]    |
-| 6   | S3 The remaining archetypes, including look-alikes and `near_threshold`                                                          |                                                    | [ ]    |
-| 7   | M1 Pattern definitions, matcher, candidates with baseline lift, backtest (no model)                                              | **Checkpoint 1: do the candidates look useful?**   | [ ]    |
-| 8   | R2 Scoring core, settings, alert decision, replay harness, templated reason text with the "new / unchanged / score change" block | **Checkpoint 2: tune the 3% budget and 15 points** | [ ]    |
-| 9   | R4 Pattern layer with hand-written version 1 patterns (kept in code until step 15)                                               |                                                    | [ ]    |
+| #   | Step                                                                                                                             | Needs from the owner                               | Status                           |
+| --- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------------------------------- |
+| 5   | S2 Population, flags, labels, CLI, contract sample and web contract test, first archetypes                                       |                                                    | [ ]                              |
+| 6   | S3 The remaining archetypes, including look-alikes and `near_threshold`                                                          |                                                    | [ ]                              |
+| 7   | M1 Pattern definitions, matcher, candidates with baseline lift, backtest (no model)                                              | **Checkpoint 1: do the candidates look useful?**   | [ ]                              |
+| 8   | R2 Scoring core, settings, alert decision, replay harness, templated reason text with the "new / unchanged / score change" block | **Checkpoint 2: tune the 3% budget and 15 points** | [x] done, `docs/RISK_SCORING.md` |
+| 9   | R4 Pattern layer with hand-written version 1 patterns (kept in code until step 15)                                               |                                                    | [x] done, with step 8            |
 
 End of phase B: month-by-month scores and "risk rose because..." on synthetic data, run from the command line.
 
