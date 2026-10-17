@@ -17,7 +17,7 @@
     "@google-cloud/bigquery": "^9.3.0",
     "@google-cloud/firestore": "^9.3.1",
     "@google-cloud/storage": "^8.4.0",
-    "@google/genai": "^1.52.0",
+    "@google/genai": "^2.29.1",
     "cheerio": "^1.2.0",
     "pdfjs-dist": "^6.4.299",
     "zod": "^3.24.0"
