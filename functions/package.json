@@ -10,7 +10,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",
-    "serve": "npm run build && firebase emulators:start --only functions"
+    "serve": "npm run build && firebase emulators:start --only functions,auth",
+    "serve:live": "npm run build && GEMINI_PROVIDER=apikey firebase emulators:start --only functions,auth"
   },
   "dependencies": {
     "@google/genai": "^1.0.0",
