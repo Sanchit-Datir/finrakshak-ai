@@ -26,24 +26,30 @@ a rebuild matches. The `.jsonl` files are not in git; `manifest.json` and this R
 | `truth.jsonl`        | The expected answer for each loan: which monitoring rules it trips and the risk band by month |
 | `manifest.json`      | Seed, counts and hashes                                                                    |
 
-## Scenarios built so far
+## Scenarios
 
-| Scenario             | Customers (of 200) | What it does                                                                                  |
-| -------------------- | -----------------: | --------------------------------------------------------------------------------------------- |
-| `control`            |                 45 | Pays on time; nothing unusual                                                                 |
-| `slow_burn`          |                 20 | EMIs arrive later each month, then half, then none                                            |
-| `sudden_enforcement` |                 15 | Normal payments; an ED attachment appears months later                                        |
-| `fund_diversion`     |                 15 | 75–92% of the loan goes to a related party within 3 days (trips two monitoring rules)         |
+| Scenario             | Customers | Class     | What it does                                                                                       | Monitoring rules it trips |
+| -------------------- | --------: | --------- | -------------------------------------------------------------------------------------------------- | ------------------------- |
+| `control`            |        45 | control   | Pays on time; nothing unusual                                                                      | none                      |
+| `slow_burn`          |        20 | defaulter | EMIs arrive later each month, then half, then none                                                 | none                      |
+| `sudden_enforcement` |        15 | defaulter | Normal payments; an ED attachment (an allegation) appears months later                             | none                      |
+| `round_trip`         |        15 | defaulter | Money goes to an unlinked intermediary and 60–95% comes back within 30 days                        | `circular`                |
+| `fund_diversion`     |        15 | defaulter | 72–85% of the loan goes to a related party within 3 days                                           | `rapid_onward`, `linked_counterparty` |
+| `contagion`          |        15 | defaulter | The biggest customer (45% of receipts) is taken to insolvency; receipts fall; EMIs slip            | none                      |
+| `shared_address`     |        15 | defaulter | Clusters of 5 borrowers at one address pay one common payee; the hub is later flagged               | `repeated_counterparty`   |
+| `cash_split`         |        10 | defaulter | 3–5 cash withdrawals each just under ₹1 lakh within a few days                                     | `cash_split`              |
+| `dormant_burst`      |        10 | held out  | Months of silence, then heavy movement, after the first 90 days; expected to go unnoticed (B-55)   | none                      |
+| `seasonal`           |        15 | look-alike | Receipts swing with the season; every EMI on time; must not alert                                  | none                      |
+| `big_prepayment`     |        15 | look-alike | One large early repayment; no missed EMI; must not alert                                           | none                      |
+| `near_threshold`     |        10 | look-alike | 66–69% out in 72 h, 44–48% back, only 2 near-limit cash withdrawals: just under every rule         | none                      |
 
-The other eight scenarios (`round_trip`, `contagion`, `shared_address`, `cash_split`, `dormant_burst`,
-`seasonal`, `big_prepayment`, `near_threshold`) come with step 6 of `docs/plans/README.md`. Until then a
-default run builds 95 loans and says which scenarios it skipped.
+A run builds all 200. If a scenario ever has no builder, the run says which one it skipped.
 
 ## How it is checked
 
 - The generator's tests run the shared monitoring rules (the ones the app and the scoring job use) over
   every generated loan, across many seeds, and require exactly the rules in `truth.jsonl`.
-- `web/src/lib/synth-sample.json` is a small sample (5 loans). `web/src/lib/synth-contract.test.ts` loads it
+- `web/src/lib/synth-sample.json` is a small sample (7 loans covering every rule, cut at 91 days because the rules read no further). `web/src/lib/synth-contract.test.ts` loads it
   into the app's own types and rules, so the generator and the web model cannot drift apart.
   Rebuild the sample after a change with `node ingest/dist/synthCli.js --sample`.
 

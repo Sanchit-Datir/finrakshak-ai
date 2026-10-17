@@ -42,3 +42,14 @@ export interface Archetype {
   readonly id: SynthArchetype;
   build(ctx: LoanContext): BuiltLoan;
 }
+
+/**
+ * A scenario whose loans belong together (a cluster of borrowers at one address). Loans are built in
+ * groups of up to `groupSize`; a group always has at least two loans.
+ */
+export interface GroupArchetype {
+  readonly id: SynthArchetype;
+  readonly groupSize: number;
+  /** `rng` is the group's own stream; each context has its own loan stream. */
+  buildGroup(contexts: readonly LoanContext[], rng: Rng): BuiltLoan[];
+}

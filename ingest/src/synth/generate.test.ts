@@ -13,7 +13,7 @@ import {
 } from '@fund-tracker/shared';
 import { describe, expect, it } from 'vitest';
 import { ARCHETYPES } from './archetypes/index.js';
-import { PLAN_ALLOCATION, scaleAllocation } from './allocation.js';
+import { PLAN_ALLOCATION, groupSizes, scaleAllocation } from './allocation.js';
 import { istMonthOf, monthEnd, monthRange, onOrBeforeMonthEnd } from './calendar.js';
 import { checkLedger } from './ledger.js';
 import { generate, type SynthDataset } from './generate.js';
@@ -34,6 +34,20 @@ const CONFIG: RuleConfig = {
   cashMinCount: 3,
   cashWindowDays: 7,
 };
+const ALL = {
+  control: 2,
+  slow_burn: 2,
+  sudden_enforcement: 2,
+  round_trip: 2,
+  fund_diversion: 2,
+  contagion: 2,
+  shared_address: 5,
+  cash_split: 2,
+  dormant_burst: 2,
+  seasonal: 2,
+  big_prepayment: 2,
+  near_threshold: 2,
+} as const;
 const SMALL = { control: 4, slow_burn: 3, sudden_enforcement: 3, fund_diversion: 3 } as const;
 
 /** Rule ids raised for each loan, using the same code the app and the scoring job use. */
@@ -69,6 +83,18 @@ describe('allocation', () => {
     expect(scaleAllocation(1).control).toBe(1);
     expect(scaleAllocation(12)).toMatchObject({ control: 3, slow_burn: 1, sudden_enforcement: 1 });
   });
+  it('splits loans into groups, merging a lone last loan into the group before', () => {
+    expect(groupSizes(15, 5)).toEqual([5, 5, 5]);
+    expect(groupSizes(7, 5)).toEqual([5, 2]);
+    expect(groupSizes(11, 5)).toEqual([5, 6]);
+    expect(groupSizes(6, 5)).toEqual([6]);
+    expect(groupSizes(2, 5)).toEqual([2]);
+    expect(groupSizes(1, 5)).toEqual([1]);
+    expect(groupSizes(0, 5)).toEqual([]);
+    for (let n = 2; n < 60; n++) expect(groupSizes(n, 5).reduce((a, b) => a + b, 0)).toBe(n);
+    expect(() => groupSizes(5, 1)).toThrow(RangeError);
+  });
+
   it('rejects a total that is not a whole number', () => {
     expect(() => scaleAllocation(-1)).toThrow(RangeError);
     expect(() => scaleAllocation(1.5)).toThrow(RangeError);
@@ -96,13 +122,13 @@ describe('generate', () => {
     expect(more.loans).toHaveLength(16);
   });
 
-  it('builds the customers asked for and reports scenarios without a builder', () => {
+  it('builds the customers asked for, scenario by scenario', () => {
     expect(d.loans).toHaveLength(13);
     expect(d.truth.filter((t) => t.archetype === 'slow_burn')).toHaveLength(3);
     const partial = generate({ seed: 1, allocation: { control: 1, round_trip: 2 } });
-    expect(partial.loans).toHaveLength(1);
-    expect(partial.notBuilt).toEqual(['round_trip']);
-    expect(Object.keys(ARCHETYPES)).toHaveLength(4);
+    expect(partial.loans).toHaveLength(3);
+    expect(partial.notBuilt).toEqual([]);
+    expect(Object.keys(ARCHETYPES)).toHaveLength(12);
   });
 
   it('keeps every row valid under the shared schemas, with unique ids and no dangling references', () => {
@@ -166,7 +192,7 @@ describe('across many seeds', () => {
 
   it('never overdraws the borrower account (the ledger holds)', () => {
     for (const seed of seeds) {
-      const x = generate({ seed, allocation: SMALL });
+      const x = generate({ seed, allocation: ALL });
       for (const l of x.loans) {
         const mine = x.transactions.filter((t) => t.loanId === l.id);
         expect(
@@ -179,7 +205,7 @@ describe('across many seeds', () => {
 
   it('trips exactly the monitoring rules the labels expect, no more and no fewer', () => {
     for (const seed of seeds) {
-      const x = generate({ seed, allocation: SMALL });
+      const x = generate({ seed, allocation: ALL });
       const rules = rulesByLoan(x);
       for (const t of x.truth)
         expect(
@@ -191,7 +217,7 @@ describe('across many seeds', () => {
 
   it('does the same with a short and a long period', () => {
     for (const months of [12, 18, 36]) {
-      const x = generate({ seed: 3, months, allocation: SMALL });
+      const x = generate({ seed: 3, months, allocation: ALL });
       const rules = rulesByLoan(x);
       for (const t of x.truth)
         expect([...(rules.get(t.loan_id) ?? [])].sort(), `${months} months ${t.archetype}`).toEqual(
@@ -200,14 +226,15 @@ describe('across many seeds', () => {
     }
   });
 
-  it('keeps flags after disbursement and inside the period', () => {
+  it('keeps every flag after its loan was disbursed and inside the period', () => {
     for (const seed of seeds) {
-      const x = generate({ seed, allocation: SMALL });
+      const x = generate({ seed, allocation: ALL });
       for (const f of x.flags) {
-        const loan = x.loans.find((l) => `F-${l.id.slice(2)}` === f.flag_id);
-        expect(f.event_date > (loan?.disbursedAt.slice(0, 10) ?? '9999'), `seed ${seed}`).toBe(
-          true,
-        );
+        const loan = x.loans.find((l) => l.id === `L-${f.flag_id.slice(2, 6)}`);
+        expect(
+          f.event_date > (loan?.disbursedAt.slice(0, 10) ?? '9999'),
+          `seed ${seed} ${f.flag_id}`,
+        ).toBe(true);
         expect(f.event_date <= monthEnd('2025-12')).toBe(true);
       }
     }
@@ -215,5 +242,57 @@ describe('across many seeds', () => {
 
   it('covers every scenario name in the shared list', () => {
     expect(SYNTH_ARCHETYPES).toHaveLength(12);
+  });
+});
+
+describe('the full plan (200 customers)', () => {
+  const full = generate({ seed: 20261017, allocation: PLAN_ALLOCATION });
+
+  it('builds exactly the plan’s customers for every scenario, none left out', () => {
+    expect(full.loans).toHaveLength(200);
+    expect(full.notBuilt).toEqual([]);
+    for (const id of SYNTH_ARCHETYPES)
+      expect(
+        full.truth.filter((t) => t.archetype === id),
+        id,
+      ).toHaveLength(PLAN_ALLOCATION[id]);
+  });
+
+  it('trips exactly the labelled monitoring rules on every one of the 200 loans', () => {
+    const rules = rulesByLoan(full);
+    const mismatches = full.truth.filter(
+      (t) =>
+        [...(rules.get(t.loan_id) ?? [])].sort().join() !== [...t.expected_rules].sort().join(),
+    );
+    expect(mismatches.map((t) => `${t.loan_id} ${t.archetype}`)).toEqual([]);
+  });
+
+  it('leaves the look-alikes and the held-out scenario with no rule and a Routine review all along', () => {
+    for (const t of full.truth.filter((x) => x.class === 'lookalike' || x.class === 'held_out')) {
+      expect(t.expected_rules, t.archetype).toEqual([]);
+      expect(
+        t.months.every((m) => m.expected_band === 'routine'),
+        t.archetype,
+      ).toBe(true);
+    }
+  });
+
+  it('never lowers the band of a defaulter once it has risen', () => {
+    const rank = { routine: 0, needs_attention: 1, urgent: 2 } as const;
+    for (const t of full.truth.filter((x) => x.class === 'defaulter')) {
+      const ranks = t.months.map((m) => rank[m.expected_band]);
+      expect(ranks, `${t.loan_id} ${t.archetype}`).toEqual([...ranks].sort((a, b) => a - b));
+    }
+  });
+
+  it('keeps every name unique and synthetic, and every file free of real-looking identifiers', () => {
+    expect(new Set(full.entities.map((e) => e.name)).size).toBe(full.entities.length);
+    for (const [name, text] of Object.entries(serialise(full).files))
+      expect(findRealLookingIdentifiers(text), name).toEqual([]);
+  });
+
+  it('is reproducible: the same seed gives the same hashes', () => {
+    const again = generate({ seed: 20261017, allocation: PLAN_ALLOCATION });
+    expect(serialise(again).manifest.sha256).toEqual(serialise(full).manifest.sha256);
   });
 });

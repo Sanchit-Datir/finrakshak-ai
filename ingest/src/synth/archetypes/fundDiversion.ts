@@ -37,7 +37,7 @@ export const fundDiversion: Archetype = {
       at: shiftInstant(base.loan.disbursedAt, ctx.rng.int(3 * HOUR, 36 * HOUR)),
       fromId: base.accountId,
       toId: `${relatedId}-acc`,
-      amountMinor: roundTo(percent(base.amount, ctx.rng.int(75, 92)), MONEY_STEP),
+      amountMinor: roundTo(percent(base.amount, ctx.rng.int(72, 85)), MONEY_STEP),
       type: 'rtgs' as const,
     };
     const relationship = {
