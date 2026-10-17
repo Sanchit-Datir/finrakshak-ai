@@ -138,7 +138,8 @@ main:
           review_status: ${runState.review_status}
           failed_steps: ${failed}
 
-# Build (publish gates, versioned publish, BigQuery), then the agent review. Returns failed steps.
+# Build (publish gates, versioned publish, BigQuery), then the synthetic risk scores (a no-op unless
+# switched on for the job), then the agent review. Returns failed steps.
 build_and_review:
   params: [project, region, runId, runAt, forceBuild, pass]
   steps:
@@ -166,6 +167,33 @@ build_and_review:
             - noteBuild:
                 assign:
                   - failures: ${list.concat(failures, "build")}
+    # Retried once by the workflow (a code trigger, never an agent): safe because score ids and
+    # BigQuery job ids are deterministic for the IST day (B-24).
+    - score:
+        try:
+          call: run_score
+          args:
+            project: ${project}
+            region: ${region}
+            runId: ${runId}
+            runAt: ${runAt}
+        except:
+          as: e
+          steps:
+            - retryScore:
+                try:
+                  call: run_score
+                  args:
+                    project: ${project}
+                    region: ${region}
+                    runId: ${runId}
+                    runAt: ${runAt}
+                except:
+                  as: e2
+                  steps:
+                    - noteScore:
+                        assign:
+                          - failures: ${list.concat(failures, "score")}
     - review:
         try:
           call: run_job
@@ -189,6 +217,26 @@ build_and_review:
                   - failures: ${list.concat(failures, "agent")}
     - done:
         return: ${failures}
+
+# The ingest-score job for one run (synthetic data only, B-54).
+run_score:
+  params: [project, region, runId, runAt]
+  steps:
+    - run:
+        call: run_job
+        args:
+          project: ${project}
+          region: ${region}
+          job: ingest-score
+          env:
+            - name: FUNDTRACE_RUN_ID
+              value: ${runId}
+            - name: FUNDTRACE_RUN_AT
+              value: ${runAt}
+          timeout: 1800
+        result: execution
+    - ok:
+        return: ${execution}
 
 # Reads the run record the jobs wrote: the agent's status and the sources it asked to re-run.
 read_run:

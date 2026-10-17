@@ -109,16 +109,19 @@ describe.each(['ingestRuns', 'ingestReviews', 'agentProposals'])('%s (admin read
   });
 });
 
-describe.each(['ingestLocks', 'usage', 'users'])('%s (no client access)', (col) => {
-  it('denies reads and writes for admins, users and anonymous callers', async () => {
-    expect(await write(`${col}/d1`, SEED, { holder: text('run') })).toBe(OK);
-    for (const caller of [ADMIN, USER, 'anonymous']) {
-      expect(await read(`${col}/d1`, caller)).toBe(DENIED);
-      expect(await write(`${col}/d1`, caller, { holder: text('me') })).toBe(DENIED);
-      expect(await remove(`${col}/d1`, caller)).toBe(DENIED);
-    }
-  });
-});
+describe.each(['ingestLocks', 'usage', 'users', 'synthRiskLatest', 'synthRiskAlerts'])(
+  '%s (no client access)',
+  (col) => {
+    it('denies reads and writes for admins, users and anonymous callers', async () => {
+      expect(await write(`${col}/d1`, SEED, { holder: text('run') })).toBe(OK);
+      for (const caller of [ADMIN, USER, 'anonymous']) {
+        expect(await read(`${col}/d1`, caller)).toBe(DENIED);
+        expect(await write(`${col}/d1`, caller, { holder: text('me') })).toBe(DENIED);
+        expect(await remove(`${col}/d1`, caller)).toBe(DENIED);
+      }
+    });
+  },
+);
 
 describe('collections without a rule (default deny)', () => {
   it('denies an unknown collection', async () => {

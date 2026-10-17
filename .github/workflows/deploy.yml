@@ -125,4 +125,6 @@ jobs:
           AGENT_ENABLED: ${{ vars.INGEST_AGENT_ENABLED || 'true' }}
           # AI evidence extraction (shadow mode) stays off until the owner turns it on.
           AI_EXTRACT_ENABLED: ${{ vars.INGEST_AI_EXTRACT_ENABLED || 'false' }}
+          # Synthetic risk scoring stays off until the owner's dry run (REMAINING_WORK.md, W2g).
+          SCORE_ENABLED: ${{ vars.INGEST_SCORE_ENABLED || 'false' }}
         run: scripts/deploy-ingest.sh "$FIREBASE_PROJECT_ID" "$IMAGE" "$REGION"
