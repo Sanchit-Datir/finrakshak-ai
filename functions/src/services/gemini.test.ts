@@ -40,7 +40,10 @@ describe('cost guard: tests never reach a billed model', () => {
 
   it('uses the real client only when the provider is set explicitly', async () => {
     const generateContent = vi.fn().mockResolvedValue({ text: 'real reply' });
-    clientConstructor.mockImplementation(() => ({ models: { generateContent } }));
+    // A regular function (not an arrow): newer Vitest requires one for mocks called with `new`.
+    clientConstructor.mockImplementation(function () {
+      return { models: { generateContent } };
+    });
     vi.stubEnv('GEMINI_PROVIDER', 'apikey');
     vi.stubEnv('GEMINI_API_KEY', 'AIza-not-a-real-key');
 
