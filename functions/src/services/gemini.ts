@@ -12,12 +12,18 @@ let client: GoogleGenAI | undefined;
 
 function getClient(): GoogleGenAI {
   const env = getEnv();
-  // Vertex AI mode uses Application Default Credentials: no API keys in code.
-  client ??= new GoogleGenAI({
-    vertexai: true,
-    project: env.GCLOUD_PROJECT,
-    location: env.VERTEX_LOCATION,
-  });
+  if (env.GEMINI_PROVIDER === 'vertex') {
+    // Vertex AI mode uses Application Default Credentials: no API keys in code.
+    client ??= new GoogleGenAI({
+      vertexai: true,
+      project: env.GCLOUD_PROJECT,
+      location: env.VERTEX_LOCATION,
+    });
+  } else {
+    // The key comes from Secret Manager via the function's `secrets` option, never from code.
+    if (env.GEMINI_API_KEY === undefined) throw new GeminiError('Gemini API key is not configured');
+    client ??= new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
+  }
   return client;
 }
 
