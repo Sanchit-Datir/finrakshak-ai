@@ -22,6 +22,10 @@ Both runners save screenshots to `screenshots/<id>/`.
 | [`advantage-overseas-post-disbursement`](advantage-overseas-post-disbursement/README.md) | Post-disbursement watch | TEST loan `L-2023-0601` (demo loan book): after disbursement the borrower is taken to insolvency, then liquidation, then ED search and attachments | 6 alerts raised automatically, Urgent review |
 | [`jai-corp-sudden-enforcement`](jai-corp-sudden-enforcement/README.md)                   | Post-disbursement watch | TEST loan `L-2024-0401` (demo loan book): a clean, listed borrower faces an ED attachment of ₹230 crore after disbursement                         | 1 alert raised automatically, Urgent review  |
 
+Other specs: `tests/risk-scores.spec.ts` checks the synthetic risk scores page (`/monitoring/risk-scores`),
+a loan's detail and the `risk_score` alerts against the bundled sample `web/src/demo/synth-risk-sample.json`
+(rebuild it with `node ingest/dist/risk/riskSampleCli.js`).
+
 ## Run
 
 ```bash

@@ -12,14 +12,24 @@ import { AlertStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.j
 import { DataTable } from '../components/ui/Table.js';
 import { Tabs, type TabDef } from '../components/ui/Tabs.js';
 import { PRIORITY_LABEL } from '../domain/labels.js';
-import { SOURCE_LABEL, allAlerts, isOpen, type UnifiedAlert } from '../lib/alerts.js';
+import type { RiskAlertDoc } from '@fund-tracker/shared';
+import {
+  SOURCE_LABEL,
+  allAlerts,
+  isOpen,
+  riskScoreAlerts,
+  type UnifiedAlert,
+} from '../lib/alerts.js';
 import { inRange, resolvePeriod, type PeriodKind } from '../lib/period.js';
 import { matchesQuery } from '../lib/text.js';
 import { useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
+import { useRiskScores } from '../state/useRiskScores.js';
 import { useUrlState } from '../state/url.js';
 
 type View = 'all' | 'open' | 'new' | 'in_review' | 'escalated' | 'resolved';
+
+const NO_RISK_ALERTS: RiskAlertDoc[] = [];
 
 export function AlertsPage(): React.JSX.Element {
   const db = useDb();
@@ -33,7 +43,15 @@ export function AlertsPage(): React.JSX.Element {
   const [assignee, setAssignee] = useUrlState('assignee', 'all');
   const [period, setPeriod] = useUrlState('period', 'all');
   const [openId, setOpenId] = useUrlState('alert', '');
-  const alerts = allAlerts(db);
+  const risk = useRiskScores();
+  const riskDocs = risk.status === 'ready' ? risk.data.alerts : NO_RISK_ALERTS;
+  const alerts = useMemo(
+    () =>
+      [...allAlerts(db), ...riskScoreAlerts(db, riskDocs)].sort(
+        (a, b) => new Date(b.at).getTime() - new Date(a.at).getTime(),
+      ),
+    [db, riskDocs],
+  );
 
   const filtered = useMemo(() => {
     const range =
@@ -150,6 +168,7 @@ export function AlertsPage(): React.JSX.Element {
               { value: 'monitoring', label: SOURCE_LABEL.monitoring },
               { value: 'pre_disbursement', label: SOURCE_LABEL.pre_disbursement },
               { value: 'public_records', label: SOURCE_LABEL.public_records },
+              { value: 'risk_score', label: SOURCE_LABEL.risk_score },
             ]}
           />
           <FilterSelect

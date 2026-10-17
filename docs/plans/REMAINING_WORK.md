@@ -16,6 +16,22 @@ Plain words: a **job** is plain code that runs on a schedule (no model). An **ag
 model (Gemini on Vertex AI) and whose output a person or the code checks. This programme has one agent
 running today, one parked, and one deferred.
 
+## Status update (17 Oct 2026, branch `remaining-work-changes`)
+
+| Section | State                                                                                                                                                                                              |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| W1      | Done on `main` (PR #34): matcher wired in, contract changes, settings v2                                                                                                                           |
+| W2a–W2f | Code and tests done: `ingest/src/risk/{synthTables,synthLoadCli,bigQueryInputs,daily,step,scoreWriter,scoreStore}.ts`, `ingest/src/cloud/scoreTask.ts`, rules, setup/deploy scripts, workflow step |
+| W2g     | **Owner:** setup run, data load and dry run (`docs/DEPLOY.md` → Synthetic risk scores)                                                                                                             |
+| W3a–W3e | Done: shared schemas (`packages/shared/src/risk/scoring/store.ts`), `getRiskScores` callable, page `/monitoring/risk-scores`, alerts source `risk_score`, e2e `e2e/tests/risk-scores.spec.ts`      |
+| W4      | Owner tasks, unchanged                                                                                                                                                                             |
+| W5      | Status rows, session notes and B-57 updated                                                                                                                                                        |
+
+Questions Q1–Q4 and Q6 were built with their suggested answers; confirm or change them (section 8). One
+deviation: the cloud scorer reads public-record flags from `fundtrace_synth`, not from the public
+dataset, because the synthetic flags name SYNTH companies that real records never match (B-54). From
+the public pipeline it reads only the published build's date (B-43, B-50).
+
 ## 1. Where things stand
 
 Done and on `main`: build steps 1–9 and the pattern contract. `npm run check` and `npm run build` pass.
