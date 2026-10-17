@@ -84,7 +84,7 @@ describe('own behaviour drift layer', () => {
     const missed = run(onTime(1, 5), '2024-07-16');
     expect(codes(missed)).toEqual(['missed_emi']);
     expect(missed.points).toBe(4);
-    expect(missed.reasons[0]?.evidence_event_ids).toEqual(['emi:L-1:6']);
+    expect(missed.reasons[0]?.evidence_ids).toEqual(['emi:L-1:6']);
   });
 
   it('scores 8 for two unmet EMIs in a row and 4 for two apart', () => {

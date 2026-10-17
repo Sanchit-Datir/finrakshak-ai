@@ -16,7 +16,7 @@ const reason = (code: Reason['code'], facts: Reason['facts'] = {}): Reason => ({
   reason_key: `${code}|x`,
   subject_id: 'x',
   points: 4,
-  evidence_event_ids: [],
+  evidence_ids: [],
   evidence_statuses: [],
   source: 'transactions',
   facts,

@@ -29,7 +29,7 @@ const reason = (code: ReasonCode, key = `${code}|x`, points = 4): Reason => ({
   reason_key: key,
   subject_id: 'B-1',
   points,
-  evidence_event_ids: ['e1'],
+  evidence_ids: ['e1'],
   evidence_statuses: ['allegation'],
   source: 'ed',
   facts: FACTS[code],

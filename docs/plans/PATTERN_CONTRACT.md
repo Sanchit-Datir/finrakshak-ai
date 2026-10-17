@@ -200,8 +200,12 @@ the kind lookup for both.
   pattern layer is the largest single pattern's points, capped at 30, not the sum**, so overlapping patterns
   do not double count. _Decided by the owner on 17 Oct 2026._
 - Writes one reason per matched pattern into `risk_scores.reasons`:
-  `{ code: 'pattern_match', pattern_id, pattern_name, strength, support_weight, points, evidence_event_ids, evidence_statuses }`,
+  `{ code: 'pattern_match', pattern_id, pattern_name, strength, support_weight, points, evidence_ids, evidence_statuses }`,
   and stores `pattern_version = library_version` on the score.
+  `evidence_ids` holds public event ids for a public-record pattern, the transaction ids of the fired
+  monitoring rule for a `transaction_typology`, and neighbour entity ids for a graph match (it was
+  `evidence_event_ids` before workstream W1c, which was too narrow). `MatchResult` keeps `matched_event_ids`
+  and `matched_neighbour_ids`.
 - Never writes to the library, never edits a pattern, never calls a model.
 
 ## 8. Versions and compatibility

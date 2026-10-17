@@ -29,7 +29,7 @@ describe('direct match layer', () => {
     expect(r.reasons[0]).toMatchObject({
       code: 'public_record_after_disbursement',
       points: 40,
-      evidence_event_ids: ['e1'],
+      evidence_ids: ['e1'],
       evidence_statuses: ['allegation'],
     });
   });

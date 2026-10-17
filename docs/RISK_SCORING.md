@@ -110,7 +110,7 @@ Money is compared in integer paise only (B-01, B-03).
   a hand-written hypothesis. Verified cases come from `data/verification/seed_review.json` at score time;
   that file does not exist yet, so every run has the `no_seed_review` finding and every weight is 0.6.
 - Each matched pattern gives one `pattern_match` reason with `pattern_id`, `pattern_name`, `strength`,
-  `support_weight`, `points`, `evidence_event_ids` and `evidence_statuses`, and the score stores
+  `support_weight`, `points`, `evidence_ids` and `evidence_statuses`, and the score stores
   `pattern_version = library_version`. The scorer never writes or edits the library.
 
 **Hand-written library, version 1** (`handWritten.ts`; all approved hand-written hypotheses, so all at
@@ -226,4 +226,6 @@ This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step a
    instead of throwing, so every consumer records the same finding without a try/catch.
 2. **Done:** the pattern layer ignores `graph_proximity` patterns, because the graph layer already scores that
    neighbour (no double counting). Written into `PATTERN_CONTRACT.md` section 7.
-3. Open: `evidence_event_ids` becomes `evidence_ids`, to cover transaction ids as well as event ids.
+3. **Done:** `evidence_event_ids` is renamed `evidence_ids` on every reason. It holds public event ids,
+   transaction ids (a fired monitoring rule, the loan's repayments) or neighbour entity ids, whichever the
+   reason rests on. `MatchResult.matched_event_ids` keeps its name: it is events only.

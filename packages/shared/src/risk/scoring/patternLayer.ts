@@ -107,7 +107,7 @@ function patternReason(
     reason_key: `pattern_match|${p.pattern_id}`,
     subject_id: input.timeline.subject_id,
     points: patternPoints(m.strength, weight, s.pattern),
-    evidence_event_ids: [...m.matched_event_ids, ...m.matched_neighbour_ids],
+    evidence_ids: [...m.matched_event_ids, ...m.matched_neighbour_ids],
     evidence_statuses: isTypology ? ['fact'] : statusesOf(m, input),
     source: isTypology ? 'transactions' : 'public_records',
     facts:

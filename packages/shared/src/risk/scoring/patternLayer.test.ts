@@ -136,7 +136,7 @@ describe('pattern match layer', () => {
         code: 'pattern_match',
         reason_key: `pattern_match|${SEQ.pattern_id}`,
         points: 18,
-        evidence_event_ids: ['e1', 'e2'],
+        evidence_ids: ['e1', 'e2'],
         evidence_statuses: ['allegation', 'fact'],
         pattern: {
           pattern_id: SEQ.pattern_id,
@@ -159,7 +159,7 @@ describe('pattern match layer', () => {
     const r = patternLayer(input({ patterns: typologies, matcher: never, firedRules: fired }), S);
     expect(r.points).toBe(18);
     expect(r.reasons[0]).toMatchObject({
-      evidence_event_ids: ['t1', 't2'],
+      evidence_ids: ['t1', 't2'],
       facts: { rule_id: 'rapid_onward' },
     });
     expect(r.findings).toEqual([]);

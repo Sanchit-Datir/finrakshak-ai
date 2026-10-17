@@ -9,7 +9,7 @@ const reason = (key: string, code: ReasonCode = 'late_emi', points = 5): Reason 
   reason_key: key,
   subject_id: 'L-1',
   points,
-  evidence_event_ids: [],
+  evidence_ids: [],
   evidence_statuses: [],
   source: 'transactions',
   facts: {},

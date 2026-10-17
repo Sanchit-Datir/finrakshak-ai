@@ -46,7 +46,7 @@ describe('month-by-month replay', () => {
         evidence_statuses: ['allegation'],
         pattern: { strength: 0.5, support_weight: 0.6 },
       });
-      expect(reason?.evidence_event_ids).toHaveLength(1);
+      expect(reason?.evidence_ids).toHaveLength(1);
     }
   });
 

@@ -69,7 +69,7 @@ describe('one scoring run', () => {
   });
 
   it('never sees a record dated after as_of (replay-safe)', () => {
-    const ids = byLoan.get('L-1')?.reasons.flatMap((r) => r.evidence_event_ids) ?? [];
+    const ids = byLoan.get('L-1')?.reasons.flatMap((r) => r.evidence_ids) ?? [];
     expect(ids).toContain('evt_B-1_2024-02-01');
     expect(ids).not.toContain('evt_B-1_2024-02-20');
   });
@@ -82,9 +82,7 @@ describe('one scoring run', () => {
     const s = byLoan.get('L-3');
     expect(s?.points.pattern).toBe(18);
     expect(out.firedRules.get('L-3')).toEqual(['rapid_onward']);
-    expect(s?.reasons.find((r) => r.code === 'pattern_match')?.evidence_event_ids).toEqual([
-      'T-3-out',
-    ]);
+    expect(s?.reasons.find((r) => r.code === 'pattern_match')?.evidence_ids).toEqual(['T-3-out']);
   });
 
   it('marks the whole run no_patterns without a library', () => {
