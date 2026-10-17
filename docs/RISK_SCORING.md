@@ -247,12 +247,34 @@ two hops 5, so the layers still add to 100). Options 1 and 2 need no change to t
   (options 3 to 6) catches it, but alerts 8 to 12 of the `big_prepayment` look-alikes and, combined with 1,
   goes over budget (35 and 37.9).
 
-**Finding behind those false alarms (not fixed).** _Inferred EMIs misread a prepayment._ After a large
-prepayment the EMIs shrink, so the "usual EMI" (the most common repayment) makes the lower payments look
-partial; the prepayment also takes one EMI slot, which shifts the pairing of later EMIs. An earlier trial
-that treated a repayment of 2× the usual EMI or more as a prepayment (not an EMI, and the usual EMI worked
-out again after it) cut the false alarms in options 3 to 6 from 8, 12, 8 and 12 to 4, 5, 4 and 5 and left
-v1 unchanged; the rest were still `big_prepayment` loans where the pairing drifts. It is not in the code.
+**Finding behind those false alarms (fixed behind a setting, 18 Oct 2026).** _Inferred EMIs misread a
+prepayment._ After a large prepayment the EMIs shrink, so the "usual EMI" (the most common repayment) makes
+the lower payments look partial; the prepayment also takes one EMI slot, which shifts the pairing of later
+EMIs. `behaviour.prepayment_min_multiple` (in `emi.ts`, B-59) now treats a repayment of at least that many
+usual EMIs, made while no EMI is overdue, as a prepayment: it pays no EMI slot, counts towards the loan amount,
+and the usual EMI is worked out again after it. It is `null` (off) in v1 and v2, so `npm run score` still
+gives 105 alerts under v2. Measured with the real replay on the same set (seed 20261017), behaviour widened as
+in options 3 and 4, with the rule at 2 (3 gives the same numbers):
+
+| Needs attention from | Behaviour | Prepayment rule | Alerts per 1,000 loan-months | Controls and look-alikes alerted | Defaulters caught |
+| -------------------: | --------- | --------------- | ---------------------------: | -------------------------------: | ----------------: |
+|                   30 | option 3  | off             |                         22.8 |                                6 |            66/105 |
+|                   30 | option 3  | 2               |                         21.1 |                                0 |            66/105 |
+|                   30 | option 4  | off             |                         27.6 |                               12 |            66/105 |
+|                   30 | option 4  | 2               |                         21.7 |                                0 |            66/105 |
+|                   18 | v2 as is  | 2               |                         28.5 |                                0 |            85/105 |
+|                   18 | option 3  | off             |                         33.9 |                               10 |           105/105 |
+|                   18 | option 3  | 2               |                         31.2 |                                0 |           105/105 |
+|                   18 | option 4  | off             |                         36.3 |                               12 |           105/105 |
+|                   18 | option 4  | 2               |                         30.4 |                                0 |           105/105 |
+
+Every false alarm was a `big_prepayment` loan, and the rule removes all of them; held-out `dormant_burst` stays
+at 0. v2 with option 4 and the rule catches every defaulter, slow burn included, with no false alarm, at 30.4
+per 1,000 loan-months: 0.4 over the provisional 3% budget. Whether to publish it as v3 is the owner's call
+(not done). The option 3 and 4 rows without the rule differ a little from the table above (22.8 against 25.7
+and 27.6 against 28.7, same catches): this run widened behaviour exactly as written there (layer maxima
+30/30/10/30, graph 10/5, growing delay 30) on today's code; the earlier patch is not recorded. B-55 applies:
+these are plumbing numbers, not real volumes.
 
 **Built in this workstream (records on customers).** `matchRecords` now matches a record to customer and
 supplier entities (kind `counterparty`) as well as companies and individuals (exact normalised name,

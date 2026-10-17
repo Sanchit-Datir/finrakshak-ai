@@ -53,6 +53,7 @@ describe('EMI history', () => {
     const h = emiHistory(small, onTime(1, 3), '2025-06-30', {
       graceDays: 5,
       partialBelowPercent: 90,
+      prepaymentMinMultiple: null,
     });
     expect(h).toHaveLength(3);
     expect(run(onTime(1, 3), '2025-06-30', small).points).toBe(0);
@@ -145,5 +146,52 @@ describe('own behaviour drift layer', () => {
     const t = [receipt('old', '2024-03-01', 100_000), receipt('new', '2024-06-01', 10_000)];
     expect(receiptsFallPercent({ loan: LOAN, asOf: '2024-07-07', transactions: t })).toBeNull();
     expect(receiptsFallPercent({ loan: LOAN, asOf: '2024-07-08', transactions: t })).toBe(90);
+  });
+});
+
+describe('prepayments (prepayment_min_multiple)', () => {
+  const ON = { ...S, behaviour: { ...S.behaviour, prepayment_min_multiple: 2 } };
+  const runOn = (transactions: RuleTransaction[], asOf: string, loan = LOAN): number =>
+    behaviourLayer({ loan, transactions, asOf }, ON).points;
+  const prepay = (date: string, amount: number): RuleTransaction => ({
+    ...pay(0),
+    id: 'P',
+    at: at(date),
+    amountMinor: amount,
+  });
+  /** EMIs 1–3 at 100,000, a prepayment of 500,000 three days after EMI 3, then EMIs of 55,000. */
+  const shrunk = [
+    ...onTime(1, 3),
+    prepay('2024-04-13', 500_000),
+    ...[4, 5, 6].map((no) => pay(no, 0, 55_000)),
+  ];
+
+  it('is off in v1 and v2, where the smaller EMIs after a prepayment read as partial', () => {
+    expect(S.behaviour.prepayment_min_multiple).toBeNull();
+    expect(codes(run(shrunk, '2024-07-31'))).toContain('partial_emi');
+  });
+
+  it('when on, takes no EMI slot and works out the usual EMI again after it', () => {
+    expect(runOn(shrunk, '2024-07-31')).toBe(0);
+  });
+
+  it('still reads a late prepayment-sized payment as a catch-up while EMIs are overdue', () => {
+    const catchUp = [...onTime(1, 3), { ...pay(5, 8, 200_000), id: 'C' }];
+    expect(runOn(catchUp, '2024-07-31')).toBe(run(catchUp, '2024-07-31').points);
+    expect(runOn(catchUp, '2024-07-31')).toBeGreaterThan(0);
+  });
+
+  it('counts a prepayment towards the loan amount, so the schedule ends', () => {
+    const small = { ...LOAN, amountMinor: 500_000 };
+    const rules = { graceDays: 5, partialBelowPercent: 90, prepaymentMinMultiple: 2 };
+    const t = [...onTime(1, 2), prepay('2024-03-20', 300_000)];
+    expect(emiHistory(small, t, '2024-12-31', rules)).toHaveLength(2);
+    expect(runOn(t, '2024-12-31', small)).toBe(0);
+  });
+
+  it('never treats the first repayment as a prepayment (no usual EMI yet)', () => {
+    const rules = { graceDays: 5, partialBelowPercent: 90, prepaymentMinMultiple: 2 };
+    const h = emiHistory(LOAN, [pay(1, 0, 900_000)], '2024-02-29', rules);
+    expect(h[0]?.transactionId).toBe('R1');
   });
 });

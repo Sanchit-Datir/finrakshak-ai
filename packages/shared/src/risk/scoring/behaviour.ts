@@ -106,6 +106,7 @@ export function behaviourLayer(input: BehaviourInput, settings: ScoringSettings)
   const emis = emiHistory(input.loan, input.transactions, input.asOf, {
     graceDays: b.grace_days,
     partialBelowPercent: b.partial_below_percent,
+    prepaymentMinMultiple: b.prepayment_min_multiple,
   })
     .filter((e) => e.status !== 'pending')
     .slice(-b.lookback_emis);
