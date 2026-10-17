@@ -19,8 +19,12 @@ PREVIEW_SA="github-preview@${PROJECT_ID}.iam.gserviceaccount.com"
 DEPLOY_SA="github-deployer@${PROJECT_ID}.iam.gserviceaccount.com"
 
 PROJECT_NUMBER="$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')"
-# Gen2 functions run as the default compute service account unless configured otherwise.
-RUNTIME_SA="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
+# Gen2 functions run as one of these default accounts, depending on the firebase-tools version
+# (older: compute; 15.x: App Engine). The deployer must be able to act as whichever is used.
+RUNTIME_SAS=(
+  "${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
+  "${PROJECT_ID}@appspot.gserviceaccount.com"
+)
 POOL_PATH="projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/$POOL"
 
 ensure_sa() { # <email> <display name>
@@ -58,9 +62,11 @@ grant "$DEPLOY_SA" roles/firebasehosting.admin roles/firebase.viewer \
   roles/firebaserules.admin roles/datastore.indexAdmin roles/cloudfunctions.developer \
   roles/run.viewer roles/secretmanager.viewer roles/artifactregistry.reader \
   roles/serviceusage.serviceUsageConsumer
-# Deploying a function means "acting as" its runtime account: grant that on one account only.
-gcloud iam service-accounts add-iam-policy-binding "$RUNTIME_SA" --project "$PROJECT_ID" \
-  --member "serviceAccount:$DEPLOY_SA" --role roles/iam.serviceAccountUser >/dev/null
+# Deploying a function means "acting as" its runtime account: grant that on those accounts only.
+for runtime_sa in "${RUNTIME_SAS[@]}"; do
+  gcloud iam service-accounts add-iam-policy-binding "$runtime_sa" --project "$PROJECT_ID" \
+    --member "serviceAccount:$DEPLOY_SA" --role roles/iam.serviceAccountUser >/dev/null
+done
 
 echo "› Workload Identity pool + GitHub OIDC provider (only $REPO may use it)"
 gcloud iam workload-identity-pools describe "$POOL" --location global --project "$PROJECT_ID" >/dev/null 2>&1 ||

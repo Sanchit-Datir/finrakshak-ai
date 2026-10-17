@@ -28,6 +28,22 @@ secrets. Add the public web config as repo **variables** once the web app talks 
 Add the role to the right list in `scripts/setup-gcp.sh` and re-run it. Give previews as little as
 possible; anything that changes production belongs to `github-deployer`.
 
+## Functions that use a secret
+
+A function reads a Secret Manager secret as its **runtime account** (the App Engine default account,
+`<project>@appspot.gserviceaccount.com`, with the current firebase-tools). That account needs
+`roles/secretmanager.secretAccessor` on the secret. `github-deployer` only has `secretmanager.viewer`
+on purpose, so it cannot grant this itself. Grant it once, by hand, when you add a secret:
+
+```bash
+gcloud secrets add-iam-policy-binding GEMINI_API_KEY --project fund-tracer \
+  --member serviceAccount:fund-tracer@appspot.gserviceaccount.com \
+  --role roles/secretmanager.secretAccessor
+```
+
+A deploy that fails with "must have permission iam.serviceAccounts.ActAs" means the runtime account
+changed; add it to `RUNTIME_SAS` in `scripts/setup-gcp.sh` and re-run the script.
+
 ## When a deploy fails
 
 - **Permission denied on one API:** read the error, add that single role to `github-deployer`.
