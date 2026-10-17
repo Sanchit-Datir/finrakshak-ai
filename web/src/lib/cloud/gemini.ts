@@ -7,7 +7,7 @@ import type { Cloud } from './firebase.js';
  * The reply is untrusted text and is only ever displayed, never executed or trusted as structure.
  */
 export async function askGemini(cloud: Cloud, prompt: string): Promise<AskGeminiResult> {
-  const { httpsCallable } = await import('firebase/functions');
+  const { httpsCallable } = await import('@firebase/functions');
   const call = httpsCallable<{ prompt: string }>(cloud.functions, 'askGemini');
   const response = await call({ prompt });
   return AskGeminiResultSchema.parse(response.data);

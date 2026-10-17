@@ -1,5 +1,5 @@
-import type { Auth } from 'firebase/auth';
-import type { Functions } from 'firebase/functions';
+import type { Auth } from '@firebase/auth';
+import type { Functions } from '@firebase/functions';
 import { readCloudConfig, type CloudConfig } from './config.js';
 
 export interface Cloud {
@@ -45,10 +45,10 @@ let pending: Promise<Cloud> | undefined;
 export function connectCloud(config: CloudConfig): Promise<Cloud> {
   pending ??= (async (): Promise<Cloud> => {
     const [{ initializeApp }, authLib, fnLib, appCheckLib] = await Promise.all([
-      import('firebase/app'),
-      import('firebase/auth'),
-      import('firebase/functions'),
-      import('firebase/app-check'),
+      import('@firebase/app'),
+      import('@firebase/auth'),
+      import('@firebase/functions'),
+      import('@firebase/app-check'),
     ]);
     const app = initializeApp({
       apiKey: config.apiKey,

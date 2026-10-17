@@ -64,7 +64,7 @@ function ConnectedPanel(): React.JSX.Element {
     let unsubscribe: (() => void) | undefined;
     connectCloud(CONFIG)
       .then(async (cloud) => {
-        const { onAuthStateChanged } = await import('firebase/auth');
+        const { onAuthStateChanged } = await import('@firebase/auth');
         if (cancelled) return;
         unsubscribe = onAuthStateChanged(cloud.auth, (user) => {
           setLink({
@@ -125,7 +125,7 @@ function SignInForm({ cloud }: { cloud: CloudConnection }): React.JSX.Element {
     setBusy(true);
     setError(null);
     try {
-      const { signInWithEmailAndPassword } = await import('firebase/auth');
+      const { signInWithEmailAndPassword } = await import('@firebase/auth');
       await signInWithEmailAndPassword(cloud.auth, email.trim(), password);
     } catch (e) {
       setError(explainCloudError(e));
@@ -196,7 +196,7 @@ function SignedIn({ cloud, user }: { cloud: CloudConnection; user: CloudUser }):
         variant="secondary"
         icon={LogOut}
         onClick={() => {
-          void import('firebase/auth').then(({ signOut }) => signOut(cloud.auth));
+          void import('@firebase/auth').then(({ signOut }) => signOut(cloud.auth));
         }}
       >
         Sign out
