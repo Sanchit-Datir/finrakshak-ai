@@ -5,6 +5,7 @@ import { DemoBadge } from '../ui/States.js';
 import { GlobalSearch } from './GlobalSearch.js';
 import { LogoMark } from './Logo.js';
 import { Notifications } from './Notifications.js';
+import { SignOutButton } from './SignOutButton.js';
 import { UserMenu } from './UserMenu.js';
 
 export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }): React.JSX.Element {
@@ -45,6 +46,7 @@ export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }): React.JSX.El
         <div className="hidden sm:block lg:hidden">
           <UserMenu compact placement="header" />
         </div>
+        <SignOutButton />
       </div>
     </header>
   );
