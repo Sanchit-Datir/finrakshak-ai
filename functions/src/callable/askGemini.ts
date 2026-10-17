@@ -2,9 +2,11 @@ import { logger } from 'firebase-functions';
 import { HttpsError, onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { z } from 'zod';
 import { getEnv } from '../config/env.js';
+import { RATE_LIMITS, RATE_WINDOW_MS } from '../config/limits.js';
 import { geminiApiKey } from '../config/secrets.js';
 import { GEMINI_LIMITS, GeminiError, generateText } from '../services/gemini.js';
 import { defaultProfileStore } from '../services/profiles.js';
+import { createRateLimiter, type RateLimiter } from '../services/rate-limit.js';
 import { accessFromProfiles, type AccessStore } from '../services/access.js';
 import {
   consumeDailyQuota,
@@ -27,7 +29,14 @@ export interface AskGeminiResult {
 export interface AskGeminiDeps {
   usage: UsageStore;
   access: AccessStore;
+  limiter: RateLimiter;
 }
+
+/** Shared by every request this instance serves. */
+const askGeminiLimiter = createRateLimiter({
+  limit: RATE_LIMITS.askGeminiPerMinute,
+  windowMs: RATE_WINDOW_MS,
+});
 
 /** Exported separately so it can be unit-tested without the Functions runtime. */
 export async function askGeminiHandler(
@@ -35,10 +44,21 @@ export async function askGeminiHandler(
   deps: AskGeminiDeps = {
     usage: firestoreUsageStore(),
     access: accessFromProfiles(defaultProfileStore()),
+    limiter: askGeminiLimiter,
   },
 ): Promise<AskGeminiResult> {
   if (request.auth === undefined) {
     throw new HttpsError('unauthenticated', 'Sign in required');
+  }
+  // Cheapest check first, before any validation or database work: a loop or a stolen session cannot
+  // turn into a flood of Firestore or Gemini calls. Applies to the free mock too.
+  const rate = deps.limiter.check(request.auth.uid);
+  if (!rate.allowed) {
+    throw new HttpsError(
+      'resource-exhausted',
+      `Too many requests. Wait ${String(rate.retryAfterSeconds)} seconds and try again.`,
+      { reason: 'rate_limit', retryAfterSeconds: rate.retryAfterSeconds },
+    );
   }
   const input = InputSchema.safeParse(request.data);
   if (!input.success) {
@@ -59,7 +79,9 @@ export async function askGeminiHandler(
     }
     const quota = await consumeDailyQuota(deps.usage, request.auth.uid, env.GEMINI_DAILY_LIMIT);
     if (!quota.allowed) {
-      throw new HttpsError('resource-exhausted', 'Daily AI limit reached. Try again tomorrow.');
+      throw new HttpsError('resource-exhausted', 'Daily AI limit reached. Try again tomorrow.', {
+        reason: 'daily_limit',
+      });
     }
     remainingToday = quota.remaining;
   }

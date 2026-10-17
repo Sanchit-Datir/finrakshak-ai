@@ -61,6 +61,13 @@ uses, and what stops it from growing without bound (quota, cap, or budget).
 - Billed AI is limited to people whose profile (`users/{Firebase user ID}`) has `aiEnabled: true`, so
   self-registered strangers cannot spend (see `docs/DEPLOY.md`, step D). Each billed call costs one
   Firestore read for that check, and each login one for `getProfile`; both are far inside the free quota.
+- **Burst limits** (`functions/src/config/limits.ts`): each signed-in person may call `askGemini` 5 times a
+  minute and `getProfile` 20 times a minute. They are checked first, in memory (free), before any database or
+  model work, so a runaway loop or a stolen session cannot become a flood of Firestore or Gemini calls. They
+  are per function instance (at most 5), so the real ceiling can be a few times higher. They do **not** cover
+  strangers: requests without sign-in or App Check are turned away by the platform before our code runs, and
+  can only be bounded by `maxInstances`, the free quota and the budget alert. Real protection against that
+  would be Cloud Armor in front of a load balancer, which has a fixed monthly cost and is not worth it yet.
 - `askGemini` has a per-user daily limit (`GEMINI_DAILY_LIMIT`, default 30 calls per Indian day,
   counted in the `usage` collection) that applies only to billed providers. The Firestore counter is
   unit-tested with an in-memory store but has not yet been run against a Firestore emulator.

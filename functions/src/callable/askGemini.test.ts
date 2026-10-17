@@ -4,6 +4,7 @@ import { resetEnvCache } from '../config/env.js';
 import type { AccessStore } from '../services/access.js';
 import type * as GeminiModule from '../services/gemini.js';
 import { GeminiError } from '../services/gemini.js';
+import { createRateLimiter, type RateLimiter } from '../services/rate-limit.js';
 import type { UsageStore } from '../services/usage-limit.js';
 import { askGeminiHandler, type AskGeminiDeps } from './askGemini.js';
 
@@ -20,10 +21,14 @@ function req(data: unknown, signedIn = true): CallableRequest<unknown> {
   } as unknown as CallableRequest<unknown>;
 }
 
+/** Effectively unlimited, so tests about other behaviour never trip the burst limit. */
+const roomyLimiter = (): RateLimiter => createRateLimiter({ limit: 1_000, windowMs: 60_000 });
+
 /** Never touched by mock-provider tests; fails loudly if the handler uses either store. */
 const untouchedDeps: AskGeminiDeps = {
   usage: { tryIncrement: () => Promise.reject(new Error('usage store must not be used')) },
   access: { isAllowed: () => Promise.reject(new Error('access store must not be used')) },
+  limiter: roomyLimiter(),
 };
 
 interface CountingDeps extends AskGeminiDeps {
@@ -31,7 +36,11 @@ interface CountingDeps extends AskGeminiDeps {
   access: AccessStore & { checks: number };
 }
 
-function depsFor(options: { allowed: boolean; allowedCalls?: number }): CountingDeps {
+function depsFor(options: {
+  allowed: boolean;
+  allowedCalls?: number;
+  limiter?: RateLimiter;
+}): CountingDeps {
   const allowedCalls = options.allowedCalls ?? 100;
   const usage = {
     calls: 0,
@@ -48,7 +57,7 @@ function depsFor(options: { allowed: boolean; allowedCalls?: number }): Counting
       return Promise.resolve(options.allowed);
     },
   };
-  return { usage, access };
+  return { usage, access, limiter: options.limiter ?? roomyLimiter() };
 }
 
 async function codeOf(promise: Promise<unknown>): Promise<string> {
@@ -59,6 +68,16 @@ async function codeOf(promise: Promise<unknown>): Promise<string> {
     throw error;
   }
   return 'ok';
+}
+
+async function detailsOf(promise: Promise<unknown>): Promise<unknown> {
+  try {
+    await promise;
+  } catch (error) {
+    if (error instanceof HttpsError) return error.details;
+    throw error;
+  }
+  return undefined;
 }
 
 beforeEach(() => {
@@ -146,5 +165,60 @@ describe('askGeminiHandler (billed provider: allow-list, then daily limit)', () 
     await codeOf(askGeminiHandler(req({ prompt: '' }), deps));
     expect(deps.access.checks).toBe(0);
     expect(deps.usage.calls).toBe(0);
+  });
+});
+
+describe('askGeminiHandler burst limit (per person, before any other work)', () => {
+  it('refuses a rapid loop even with the free mock, and says how long to wait', async () => {
+    const deps = { ...untouchedDeps, limiter: createRateLimiter({ limit: 2, windowMs: 60_000 }) };
+    generateText.mockResolvedValue('ok');
+    await askGeminiHandler(req({ prompt: 'a' }), deps);
+    await askGeminiHandler(req({ prompt: 'b' }), deps);
+    const attempt = askGeminiHandler(req({ prompt: 'c' }), deps);
+    expect(await codeOf(attempt)).toBe('resource-exhausted');
+    const details = (await detailsOf(askGeminiHandler(req({ prompt: 'd' }), deps))) as {
+      reason: string;
+      retryAfterSeconds: number;
+    };
+    expect(details.reason).toBe('rate_limit');
+    expect(details.retryAfterSeconds).toBeGreaterThanOrEqual(1);
+    expect(generateText).toHaveBeenCalledTimes(2);
+  });
+
+  it('never reaches the stores or the model once limited (billed provider)', async () => {
+    vi.stubEnv('GEMINI_PROVIDER', 'apikey');
+    vi.stubEnv('GEMINI_API_KEY', 'AIza-not-a-real-key');
+    generateText.mockResolvedValue('real reply');
+    const deps = depsFor({
+      allowed: true,
+      limiter: createRateLimiter({ limit: 1, windowMs: 60_000 }),
+    });
+    await askGeminiHandler(req({ prompt: 'a' }), deps);
+    generateText.mockClear();
+    const checksBefore = deps.access.checks;
+    expect(await codeOf(askGeminiHandler(req({ prompt: 'b' }), deps))).toBe('resource-exhausted');
+    expect(deps.access.checks).toBe(checksBefore);
+    expect(deps.usage.calls).toBe(1);
+    expect(generateText).not.toHaveBeenCalled();
+  });
+
+  it("does not let a stranger use up a signed-in person's allowance", async () => {
+    const limiter = createRateLimiter({ limit: 1, windowMs: 60_000 });
+    const deps = { ...untouchedDeps, limiter };
+    generateText.mockResolvedValue('ok');
+    for (let i = 0; i < 5; i += 1)
+      await codeOf(askGeminiHandler(req({ prompt: 'x' }, false), deps));
+    expect(await codeOf(askGeminiHandler(req({ prompt: 'a' }), deps))).toBe('ok');
+  });
+
+  it('tells the daily limit apart from the burst limit', async () => {
+    vi.stubEnv('GEMINI_PROVIDER', 'apikey');
+    vi.stubEnv('GEMINI_API_KEY', 'AIza-not-a-real-key');
+    generateText.mockResolvedValue('real reply');
+    const deps = depsFor({ allowed: true, allowedCalls: 1 });
+    await askGeminiHandler(req({ prompt: 'a' }), deps);
+    expect(await detailsOf(askGeminiHandler(req({ prompt: 'b' }), deps))).toEqual({
+      reason: 'daily_limit',
+    });
   });
 });
