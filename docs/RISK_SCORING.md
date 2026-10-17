@@ -117,9 +117,10 @@ Money is compared in integer paise only (B-01, B-03).
 0.6): one `transaction_typology` per monitoring rule (rapid onward, linked counterparty, circular, cash
 split, repeated counterparty), an enforcement record then insolvency within 36 months, insolvency then
 liquidation within 24 months, and enforcement and insolvency records from two sources within 24 months.
-`graph_proximity` patterns are left out of v1 on purpose, because the graph layer already scores
-closeness to flagged entities. The ids and the content hash are fixed in the file; a test recomputes them
-and checks the library passes `PatternLibrarySchema`.
+`graph_proximity` patterns are not in v1, and the pattern layer would ignore them anyway: the graph layer already
+scores closeness to a flagged entity, so counting it again would double count (`PATTERN_CONTRACT.md`,
+section 7). The ids and the content hash are fixed in the file; a test recomputes them and checks the library
+passes `PatternLibrarySchema`.
 
 ## Alerts
 
@@ -223,5 +224,6 @@ This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step a
 
 1. **Done:** `PatternSource.load()` resolves to `LoadedLibrary | RefusedLibrary` (`{ refused: reason }`)
    instead of throwing, so every consumer records the same finding without a try/catch.
-2. Open: how `graph_proximity` patterns relate to the graph layer.
+2. **Done:** the pattern layer ignores `graph_proximity` patterns, because the graph layer already scores that
+   neighbour (no double counting). Written into `PATTERN_CONTRACT.md` section 7.
 3. Open: `evidence_event_ids` becomes `evidence_ids`, to cover transaction ids as well as event ids.

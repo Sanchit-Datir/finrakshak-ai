@@ -188,6 +188,26 @@ describe('pattern match layer', () => {
     }
   });
 
+  it('ignores a graph_proximity pattern: the graph layer already scores that neighbour', () => {
+    const graph = byTemplate('graph_proximity');
+    const calls: string[] = [];
+    const matcher: PatternMatcher = (p) => {
+      calls.push(p.pattern_id);
+      return {
+        pattern_id: p.pattern_id,
+        strength: 1,
+        matched_event_ids: [],
+        matched_neighbour_ids: ['N-1'],
+      };
+    };
+    const r = patternLayer(input({ patterns: [graph], matcher }), S);
+    expect(calls).toEqual([]);
+    expect(r).toMatchObject({ points: 0, reasons: [], noPatterns: true });
+    const mixed = patternLayer(input({ patterns: [graph, SEQ], matcher }), S);
+    expect(calls).toEqual([SEQ.pattern_id]);
+    expect(mixed.noPatterns).toBe(false);
+  });
+
   it('ignores a zero-strength match', () => {
     expect(patternLayer(input({ matcher: fake({ [SEQ.pattern_id]: 0 }) }), S).reasons).toEqual([]);
   });

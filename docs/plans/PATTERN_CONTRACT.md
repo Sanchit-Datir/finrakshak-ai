@@ -189,6 +189,12 @@ the kind lookup for both.
   stops the run. An empty library means the pattern layer scores 0 and the run is marked `no_patterns`, which
   is never shown as low risk (B-56).
 - Uses `approved` patterns only. Skips an unknown `template` with a finding (forward compatibility).
+- **Ignores `graph_proximity` patterns.** The scorer has a graph layer (up to 20 points) that already scores
+  closeness to a flagged entity through documented links; a `graph_proximity` pattern would count the same
+  neighbour twice. So the pattern layer neither matches nor scores it, and it is not an error or a finding.
+  If the only approved patterns are `graph_proximity`, the layer has nothing to match and the run is marked
+  `no_patterns`. The template stays in the contract because the miner's matcher and a consumer without a
+  graph layer can use it. _Decided in workstream W1c; the owner can reverse it._
 - Points per matched pattern: `round(30 × strength × support_weight)`, where `support_weight` is 1.0 for 3 or
   more **verified** supporting cases and 0.6 otherwise (and 0.6 for every hand-written hypothesis). **The
   pattern layer is the largest single pattern's points, capped at 30, not the sum**, so overlapping patterns
