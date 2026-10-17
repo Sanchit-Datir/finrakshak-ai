@@ -15,5 +15,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      # SCA: fail on any known vulnerability in production dependencies (see SECURITY.md).
+      - run: npm run audit:prod
       - run: npm run check
       - run: npm run build

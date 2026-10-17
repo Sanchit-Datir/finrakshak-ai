@@ -1,4 +1,5 @@
 import { otherEnd, type GraphEdge, type GraphNode } from '@fund-tracker/shared';
+import { safeExternalUrl } from '../../lib/safe-url.js';
 import { CircleQuestionMark, ExternalLink, FileCheck, Network } from 'lucide-react';
 import { EDGE_LABEL, edgesOf, KIND_LABEL, type LabIndex } from '../../lib/graph-lab.js';
 import { Badge } from '../ui/Badge.js';
@@ -32,14 +33,15 @@ export function BasisBadge({ edge }: { edge: GraphEdge }): React.JSX.Element {
 
 export function EvidenceLine({ ix, edge }: { ix: LabIndex; edge: GraphEdge }): React.JSX.Element {
   const doc = edge.document_id === null ? undefined : ix.docs.get(edge.document_id);
+  const href = safeExternalUrl(doc?.url);
   return (
     <p className="text-muted mt-1 text-xs">
       {edge.source_id.toUpperCase()} · {edge.evidence_status} · {edge.date ?? 'date not stated'}
-      {doc !== undefined && (
+      {doc !== undefined && href !== null && (
         <>
           {' · '}
           <a
-            href={doc.url}
+            href={href}
             target="_blank"
             rel="noreferrer"
             className="text-primary-strong inline-flex items-center gap-1 underline"

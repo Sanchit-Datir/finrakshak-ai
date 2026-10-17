@@ -52,12 +52,43 @@ export class GraphLabLoadError extends Error {
   }
 }
 
+/** Upload and decompression limits: the real bundle is ~5 MB gzip / ~36 MB JSON (B-41). */
+export const MAX_BUNDLE_FILE_BYTES = 64 * 1024 * 1024;
+export const MAX_BUNDLE_TEXT_BYTES = 256 * 1024 * 1024;
+
+/** Decompresses gzip while counting bytes, so a small "zip bomb" cannot exhaust memory. */
+async function gunzipLimited(buf: ArrayBuffer): Promise<string> {
+  const reader = new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip')).getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_BUNDLE_TEXT_BYTES) {
+      await reader.cancel();
+      throw new GraphLabLoadError('The bundle is too large once decompressed.');
+    }
+    chunks.push(value);
+  }
+  const out = new Uint8Array(total);
+  let at = 0;
+  for (const c of chunks) {
+    out.set(c, at);
+    at += c.byteLength;
+  }
+  return new TextDecoder().decode(out);
+}
+
 /** Accepts gzip or plain JSON bytes (servers may or may not decompress .gz for us). */
 async function bytesToText(buf: ArrayBuffer): Promise<string> {
+  if (buf.byteLength > MAX_BUNDLE_FILE_BYTES) throw new GraphLabLoadError('The bundle file is too large.');
   const head = new Uint8Array(buf.slice(0, 2));
-  if (head[0] !== 0x1f || head[1] !== 0x8b) return new TextDecoder().decode(buf);
-  const stream = new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'));
-  return new Response(stream).text();
+  if (head[0] !== 0x1f || head[1] !== 0x8b) {
+    if (buf.byteLength > MAX_BUNDLE_TEXT_BYTES) throw new GraphLabLoadError('The bundle is too large.');
+    return new TextDecoder().decode(buf);
+  }
+  return gunzipLimited(buf);
 }
 
 function parseBundle(text: string): GraphLabBundle {
@@ -85,6 +116,8 @@ export async function loadBundleFromUrl(file: string): Promise<GraphLabBundle> {
 }
 
 export async function loadBundleFromFile(file: File): Promise<GraphLabBundle> {
+  if (file.size > MAX_BUNDLE_FILE_BYTES)
+    throw new GraphLabLoadError('The bundle file is too large (limit 64 MB).');
   return parseBundle(await bytesToText(await file.arrayBuffer()));
 }
 

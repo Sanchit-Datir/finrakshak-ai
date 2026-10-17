@@ -9,6 +9,7 @@ import { Notice } from '../components/ui/States.js';
 import { ROLE_LABEL } from '../domain/labels.js';
 import { RoleSchema, type Role } from '../domain/schemas.js';
 import { DEMO_USERS } from '../demo/seed.js';
+import { safeInternalPath } from '../lib/safe-url.js';
 import { useDocumentTitle } from '../state/hooks.js';
 import { startDemoSession, useSession } from '../state/session.js';
 import { mutate } from '../state/store.js';
@@ -120,10 +121,7 @@ export function LoginPage(): React.JSX.Element {
   const [role, setRole] = useState<Role>('branch_manager');
   const t = T[lang];
   const from = (location.state as { from?: unknown } | null)?.from;
-  const target =
-    typeof from === 'string' && from.startsWith('/') && !from.startsWith('/login')
-      ? from
-      : '/dashboard';
+  const target = safeInternalPath(from);
 
   if (session !== null) return <Navigate to={target} replace />;
 

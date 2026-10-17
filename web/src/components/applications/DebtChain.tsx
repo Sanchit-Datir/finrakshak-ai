@@ -1,3 +1,4 @@
+import { safeExternalUrl } from '../../lib/safe-url.js';
 import {
   ArrowDown,
   CircleAlert,
@@ -42,10 +43,11 @@ function StatusBadge({ status }: { status: string | null }): React.JSX.Element {
 }
 
 function SourceLink({ link }: { link: PrLink }): React.JSX.Element | null {
-  if (link.url === null) return null;
+  const href = safeExternalUrl(link.url);
+  if (href === null) return null;
   return (
     <a
-      href={link.url}
+      href={href}
       target="_blank"
       rel="noreferrer"
       className="text-primary inline-flex items-center gap-1 font-semibold hover:underline"

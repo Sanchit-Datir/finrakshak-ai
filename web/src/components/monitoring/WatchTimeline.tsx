@@ -1,4 +1,5 @@
 import { Banknote, CircleAlert, ExternalLink, Gavel, History, OctagonAlert } from 'lucide-react';
+import { safeExternalUrl } from '../../lib/safe-url.js';
 import type { PrRecord, PublicWatch } from '../../domain/schemas.js';
 import { formatMoney } from '../../lib/format.js';
 import { priorRecords } from '../../lib/public-watch.js';
@@ -23,6 +24,7 @@ function RecordLine({
 }): React.JSX.Element {
   const f = useFormat();
   const k = KIND_BADGE[r.kind];
+  const href = safeExternalUrl(r.url);
   return (
     <li className="border-line bg-surface rounded-lg border p-3">
       <div className="flex flex-wrap items-center gap-2">
@@ -39,9 +41,9 @@ function RecordLine({
         )}
       </div>
       <p className="mt-1 text-sm break-words">{r.title}</p>
-      {r.url !== null && (
+      {href !== null && (
         <a
-          href={r.url}
+          href={href}
           target="_blank"
           rel="noreferrer"
           className="text-primary mt-1 inline-flex items-center gap-1 text-xs font-semibold hover:underline"
