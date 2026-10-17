@@ -66,8 +66,12 @@ owner decided. Only the borrowers are real; the loan values are made up.
   code-computed findings and baselines, Gemini tool loop (mock by default), proposals with an
   approval flow (`decideProposal` callable, Firestore console until sign-in), automatic re-run of
   transient failures in the workflow, rollback. App: `publicData` function behind Hosting `/data/**`
-  (signed-in only), web loader falls back to `/graph-lab/`. Next: MVP 3 (extraction in shadow mode,
-  SEBI full index, layout diagnostician). Open: D3 (web sign-in), D2 confirmed as Vertex AI by default.
+  (signed-in only), web loader falls back to `/graph-lab/`. Open: D3 (web sign-in), D2 confirmed as Vertex AI by default.
+- **Cloud ingestion MVP 3 (same branch):** AI evidence extraction in shadow mode
+  (`ingest/src/extract/ai/`, job `ingest-extract`, off by default), quality-gate harness
+  (`eval-ai`, `ingest/eval/README.md`; golden set still to be curated by the owner), SEBI full index
+  in the cloud (incremental), layout diagnostics saved for the agent (`get_diagnostic_page`).
+  Next: curate the golden set, run the gate, then decide whether AI claims may enter the graph.
 - **Daily delta ingestion (GCP plan, MVP 1+2 done locally):** `acquire` now diffs and merges listings
   (`ingest/src/delta/`), pages incrementally for IBBI/NFRA/SFIO/RBI with a weekly/monthly full relist,
   and writes change reports to `data/interim/delta/`; guards stop empty, broken or shrunken listings from

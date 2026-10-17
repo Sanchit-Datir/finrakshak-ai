@@ -1,5 +1,6 @@
 import type { ListingItem } from '@fund-tracker/shared';
 import * as cheerio from 'cheerio';
+import { assertFirstPageHasRows, shouldStopPaging } from '../delta/policy.js';
 import { log } from '../log.js';
 import { parseDate } from '../util/dates.js';
 import { absoluteUrl, cleanText, stableId } from '../util/ids.js';
@@ -74,8 +75,17 @@ async function listOrderType(
   const first = await ctx.fetcher.fetch(listingUrl(smid));
   const html = first.body.toString('utf8');
   const items = parseSebiRows(html, collection, ctx.runAt);
+  assertFirstPageHasRows(ctx.listing, collection, items.length, listingUrl(smid), html);
   const pages = Math.ceil(totalRecords(html) / 25);
   const cap = ctx.maxItems ?? Infinity;
+  // Newest orders come first: an incremental run stops at the first page it already holds.
+  if (
+    shouldStopPaging(
+      ctx.listing,
+      items.map((i) => i.item_id),
+    )
+  )
+    return items.slice(0, cap);
   for (let page = 1; page < pages && items.length < cap; page++) {
     let rows = await fetchPage(smid, label, page, collection, ctx);
     if (rows.length === 0) {
@@ -85,6 +95,13 @@ async function listOrderType(
       if (rows.length === 0) log.warn('empty SEBI page', { smid, page });
     }
     items.push(...rows);
+    if (
+      shouldStopPaging(
+        ctx.listing,
+        rows.map((i) => i.item_id),
+      )
+    )
+      break;
   }
   return items.slice(0, cap);
 }

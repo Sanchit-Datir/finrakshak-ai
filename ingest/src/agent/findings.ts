@@ -215,6 +215,15 @@ function buildFindings(run: IngestRun): Finding[] {
       );
   if (b.bigquery === 'failed')
     out.push(finding(null, 'warn', 'bigquery_failed', b.error ?? 'BigQuery load failed.'));
+  if (run.extraction?.status === 'failed')
+    out.push(
+      finding(
+        null,
+        'warn',
+        'ai_extraction_failed',
+        `AI extraction failed: ${run.extraction.reason}. Shadow claims only; nothing published depends on it.`,
+      ),
+    );
   return out;
 }
 

@@ -126,3 +126,20 @@ falls back to the local `/graph-lab/` copy.
 
 - **Permissions:** the runner can add and read raw evidence but never delete or overwrite it;
   only `github-deployer` (main branch) can change the jobs and the workflow.
+
+### AI evidence extraction (shadow mode) and the SEBI full index
+
+- **Extraction** (`ingest-extract`, between acquire and build) reads new documents with the model and
+  stores grounded claims (organisations, CINs, amounts in paise, dates, case type) as create-only
+  objects under `interim/ai/claims/`; the build loads them into BigQuery
+  `evidence_claims_ai_shadow`. They are **not** used by the app or the graph until the quality
+  gate passes (`node ingest/dist/cli.js eval-ai --golden …`, see `ingest/eval/README.md`) and the
+  owner approves merging them. It is **off** until you set `INGEST_AI_EXTRACT_ENABLED=true`
+  (cost: about US$5/month at 50 documents/day, `COST_GUIDELINES.md`). Its account
+  `ingest-extractor` can read documents and only add new objects.
+- **SEBI**: the cloud lists the full order index (~24.5k orders, `FUNDTRACE_SEBI_SAMPLE=false`);
+  the first run lists everything (about half an hour), later runs page newest-first and stop at
+  known orders, with a full relist monthly. Documents are fetched 300 per run (paced backfill).
+- **Layout changes**: when a source page stops parsing, the page is saved to
+  `interim/diagnostics/<run>/<source>.html`; the agent reads its structure and adds a diagnosis to
+  the `adapter_fix_needed` proposal.

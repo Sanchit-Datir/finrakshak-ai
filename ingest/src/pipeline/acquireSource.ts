@@ -1,6 +1,9 @@
 import type { SourceId } from '@fund-tracker/shared';
 import { makeContext, runDownloads, runListing } from '../acquire.js';
-import { getConfig, SOURCE_DOC_CAPS, SOURCE_ITEM_CAPS } from '../config.js';
+import { dataKey, sourceDocCap, sourceItemCap } from '../config.js';
+import { LayoutChangedError } from '../delta/policy.js';
+import { stamp } from '../delta/report.js';
+import { blobs } from '../storage/index.js';
 import type { DeltaReport, SourceRunResult } from '../delta/report.js';
 import { errorMessage, log } from '../log.js';
 import { adapterFor } from './adapters.js';
@@ -37,6 +40,24 @@ export interface AcquireOutcome {
   readonly result: SourceRunResult;
   /** The listing's delta report; null with `docsOnly` or when the listing failed. */
   readonly report: DeltaReport | null;
+  /** Saved page when the listing failed because the layout changed. */
+  readonly diagnosticKey?: string | null;
+}
+
+export const diagnosticKey = (id: SourceId, runAt: string): string =>
+  dataKey('interim', 'diagnostics', stamp(runAt), `${id}.html`);
+
+/** Keeps the page that no longer parses, so the agent (and a developer) can see what changed. */
+async function saveDiagnostic(id: SourceId, runAt: string, e: unknown): Promise<string | null> {
+  if (!(e instanceof LayoutChangedError) || e.page === null) return null;
+  const key = diagnosticKey(id, runAt);
+  try {
+    await blobs().write(key, e.page, { contentType: 'text/html; charset=utf-8' });
+    return key;
+  } catch (err) {
+    log.warn('could not save diagnostic page', { source: id, error: errorMessage(err) });
+    return null;
+  }
 }
 
 /**
@@ -45,8 +66,8 @@ export interface AcquireOutcome {
  */
 export async function acquireSource(id: SourceId, opts: AcquireOptions): Promise<AcquireOutcome> {
   const adapter = adapterFor(id);
-  const max = opts.maxDocs ?? SOURCE_DOC_CAPS[id] ?? getConfig().maxDocsPerSource;
-  const ctx = await makeContext(id, opts.maxItems ?? SOURCE_ITEM_CAPS[id], opts.runAt);
+  const max = opts.maxDocs ?? sourceDocCap(id);
+  const ctx = await makeContext(id, opts.maxItems ?? sourceItemCap(id), opts.runAt);
   let report: DeltaReport | null = null;
   try {
     if (opts.docsOnly !== true)
@@ -55,7 +76,12 @@ export async function acquireSource(id: SourceId, opts: AcquireOptions): Promise
         allowShrink: opts.allowShrink ?? false,
       });
   } catch (e) {
-    return { result: failure(listingResult(id, null), 'listing', e), report: null };
+    const saved = await saveDiagnostic(id, opts.runAt, e);
+    return {
+      result: failure(listingResult(id, null), 'listing', e),
+      report: null,
+      diagnosticKey: saved,
+    };
   }
   const result = listingResult(id, report);
   if (opts.listOnly === true) return { result, report };

@@ -6,7 +6,7 @@ import { MockToolModel } from '../ai/mockModel.js';
 import type { ToolModel } from '../ai/toolModel.js';
 import { assess, baseline, statusOf, type Assessment, type Baseline } from '../agent/findings.js';
 import type { HistorySource } from '../agent/history.js';
-import { RUN_REVIEW_PROMPT_VERSION } from '../agent/prompts/runReview.v1.js';
+import { RUN_REVIEW_PROMPT_VERSION } from '../agent/prompts/runReview.js';
 import { persistDrafts, type ProposalDraft } from '../agent/proposals.js';
 import { supervise, templatedSummary } from '../agent/supervisor.js';
 import { emptyRun } from '../coordination/runLog.js';
@@ -39,6 +39,21 @@ function modelFor(cfg: AiConfig, scripted: () => string): ToolModel {
 
 const sameDraft = (a: ProposalDraft, b: ProposalDraft): boolean =>
   a.source_id === b.source_id && a.action === b.action;
+
+/**
+ * Code drafts win (they carry the automatic flag); when the model proposed the same action, its
+ * explanation (e.g. a layout diagnosis) is appended to the code's reason instead of being lost.
+ */
+function mergeDrafts(
+  code: readonly ProposalDraft[],
+  model: readonly ProposalDraft[],
+): ProposalDraft[] {
+  const merged = code.map((c) => {
+    const m = model.find((x) => sameDraft(x, c));
+    return m ? { ...c, reason: `${c.reason} Agent: ${m.reason}`.slice(0, 500) } : c;
+  });
+  return [...merged, ...model.filter((m) => !code.some((c) => sameDraft(c, m)))];
+}
 
 interface Narrative {
   readonly summary: string;
@@ -91,10 +106,7 @@ export async function runAgentTask(env: CloudEnv, deps: CloudDeps): Promise<bool
   const story = await narrate(run, assessment, deps, cfg);
   const codeDrafts =
     env.agentPass === 1 ? assessment.drafts : assessment.drafts.filter((d) => !d.auto);
-  const drafts = [
-    ...codeDrafts,
-    ...story.modelDrafts.filter((m) => !codeDrafts.some((c) => sameDraft(c, m))),
-  ];
+  const drafts = mergeDrafts(codeDrafts, story.modelDrafts);
   const created: AgentProposal[] = await persistDrafts(deps.agent, env.runId, drafts, now);
   const rerunSources = created.flatMap((p) =>
     p.status === 'auto_approved' && p.action === 'rerun_source' && p.source_id ? [p.source_id] : [],

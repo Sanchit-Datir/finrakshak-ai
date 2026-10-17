@@ -33,6 +33,8 @@ export const SourceRunRecordSchema = SourceRunResultSchema.extend({
   texts_failed: z.number().int().nonnegative(),
   /** Storage key of this run's delta report, when the listing step ran. */
   report_key: z.string().nullable(),
+  /** Storage key of the page saved when the layout changed (for the agent's diagnosis). */
+  diagnostic_key: z.string().nullable().default(null),
 });
 export type SourceRunRecord = z.infer<typeof SourceRunRecordSchema>;
 
@@ -62,10 +64,26 @@ export const BuildRecordSchema = z.object({
 });
 export type BuildRecord = z.infer<typeof BuildRecordSchema>;
 
+/** Outcome of the AI extraction step (shadow mode, B-52). */
+export const ExtractionRecordSchema = z.object({
+  status: z.enum(['done', 'skipped', 'failed']),
+  reason: z.string().max(500),
+  model: z.string().nullable(),
+  prompt_version: z.string(),
+  documents: z.number().int().nonnegative(),
+  claims: z.number().int().nonnegative(),
+  failed: z.number().int().nonnegative(),
+  /** Model values rejected by grounding (not in the text, not an organisation, bad amount). */
+  dropped: z.number().int().nonnegative(),
+  finished_at: z.string().datetime(),
+});
+export type ExtractionRecord = z.infer<typeof ExtractionRecordSchema>;
+
 export const IngestRunSchema = z.object({
   run_id: z.string().min(1),
   sources: z.record(z.string(), SourceRunRecordSchema).default({}),
   build: BuildRecordSchema.nullable().default(null),
+  extraction: ExtractionRecordSchema.nullable().default(null),
   /** Sources the agent re-runs within this run (automatic `rerun_source`, transient errors only). */
   rerun_sources: z.array(SourceIdSchema).default([]),
   review_status: z.enum(['healthy', 'degraded', 'failed']).nullable().default(null),

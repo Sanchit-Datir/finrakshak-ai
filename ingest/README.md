@@ -182,6 +182,24 @@ firestore`), add `FUNDTRACE_STORAGE=gcs FUNDTRACE_GCS_ENDPOINT=http://localhost:
 FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FUNDTRACE_COORDINATION=firestore` and the bucket names.
 The container: `docker build -f ingest/Dockerfile -t ingest .` (from the repository root).
 
+### The agent, AI extraction and diagnostics
+
+| Module                       | Role                                                                                                                                                                                                                                                                                                                                            |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/agent/`                 | Run supervisor: `findings.ts` (deterministic findings + baselines), `tools.ts` (the six tools), `supervisor.ts` (bounded tool loop), `proposals.ts` / `store.ts` (proposals and their lifecycle), `prompts/runReview.ts`                                                                                                                        |
+| `src/ai/`                    | Provider-neutral tool-calling model: `GeminiToolModel` (API key or Vertex AI) and `MockToolModel` (default, no network)                                                                                                                                                                                                                         |
+| `src/extract/ai/`            | AI evidence extraction in shadow mode: `select.ts` (pending documents), `extractor.ts` (one forced `record_claims` call), `ground.ts` (keeps only values printed in the document; organisations only; paise by code; status from the source classification), `store.ts` (create-only claim objects, shadow table), `evaluate.ts` (quality gate) |
+| `src/agent/pageStructure.ts` | Reduces a saved diagnostic page to its structure and text for the agent                                                                                                                                                                                                                                                                         |
+
+AI configuration (`src/ai/config.ts`): `FUNDTRACE_AI_PROVIDER` (`mock` default, `apikey`, `vertex`),
+`FUNDTRACE_AI_MODEL`, `FUNDTRACE_AI_LOCATION`, `FUNDTRACE_AGENT_ENABLED` (kill switch),
+`FUNDTRACE_AI_MAX_TOOL_CALLS`, `FUNDTRACE_AI_MAX_INPUT_CHARS`, `FUNDTRACE_AI_EXTRACT_ENABLED` (off by
+default), `FUNDTRACE_AI_EXTRACT_MAX_DOCS` / `_MAX_PAGES` / `_MAX_CHARS` (per-run and per-document caps).
+`FUNDTRACE_SEBI_SAMPLE=false` lists SEBI's full index instead of the 10-order sample.
+
+Cloud tasks: `node dist/cloud/main.js acquire | extract-ai | build | agent`. Quality gate for AI
+extraction: `node dist/cli.js eval-ai --golden <file>` ([`eval/README.md`](eval/README.md)).
+
 `documents.file_location` uses `gs://<bucket>/raw/...`; substitute your bucket name.
 
 ## MCA company master data (manual step)

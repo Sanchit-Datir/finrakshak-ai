@@ -22,6 +22,7 @@ export const FINDING_CODES = [
   'gate_failed',
   'bigquery_failed',
   'text_extraction_failed',
+  'ai_extraction_failed',
 ] as const;
 export const FindingCodeSchema = z.enum(FINDING_CODES);
 

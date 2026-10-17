@@ -52,7 +52,7 @@ export const ibbiAdapter: SourceAdapter = {
       const html = res.body.toString('utf8');
       if (page === 1) last = lastPage(html);
       const rows = parseTable(html, res.finalUrl);
-      if (page === 1) assertFirstPageHasRows(ctx.listing, COLLECTION, rows.length, LIST);
+      if (page === 1) assertFirstPageHasRows(ctx.listing, COLLECTION, rows.length, LIST, html);
       if (rows.length === 0) log.warn('empty IBBI page', { page, status: res.status });
       const pageItems = rows.flatMap((row) => rowToItem(row, ctx.runAt) ?? []);
       items.push(...pageItems);

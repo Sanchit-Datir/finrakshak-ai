@@ -61,14 +61,16 @@ uses, and what stops it from growing without bound (quota, cap, or budget).
 Estimated at today's volume (six sources, a few hundred new documents a day at most); confirm
 with the first month's bill and update this table.
 
-| Item                                                                  | What stops it growing                                                       | Estimate           |
-| --------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------ |
-| Cloud Run jobs (~40 min acquire across 6 tasks, ~5 min build per day) | Jobs scale to zero; CPU/memory/timeout capped; `maxRetries` 1 / 0           | free tier to ~US$3 |
-| Workflows + Scheduler (~10 steps, 1 trigger per day)                  | One schedule                                                                | free tier          |
-| Cloud Storage (~1–3 GB, raw kept forever)                             | Create-only raw, state versions expire after 90 days, 14 published versions | < US$0.20          |
-| BigQuery (~100 MB, batch loads, small queries)                        | Load jobs are free; history tables partitioned by `run_date`                | < US$0.50          |
-| Firestore (a few hundred reads/writes per day)                        | One document per run, one lease per source                                  | free tier          |
-| Artifact Registry                                                     | Cleanup policy keeps 10 images                                              | < US$0.20          |
+| Item                                                                  | What stops it growing                                                          | Estimate                       |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------ |
+| Cloud Run jobs (~40 min acquire across 6 tasks, ~5 min build per day) | Jobs scale to zero; CPU/memory/timeout capped; `maxRetries` 1 / 0              | free tier to ~US$3             |
+| Workflows + Scheduler (~10 steps, 1 trigger per day)                  | One schedule                                                                   | free tier                      |
+| Cloud Storage (~1–3 GB, raw kept forever)                             | Create-only raw, state versions expire after 90 days, 14 published versions    | < US$0.20                      |
+| BigQuery (~100 MB, batch loads, small queries)                        | Load jobs are free; history tables partitioned by `run_date`                   | < US$0.50                      |
+| Firestore (a few hundred reads/writes per day)                        | One document per run, one lease per source                                     | free tier                      |
+| Artifact Registry                                                     | Cleanup policy keeps 10 images                                                 | < US$0.20                      |
+| Gemini, agent review                                                  | Model called only on days that need attention; ≤ 8 tool calls, 60k input chars | < US$0.10                      |
+| Gemini, AI extraction (off by default)                                | ≤ 50 documents/run, ≤ 10 pages / 30k chars each, cached per prompt version     | ~US$5 (backfill ~US$5–10 once) |
 
 Rules: documents per source per run are capped (`FUNDTRACE_MAX_DOCS_PER_SOURCE`, 300 in the cloud)
 so a backlog is fetched over several days; the build is skipped when no source changed; every

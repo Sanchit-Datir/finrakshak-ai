@@ -3,7 +3,11 @@ import { SourceIdSchema, type SourceId } from '@fund-tracker/shared';
 import { dataKey, dataPath } from './config.js';
 import { withLock } from './delta/lock.js';
 import { writeRunSummary, type SourceRunResult } from './delta/report.js';
+import { readAiConfig } from './ai/config.js';
 import { buildDataset } from './dataset/build.js';
+import { evaluate, readGolden } from './extract/ai/evaluate.js';
+import { EXTRACTION_PROMPT_VERSION } from './extract/ai/prompt.js';
+import { allExtractions } from './extract/ai/store.js';
 import { extractAllText } from './extract/runExtract.js';
 import { errorMessage, log } from './log.js';
 import { acquireSource, failure, listingResult } from './pipeline/acquireSource.js';
@@ -17,7 +21,9 @@ const USAGE = `Usage: ingest <command> [options]
                                    [--max N] [--max-items N]
                                    sources: ${[...ADAPTERS.keys()].join(', ')}, all
   extract                          extract text from downloaded documents
-  build                            build the canonical dataset in data/processed`;
+  build                            build the canonical dataset in data/processed
+  eval-ai --golden FILE [--model M] [--prompt V]
+                                   score stored AI extractions against a golden set (B-52 gate)`;
 
 function parseSources(args: readonly string[]): SourceId[] {
   const names = args.filter((a) => !a.startsWith('--') && !/^\d+$/.test(a));
@@ -73,6 +79,26 @@ async function acquire(args: readonly string[]): Promise<void> {
   if (sources.some((s) => s.status === 'failed')) process.exitCode = 1;
 }
 
+function flagText(args: readonly string[], flag: string): string | undefined {
+  const i = args.indexOf(flag);
+  return i >= 0 ? args[i + 1] : undefined;
+}
+
+/** Quality gate for AI extraction: prints the report; exit code 1 when the gate fails. */
+async function evalAi(args: readonly string[]): Promise<void> {
+  const golden = flagText(args, '--golden');
+  if (golden === undefined)
+    throw new Error('eval-ai needs --golden <file> (see ingest/eval/README.md)');
+  const model = flagText(args, '--model') ?? readAiConfig().model;
+  const prompt = flagText(args, '--prompt') ?? EXTRACTION_PROMPT_VERSION;
+  const predictions = (await allExtractions()).filter(
+    (r) => r.model === model && r.prompt_version === prompt,
+  );
+  const report = evaluate(await readGolden(golden), predictions);
+  process.stdout.write(`${JSON.stringify({ model, prompt, ...report }, null, 2)}\n`);
+  if (!report.passed) process.exitCode = 1;
+}
+
 async function main(argv: readonly string[]): Promise<void> {
   const [command, ...rest] = argv;
   switch (command ?? '') {
@@ -87,6 +113,8 @@ async function main(argv: readonly string[]): Promise<void> {
     case 'build':
       await buildDataset([...ADAPTERS.values()]);
       return;
+    case 'eval-ai':
+      return evalAi(rest);
     default:
       process.stderr.write(`${USAGE}\n`);
       process.exitCode = 2;

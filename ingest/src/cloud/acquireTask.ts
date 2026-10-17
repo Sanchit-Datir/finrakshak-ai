@@ -46,6 +46,7 @@ function toRecord(
     texts_extracted: outcome.text.done,
     texts_failed: outcome.text.failed,
     report_key: outcome.report ? reportKey(outcome.result.source_id, env.runAt) : null,
+    diagnostic_key: outcome.diagnosticKey ?? null,
   };
 }
 

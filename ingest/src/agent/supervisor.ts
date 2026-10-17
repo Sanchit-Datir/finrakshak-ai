@@ -3,7 +3,7 @@ import type { ToolCall, ToolModel, ToolResult } from '../ai/toolModel.js';
 import { errorMessage, log } from '../log.js';
 import type { Assessment } from './findings.js';
 import type { HistorySource } from './history.js';
-import { RUN_REVIEW_SYSTEM } from './prompts/runReview.v1.js';
+import { RUN_REVIEW_SYSTEM } from './prompts/runReview.js';
 import type { ProposalDraft } from './proposals.js';
 import { AGENT_TOOLS, type AgentTool, type ToolContext } from './tools.js';
 import { violatesWording } from './wording.js';

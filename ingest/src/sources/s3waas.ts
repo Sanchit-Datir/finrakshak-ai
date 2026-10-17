@@ -54,8 +54,10 @@ export async function listS3waasCategory(
     if (res.status === 404 && page === 1)
       assertFirstPageHasRows(ctx.listing, category.collection, 0, url);
     if (res.status === 404) break;
-    const rows = parseTable(res.body.toString('utf8'), res.finalUrl);
-    if (page === 1) assertFirstPageHasRows(ctx.listing, category.collection, rows.length, url);
+    const html = res.body.toString('utf8');
+    const rows = parseTable(html, res.finalUrl);
+    if (page === 1)
+      assertFirstPageHasRows(ctx.listing, category.collection, rows.length, url, html);
     const pageItems: ListingItem[] = [];
     for (const row of rows) {
       const item = rowToItem(sourceId, category.collection, row, ctx.runAt);

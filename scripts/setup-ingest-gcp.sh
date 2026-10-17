@@ -25,6 +25,7 @@ AR_REPO="ingest"
 RUNNER_SA="ingest-runner@${PROJECT_ID}.iam.gserviceaccount.com"
 ORCH_SA="ingest-orchestrator@${PROJECT_ID}.iam.gserviceaccount.com"
 AGENT_SA="ingest-agent@${PROJECT_ID}.iam.gserviceaccount.com"
+EXTRACTOR_SA="ingest-extractor@${PROJECT_ID}.iam.gserviceaccount.com"
 # Gen2 functions run as the App Engine default account (see docs/DEPLOY.md); publicData reads bundles.
 FUNCTIONS_SA="${PROJECT_ID}@appspot.gserviceaccount.com"
 DEPLOY_SA="github-deployer@${PROJECT_ID}.iam.gserviceaccount.com"
@@ -94,6 +95,7 @@ echo "› Service accounts"
 ensure_sa "$RUNNER_SA" "Ingest jobs: acquire and build"
 ensure_sa "$ORCH_SA" "Ingest orchestration: Scheduler and Workflows"
 ensure_sa "$AGENT_SA" "Ingest agent: read-only reviewer (B-49)"
+ensure_sa "$EXTRACTOR_SA" "Ingest AI extraction: create-only shadow claims (B-52)"
 
 echo "› Cloud Storage (private, uniform access, $REGION)"
 for b in "$RAW_BUCKET" "$STATE_BUCKET" "$PUBLISH_BUCKET"; do ensure_bucket "$b"; done
@@ -107,6 +109,10 @@ grant_bucket "$STATE_BUCKET" "$RUNNER_SA" roles/storage.objectUser
 grant_bucket "$PUBLISH_BUCKET" "$RUNNER_SA" roles/storage.objectUser
 # The agent reads everything and writes no pipeline data (B-49).
 for b in "$RAW_BUCKET" "$STATE_BUCKET" "$PUBLISH_BUCKET"; do grant_bucket "$b" "$AGENT_SA" roles/storage.objectViewer; done
+# The extractor reads documents and text and may only ADD objects (create-only shadow claims):
+# objectCreator cannot overwrite or delete, so it can never change existing pipeline state.
+grant_bucket "$RAW_BUCKET" "$EXTRACTOR_SA" roles/storage.objectViewer
+grant_bucket "$STATE_BUCKET" "$EXTRACTOR_SA" roles/storage.objectViewer roles/storage.objectCreator
 # The app's publicData function only reads the published bundles.
 grant_bucket "$PUBLISH_BUCKET" "$FUNCTIONS_SA" roles/storage.objectViewer
 
@@ -124,6 +130,7 @@ grant_project "$ORCH_SA" roles/workflows.invoker roles/logging.logWriter roles/d
 # BigQuery jobs for read-only baseline queries, Vertex AI for the model.
 grant_project "$AGENT_SA" roles/datastore.user roles/bigquery.jobUser roles/aiplatform.user \
   roles/logging.logWriter
+grant_project "$EXTRACTOR_SA" roles/datastore.user roles/aiplatform.user roles/logging.logWriter
 grant_project "$ORCH_SA" roles/run.jobsExecutorWithOverrides ||
   { echo "  falling back to roles/run.developer for $ORCH_SA" && grant_project "$ORCH_SA" roles/run.developer; }
 
@@ -138,7 +145,7 @@ echo "› Deploy account (main branch only) may ship the jobs and the workflow"
 gcloud artifacts repositories add-iam-policy-binding "$AR_REPO" --location "$REGION" \
   --project "$PROJECT_ID" --member "serviceAccount:$DEPLOY_SA" --role roles/artifactregistry.writer >/dev/null
 grant_project "$DEPLOY_SA" roles/run.developer roles/workflows.editor
-for sa in "$RUNNER_SA" "$ORCH_SA" "$AGENT_SA"; do
+for sa in "$RUNNER_SA" "$ORCH_SA" "$AGENT_SA" "$EXTRACTOR_SA"; do
   gcloud iam service-accounts add-iam-policy-binding "$sa" --project "$PROJECT_ID" \
     --member "serviceAccount:$DEPLOY_SA" --role roles/iam.serviceAccountUser >/dev/null
 done

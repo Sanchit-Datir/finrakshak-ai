@@ -17,9 +17,11 @@ describe('chooseMode', () => {
     expect(chooseMode('ibbi', state(null), now, false)).toBe('full');
     expect(chooseMode('ibbi', state('2026-10-16T00:00:00.000Z'), now, true)).toBe('full');
     expect(chooseMode('ed', state('2026-10-16T00:00:00.000Z'), now, false)).toBe('full');
-    expect(chooseMode('sebi', state('2026-10-16T00:00:00.000Z'), now, false)).toBe('full');
   });
-  it('runs incrementally until the weekly (IBBI) or monthly (RBI) full relist is due', () => {
+  it('runs incrementally until the weekly (IBBI) or monthly (RBI, SEBI full index) full relist is due', () => {
+    // The SEBI sample is capped, never records a full relist and so always lists in full.
+    expect(chooseMode('sebi', state(null), now, false)).toBe('full');
+    expect(chooseMode('sebi', state('2026-10-16T00:00:00.000Z'), now, false)).toBe('incremental');
     expect(chooseMode('ibbi', state('2026-10-11T00:00:00.000Z'), now, false)).toBe('incremental');
     expect(chooseMode('ibbi', state('2026-10-10T00:00:00.000Z'), now, false)).toBe('full');
     expect(chooseMode('rbi', state('2026-09-25T00:00:00.000Z'), now, false)).toBe('incremental');

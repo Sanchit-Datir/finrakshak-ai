@@ -25,6 +25,14 @@ const AiEnvSchema = z.object({
   FUNDTRACE_AI_TIMEOUT_MS: z.coerce.number().int().min(5_000).max(120_000).default(30_000),
   /** Upper bound on prompt + tool results per run (characters), a hard cost cap. */
   FUNDTRACE_AI_MAX_INPUT_CHARS: z.coerce.number().int().min(4_000).max(400_000).default(60_000),
+  /** AI evidence extraction (shadow mode, B-52): off unless switched on, documents/pages/chars capped. */
+  FUNDTRACE_AI_EXTRACT_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  FUNDTRACE_AI_EXTRACT_MAX_DOCS: z.coerce.number().int().min(1).max(1_000).default(50),
+  FUNDTRACE_AI_EXTRACT_MAX_PAGES: z.coerce.number().int().min(1).max(100).default(10),
+  FUNDTRACE_AI_EXTRACT_MAX_CHARS: z.coerce.number().int().min(1_000).max(200_000).default(30_000),
 });
 
 export interface AiConfig {
@@ -39,6 +47,12 @@ export interface AiConfig {
   readonly maxOutputTokens: number;
   readonly timeoutMs: number;
   readonly maxInputChars: number;
+  readonly extraction: {
+    readonly enabled: boolean;
+    readonly maxDocs: number;
+    readonly maxPages: number;
+    readonly maxChars: number;
+  };
 }
 
 export function readAiConfig(source: NodeJS.ProcessEnv = process.env): AiConfig {
@@ -57,5 +71,11 @@ export function readAiConfig(source: NodeJS.ProcessEnv = process.env): AiConfig 
     maxOutputTokens: env.FUNDTRACE_AI_MAX_OUTPUT_TOKENS,
     timeoutMs: env.FUNDTRACE_AI_TIMEOUT_MS,
     maxInputChars: env.FUNDTRACE_AI_MAX_INPUT_CHARS,
+    extraction: {
+      enabled: env.FUNDTRACE_AI_EXTRACT_ENABLED,
+      maxDocs: env.FUNDTRACE_AI_EXTRACT_MAX_DOCS,
+      maxPages: env.FUNDTRACE_AI_EXTRACT_MAX_PAGES,
+      maxChars: env.FUNDTRACE_AI_EXTRACT_MAX_CHARS,
+    },
   };
 }

@@ -1,8 +1,10 @@
 import {
   BuildRecordSchema,
+  ExtractionRecordSchema,
   IngestRunSchema,
   SourceRunRecordSchema,
   type BuildRecord,
+  type ExtractionRecord,
   type IngestRun,
   type SourceId,
   type SourceRunRecord,
@@ -24,6 +26,7 @@ export interface RunLog {
   recordSource(runId: string, record: SourceRunRecord): Promise<void>;
   recordBuild(runId: string, record: BuildRecord): Promise<void>;
   recordReview(runId: string, mark: ReviewMark): Promise<void>;
+  recordExtraction(runId: string, record: ExtractionRecord): Promise<void>;
   get(runId: string): Promise<IngestRun | null>;
 }
 
@@ -60,7 +63,18 @@ export class BlobRunLog implements RunLog {
     }
     const build = await readJson(dataKey(runPrefix(runId), 'build.json'), BuildRecordSchema);
     const review = await readJson(dataKey(runPrefix(runId), 'review.json'), ReviewMarkSchema);
-    return IngestRunSchema.parse({ run_id: runId, sources, build, ...(review ?? {}) });
+    const extraction = await readJson(
+      dataKey(runPrefix(runId), 'extraction.json'),
+      ExtractionRecordSchema,
+    );
+    return IngestRunSchema.parse({ run_id: runId, sources, build, extraction, ...(review ?? {}) });
+  }
+
+  async recordExtraction(runId: string, record: ExtractionRecord): Promise<void> {
+    await writeJson(
+      dataKey(runPrefix(runId), 'extraction.json'),
+      ExtractionRecordSchema.parse(record),
+    );
   }
 
   async recordReview(runId: string, mark: ReviewMark): Promise<void> {
@@ -95,6 +109,13 @@ export class FirestoreRunLog implements RunLog {
     );
   }
 
+  async recordExtraction(runId: string, record: ExtractionRecord): Promise<void> {
+    await this.doc(runId).set(
+      { run_id: runId, extraction: ExtractionRecordSchema.parse(record) },
+      { merge: true },
+    );
+  }
+
   async recordReview(runId: string, mark: ReviewMark): Promise<void> {
     await this.doc(runId).set(
       { run_id: runId, review_status: mark.status, rerun_sources: [...mark.rerunSources] },
@@ -124,6 +145,10 @@ export class CompositeRunLog implements RunLog {
 
   async recordReview(runId: string, mark: ReviewMark): Promise<void> {
     for (const l of this.logs) await l.recordReview(runId, mark);
+  }
+
+  async recordExtraction(runId: string, record: ExtractionRecord): Promise<void> {
+    for (const l of this.logs) await l.recordExtraction(runId, record);
   }
 
   get(runId: string): Promise<IngestRun | null> {

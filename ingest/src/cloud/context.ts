@@ -26,8 +26,9 @@ export interface CloudDeps {
 /**
  * - `runner` (acquire, build): may write run records to Firestore and to the state bucket.
  * - `agent`: its service account can only read the buckets, so it records to Firestore only.
+ * - `extractor`: may only create new objects in the state bucket, so it records to Firestore only.
  */
-export type TaskRole = 'runner' | 'agent';
+export type TaskRole = 'runner' | 'agent' | 'extractor';
 
 function historyFor(env: CloudEnv): HistorySource {
   const storage = getConfig().storage;
@@ -52,7 +53,8 @@ export function makeDeps(env: CloudEnv, role: TaskRole): CloudDeps {
   const firestoreRuns = new FirestoreRunLog(db);
   return {
     leases: new FirestoreLeaseManager(db, `${env.runId}#${env.taskIndex}`),
-    runs: role === 'agent' ? firestoreRuns : new CompositeRunLog([firestoreRuns, new BlobRunLog()]),
+    runs:
+      role === 'runner' ? new CompositeRunLog([firestoreRuns, new BlobRunLog()]) : firestoreRuns,
     agent: new FirestoreAgentStore(db),
     history,
   };

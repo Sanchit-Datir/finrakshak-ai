@@ -2,6 +2,7 @@
 import { errorMessage, log } from '../log.js';
 import { runAcquireTask } from './acquireTask.js';
 import { runBuildTask } from './buildTask.js';
+import { runExtractTask } from './extractTask.js';
 import { runAgentTask } from './agentTask.js';
 import { makeDeps, type CloudDeps, type TaskRole } from './context.js';
 import { readCloudEnv, type CloudEnv } from './env.js';
@@ -14,6 +15,7 @@ interface Task {
 /** Cloud Run job entrypoints (one image, one task per job). Add a step = add a task here. */
 const TASKS: Readonly<Record<string, Task>> = {
   acquire: { role: 'runner', run: runAcquireTask },
+  'extract-ai': { role: 'extractor', run: runExtractTask },
   build: { role: 'runner', run: runBuildTask },
   agent: { role: 'agent', run: runAgentTask },
 };

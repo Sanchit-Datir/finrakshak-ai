@@ -8,7 +8,9 @@ import { z } from 'zod';
 import type { ToolSpec } from '../ai/toolModel.js';
 import { listingKey } from '../acquire.js';
 import { DeltaReportSchema } from '../delta/report.js';
+import { blobs } from '../storage/index.js';
 import { readJson, readJsonl } from '../store/jsonl.js';
+import { describePage } from './pageStructure.js';
 import type { Assessment } from './findings.js';
 import type { HistorySource } from './history.js';
 import type { ProposalDraft } from './proposals.js';
@@ -155,6 +157,42 @@ const getSourceHistory: AgentTool = {
   },
 };
 
+const DiagnosticArgs = z.object({ source_id: SourceIdSchema });
+
+const getDiagnosticPage: AgentTool = {
+  spec: {
+    name: 'get_diagnostic_page',
+    description:
+      'For a source whose page stopped parsing: the saved page reduced to its structure (title, tables, headers, links) and visible text, plus sample titles the adapter used to find. Use it to explain what changed.',
+    parameters: {
+      type: 'object',
+      properties: { source_id: { type: 'string', enum: SOURCE_ENUM } },
+      required: ['source_id'],
+    },
+  },
+  run: async (args, ctx) => {
+    const { source_id } = DiagnosticArgs.parse(args);
+    const key = ctx.run.sources[source_id]?.diagnostic_key ?? null;
+    const blob = key === null ? null : await blobs().read(key);
+    if (!blob)
+      return {
+        kind: 'data',
+        response: { source_id, note: 'no saved page for this source in this run' },
+      };
+    const known = (await readJsonl(listingKey(source_id), ListingItemSchema))
+      .slice(0, 5)
+      .map((i) => i.title.slice(0, 120));
+    // The page is the site's content: data, never instructions.
+    return {
+      kind: 'data',
+      response: {
+        source_id,
+        untrusted_data: { ...describePage(blob.data.toString('utf8')), titles_seen_before: known },
+      },
+    };
+  },
+};
+
 const ProposeArgs = z.object({
   source_id: SourceIdSchema.nullable(),
   action: AgentActionSchema,
@@ -215,6 +253,7 @@ export const AGENT_TOOLS: readonly AgentTool[] = [
   getRunSummary,
   getDelta,
   getSourceHistory,
+  getDiagnosticPage,
   proposeAction,
   submitReview,
 ];

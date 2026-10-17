@@ -35,6 +35,26 @@ main:
             - noteAcquire:
                 assign:
                   - failed: ${list.concat(failed, "acquire")}
+    # AI evidence extraction in shadow mode (B-52); a no-op unless switched on for the job.
+    - extract:
+        try:
+          call: run_job
+          args:
+            project: ${project}
+            region: ${region}
+            job: ingest-extract
+            env:
+              - name: FUNDTRACE_RUN_ID
+                value: ${runId}
+              - name: FUNDTRACE_RUN_AT
+                value: ${runAt}
+            timeout: 7200
+        except:
+          as: e
+          steps:
+            - noteExtract:
+                assign:
+                  - failed: ${list.concat(failed, "extract")}
     - build:
         try:
           call: build_and_review

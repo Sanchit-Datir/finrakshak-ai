@@ -17,6 +17,11 @@ const EnvSchema = z
     FUNDTRACE_STATE_BUCKET: z.string().min(3).optional(),
     FUNDTRACE_PUBLISH_BUCKET: z.string().min(3).optional(),
     FUNDTRACE_PROJECT_ID: z.string().min(1).optional(),
+    /** `true` (default) keeps SEBI to a 10-order sample; the cloud sets `false` for the full index. */
+    FUNDTRACE_SEBI_SAMPLE: z
+      .enum(['true', 'false'])
+      .default('true')
+      .transform((v) => v === 'true'),
     /** Cloud Storage API endpoint override, only for local emulators (never set in the cloud). */
     FUNDTRACE_GCS_ENDPOINT: z.string().url().optional(),
   })
@@ -49,6 +54,7 @@ export interface IngestConfig {
   readonly requestTimeoutMs: number;
   readonly maxRetries: number;
   readonly extractorVersion: string;
+  readonly sebiSample: boolean;
 }
 
 let cached: IngestConfig | undefined;
@@ -82,16 +88,25 @@ export function getConfig(): IngestConfig {
     requestTimeoutMs: 90_000,
     maxRetries: 4,
     extractorVersion: 'regex-v1',
+    sebiSample: env.FUNDTRACE_SEBI_SAMPLE,
   };
   return cached;
 }
 
+const SEBI_SAMPLE = 10;
+
 /**
- * Per-source caps. SEBI is limited to a 10-order sample (listing and documents) for
- * now; raise or remove these (or pass `--max` / `--max-items`) to collect more.
+ * Per-source listing cap. SEBI keeps a 10-order sample unless `FUNDTRACE_SEBI_SAMPLE=false`
+ * (the cloud lists the full ~24.5k-order index, incrementally after the first run).
  */
-export const SOURCE_DOC_CAPS: Readonly<Partial<Record<SourceId, number>>> = { sebi: 10 };
-export const SOURCE_ITEM_CAPS: Readonly<Partial<Record<SourceId, number>>> = { sebi: 10 };
+export function sourceItemCap(id: SourceId): number | undefined {
+  return id === 'sebi' && getConfig().sebiSample ? SEBI_SAMPLE : undefined;
+}
+
+/** Per-source document cap per run (the sample's own cap; otherwise `FUNDTRACE_MAX_DOCS_PER_SOURCE`). */
+export function sourceDocCap(id: SourceId): number {
+  return id === 'sebi' && getConfig().sebiSample ? SEBI_SAMPLE : getConfig().maxDocsPerSource;
+}
 
 /** Slower per-host pacing where a source asks for it (IBBI rate-limits faster crawls, B-35). */
 export const SOURCE_MIN_DELAY_MS: Readonly<Partial<Record<SourceId, number>>> = { ibbi: 2_500 };

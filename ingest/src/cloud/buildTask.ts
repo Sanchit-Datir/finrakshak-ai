@@ -2,6 +2,9 @@ import type { BuildRecord, IngestRun, PublishChannel } from '@fund-tracker/share
 import { getConfig } from '../config.js';
 import { buildDataset, TABLE_NAMES, tableBigQuerySchema, tableKey } from '../dataset/build.js';
 import { errorMessage, log } from '../log.js';
+import { bigQuerySchema } from '../dataset/bigquery.js';
+import { AiClaimRowSchema } from '../extract/ai/schema.js';
+import { shadowTableKey, writeShadowTable } from '../extract/ai/store.js';
 import { ADAPTERS } from '../pipeline/adapters.js';
 import { buildGraphOutputs } from '../pipeline/graph.js';
 import { blobs, joinKey } from '../storage/index.js';
@@ -60,6 +63,18 @@ async function loadTables(loader: BigQueryLoader, version: string): Promise<void
       jobId: `tables_${table}_${version}`,
     });
   }
+  // AI claims stay in their own table until the quality gate passes (B-52).
+  const shadow = await writeShadowTable();
+  const shadowUri = blobs().uri(shadowTableKey);
+  if (shadow.length > 0 && shadowUri !== null)
+    await loader.load({
+      table: 'evidence_claims_ai_shadow',
+      uri: shadowUri,
+      schema: bigQuerySchema(AiClaimRowSchema),
+      mode: 'replace',
+      clusterBy: ['source_id', 'kind'],
+      jobId: `tables_ai_shadow_${version}`,
+    });
 }
 
 type BuildFields = Omit<BuildRecord, 'started_at' | 'finished_at' | 'reason'>;
