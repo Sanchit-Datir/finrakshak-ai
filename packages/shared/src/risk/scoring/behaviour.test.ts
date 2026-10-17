@@ -3,7 +3,7 @@ import type { RuleTransaction } from '../rules/types.js';
 import { behaviourLayer, receiptsFallPercent, type BehaviourInput } from './behaviour.js';
 import { addMonths } from './calc.js';
 import { emiHistory, usualAmount } from './emi.js';
-import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
+import { SCORING_SETTINGS_V1 as S } from './settings.js';
 
 const LOAN = { id: 'L-1', amountMinor: 1_200_000, disbursedOn: '2024-01-10', accountEntityId: 'A' };
 const EMI = 100_000;

@@ -14,6 +14,7 @@ reviewer, never a verdict (B-58).
 npm run synth                    # make data/synthetic/*.jsonl (not in git)
 npm run score                    # replay 24 months, compare with the truth labels
 npm run score -- --help          # options
+npm run score -- --settings v1                # an earlier published settings version
 npm run score -- --data-built-on 2024-06-30   # pretend the public data is old (B-56 demo)
 npm run score -- --patterns path/to/library.json   # or FUNDTRACE_PATTERN_LIBRARY=...
 ```
@@ -159,7 +160,7 @@ when no patterns were available ("its 0 is not low risk").
 `no_patterns`, `invalid_pattern`, `unknown_template`, `library_refused`, `invalid_match_result`,
 `no_seed_review`, `stale_public_data` and `missing_input`. None of them stops the run.
 
-## Replay on the synthetic data (full set, seed 20261017, real matcher)
+## Replay on the synthetic data (full set, seed 20261017, real matcher, settings v1)
 
 This checks plumbing, not accuracy (B-55): the generator wrote both the data and the labels.
 
@@ -200,16 +201,20 @@ agreed weights they cannot:
 - Contagion: a flagged customer is a one-hop inferred neighbour, worth 10 points. That alerts only when the
   loan's late EMIs add enough to rise 15 points.
 
-This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step and the cut-offs).
+That was the input for checkpoint 2 (next section). Under the published settings v2 the same replay gives 105
+alerts (28.5 per 1,000 loan-months), 0 controls or look-alikes alerted, 0 held-out loans alerted and 85 of
+105 defaulters caught on time; only the 20 slow-burn loans are still missed.
 
 ## Tuning options for checkpoint 2 (workstream W1b)
 
-`settings.ts` is **unchanged**: v1 stays the default until the owner picks an option, which is then
-published as settings v2 with v1 kept readable (B-24). Every row below was measured by running the real
-replay and evaluation (`replay` and `evaluate`, the code behind `npm run score`) on the full 200-customer set
-(seed 20261017) with the settings patched; nothing is estimated. Numbers are plumbing only (B-55): 105 of the
-200 synthetic loans are defaulters, so the alert rate says nothing about real volume. The provisional
-budget is about 3% of loans a month, which is 30 alerts per 1,000 loan-months.
+**Decision (owner, 17 Oct 2026): option 2, published as settings v2 and the default for a new run.** v1 stays
+readable (`SCORING_SETTINGS_V1`, `settingsForVersion('v1')`, `npm run score -- --settings v1`), because every
+stored score records its `settings_version` (B-24). v2 differs from v1 in one number: Needs attention starts
+at 18 instead of 30, so one monitoring-rule typology (18 points at the 0.6 hypothesis support) is a lead. The
+3% budget (30 alerts per 1,000 loan-months) stays the target. Every row below was measured by running the
+real replay and evaluation (`replay` and `evaluate`, the code behind `npm run score`) on the full
+200-customer set (seed 20261017) with the settings patched; nothing is estimated. Numbers are plumbing only
+(B-55): 105 of the 200 synthetic loans are defaulters, so the alert rate says nothing about real volume.
 
 **Why the v1 weights miss them.** (1) Every single monitoring-rule typology scores `round(30 × 1 × 0.6)` = 18,
 which is Routine review (cut-off 30). (2) Behaviour drift tops out at 10, so late EMIs alone never reach 30.

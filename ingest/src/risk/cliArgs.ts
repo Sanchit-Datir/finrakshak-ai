@@ -10,10 +10,12 @@ const Schema = z.object({
   seedReview: z.string().min(1),
   dataBuiltOn: IsoDay.nullable(),
   withinMonths: z.number().int().min(0).max(12),
+  /** A published settings version, `v1` or `v2`. */
+  settings: z.string().regex(/^v\d+$/),
 });
 export type ScoreCliArgs = z.infer<typeof Schema>;
 
-export const USAGE = `Usage: node ingest/dist/risk/scoreCli.js [--in DIR] [--out DIR] [--patterns code|FILE] [--seed-review FILE] [--data-built-on YYYY-MM-DD] [--within-months N]
+export const USAGE = `Usage: node ingest/dist/risk/scoreCli.js [--in DIR] [--out DIR] [--patterns code|FILE] [--seed-review FILE] [--data-built-on YYYY-MM-DD] [--settings v1|v2] [--within-months N]
   --in             synthetic data folder (default data/synthetic; run npm run synth first)
   --out            where scores.jsonl and score_report.json go (default: the --in folder), never data/raw, data/processed or data/registry
   --patterns       "code" for the hand-written version 1 library (default), or a library file
@@ -21,6 +23,7 @@ export const USAGE = `Usage: node ingest/dist/risk/scoreCli.js [--in DIR] [--out
   --seed-review    the owner's seed review (default data/verification/seed_review.json; a missing file is allowed)
   --data-built-on  pretend the public data was built on this IST day (shows B-56 stale handling);
                    by default each replayed month has fresh data
+  --settings       a published settings version (default v2; v1 is kept readable)
   --within-months  how many months after onset an alert still counts as on time (default 2)`;
 
 const value = (args: readonly string[], name: string): string | undefined => {
@@ -42,6 +45,7 @@ export function parseArgs(
     seedReview: value(args, '--seed-review') ?? 'data/verification/seed_review.json',
     dataBuiltOn: value(args, '--data-built-on') ?? null,
     withinMonths: within === undefined ? 2 : Number(within),
+    settings: value(args, '--settings') ?? 'v2',
   });
   if (!parsed.success)
     throw new Error(

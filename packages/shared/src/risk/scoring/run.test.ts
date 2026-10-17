@@ -5,7 +5,7 @@ import type { RuleTransaction } from '../rules/types.js';
 import type { PublicRecord } from './inputs.js';
 import { scoreRun, type ScoringLoan, type ScoringRunInput } from './run.js';
 import type { LoanScore } from './types.js';
-import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
+import { SCORING_SETTINGS_V1 as S } from './settings.js';
 
 const loan = (n: number, disbursedAt = '2024-01-10T05:00:00.000Z'): ScoringLoan => ({
   id: `L-${n}`,

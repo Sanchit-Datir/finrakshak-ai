@@ -10,7 +10,7 @@ import {
   supportWeight,
   type PatternLayerInput,
 } from './patternLayer.js';
-import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
+import { SCORING_SETTINGS_V1 as S } from './settings.js';
 
 const sample = PatternLibrarySchema.parse(
   JSON.parse(

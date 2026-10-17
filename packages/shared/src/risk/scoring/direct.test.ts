@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { directLayer, type DirectInput } from './direct.js';
 import type { PublicRecord } from './inputs.js';
-import { DEFAULT_SCORING_SETTINGS as S, type ScoringSettings } from './settings.js';
+import { SCORING_SETTINGS_V1 as S, type ScoringSettings } from './settings.js';
 
 const rec = (id: string, over: Partial<PublicRecord> = {}): PublicRecord => ({
   record_id: id,

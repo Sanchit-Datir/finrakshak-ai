@@ -3,7 +3,7 @@ import type { FlaggedNeighbour } from '../patterns/timeline.js';
 import type { RecordKind } from '../recordKinds.js';
 import { flaggedNeighbours, graphLayer } from './graph.js';
 import type { ScoringLink } from './inputs.js';
-import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
+import { SCORING_SETTINGS_V1 as S } from './settings.js';
 
 const link = (
   from: string,

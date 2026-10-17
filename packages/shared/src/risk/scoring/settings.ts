@@ -107,8 +107,8 @@ export const ScoringSettingsSchema = z
   });
 export type ScoringSettings = z.infer<typeof ScoringSettingsSchema>;
 
-/** Version 1, as decided by the owner on 17 Oct 2026 and the answers of the scorer brief. */
-export const DEFAULT_SCORING_SETTINGS: ScoringSettings = ScoringSettingsSchema.parse({
+/** Version 1, as decided by the owner on 17 Oct 2026 and the answers of the scorer brief. Kept readable. */
+export const SCORING_SETTINGS_V1: ScoringSettings = ScoringSettingsSchema.parse({
   settings_version: 'v1',
   layer_max: { direct: 40, pattern: 30, graph: 20, behaviour: 10 },
   bands: { needs_attention_from: 30, urgent_from: 60 },
@@ -160,3 +160,27 @@ export const DEFAULT_SCORING_SETTINGS: ScoringSettings = ScoringSettingsSchema.p
     cashWindowDays: 7,
   },
 });
+
+/**
+ * Version 2 (checkpoint 2, 17 Oct 2026): Needs attention starts at 18 instead of 30, so one monitoring-rule
+ * typology (18 points at the 0.6 hypothesis support) is a lead. Everything else is v1. Measured on the full
+ * synthetic set: 28.5 alerts per 1,000 loan-months against the 30 budget, 0 controls or look-alikes alerted,
+ * 85 of 105 defaulters caught (docs/RISK_SCORING.md).
+ */
+export const SCORING_SETTINGS_V2: ScoringSettings = ScoringSettingsSchema.parse({
+  ...SCORING_SETTINGS_V1,
+  settings_version: 'v2',
+  bands: { ...SCORING_SETTINGS_V1.bands, needs_attention_from: 18 },
+});
+
+/** Every published version, so a stored score's `settings_version` can always be read back (B-24). */
+export const SCORING_SETTINGS_BY_VERSION: Readonly<Record<string, ScoringSettings>> = {
+  v1: SCORING_SETTINGS_V1,
+  v2: SCORING_SETTINGS_V2,
+};
+
+/** The settings a new run uses unless told otherwise. */
+export const DEFAULT_SCORING_SETTINGS: ScoringSettings = SCORING_SETTINGS_V2;
+
+export const settingsForVersion = (version: string): ScoringSettings | undefined =>
+  SCORING_SETTINGS_BY_VERSION[version];

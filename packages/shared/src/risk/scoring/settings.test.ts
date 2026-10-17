@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_SCORING_SETTINGS as S, ScoringSettingsSchema } from './settings.js';
+import {
+  DEFAULT_SCORING_SETTINGS,
+  SCORING_SETTINGS_V1 as S,
+  SCORING_SETTINGS_V2 as V2,
+  ScoringSettingsSchema,
+  settingsForVersion,
+} from './settings.js';
+import { bandOf } from './score.js';
 
 describe('scoring settings v1', () => {
   it('hold the owner’s decisions', () => {
@@ -39,5 +46,26 @@ describe('scoring settings v1', () => {
       false,
     );
     expect(ScoringSettingsSchema.safeParse({ ...S, stale_after_days: 7.5 }).success).toBe(false);
+  });
+});
+
+describe('settings v2', () => {
+  it('differs from v1 only in the Needs attention cut-off', () => {
+    expect(V2.settings_version).toBe('v2');
+    expect(V2.bands).toEqual({ needs_attention_from: 18, urgent_from: 60 });
+    expect({ ...V2, settings_version: 'v1', bands: S.bands }).toEqual(S);
+  });
+
+  it('puts one typology hit (18 points) in Needs attention, and 17 still in Routine review', () => {
+    expect(bandOf(18, V2)).toBe('needs_attention');
+    expect(bandOf(17, V2)).toBe('routine');
+    expect(bandOf(18, S)).toBe('routine');
+  });
+
+  it('keeps v1 readable by version, and v2 is the default for a new run', () => {
+    expect(settingsForVersion('v1')).toBe(S);
+    expect(settingsForVersion('v2')).toBe(V2);
+    expect(settingsForVersion('v3')).toBeUndefined();
+    expect(DEFAULT_SCORING_SETTINGS).toBe(V2);
   });
 });

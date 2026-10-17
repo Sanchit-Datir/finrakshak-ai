@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  DEFAULT_SCORING_SETTINGS,
+  settingsForVersion,
   SynthTruthSchema,
   matchPattern,
   type SynthTruth,
@@ -84,7 +84,8 @@ async function main(argv: readonly string[]): Promise<void> {
   const source =
     args.patterns === 'code' ? codePatterns() : filePatterns(path.resolve(repoRoot, args.patterns));
   const library = await loadLibrary(source);
-  const settings = DEFAULT_SCORING_SETTINGS;
+  const settings = settingsForVersion(args.settings);
+  if (settings === undefined) throw new Error(`Unknown settings version: ${args.settings}`);
   const result = replay(data, {
     months: monthsFrom(data.period.startMonth, data.period.months),
     settings,

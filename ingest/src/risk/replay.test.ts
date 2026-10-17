@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_SCORING_SETTINGS as S, matchPattern } from '@fund-tracker/shared';
+import { SCORING_SETTINGS_V1 as S, matchPattern } from '@fund-tracker/shared';
 import { writeSmallDataset } from '../test/synthScoring.js';
 import { fileScoringInputs } from './fileInputs.js';
 import type { ScoringData } from './inputs.js';

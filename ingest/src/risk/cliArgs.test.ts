@@ -10,6 +10,7 @@ describe('score CLI options', () => {
       seedReview: 'data/verification/seed_review.json',
       dataBuiltOn: null,
       withinMonths: 2,
+      settings: 'v2',
     });
   });
 
@@ -18,6 +19,11 @@ describe('score CLI options', () => {
     expect(
       parseArgs(['--patterns', 'code'], { FUNDTRACE_PATTERN_LIBRARY: 'lib.json' }).patterns,
     ).toBe('code');
+  });
+
+  it('takes a published settings version, and rejects a malformed one', () => {
+    expect(parseArgs(['--settings', 'v1'], {}).settings).toBe('v1');
+    expect(() => parseArgs(['--settings', 'latest'], {})).toThrow(/settings/);
   });
 
   it('rejects a bad date or month count with a readable message', () => {
