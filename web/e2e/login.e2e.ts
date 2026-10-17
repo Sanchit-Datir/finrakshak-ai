@@ -33,3 +33,18 @@ test.describe('demo sign-in', () => {
     });
   }
 });
+
+test.describe('sign out', () => {
+  for (const r of data.demoRoles) {
+    test(`as ${r.role} returns to the login page and ends the session`, async ({ page }) => {
+      await demoSignIn(page, r.role);
+      // Visible in the top bar at every viewport width, with no menu to open first.
+      await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+      await expect(page).toHaveURL(/\/login$/);
+      await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible();
+      // The session is really gone: a protected page sends you back to the login page.
+      await page.goto('/dashboard');
+      await expect(page).toHaveURL(/\/login$/);
+    });
+  }
+});

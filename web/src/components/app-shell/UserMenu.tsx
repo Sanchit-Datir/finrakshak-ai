@@ -2,7 +2,8 @@ import { ChevronDown, LogOut, Settings, UserRound } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { ROLE_LABEL } from '../../domain/labels.js';
 import { initials } from '../../lib/format.js';
-import { endSession, useSession } from '../../state/session.js';
+import { useSession } from '../../state/session.js';
+import { useSignOut } from '../../state/useSignOut.js';
 import { useDb } from '../../state/store.js';
 import { cn } from '../ui/cn.js';
 import { Popover } from '../ui/Popover.js';
@@ -37,6 +38,7 @@ export function UserMenu({
   const session = useSession();
   const db = useDb();
   const navigate = useNavigate();
+  const signOut = useSignOut();
   if (session === null) return null;
   const branch = db.branches.find((b) => b.id === session.branchId)?.name ?? '';
   return (
@@ -102,8 +104,7 @@ export function UserMenu({
             className="hover:bg-surface-2 text-danger flex w-full items-center gap-2 px-3 py-2"
             onClick={() => {
               close();
-              endSession();
-              void navigate('/login');
+              signOut();
             }}
           >
             <LogOut className="size-4" aria-hidden /> Sign out
