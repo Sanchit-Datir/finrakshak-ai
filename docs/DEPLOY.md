@@ -44,6 +44,34 @@ gcloud secrets add-iam-policy-binding GEMINI_API_KEY --project fund-tracer \
 A deploy that fails with "must have permission iam.serviceAccounts.ActAs" means the runtime account
 changed; add it to `RUNTIME_SAS` in `scripts/setup-gcp.sh` and re-run the script.
 
+## Connecting the web app (sign-in, App Check, `askGemini`)
+
+The web app stays in demo mode (no cloud calls, no AI) until it is built with the Firebase web
+config. Steps that only a project owner can do:
+
+1. **Enable sign-in:** Firebase console → Authentication → Sign-in method → Email/Password. Add users
+   under Authentication → Users (there is no public sign-up).
+2. **App Check:** create a reCAPTCHA v3 site key at <https://www.google.com/recaptcha/admin>
+   (domains: `fund-tracer.web.app`, `fund-tracer.firebaseapp.com`), then Firebase console → App Check →
+   Apps → register the web app with reCAPTCHA v3 and paste the **secret** key there. Keep the secret
+   key out of the repo.
+3. **GitHub repo variables** (Settings → Secrets and variables → Actions → Variables; all public
+   values): `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_APP_ID`,
+   `VITE_RECAPTCHA_SITE_KEY` (from Firebase console → Project settings → Your apps).
+4. **Let browsers reach the function:** a callable must be publicly invokable at the network level;
+   sign-in, App Check and the daily limit are what actually protect it. Grant once, deliberately:
+
+   ```bash
+   gcloud run services add-iam-policy-binding askgemini --region asia-south1 \
+     --project fund-tracer --member allUsers --role roles/run.invoker
+   ```
+
+5. Open **Settings → Cloud & AI**, sign in, and ask a question.
+
+Locally, `npm run serve -w functions` plus `VITE_USE_EMULATORS=true npm run dev -w web` use the Auth
+and Functions emulators and the free mock, so nothing is billed. The security headers in
+`web/security-headers.ts` and `firebase.json` allow only the Google hosts these features need.
+
 ## When a deploy fails
 
 - **Permission denied on one API:** read the error, add that single role to `github-deployer`.

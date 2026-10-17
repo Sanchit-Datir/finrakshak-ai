@@ -6,6 +6,12 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // Per-user daily AI call counters. Written only by Cloud Functions (Admin SDK bypasses rules);
+    // clients get no access at all.
+    match /usage/{usageId} {
+      allow read, write: if false;
+    }
+
     match /funds/{fundId} {
       allow read: if request.auth != null && resource.data.ownerUid == request.auth.uid;
       allow create: if request.auth != null

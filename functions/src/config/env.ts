@@ -23,6 +23,8 @@ const EnvSchema = z.object({
   /** Cheapest model that handles text tasks; override per environment, see docs/COST_GUIDELINES.md. */
   GEMINI_MODEL: z.string().default('gemini-3.1-flash-lite'),
   GEMINI_PROVIDER: z.enum(GEMINI_PROVIDERS).optional(),
+  /** Billed AI calls each signed-in user may make per Indian calendar day (B-15). */
+  GEMINI_DAILY_LIMIT: z.coerce.number().int().min(1).max(10_000).default(30),
   /** Injected from Secret Manager at runtime (see `geminiApiKey` in config/secrets.ts). */
   GEMINI_API_KEY: z.string().min(1).optional(),
 });
