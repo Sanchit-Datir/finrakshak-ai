@@ -72,10 +72,25 @@ ensure_dataset() { # <dataset>
   bq --project_id "$PROJECT_ID" show --dataset "$PROJECT_ID:$1" >/dev/null 2>&1 ||
     bq --project_id "$PROJECT_ID" --location "$REGION" mk --dataset \
       --description "FundTrace public-records dataset (loaded by ingest-build)" "$PROJECT_ID:$1"
-  bq --project_id "$PROJECT_ID" add-iam-policy-binding --dataset \
-    --member "serviceAccount:$RUNNER_SA" --role roles/bigquery.dataEditor "$PROJECT_ID:$1" >/dev/null
-  bq --project_id "$PROJECT_ID" add-iam-policy-binding --dataset \
-    --member "serviceAccount:$AGENT_SA" --role roles/bigquery.dataViewer "$PROJECT_ID:$1" >/dev/null
+  grant_dataset "$1" "$RUNNER_SA" WRITER
+  grant_dataset "$1" "$AGENT_SA" READER
+}
+grant_dataset() { # <dataset> <service-account> <READER|WRITER>
+  # `bq add-iam-policy-binding --dataset` needs allowlisting, so edit the dataset ACL instead.
+  local tmp
+  tmp="$(mktemp)"
+  bq --project_id "$PROJECT_ID" show --format=prettyjson "$PROJECT_ID:$1" >"$tmp"
+  python3 - "$tmp" "$2" "$3" <<'PY'
+import json, sys
+path, email, role = sys.argv[1:4]
+doc = json.load(open(path))
+access = doc.setdefault("access", [])
+if not any(a.get("userByEmail") == email and a.get("role") == role for a in access):
+    access.append({"role": role, "userByEmail": email})
+json.dump({"access": access}, open(path, "w"))
+PY
+  bq --project_id "$PROJECT_ID" update --source "$tmp" "$PROJECT_ID:$1" >/dev/null
+  rm -f "$tmp"
 }
 ensure_metric() { # <name> <description> <filter>
   gcloud logging metrics describe "$1" --project "$PROJECT_ID" >/dev/null 2>&1 ||
