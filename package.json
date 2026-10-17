@@ -16,7 +16,7 @@
   "scripts": {
     "build": "npm run build -w @fund-tracker/shared && npm run build -w functions && npm run build -w ingest && npm run build -w web",
     "typecheck": "npm run build -w @fund-tracker/shared && npm run typecheck -w functions && npm run typecheck -w ingest && npm run typecheck -w web && npm run typecheck -w e2e",
-    "lint": "eslint . --max-warnings 0",
+    "lint": "npm run build -w @fund-tracker/shared && eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "npm run test -w @fund-tracker/shared && npm run test -w functions && npm run test -w ingest && npm run test -w web",
