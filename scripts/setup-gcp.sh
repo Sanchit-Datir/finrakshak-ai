@@ -62,6 +62,21 @@ grant "$DEPLOY_SA" roles/firebasehosting.admin roles/firebase.viewer \
   roles/firebaserules.admin roles/datastore.indexAdmin roles/cloudfunctions.developer \
   roles/run.viewer roles/secretmanager.viewer roles/artifactregistry.reader \
   roles/serviceusage.serviceUsageConsumer
+
+# A brand-new callable function must be made reachable by browsers (the function itself still demands
+# sign-in and App Check). Neither roles/cloudfunctions.developer nor roles/run.viewer allows that, so
+# a first deploy of a new function failed with "Unable to set the invoker". This custom role grants
+# only reading and setting access policies on functions / Cloud Run services, nothing broader than
+# roles/cloudfunctions.admin or roles/run.admin would.
+INVOKER_ROLE="ciFunctionInvoker"
+INVOKER_PERMISSIONS="run.services.getIamPolicy,run.services.setIamPolicy,cloudfunctions.functions.getIamPolicy,cloudfunctions.functions.setIamPolicy"
+gcloud iam roles describe "$INVOKER_ROLE" --project "$PROJECT_ID" >/dev/null 2>&1 ||
+  gcloud iam roles create "$INVOKER_ROLE" --project "$PROJECT_ID" --stage GA \
+    --title "CI function invoker admin" \
+    --description "Lets the CI deploy account set who may call a newly created function. Nothing else." \
+    --permissions "$INVOKER_PERMISSIONS" >/dev/null
+grant "$DEPLOY_SA" "projects/$PROJECT_ID/roles/$INVOKER_ROLE"
+
 # Deploying a function means "acting as" its runtime account: grant that on those accounts only.
 for runtime_sa in "${RUNTIME_SAS[@]}"; do
   gcloud iam service-accounts add-iam-policy-binding "$runtime_sa" --project "$PROJECT_ID" \

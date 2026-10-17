@@ -132,6 +132,21 @@ Locally, `npm run serve -w functions` plus `VITE_USE_EMULATORS=true npm run dev 
 Functions emulators, the free mock and a built-in dev profile (no Firestore needed), so nothing is billed. The security headers in
 `web/security-headers.ts` and `firebase.json` allow only the Google hosts these features need.
 
+## Adding a brand-new function
+
+A new callable must be made reachable by browsers when it is first created. `github-deployer` can do this
+itself through the narrow custom role `ciFunctionInvoker` (only get/set access policy on functions and
+Cloud Run services; created by `scripts/setup-gcp.sh`). If a first deploy still fails with "Unable to set
+the invoker", run once, deliberately, as the project owner:
+
+```bash
+gcloud run services add-iam-policy-binding <function-name-in-lowercase> --region asia-south1 \
+  --project fund-tracer --member allUsers --role roles/run.invoker
+```
+
+and re-run the Deploy. This only makes the function _reachable_: every callable must itself reject callers
+without sign-in and App Check (see the existing ones). Never do this for a function that skips those checks.
+
 ## When a deploy fails
 
 - **Permission denied on one API:** read the error, add that single role to `github-deployer`.
