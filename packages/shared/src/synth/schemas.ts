@@ -72,6 +72,7 @@ export type SynthArchetype = z.infer<typeof SynthArchetypeSchema>;
 
 export const SYNTH_CLASSES = ['control', 'defaulter', 'lookalike', 'held_out'] as const;
 export const SynthClassSchema = z.enum(SYNTH_CLASSES);
+export type SynthClass = z.infer<typeof SynthClassSchema>;
 
 /** The app's `Priority` ids, shown as Routine review, Needs attention and Urgent review. */
 export const SYNTH_BANDS = ['routine', 'needs_attention', 'urgent'] as const;
@@ -87,6 +88,7 @@ export const SYNTH_RULE_IDS = [
   'cash_split',
 ] as const;
 export const SynthRuleIdSchema = z.enum(SYNTH_RULE_IDS);
+export type SynthRuleId = z.infer<typeof SynthRuleIdSchema>;
 
 const synthetic = z.literal(true);
 const synthName = z.string().startsWith(SYNTH_NAME_PREFIX).max(200);

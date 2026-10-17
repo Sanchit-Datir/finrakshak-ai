@@ -12,6 +12,7 @@ import {
   monthEnd,
   monthOf,
   monthRange,
+  monthsBetween,
   monthStart,
   onOrBeforeMonthEnd,
   parseDate,
@@ -112,5 +113,14 @@ describe('India time (B-27)', () => {
     expect(onOrBeforeMonthEnd(istInstant('2024-03-01', 0, 0), '2024-02')).toBe(false);
     // 2024-02-29 20:00 UTC is already 1 March in India.
     expect(onOrBeforeMonthEnd('2024-02-29T20:00:00.000Z', '2024-02')).toBe(false);
+  });
+});
+
+describe('monthsBetween', () => {
+  it('counts months across year ends, both ways', () => {
+    expect(monthsBetween('2024-01', '2024-01')).toBe(0);
+    expect(monthsBetween('2024-01', '2025-12')).toBe(23);
+    expect(monthsBetween('2024-11', '2025-02')).toBe(3);
+    expect(monthsBetween('2025-02', '2024-11')).toBe(-3);
   });
 });

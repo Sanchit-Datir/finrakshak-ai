@@ -95,3 +95,10 @@ export const istMonthOf = (instant: string): string => istDate(instant).slice(0,
 /** True when the IST day of `instant` is on or before the last day of `month`. */
 export const onOrBeforeMonthEnd = (instant: string, month: string): boolean =>
   istDate(instant) <= monthEnd(month);
+
+/** Whole months from `from` to `to` (negative when `to` is earlier). */
+export function monthsBetween(from: string, to: string): number {
+  const a = parseDate(`${from}-01`);
+  const b = parseDate(`${to}-01`);
+  return (b.y - a.y) * 12 + (b.m - a.m);
+}

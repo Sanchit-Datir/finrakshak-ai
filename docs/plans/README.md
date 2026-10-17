@@ -13,7 +13,7 @@ PR)._
 | `DELTA_INGESTION_PLAN.md`        | Daily detection of what changed at each public source                                                        | Built (see `docs/SESSION_NOTES.md`)                   |
 | `GCP_INGESTION_AGENT_PLAN.md`    | Cloud pipeline, publish gates, ingestion agent, AI extraction in shadow mode                                 | Built and merged; GCP resources are the owner's steps |
 | `SYNTHETIC_TRANSACTIONS_PLAN.md` | A seeded generator of fictional loans and transactions with ground-truth labels, in the web app's own shapes | Approved, not started                                 |
-| `RISK_SCORING_PLAN.md`           | Score 0–100, bands, alert decision, history, daily Cloud Run job, app view                                   | Approved, steps 1–2 done (rules moved to shared)      |
+| `RISK_SCORING_PLAN.md`           | Score 0–100, bands, alert decision, history, daily Cloud Run job, app view                                   | Approved, steps 1–4 done (rules moved to shared)      |
 | `PATTERN_MINER_PLAN.md`          | An agent that proposes patterns from the 23 seed cases for the owner to approve                              | Approved, not started                                 |
 | `AGENTS_PLAN.md`                 | The one pattern all agents follow, shared parts, authority, testing, cost, failure modes                     | Six decisions taken, nothing built                    |
 | `RISK_EXPLAINER_PLAN.md`         | Optional agent that words the recorded reasons of an alert                                                   | Deferred until after step 13                          |
@@ -35,13 +35,13 @@ The steps run in four phases. A phase ends with something you can see working.
 
 ### Phase B: first end-to-end result (local, no cloud)
 
-| #   | Step                                                                                                                             | Needs from the owner                               | Status |
-| --- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------ |
-| 5   | S2 Population, flags, labels, CLI, contract sample and web contract test, first archetypes                                       |                                                    | [ ]    |
-| 6   | S3 The remaining archetypes, including look-alikes and `near_threshold`                                                          |                                                    | [ ]    |
-| 7   | M1 Pattern definitions, matcher, candidates with baseline lift, backtest (no model)                                              | **Checkpoint 1: do the candidates look useful?**   | [ ]    |
-| 8   | R2 Scoring core, settings, alert decision, replay harness, templated reason text with the "new / unchanged / score change" block | **Checkpoint 2: tune the 3% budget and 15 points** | [ ]    |
-| 9   | R4 Pattern layer with hand-written version 1 patterns (kept in code until step 15)                                               |                                                    | [ ]    |
+| #   | Step                                                                                                                             | Needs from the owner                               | Status   |
+| --- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
+| 5   | S2 Population, flags, labels, CLI, contract sample and web contract test, first archetypes                                       |                                                    | [x] done |
+| 6   | S3 The remaining archetypes, including look-alikes and `near_threshold`                                                          |                                                    | [ ]      |
+| 7   | M1 Pattern definitions, matcher, candidates with baseline lift, backtest (no model)                                              | **Checkpoint 1: do the candidates look useful?**   | [ ]      |
+| 8   | R2 Scoring core, settings, alert decision, replay harness, templated reason text with the "new / unchanged / score change" block | **Checkpoint 2: tune the 3% budget and 15 points** | [ ]      |
+| 9   | R4 Pattern layer with hand-written version 1 patterns (kept in code until step 15)                                               |                                                    | [ ]      |
 
 End of phase B: month-by-month scores and "risk rose because..." on synthetic data, run from the command line.
 
