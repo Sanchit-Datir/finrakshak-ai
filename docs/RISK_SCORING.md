@@ -92,9 +92,10 @@ Money is compared in integer paise only (B-01, B-03).
 ### Patterns
 
 - Patterns come through a `PatternSource`: `codePatterns()` (the hand-written library) or
-  `filePatterns(path)`. Both run `parsePatternLibrary` with a real sha256, so a library whose content
-  hash does not match is **refused**: the run continues with the pattern layer at 0, marked
-  `no_patterns`, and a `library_refused` finding. An invalid pattern or an unknown template is skipped
+  `filePatterns(path)`. Both run `readPatternLibrary` with a real sha256, so a library whose content
+  hash does not match is **refused** (`load()` resolves to `{ refused: reason }`, it does not throw): the
+  run continues with the pattern layer at 0, marked `no_patterns`, and a `library_refused` finding. An
+  unreadable or non-JSON library file is refused the same way. An invalid pattern or an unknown template is skipped
   and counted as an `invalid_pattern` or `unknown_template` finding. Only `approved` patterns are used.
 - The matcher is **injected**. The score command injects the real `matchPattern`
   (`packages/shared/src/risk/patterns/match.ts`, built on the miner side in step 7). The scorer builds
@@ -218,11 +219,9 @@ This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step a
 - The Firestore pattern source (step 15).
 - The app view (step 13).
 
-## Proposed contract changes (for the PR description, not made)
+## Contract changes (workstream W1c)
 
-- `PatternSource.load()` throws on a refused library. A `{ refused: reason }` result would let every
-  consumer record the same finding without a try/catch.
-- `graph_proximity` patterns overlap with the graph layer. Should a scorer that has a graph layer
-  ignore them? Or should the contract say the two are meant to add up?
-- Monitoring-rule typologies have no events in the subject timeline. Their reasons carry transaction
-  ids in `evidence_event_ids`. The contract could name that field `evidence_ids` to cover both.
+1. **Done:** `PatternSource.load()` resolves to `LoadedLibrary | RefusedLibrary` (`{ refused: reason }`)
+   instead of throwing, so every consumer records the same finding without a try/catch.
+2. Open: how `graph_proximity` patterns relate to the graph layer.
+3. Open: `evidence_event_ids` becomes `evidence_ids`, to cover transaction ids as well as event ids.

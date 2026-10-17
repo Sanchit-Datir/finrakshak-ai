@@ -75,9 +75,26 @@ export interface LoadedLibrary {
   readonly skipped: readonly SkippedPattern[];
 }
 
-/** The one way the scorer gets patterns: from code, from a file, or from Firestore. */
+/**
+ * A library that could not be used at all: a broken envelope, a content hash that does not match, or a
+ * source that could not be read. It is a result, not an exception, so every consumer records the same
+ * finding without a try/catch.
+ */
+export interface RefusedLibrary {
+  /** A short, readable reason with no pattern text in it. */
+  readonly refused: string;
+}
+
+export const isRefusedLibrary = (r: LoadedLibrary | RefusedLibrary): r is RefusedLibrary =>
+  'refused' in r;
+
+/**
+ * The one way the scorer gets patterns: from code, from a file, or from Firestore. `load` resolves to a
+ * refused result when the library as a whole is unusable; it rejects only for a bug, never for a bad
+ * library.
+ */
 export interface PatternSource {
-  load(): Promise<LoadedLibrary>;
+  load(): Promise<LoadedLibrary | RefusedLibrary>;
 }
 
 const EnvelopeSchema = z.object({
@@ -153,6 +170,22 @@ export function parsePatternLibrary(raw: unknown, sha256?: Sha256Hex): LoadedLib
     ok.push(pattern);
   });
   return { libraryVersion: library_version, contentHash: content_hash, patterns: ok, skipped };
+}
+
+/**
+ * `parsePatternLibrary` for a source: the same read, but a refused library is returned as a
+ * `RefusedLibrary` instead of thrown. Anything that is not a `PatternLibraryError` is a bug and still throws.
+ */
+export function readPatternLibrary(
+  raw: unknown,
+  sha256?: Sha256Hex,
+): LoadedLibrary | RefusedLibrary {
+  try {
+    return parsePatternLibrary(raw, sha256);
+  } catch (e: unknown) {
+    if (e instanceof PatternLibraryError) return { refused: e.message.slice(0, 200) };
+    throw e;
+  }
 }
 
 /** The patterns the scorer may use: approved only (retired and draft are ignored). */

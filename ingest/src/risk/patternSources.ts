@@ -3,7 +3,8 @@ import { readFile } from 'node:fs/promises';
 import {
   HAND_WRITTEN_LIBRARY,
   approvedPatterns,
-  parsePatternLibrary,
+  isRefusedLibrary,
+  readPatternLibrary,
   type LoadedLibrary,
   type Pattern,
   type PatternLibrary,
@@ -14,7 +15,7 @@ import {
 /**
  * Where the scorer gets its patterns (PATTERN_CONTRACT.md, sections 4 and 7): from code (the hand-written
  * version 1) or from a file (`minerCli export-library`, path in FUNDTRACE_PATTERN_LIBRARY). A Firestore
- * source follows in step 15. Every source goes through `parsePatternLibrary` with a real sha256, so a
+ * source follows in step 15. Every source goes through `readPatternLibrary` with a real sha256, so a
  * library whose content hash does not match is refused, and a bad pattern is skipped and reported. The
  * scorer only ever reads the library; it never writes or edits one.
  */
@@ -22,13 +23,18 @@ import {
 export const sha256Hex = (s: string): string => createHash('sha256').update(s).digest('hex');
 
 export const codePatterns = (library: PatternLibrary = HAND_WRITTEN_LIBRARY): PatternSource => ({
-  load: () => Promise.resolve().then(() => parsePatternLibrary(library, sha256Hex)),
+  load: () => Promise.resolve(readPatternLibrary(library, sha256Hex)),
 });
 
 export const filePatterns = (file: string): PatternSource => ({
   load: async () => {
-    const text = await readFile(file, 'utf8');
-    return parsePatternLibrary(JSON.parse(text) as unknown, sha256Hex);
+    let raw: unknown;
+    try {
+      raw = JSON.parse(await readFile(file, 'utf8'));
+    } catch {
+      return { refused: 'the library file could not be read or is not JSON' };
+    }
+    return readPatternLibrary(raw, sha256Hex);
   },
 });
 
@@ -47,16 +53,13 @@ const skippedFindings = (lib: LoadedLibrary): RunFinding[] =>
     detail: `${s.pattern_id ?? `#${s.index}`}: ${s.detail}`.slice(0, 200),
   }));
 
-/** Loads a source; a refused or unreadable library becomes a `library_refused` finding, never a crash. */
+/** Loads a source; a refused library becomes a `library_refused` finding, never a crash. */
 export async function loadLibrary(source: PatternSource): Promise<UsableLibrary> {
-  try {
-    const lib = await source.load();
-    return {
-      library: { libraryVersion: lib.libraryVersion, patterns: approvedPatterns(lib) },
-      findings: skippedFindings(lib),
-    };
-  } catch (e: unknown) {
-    const detail = e instanceof Error ? e.message : 'unreadable library';
-    return { library: null, findings: [{ code: 'library_refused', detail: detail.slice(0, 200) }] };
-  }
+  const lib = await source.load();
+  if (isRefusedLibrary(lib))
+    return { library: null, findings: [{ code: 'library_refused', detail: lib.refused }] };
+  return {
+    library: { libraryVersion: lib.libraryVersion, patterns: approvedPatterns(lib) },
+    findings: skippedFindings(lib),
+  };
 }

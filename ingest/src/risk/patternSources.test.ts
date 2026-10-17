@@ -47,13 +47,24 @@ describe('pattern sources', () => {
     expect(lib.findings.map((f) => f.code)).toEqual(['library_refused']);
   });
 
-  it('refuses an unreadable file as a finding, never crashing', async () => {
-    const lib = await loadLibrary(filePatterns('/nonexistent/library.json'));
-    expect(lib).toMatchObject({ library: null, findings: [{ code: 'library_refused' }] });
-    const throwing: PatternSource = { load: () => Promise.reject(new Error('down')) };
-    expect((await loadLibrary(throwing)).findings).toEqual([
-      { code: 'library_refused', detail: 'down' },
+  it('refuses an unreadable or non-JSON file as a finding, never crashing', async () => {
+    const missing = await loadLibrary(filePatterns('/nonexistent/library.json'));
+    expect(missing.library).toBeNull();
+    expect(missing.findings.map((f) => f.code)).toEqual(['library_refused']);
+    expect(missing.findings[0]?.detail).toMatch(/could not be read/);
+    const notJson = path.join(mkdtempSync(path.join(tmpdir(), 'fundtrace-lib-')), 'library.json');
+    writeFileSync(notJson, '{ not json');
+    expect((await loadLibrary(filePatterns(notJson))).findings.map((f) => f.code)).toEqual([
+      'library_refused',
     ]);
+  });
+
+  it("turns any source's refused result into a finding without a try/catch", async () => {
+    const refusing: PatternSource = { load: () => Promise.resolve({ refused: 'down for now' }) };
+    expect(await loadLibrary(refusing)).toEqual({
+      library: null,
+      findings: [{ code: 'library_refused', detail: 'down for now' }],
+    });
   });
 
   it('skips an invalid pattern and an unknown template, counting each as a finding', async () => {

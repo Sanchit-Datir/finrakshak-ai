@@ -6,7 +6,9 @@ import {
   approvedPatterns,
   canonicalJson,
   contentHashOf,
+  isRefusedLibrary,
   parsePatternLibrary,
+  readPatternLibrary,
   patternIdOf,
   sealLibrary,
 } from './library.js';
@@ -191,5 +193,27 @@ describe('parsePatternLibrary', () => {
     const loaded = parsePatternLibrary(envelope([]), sha);
     expect(loaded.patterns).toEqual([]);
     expect(approvedPatterns(loaded)).toEqual([]);
+  });
+});
+
+describe('readPatternLibrary', () => {
+  it('returns the same library as parsePatternLibrary when it is usable', () => {
+    expect(readPatternLibrary(raw, sha)).toEqual(parsePatternLibrary(raw, sha));
+  });
+
+  it('returns a refused result, without throwing, for a broken envelope', () => {
+    const r = readPatternLibrary({ library_version: 1 });
+    expect(isRefusedLibrary(r) ? r.refused : '').toMatch(/^not a pattern library/);
+  });
+
+  it('returns a refused result for a content hash that does not match', () => {
+    const r = readPatternLibrary({ ...library, content_hash: 'b'.repeat(64) }, sha);
+    expect(isRefusedLibrary(r) ? r.refused : '').toMatch(/content_hash/);
+  });
+
+  it('still skips a single bad pattern instead of refusing the library', () => {
+    const r = readPatternLibrary(envelope([null, clone(0)]), sha);
+    expect(isRefusedLibrary(r)).toBe(false);
+    if (!isRefusedLibrary(r)) expect(r.skipped).toHaveLength(1);
   });
 });

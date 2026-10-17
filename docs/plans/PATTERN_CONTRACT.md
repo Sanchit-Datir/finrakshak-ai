@@ -178,8 +178,13 @@ the kind lookup for both.
 
 ## 7. What the scorer does with a match (its half of the contract)
 
-- Loads patterns through one port, `PatternSource.load(): { libraryVersion, contentHash, patterns }`, with
-  three implementations (code, file, Firestore).
+- Loads patterns through one port, `PatternSource.load()`, with three implementations (code, file,
+  Firestore). It resolves to `{ libraryVersion, contentHash, patterns, skipped }`, or to `{ refused: reason }`
+  when the library as a whole is unusable (a broken envelope, a content hash that does not match, a source
+  that cannot be read). A refused library is a result, not an exception: the scorer records one
+  `library_refused` finding, scores the pattern layer 0 and marks the run `no_patterns`. `load` rejects only
+  for a bug. `readPatternLibrary` is the non-throwing reader every source uses; `parsePatternLibrary` still
+  throws `PatternLibraryError`, for callers that want it.
 - Validates with zod. An invalid pattern is skipped and counted as an `invalid_pattern` finding; it never
   stops the run. An empty library means the pattern layer scores 0 and the run is marked `no_patterns`, which
   is never shown as low risk (B-56).
