@@ -1,3 +1,4 @@
+import { logger } from 'firebase-functions';
 import { HttpsError, onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { z } from 'zod';
 import { geminiApiKey } from '../config/secrets.js';
@@ -22,8 +23,15 @@ export async function askGeminiHandler(
     // Output is untrusted text: callers that need structure must validate it (B-13).
     return { text: await generateText(input.data.prompt) };
   } catch (error) {
-    // Never log the prompt (B-16); the error type is enough to debug.
+    // Never log the prompt (B-16); the upstream status and message are enough to debug.
     if (error instanceof GeminiError) {
+      const cause = error.cause as { name?: string; status?: number; message?: string } | undefined;
+      logger.error('askGemini: model call failed', {
+        reason: error.message,
+        causeName: cause?.name,
+        causeStatus: cause?.status,
+        causeMessage: cause?.message?.slice(0, 300),
+      });
       throw new HttpsError('unavailable', 'The AI service could not answer. Try again.');
     }
     throw error;
