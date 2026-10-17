@@ -2,7 +2,14 @@
 import { SeedVerificationFileSchema } from '@fund-tracker/shared';
 import { dataKey } from './config.js';
 import { errorMessage, log } from './log.js';
+import { readAiConfig } from './ai/config.js';
+import { modelFor } from './ai/models.js';
+import { minerInputHash, reviewCandidates, scriptedReview } from './miner/agent.js';
 import { mineCandidates } from './miner/candidates.js';
+import { loadMinerContext } from './miner/load.js';
+import { MINE_PROMPT_VERSION } from './miner/prompts/mine.js';
+import { MAX_PATTERN_PROPOSALS, planProposals } from './miner/proposals.js';
+import { DEFAULT_MINER_SETTINGS } from './miner/settings.js';
 import { loadPopulation } from './miner/population.js';
 import { formatCandidates, parseCandidateArgs } from './miner/report.js';
 import { applySheet, buildSheet, parseSheet, summarise } from './miner/review.js';
@@ -25,7 +32,9 @@ const USAGE = `Usage: node ingest/dist/minerCli.js <command>
   verify-apply --reviewer NAME            read the filled sheet and save the decisions (seed_review.json)
   verify-status                           show how far the review has got
   candidates [--min-lift N] [--min-support N] [--min-population N] [--json]
-                                          find sequences the seed cases share (no model is used)`;
+                                          find sequences the seed cases share (no model is used)
+  propose [--allow-billed]                print the proposals the miner agent would make; writes nothing
+                                          (mock model unless FUNDTRACE_AI_PROVIDER is set)`;
 
 const flag = (args: readonly string[], name: string): string | undefined => {
   const i = args.indexOf(name);
@@ -96,11 +105,51 @@ async function candidates(args: readonly string[]): Promise<void> {
   );
 }
 
+/** The agent over the real timelines, printed only: proposals reach Firestore only from the cloud job. */
+async function propose(args: readonly string[]): Promise<void> {
+  const cfg = readAiConfig();
+  if (cfg.provider !== 'mock' && !args.includes('--allow-billed'))
+    throw new Error(
+      `FUNDTRACE_AI_PROVIDER=${cfg.provider} is billed; pass --allow-billed to call it (B-15)`,
+    );
+  const ctx = await loadMinerContext(DEFAULT_MINER_SETTINGS);
+  const model = modelFor(cfg, () => scriptedReview(ctx.result));
+  const limits = {
+    maxToolCalls: cfg.miner.maxToolCalls,
+    maxInputChars: cfg.maxInputChars,
+    maxProposals: MAX_PATTERN_PROPOSALS,
+  };
+  const agent = await reviewCandidates(model, ctx, limits, new Set());
+  const plan = planProposals(
+    ctx.result,
+    agent,
+    { live: new Set(), open: new Set() },
+    {
+      runId: 'local',
+      model: model.id,
+      promptVersion: MINE_PROMPT_VERSION,
+      inputHash: minerInputHash(ctx.result),
+      now: new Date(),
+      maxProposals: MAX_PATTERN_PROPOSALS,
+    },
+  );
+  const report = {
+    candidates: ctx.result.candidates.length,
+    model: model.id,
+    summary: agent.summary,
+    rejected: Object.fromEntries(agent.rejected),
+    skipped: plan.skipped,
+    proposals: plan.proposals,
+  };
+  process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+}
+
 async function main(args: readonly string[]): Promise<void> {
   const [command, ...rest] = args;
   if (command === 'verify-sheet') await verifySheet(rest);
   else if (command === 'verify-apply') await verifyApply(rest);
   else if (command === 'candidates') await candidates(rest);
+  else if (command === 'propose') await propose(rest);
   else if (command === 'verify-status') print(summarise(await readTimelines(), await readReview()));
   else {
     process.stderr.write(`${USAGE}\n`);

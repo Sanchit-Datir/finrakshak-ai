@@ -23,6 +23,23 @@ service cloud.firestore {
     }
     // ingestLocks/{name}: leases between pipeline tasks; no client access (default deny).
 
+    // Agents (docs/plans/AGENTS_PLAN.md): one run envelope per execution, the pattern miner's
+    // proposals, and the live pattern library. Written only by the jobs (Admin SDK) and, for the
+    // library and the decisions, by the decidePattern callable (B-61). The owner may read them for
+    // the admin page; nobody writes from a client, so no agent can approve its own proposal.
+    match /agentRuns/{runId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow write: if false;
+    }
+    match /patternProposals/{proposalId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow write: if false;
+    }
+    match /riskPatternLibrary/{version} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow write: if false;
+    }
+
     // Synthetic risk scores (docs/plans/REMAINING_WORK.md, W2e): written only by the ingest-score job
     // (Admin SDK) and read only through the getRiskScores callable, which checks the caller's branch.
     // SYNTH data only (B-54); history is never rewritten from a client (B-57).
@@ -30,6 +47,11 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /synthRiskAlerts/{alertId} {
+      allow read, write: if false;
+    }
+    // The risk explainer's sentences (RISK_EXPLAINER_PLAN.md, B-62): beside the alert, never in it
+    // (B-57); written only by the ingest-explain job and read only through getRiskScores.
+    match /synthRiskExplanations/{alertId} {
       allow read, write: if false;
     }
 

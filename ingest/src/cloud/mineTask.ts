@@ -9,7 +9,7 @@ import { minerInputHash, reviewCandidates, scriptedReview } from '../miner/agent
 import { sha256Hex } from '../miner/hash.js';
 import { loadMinerContext } from '../miner/load.js';
 import { MINE_PROMPT_VERSION } from '../miner/prompts/mine.js';
-import { patternProposalId, planProposals } from '../miner/proposals.js';
+import { MAX_PATTERN_PROPOSALS, patternProposalId, planProposals } from '../miner/proposals.js';
 import { DEFAULT_MINER_SETTINGS, type MinerSettings } from '../miner/settings.js';
 import {
   BlobPatternProposalStore,
@@ -27,9 +27,6 @@ import { readCurrent } from './publish.js';
  * writes proposals to `patternProposals` and nothing else (B-61). The mock provider and the kill switch
  * store no proposals. Every execution records one `agentRuns` envelope.
  */
-
-/** At most this many proposals per run (PATTERN_MINER_PLAN.md, step 7). */
-export const MAX_PATTERN_PROPOSALS = 5;
 
 export interface MinePorts {
   readonly store: PatternProposalStore;
@@ -75,7 +72,7 @@ async function freshContext(
   ctx: MinerContext,
   ports: MinePorts,
   inputHash: string,
-  known: { live: ReadonlySet<string>; open: ReadonlySet<string> },
+  known: Known,
 ): Promise<MinerContext> {
   const ids = ctx.result.candidates.map((c) => patternProposalId(c.pattern_id, inputHash));
   const done = await ports.store.existing(ids);
@@ -84,6 +81,58 @@ async function freshContext(
       !known.live.has(c.pattern_id) && !known.open.has(c.pattern_id) && !done.has(ids[i] ?? ''),
   );
   return { ...ctx, result: { ...ctx.result, candidates } };
+}
+
+interface Known {
+  readonly live: ReadonlySet<string>;
+  readonly open: ReadonlySet<string>;
+}
+
+/** The model words or rejects the fresh candidates; code builds and stores the proposals. */
+async function propose(
+  env: CloudEnv,
+  cfg: AiConfig,
+  store: PatternProposalStore,
+  run: { ctx: MinerContext; known: Known; inputHash: string; now: Date },
+): Promise<Outcome> {
+  const { ctx, known, inputHash, now } = run;
+  const model = modelFor(cfg, () => scriptedReview(ctx.result));
+  const agent = await reviewCandidates(
+    model,
+    ctx,
+    {
+      maxToolCalls: cfg.miner.maxToolCalls,
+      maxInputChars: cfg.maxInputChars,
+      maxProposals: MAX_PATTERN_PROPOSALS,
+    },
+    known.live,
+  );
+  const plan = planProposals(ctx.result, agent, known, {
+    runId: env.runId,
+    model: model.id,
+    promptVersion: MINE_PROMPT_VERSION,
+    inputHash,
+    now,
+    maxProposals: MAX_PATTERN_PROPOSALS,
+  });
+  const base = { inputHash, model: model.id, toolCalls: agent.toolCalls, usage: agent.usage };
+  const tally = `${plan.skipped.rejected} rejected by the model, ${plan.skipped.over_cap} over the cap`;
+  // The mock's words are the code's own: worked out in full, never stored as proposals.
+  if (model.id === null)
+    return {
+      ...base,
+      status: 'templated',
+      outputs: 0,
+      note: `mock provider: ${plan.proposals.length} proposals worked out, none stored; ${tally}`,
+    };
+  let created = 0;
+  for (const p of plan.proposals) if (await store.create(p)) created++;
+  return {
+    ...base,
+    status: agent.worded.size > 0 ? 'done' : 'templated',
+    outputs: created,
+    note: `${created} proposed; ${tally}${agent.note === null ? '' : `; ${agent.note}`}`,
+  };
 }
 
 async function mine(env: CloudEnv, ports: MinePorts, cfg: AiConfig): Promise<Outcome> {
@@ -100,44 +149,7 @@ async function mine(env: CloudEnv, ports: MinePorts, cfg: AiConfig): Promise<Out
   const ctx = await freshContext(all, ports, inputHash, { live, open });
   if (ctx.result.candidates.length === 0)
     return skipped('nothing new since the last run (same input)', inputHash);
-  const model = modelFor(cfg, () => scriptedReview(ctx.result));
-  const limits = {
-    maxToolCalls: cfg.miner.maxToolCalls,
-    maxInputChars: cfg.maxInputChars,
-    maxProposals: MAX_PATTERN_PROPOSALS,
-  };
-  const agent = await reviewCandidates(model, ctx, limits, live);
-  const plan = planProposals(
-    ctx.result,
-    agent,
-    { live, open },
-    {
-      runId: env.runId,
-      model: model.id,
-      promptVersion: MINE_PROMPT_VERSION,
-      inputHash,
-      now,
-      maxProposals: MAX_PATTERN_PROPOSALS,
-    },
-  );
-  const base = { inputHash, model: model.id, toolCalls: agent.toolCalls, usage: agent.usage };
-  const tally = `${plan.skipped.rejected} rejected by the model, ${plan.skipped.over_cap} over the cap`;
-  if (model.id === null)
-    // The mock's words are the code's own: worked out in full, never stored as proposals.
-    return {
-      ...base,
-      status: 'templated',
-      outputs: 0,
-      note: `mock provider: ${plan.proposals.length} proposals worked out, none stored; ${tally}`,
-    };
-  let created = 0;
-  for (const p of plan.proposals) if (await ports.store.create(p)) created++;
-  return {
-    ...base,
-    status: agent.worded.size > 0 ? 'done' : 'templated',
-    outputs: created,
-    note: `${created} proposed; ${tally}${agent.note === null ? '' : `; ${agent.note}`}`,
-  };
+  return propose(env, cfg, ports.store, { ctx, known: { live, open }, inputHash, now });
 }
 
 export async function runMineTask(

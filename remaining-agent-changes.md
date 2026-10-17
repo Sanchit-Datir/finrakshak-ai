@@ -5,7 +5,7 @@ only from the repo docs: `docs/plans/AGENTS_PLAN.md`, `docs/plans/PATTERN_MINER_
 `docs/plans/RISK_EXPLAINER_PLAN.md`, `docs/plans/PATTERN_CONTRACT.md`. This file is updated at every
 checkpoint commit; delete it once everything below is done.
 
-_Last checkpoint: 1 (shared loop, run records, miner agent core)._
+_Last checkpoint: 2 (pattern miner agent, decidePattern, rules). Next: the risk explainer._
 
 ## Done so far
 
@@ -24,27 +24,16 @@ _Last checkpoint: 1 (shared loop, run records, miner agent core)._
       `agent.ts`, `proposals.ts`, `store.ts` (Firestore / file / memory), `load.ts`;
       `cloud/mineTask.ts` registered as task `mine` (role `miner`).
 
+- [x] Miner tests (agent hostile outputs and injection, proposals, mock/kill switch/failure/same-input in
+      `cloud/mineTask.test.ts`, Firestore store and `agentRuns` against the emulator); `minerCli propose`
+      (prints only; `--allow-billed` needed for a billed model). Real data: 0 candidates, nothing proposed.
+- [x] `decidePattern` callable (`functions/src/callable/decidePattern.ts`, `services/patterns.ts`):
+      approve / reject / retire in one transaction, `riskPatternLibrary/current` + immutable `v<n>`, local
+      canonical hash checked against the shared fixture.
+- [x] Firestore rules + emulator tests: `agentRuns`, `patternProposals`, `riskPatternLibrary` (admin read
+      only), `synthRiskExplanations` (no client access).
+
 ## Remaining
-
-### Pattern miner (steps 12, 14c)
-
-- [ ] Tests: `miner/wording.test.ts`, `tools.test.ts`, `agent.test.ts` (hostile outputs: invented
-      candidate id, edited definition via extra args, changed number, banned word, over-long name,
-      duplicate, excess proposal, injection in a title), `proposals.test.ts`, `store.test.ts`,
-      `cloud/mineTask.test.ts` (kill switch, no published build, no candidates, same input skips the
-      model, mock stores nothing, real-model failure stores templated proposals with `model: null`).
-- [ ] `mineTask.ts`: split `mine()` (just over the ~40-line limit).
-- [ ] `minerCli propose` command (prints what would be proposed; never writes; refuses a billed
-      provider without `--allow-billed`).
-- [ ] `decidePattern` callable (`functions/src/callable/decidePattern.ts` + test): admin claim,
-      zod input, transaction; approve copies the proposal's pattern into `riskPatternLibrary/current`
-      (status approved, `approved_by`, `approved_at`), bumps `library_version`, recomputes
-      `content_hash` (local canonical JSON + sha256; functions cannot import shared at runtime — add a
-      test that it matches shared `contentHashOf`), writes immutable `riskPatternLibrary/v<n>`; reject;
-      retire; expired, already decided, unknown, malformed. Export in `functions/src/index.ts`.
-- [ ] Firestore rules: `patternProposals`, `riskPatternLibrary`, `agentRuns` (admin read only, no client
-      writes) and `synthRiskExplanations` (no client access); emulator tests in
-      `functions/src/rules/firestoreRules.emulator.test.ts`.
 
 ### Risk explainer (step 17, E2)
 

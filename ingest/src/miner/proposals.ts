@@ -16,6 +16,9 @@ import { templatedWording, type PatternWording } from './wording.js';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/** At most this many proposals per run (PATTERN_MINER_PLAN.md, step 7). */
+export const MAX_PATTERN_PROPOSALS = 5;
+
 /** Deterministic: the same candidate on the same input is one proposal, however often a run retries. */
 export const patternProposalId = (patternId: string, inputHash: string): string =>
   `pp_${sha256Hex(`${patternId}|${inputHash}`).slice(0, 24)}`;

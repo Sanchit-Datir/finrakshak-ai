@@ -93,7 +93,11 @@ export function scriptedReview(result: MineResult): ToolCall[] {
     name: 'propose_pattern',
     args: { pattern_id: c.pattern_id, ...templatedWording(c) },
   }));
-  const summary = `The code found ${result.candidates.length} candidates in ${result.seed_cases} seed cases; each is proposed with templated wording for the owner to review.`;
+  const n = result.candidates.length;
+  const summary =
+    n === 0
+      ? `The code found no candidates in ${result.seed_cases} seed cases, so nothing is proposed.`
+      : `The code found ${n} candidates in ${result.seed_cases} seed cases; each is proposed with templated wording for the owner to review.`;
   return [...proposals, { id: 'mock-summary', name: 'submit_summary', args: { summary } }];
 }
 
