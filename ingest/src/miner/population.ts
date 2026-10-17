@@ -14,7 +14,7 @@ import { weakerStatus } from './seedTimelines.js';
 import type { MinerSettings } from './settings.js';
 
 /**
- * The baseline population (B-59): every entity named in a proceeding in the public tables, with the
+ * The baseline population (B-63): every entity named in a proceeding in the public tables, with the
  * records it is named in. It includes the seed cases' own entities, so it is a comparison group, not a
  * clean control.
  */

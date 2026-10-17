@@ -29,7 +29,7 @@ export interface PopulationStats {
 /**
  * Among entities named in adverse records: of those that showed the earlier steps while still short of an
  * outcome (n), how many went on to the outcome in the pattern's gap and lead (follow_on). Lift compares
- * that rate with the share of all such entities that end at this outcome (B-59). The seed cases are inside
+ * that rate with the share of all such entities that end at this outcome (B-63). The seed cases are inside
  * the population, so this is a comparison group, not an independent test.
  */
 export function populationStats(

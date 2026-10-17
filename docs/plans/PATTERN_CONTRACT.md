@@ -79,7 +79,7 @@ A **step matcher** says which timeline event satisfies a step. It is one of:
 | `basis`                 | `mined` or `hand_written_hypothesis` | Whether this was found in the cases or written as a hypothesis.                 |
 | `supporting_case_ids`   | string[]                             | Seed case ids (`dhfl`, `ilfs`, ...). Empty for a hypothesis.                    |
 | `supporting_case_count` | integer                              | Distinct cases, never entries (B-60).                                           |
-| `population`            | `{ n, follow_on, lift }` or null     | Baseline among entities named in adverse records (B-59). Null for a hypothesis. |
+| `population`            | `{ n, follow_on, lift }` or null     | Baseline among entities named in adverse records (B-63). Null for a hypothesis. |
 | `median_gap_months`     | number or null                       |                                                                                 |
 
 **`verified_case_count` is deliberately not stored.** The scorer computes it at score time from

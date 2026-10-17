@@ -67,6 +67,11 @@ export const ScoringSettingsSchema = z
       grace_days: z.number().int().min(0).max(60),
       /** A payment below this share of the usual EMI is partial. */
       partial_below_percent: percent,
+      /**
+       * A repayment of at least this many usual EMIs, made with no EMI overdue, is a prepayment and pays
+       * no EMI slot; null turns the rule off (v1, v2). See emi.ts.
+       */
+      prepayment_min_multiple: z.number().int().min(2).max(20).nullable(),
       /** Only the EMIs due in this many most recent months are looked at. */
       lookback_emis: z.number().int().min(3).max(24),
       one_unmet: points(100),
@@ -135,6 +140,7 @@ export const SCORING_SETTINGS_V1: ScoringSettings = ScoringSettingsSchema.parse(
   behaviour: {
     grace_days: 5,
     partial_below_percent: 90,
+    prepayment_min_multiple: null,
     lookback_emis: 6,
     one_unmet: 4,
     two_unmet_in_row: 8,

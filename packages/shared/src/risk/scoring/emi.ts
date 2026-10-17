@@ -8,6 +8,11 @@ import { addMonths, daysBetween } from './calc.js';
  * EMI is the most common repayment amount (the larger on a tie). Repayments pay the oldest EMI first,
  * as a bank applies them. The schedule ends once repayments reach the loan amount, because the tenor is
  * not in the data. Money is compared in integer minor units only (B-01, B-03).
+ *
+ * With `prepaymentMinMultiple` set (settings v3 on), a repayment of at least that many usual EMIs made
+ * while no EMI is past its grace period unpaid is a prepayment: it pays no EMI slot, it counts towards
+ * the loan amount, and the usual EMI is worked out again from the repayments after it (the EMIs shrink).
+ * A large repayment while an EMI is overdue stays a catch-up payment, so a missed EMI is never hidden.
  */
 
 export interface EmiState {
@@ -28,6 +33,8 @@ export interface EmiState {
 export interface EmiRules {
   readonly graceDays: number;
   readonly partialBelowPercent: number;
+  /** Null: no repayment is treated as a prepayment (settings v1 and v2). */
+  readonly prepaymentMinMultiple: number | null;
 }
 
 export interface EmiLoan {
@@ -87,6 +94,72 @@ function stateOf(
   };
 }
 
+/** EMIs past their grace period on `day` (EMI 1 is due one month after disbursement). */
+function overdueBy(loan: EmiLoan, day: string, graceDays: number): number {
+  let n = 0;
+  while (daysBetween(addMonths(loan.disbursedOn, n + 1), day) > graceDays) n++;
+  return n;
+}
+
+interface Paired {
+  readonly txn: RuleTransaction;
+  readonly segment: number;
+}
+
+interface Split {
+  /** Repayments that pay an EMI slot, oldest first, with the segment their usual EMI comes from. */
+  readonly paired: readonly Paired[];
+  readonly prepayments: readonly RuleTransaction[];
+  /** The usual EMI of each segment (a new segment starts after each prepayment). */
+  readonly usual: readonly (number | null)[];
+}
+
+const isPrepayment = (
+  t: RuleTransaction,
+  usual: number | null,
+  ctx: { loan: EmiLoan; rules: EmiRules; paidSlots: number },
+): boolean => {
+  const multiple = ctx.rules.prepaymentMinMultiple;
+  if (multiple === null || usual === null) return false;
+  const threshold = usual * multiple;
+  if (!Number.isSafeInteger(threshold)) throw new RangeError(`EMI overflow on ${ctx.loan.id}`);
+  if (t.amountMinor < threshold) return false;
+  return overdueBy(ctx.loan, istDate(t.at), ctx.rules.graceDays) <= ctx.paidSlots;
+};
+
+function splitRepayments(
+  loan: EmiLoan,
+  repayments: readonly RuleTransaction[],
+  rules: EmiRules,
+): Split {
+  const segments: number[][] = [[]];
+  const paired: Paired[] = [];
+  const prepayments: RuleTransaction[] = [];
+  for (const t of repayments) {
+    const current = segments[segments.length - 1] ?? [];
+    if (isPrepayment(t, usualAmount(current), { loan, rules, paidSlots: paired.length })) {
+      prepayments.push(t);
+      segments.push([]);
+      continue;
+    }
+    current.push(t.amountMinor);
+    paired.push({ txn: t, segment: segments.length - 1 });
+  }
+  return { paired, prepayments, usual: segments.map(usualAmount) };
+}
+
+const addMinor = (loan: EmiLoan, a: number, b: number): number => {
+  const total = a + b;
+  if (!Number.isSafeInteger(total)) throw new RangeError(`Repayments overflow on ${loan.id}`);
+  return total;
+};
+
+/** Prepayments made before `due`, in minor units. */
+const prepaidBefore = (loan: EmiLoan, split: Split, due: string): number =>
+  split.prepayments
+    .filter((t) => istDate(t.at) < due)
+    .reduce((sum, t) => addMinor(loan, sum, t.amountMinor), 0);
+
 /** Every EMI due on or before `asOf`, oldest first. */
 export function emiHistory(
   loan: EmiLoan,
@@ -94,17 +167,17 @@ export function emiHistory(
   asOf: string,
   rules: EmiRules,
 ): EmiState[] {
-  const repayments = repaymentsOf(loan, txns, asOf);
-  const ctx = { asOf, usual: usualAmount(repayments.map((t) => t.amountMinor)), rules };
+  const split = splitRepayments(loan, repaymentsOf(loan, txns, asOf), rules);
   const out: EmiState[] = [];
-  let repaid = 0;
-  for (let no = 1; repaid < loan.amountMinor; no++) {
+  let slotsPaid = 0;
+  for (let no = 1; ; no++) {
     const due = addMonths(loan.disbursedOn, no);
     if (due > asOf) break;
-    const paid = repayments[no - 1];
-    out.push(stateOf(no, due, paid, ctx));
-    repaid += paid?.amountMinor ?? 0;
-    if (!Number.isSafeInteger(repaid)) throw new RangeError(`Repayments overflow on ${loan.id}`);
+    if (addMinor(loan, slotsPaid, prepaidBefore(loan, split, due)) >= loan.amountMinor) break;
+    const paid = split.paired[no - 1];
+    const usual = paid === undefined ? null : (split.usual[paid.segment] ?? null);
+    out.push(stateOf(no, due, paid?.txn, { asOf, usual, rules }));
+    slotsPaid = addMinor(loan, slotsPaid, paid?.txn.amountMinor ?? 0);
   }
   return out;
 }

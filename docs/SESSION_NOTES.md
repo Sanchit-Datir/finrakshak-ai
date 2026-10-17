@@ -57,6 +57,14 @@ everyone signed in with a usable profile sees every branch's synthetic scores (`
 branch scoping is kept in the service and will be decided later. Open for the owner: the W2g dry run
 (`docs/DEPLOY.md` → Synthetic risk scores). The branch was pushed at the user's request; no PR.
 
+## EMI prepayment fix (18 Oct 2026, branch `fix/emi-prepayment`)
+
+`behaviour.prepayment_min_multiple` (B-59, `packages/shared/src/risk/scoring/emi.ts`): a large repayment made
+with no EMI overdue is a prepayment, not an EMI. Off in v1 and v2 (v2 replay unchanged, 105 alerts). With it
+on, v2 + behaviour option 4 catches 105 of 105 defaulters with 0 false alarms at 30.4 per 1,000 loan-months
+(table in `docs/RISK_SCORING.md`). **Open for the owner:** publish that as settings v3 (0.4 over the budget)
+or not. Committed on this branch (43447f1).
+
 ## Agents session (17 Oct 2026, branch `pattern-miner-risk-explainer-agent`)
 
 At the owner's request, built the **pattern miner** and the **risk explainer** from main, following
@@ -75,7 +83,7 @@ proposals with `model: null`; model-rejected candidates are not proposed and onl
 - Explainer: `ingest/src/explain/`, task `explain` (job `ingest-explain`, after `score`,
   `FUNDTRACE_EXPLAIN_ENABLED=false`); sentences in `synthRiskExplanations` (not on the alert: B-57), shown
   labelled in the risk score drawer (B-62).
-- B-59 to B-62 added. Everything runs on the mock; the mock and the kill switches store nothing.
+- B-60 to B-63 added (B-59 was taken by the prepayment fix on `main`, so "patterns from hand-picked defaulters" is B-63). Everything runs on the mock; the mock and the kill switches store nothing.
 - Open for the owner: the budget alert (B-15), re-running `scripts/setup-ingest-gcp.sh` for the two new
   accounts, checkpoint 4 (miner Vertex dry run) and E3 (explainer dry run); step 15 (approval view, scorer
   reading the Firestore library, `proposals_waiting`) is not built.

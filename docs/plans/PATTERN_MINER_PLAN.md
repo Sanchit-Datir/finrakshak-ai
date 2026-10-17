@@ -220,7 +220,7 @@ Touched, with how each is handled:
 
 New, to be added to `docs/BOUNDARY_CONDITIONS.md`:
 
-- **B-59 Patterns from hand-picked defaulters:** the seeds were chosen because they defaulted, so a pattern's
+- **B-63 Patterns from hand-picked defaulters** (planned as B-59; that number went to the prepayment rule): the seeds were chosen because they defaulted, so a pattern's
   support says it appeared before known failures, not that it predicts them. Lift is measured only against
   entities already in adverse records. No precision or hit rate is quoted.
 - **B-60 One case, one vote:** support counts distinct cases; the four largest cases hold 72% of the entries

@@ -28,7 +28,7 @@ export const allowedNumbers = (c: Candidate): number[] =>
 /**
  * Code-written wording: used for the mock, when the model fails or runs out of budget, and when it
  * worded a candidate badly. It states the sequence and the numbers, and the one benign reading that
- * always holds for hand-picked defaulters (B-59).
+ * always holds for hand-picked defaulters (B-63).
  */
 export function templatedWording(c: Candidate): PatternWording {
   const steps = c.definition.steps.map(stepWords);

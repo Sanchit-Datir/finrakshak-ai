@@ -129,10 +129,10 @@ Each is added to `docs/BOUNDARY_CONDITIONS.md` in the same commit as the first s
 | B-56 | Missing or stale inputs are not low risk  | 8 (R2)        |
 | B-57 | Score history is immutable                | 11 (R3)       |
 | B-58 | A score is a lead, not a verdict          | 8 (R2)        |
-| B-59 | Patterns from hand-picked defaulters      | 7 (M1)        |
 | B-60 | One case, one vote                        | 7 (M1)        |
 | B-61 | Patterns are approved by a person         | 12 (M2)       |
 | B-62 | AI wording is a convenience, not evidence | 17 (E2)       |
+| B-63 | Patterns from hand-picked defaulters      | 7 (M1)        |
 
 ## How people and agents use these documents
 
