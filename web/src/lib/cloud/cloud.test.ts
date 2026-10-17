@@ -50,6 +50,26 @@ describe('explainCloudError', () => {
     expect(explainCloudError({ code: 'functions/permission-denied' })).toMatch(/not enabled/);
   });
 
+  it('tells the burst limit apart from the daily limit, using the server detail', () => {
+    const burst = { code: 'functions/resource-exhausted', details: { reason: 'rate_limit', retryAfterSeconds: 42 } };
+    expect(explainCloudError(burst)).toBe(
+      'You are sending requests too quickly. Wait 42 seconds and try again.',
+    );
+    expect(
+      explainCloudError({ code: 'functions/resource-exhausted', details: { reason: 'rate_limit' } }),
+    ).toBe('You are sending requests too quickly. Wait a moment and try again.');
+    const daily = { code: 'functions/resource-exhausted', details: { reason: 'daily_limit' } };
+    expect(explainCloudError(daily)).toMatch(/allowance/);
+    // An old server (no details) still gets the daily wording rather than a crash.
+    expect(explainCloudError({ code: 'functions/resource-exhausted' })).toMatch(/allowance/);
+  });
+
+  it('ignores malformed details instead of failing', () => {
+    for (const details of [null, 'text', 42, { reason: 7 }, { retryAfterSeconds: 'soon' }]) {
+      expect(() => explainCloudError({ code: 'functions/resource-exhausted', details })).not.toThrow();
+    }
+  });
+
   it('never leaks raw error text for unknown errors', () => {
     const message = explainCloudError(new Error('boom: internal path /srv/x'));
     expect(message).toBe('Something went wrong. Try again.');

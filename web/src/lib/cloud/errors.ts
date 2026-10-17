@@ -4,6 +4,21 @@ function codeOf(error: unknown): string {
   return typeof code === 'string' ? code : '';
 }
 
+/** The server tells the two "resource-exhausted" cases apart with details.reason. */
+function detailsOf(error: unknown): { reason: string; retryAfterSeconds: number | null } {
+  if (typeof error !== 'object' || error === null || !('details' in error)) {
+    return { reason: '', retryAfterSeconds: null };
+  }
+  const details = error.details;
+  if (typeof details !== 'object' || details === null) return { reason: '', retryAfterSeconds: null };
+  const reason = 'reason' in details && typeof details.reason === 'string' ? details.reason : '';
+  const wait =
+    'retryAfterSeconds' in details && typeof details.retryAfterSeconds === 'number'
+      ? details.retryAfterSeconds
+      : null;
+  return { reason, retryAfterSeconds: wait };
+}
+
 /** Turns a Firebase Auth / Functions error into a sentence a bank officer can act on. Never shows raw errors. */
 export function explainCloudError(error: unknown): string {
   switch (codeOf(error)) {
@@ -21,8 +36,15 @@ export function explainCloudError(error: unknown): string {
       return 'Your sign-in or app check was not accepted. Sign in again; if it persists, the site is not fully set up for this address.';
     case 'functions/permission-denied':
       return 'This account is not enabled for AI features yet. Send your account ID (shown above) to an administrator.';
-    case 'functions/resource-exhausted':
+    case 'functions/resource-exhausted': {
+      const { reason, retryAfterSeconds } = detailsOf(error);
+      if (reason === 'rate_limit') {
+        return retryAfterSeconds === null
+          ? 'You are sending requests too quickly. Wait a moment and try again.'
+          : `You are sending requests too quickly. Wait ${String(retryAfterSeconds)} seconds and try again.`;
+      }
       return 'You have used today’s AI allowance. It resets at midnight India time.';
+    }
     case 'functions/invalid-argument':
       return 'The question is empty or too long.';
     case 'functions/deadline-exceeded':
