@@ -28,16 +28,6 @@ const FieldInputSchema = z.union([
 ]);
 export type FieldInput = z.infer<typeof FieldInputSchema>;
 
-/**
- * A demo sample, by its title in the "Add demo sample" menu. Some titles repeat
- * (two "Aadhaar card (masked)" samples), so `occurrence` picks the nth (1-based).
- */
-const SampleRefSchema = z.union([
-  z.string().min(1),
-  z.object({ title: z.string().min(1), occurrence: z.int().min(1) }).strict(),
-]);
-export type SampleRef = z.infer<typeof SampleRefSchema>;
-
 const LoginDataSchema = z
   .object({
     formCases: z.array(
@@ -60,7 +50,6 @@ const ApplicationCaseSchema = z
   .object({
     name: z.string().min(1),
     role: RoleSchema,
-    samples: z.array(SampleRefSchema).min(1),
     /** Inputs for step 3 "Review application", applied in order. */
     review: z.array(FieldInputSchema),
     expect: z.discriminatedUnion('outcome', [

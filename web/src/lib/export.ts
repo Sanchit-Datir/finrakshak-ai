@@ -24,5 +24,5 @@ export function toCsv(header: string[], rows: (string | number | null)[][]): str
 }
 
 export function exportHeader(title: string, scope: string): string {
-  return [`${title}`, `Generated: ${new Date().toISOString()}`, `Scope: ${scope}`, 'DEMO DATA — all records are synthetic. Sensitive identifiers are masked.', 'Findings and alerts are investigative leads, not fraud determinations.', ''].join('\n');
+  return [`${title}`, `Generated: ${new Date().toISOString()}`, `Scope: ${scope}`, 'Sample records. Sensitive identifiers are masked.', 'Findings and alerts are investigative leads, not fraud determinations.', ''].join('\n');
 }

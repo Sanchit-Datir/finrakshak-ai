@@ -1,4 +1,4 @@
-import { CircleAlert, CircleCheck, Database, Landmark, Search } from 'lucide-react';
+import { CircleAlert, CircleCheck, Landmark, Search } from 'lucide-react';
 import { useState } from 'react';
 import type { Application, PrSubject, PublicRecordsSnapshot } from '../../domain/schemas.js';
 import { formatMoney } from '../../lib/format.js';
@@ -181,12 +181,7 @@ export function PublicRecordsCheck({
               <Landmark className="text-teal size-5" aria-hidden /> Public-records check
             </span>
           }
-          subtitle="Matches the applicant and its customers against the local copy of public records (IBBI insolvency, MCA company master for Maharashtra, ED, RBI, NFRA, SFIO, SEBI sample). Not a live registry or credit-bureau lookup."
-          actions={
-            <Badge tone="info" icon={Database}>
-              Real public data · local copy
-            </Badge>
-          }
+          subtitle="Matches the applicant and its customers against public records (IBBI insolvency, MCA company master for Maharashtra, ED, RBI, NFRA, SFIO, SEBI). Not a live registry or credit-bureau lookup."
         />
         <div className="space-y-4 px-5 pb-5">
           {!hasName && (

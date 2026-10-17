@@ -16,7 +16,7 @@ import { Card, CardHeader } from '../components/ui/Card.js';
 import { Dialog } from '../components/ui/Dialog.js';
 import { Checkbox, SelectField, TextArea, TextField } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
-import { DemoBadge, EmptyState, Notice } from '../components/ui/States.js';
+import { EmptyState, Notice } from '../components/ui/States.js';
 import {
   AlertStatusBadge,
   CaseStatusBadge,
@@ -168,7 +168,6 @@ export function CaseDetailPage(): React.JSX.Element {
           <>
             <PriorityBadge priority={c.priority} />
             <CaseStatusBadge status={c.status} />
-            <DemoBadge />
           </>
         }
         subtitle={

@@ -1,11 +1,11 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import type { FieldInput, Role, SampleRef } from './data.js';
+import type { FieldInput, Role } from './data.js';
 
-/** Signs in through the "Demo sign-in" panel on the login page. */
+/** Signs in through the "Quick sign-in" panel on the login page. */
 export async function demoSignIn(page: Page, role: Role): Promise<void> {
   await page.goto('/login');
-  await page.getByLabel('Demo role').selectOption(role);
-  await page.getByRole('button', { name: 'Continue with demo sign-in' }).click();
+  await page.getByLabel('Sign-in role').selectOption(role);
+  await page.getByRole('button', { name: 'Continue with quick sign-in' }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
 }
 
@@ -15,26 +15,6 @@ export async function applyField(page: Page, field: FieldInput): Promise<void> {
   if ('fill' in field) await input.fill(field.fill);
   else if ('select' in field) await input.selectOption({ label: field.select });
   else await input.setChecked(field.check);
-}
-
-/** Clicks the sticky step-navigation "next" button (its label is shortened on mobile). */
-export async function nextStep(page: Page, desktopLabel: string): Promise<void> {
-  await page
-    .getByRole('button', { name: new RegExp(`^(${escapeRegExp(desktopLabel)}|Next)$`) })
-    .click();
-}
-
-/** Attaches demo samples from the capture step's "Add demo sample" menu. */
-export async function attachSamples(page: Page, samples: readonly SampleRef[]): Promise<void> {
-  for (const [i, ref] of samples.entries()) {
-    const { title, occurrence } = typeof ref === 'string' ? { title: ref, occurrence: 1 } : ref;
-    await page.getByRole('button', { name: 'Add demo sample' }).click();
-    await page
-      .getByRole('button', { name: title, exact: true })
-      .nth(occurrence - 1)
-      .click();
-    await expect(page.getByText('Demo sample', { exact: true })).toHaveCount(i + 1);
-  }
 }
 
 /**

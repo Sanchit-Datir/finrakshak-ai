@@ -7,7 +7,7 @@ import { FilterSelect } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
-import { DemoBadge, EmptyState } from '../components/ui/States.js';
+import { EmptyState } from '../components/ui/States.js';
 import { AlertStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { Tabs, type TabDef } from '../components/ui/Tabs.js';
@@ -117,7 +117,6 @@ export function AlertsPage(): React.JSX.Element {
       <PageHeader
         docTitle="Alerts"
         title="Alerts"
-        badge={<DemoBadge />}
         subtitle="Leads from pre-disbursement checks and transaction monitoring. Each opens with evidence and suggested checks."
       />
       <Card className="mb-4">

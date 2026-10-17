@@ -1,40 +1,86 @@
 [
   {
-    "name": "farmer crop loan with a 7/12 extract is submitted for review",
+    "name": "farmer loan filled in the form is submitted for review",
     "role": "branch_officer",
-    "samples": ["7/12 extract — Gat 214/2, Karde"],
     "review": [
-      { "label": "Borrower type", "select": "Farmer / agricultural" },
-      { "label": "Loan product", "select": "Kisan Credit Card (crop)" },
-      { "label": "Full name (English / transliterated)", "fill": "Sunil Bhosale" },
-      { "label": "Requested amount (₹)", "fill": "1,50,000" },
-      { "label": "Declared loan purpose", "fill": "Seeds and fertiliser for the kharif season" },
-      { "label": "Applicant has signed the loan-purpose declaration", "check": true }
+      {
+        "label": "Borrower type",
+        "select": "Farmer / agricultural"
+      },
+      {
+        "label": "Loan product",
+        "select": "Farmer loan"
+      },
+      {
+        "label": "Full name (English / transliterated)",
+        "fill": "Sunil Bhosale"
+      },
+      {
+        "label": "Requested amount (₹)",
+        "fill": "1,50,000"
+      },
+      {
+        "label": "Declared loan purpose",
+        "fill": "Seeds and fertiliser for the kharif season"
+      },
+      {
+        "label": "Applicant has signed the loan-purpose declaration",
+        "check": true
+      }
     ],
-    "expect": { "outcome": "submitted" }
+    "expect": {
+      "outcome": "submitted"
+    }
   },
   {
-    "name": "MSME working-capital loan with Aadhaar and bank statement is submitted",
+    "name": "MSME loan filled in the form is submitted",
     "role": "branch_manager",
-    "samples": ["Aadhaar card (masked)", "Bank statement — Apr–Sep 2026"],
     "review": [
-      { "label": "Borrower type", "select": "Proprietorship" },
-      { "label": "Loan product", "select": "MSME working capital" },
-      { "label": "Full name (English / transliterated)", "fill": "Priya Deshmukh" },
-      { "label": "Requested amount (₹)", "fill": "500000" },
-      { "label": "Declared annual income (₹)", "fill": "1200000" },
-      { "label": "Declared loan purpose", "fill": "Raw material stock for the tailoring unit" }
+      {
+        "label": "Borrower type",
+        "select": "Proprietorship"
+      },
+      {
+        "label": "Loan product",
+        "select": "MSME loan"
+      },
+      {
+        "label": "Full name (English / transliterated)",
+        "fill": "Priya Deshmukh"
+      },
+      {
+        "label": "Requested amount (₹)",
+        "fill": "500000"
+      },
+      {
+        "label": "Declared annual income (₹)",
+        "fill": "1200000"
+      },
+      {
+        "label": "Declared loan purpose",
+        "fill": "Raw material stock for the tailoring unit"
+      }
     ],
-    "expect": { "outcome": "submitted" }
+    "expect": {
+      "outcome": "submitted"
+    }
   },
   {
     "name": "missing name and an invalid amount are blocked with field errors",
     "role": "branch_officer",
-    "samples": ["Aadhaar card (masked)"],
     "review": [
-      { "label": "Full name (English / transliterated)", "fill": "" },
-      { "label": "Requested amount (₹)", "fill": "one lakh" },
-      { "label": "Declared loan purpose", "fill": "" }
+      {
+        "label": "Full name (English / transliterated)",
+        "fill": ""
+      },
+      {
+        "label": "Requested amount (₹)",
+        "fill": "one lakh"
+      },
+      {
+        "label": "Declared loan purpose",
+        "fill": ""
+      }
     ],
     "expect": {
       "outcome": "blocked",

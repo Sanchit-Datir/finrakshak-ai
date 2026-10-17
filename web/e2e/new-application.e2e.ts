@@ -1,15 +1,13 @@
 import { expect, test, type Page } from '@playwright/test';
 import { loadApplicationCases, type ApplicationCase } from './support/data.js';
-import { applyField, attachSamples, byLabel, demoSignIn, nextStep } from './support/app.js';
+import { applyField, byLabel, demoSignIn } from './support/app.js';
 
 const cases = loadApplicationCases();
 
 async function reachReviewStep(page: Page, c: ApplicationCase): Promise<void> {
   await demoSignIn(page, c.role);
   await page.goto('/applications/new');
-  await attachSamples(page, c.samples);
-  await nextStep(page, 'Continue to extract & verify');
-  await nextStep(page, 'Continue to review application');
+  await page.getByRole('button', { name: 'Fill the application form' }).click();
   await expect(byLabel(page, 'Full name (English / transliterated)')).toBeVisible();
 }
 

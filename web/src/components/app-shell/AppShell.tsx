@@ -151,10 +151,6 @@ export function AppShell(): React.JSX.Element {
             </Suspense>
           </RouteErrorBoundary>
         </main>
-        <footer className="no-print text-muted border-line border-t px-6 py-3 text-xs">
-          FundTrace AI prototype · All records are synthetic demo data · Alerts are investigative
-          leads, not fraud determinations.
-        </footer>
       </div>
     </div>
   );

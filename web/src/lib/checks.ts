@@ -164,7 +164,7 @@ function certaintyFor(dfs: DocField[]): string {
     unreviewed ? 'Uses machine-extracted values not yet confirmed by a reviewer.' : 'Uses values confirmed or entered by a reviewer.',
   ];
   if (handwritten) parts.push('Includes handwritten text, which is read with lower confidence.');
-  if (simulated) parts.push('Extracted values are simulated demo output.');
+  if (simulated) parts.push('Extracted values are simulated output.');
   return parts.join(' ');
 }
 

@@ -48,6 +48,15 @@ _Last updated: 17 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` 
 The TEST loans for scenarios 2 and 3 were added permanently to `web/src/demo/seed.ts`, as the
 owner decided. Only the borrowers are real; the loan values are made up.
 
+## UI updates session (17 Oct 2026, branch `ui-updates` from `main`)
+
+Owner's UI review comments, plan and status in `docs/plans/UI_UPDATES_PLAN.md` (skipped items listed
+there). Dashboard trimmed, "Demo data" / "local copy" badges and the footer removed, branches renamed
+Mumbai / Delhi / Pune / Kolkata (ids unchanged), new application can start from the form (documents
+optional, no demo sample), products Business / Education / MSME / Farmer loan, Settings "Data
+sources" and "Cloud & AI" removed, nav reordered. Storage key bumped to `fundtrace.demo.v2`. Open for
+the owner: the product and borrower-sort decisions listed in the plan. Not committed yet.
+
 ## Remaining-work session (17 Oct 2026, branch `remaining-work-changes`)
 
 Built the rest of `docs/plans/REMAINING_WORK.md` that needs no GCP: the cloud scoring job (W2a–W2f, off
@@ -169,7 +178,7 @@ npm run build -w @fund-tracker/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web
 npm run check && npm run build
 npm run e2e                     # all scenarios (Chromium preinstalled in the cloud container)
-npm run dev -w web              # manual testing at http://localhost:5173 (demo sign-in)
+npm run dev -w web              # manual testing at http://localhost:5173 (quick sign-in)
 ```
 
 **Gotchas:**
@@ -178,4 +187,4 @@ npm run dev -w web              # manual testing at http://localhost:5173 (demo 
   `npx eslint --no-ignore`.
 - **Missing public-records data:** if a check says "Could not run the public-records check", run
   `graphCli --web`.
-- **Saved demo data:** after schema changes the saved demo data resets on its own, with a toast.
+- **Saved data:** after schema changes the saved data resets on its own, with a toast.

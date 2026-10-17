@@ -37,7 +37,7 @@ export function PublicRecordsLoansCard({ watches }: { watches: PublicWatch[] }):
           subtitle={
             checked.length === 0
               ? 'Not checked yet: loans are checked automatically after sign-in.'
-              : `${checked.length} loan(s) checked automatically${last === undefined || last === '' ? '' : ` · last ${f.dateTime(last)}`} · local public-records copy`
+              : `${checked.length} loan(s) checked automatically${last === undefined || last === '' ? '' : ` · last ${f.dateTime(last)}`}`
           }
           actions={
             flagged.length > 0 ? (

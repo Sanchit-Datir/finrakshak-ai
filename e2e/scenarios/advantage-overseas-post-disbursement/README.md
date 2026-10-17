@@ -80,7 +80,7 @@ form to watch a loan that is not in the loan book.
 ```bash
 npm run build -w @fund-tracker/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # publish the public-records data (once per machine)
-npm run dev -w web                   # http://localhost:5173 → Continue with demo sign-in
+npm run dev -w web                   # http://localhost:5173 → Continue with quick sign-in
 ```
 
 1. Sign in. Within a few seconds a toast says "6 new public-record alert(s) on disbursed loans".

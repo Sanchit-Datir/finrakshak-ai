@@ -62,7 +62,7 @@ Then `Grep -n` for the symbol and `Read` with `offset`/`limit` around the hit. D
 
 ## 5. Building blocks (import, don't re-implement)
 
-`components/ui/`: `Button`, `LinkButton`, `IconButton` · `Card`, `CardHeader` · `Badge` · `StatusBadges` (`PriorityBadge`, `AppStatusBadge`, `AlertStatusBadge`, `CaseStatusBadge`, `FieldStateBadge`, `ProcessingBadge`, `EvidenceStatusBadge`, `LinkStatusBadge`) · `Dialog` (`variant="drawer"`), `ConfirmDialog` · `Tabs` · `DataTable` (sortable, `empty`, `dense`) · `TextField`, `SelectField`, `TextArea`, `Checkbox`, `FilterSelect` · `SearchInput` · `PeriodPicker` · `Popover` · `PageHeader` (also sets document title) · `EmptyState`, `ErrorState`, `Skeleton`, `Notice`, `DemoBadge`, `SimulatedBadge`. Charts: `components/charts/StackedBarChart`, `DonutChart`.
+`components/ui/`: `Button`, `LinkButton`, `IconButton` · `Card`, `CardHeader` · `Badge` · `StatusBadges` (`PriorityBadge`, `AppStatusBadge`, `AlertStatusBadge`, `CaseStatusBadge`, `FieldStateBadge`, `ProcessingBadge`, `EvidenceStatusBadge`, `LinkStatusBadge`) · `Dialog` (`variant="drawer"`), `ConfirmDialog` · `Tabs` · `DataTable` (sortable, `empty`, `dense`) · `TextField`, `SelectField`, `TextArea`, `Checkbox`, `FilterSelect` · `SearchInput` · `PeriodPicker` · `Popover` · `PageHeader` (also sets document title) · `EmptyState`, `ErrorState`, `Skeleton`, `Notice`, `SimulatedBadge`. Charts: `components/charts/StackedBarChart`, `DonutChart`.
 
 ## 6. Recipes
 
@@ -90,4 +90,4 @@ Then `Grep -n` for the symbol and `Read` with `offset`/`limit` around the hit. D
 npm run build -w web && (cd web && npx vite preview --port 4173 --strictPort &)
 ```
 
-Drive it with the globally installed Playwright (`require(\`${npm root -g}/playwright\`)`): demo sign-in button is `/Continue with demo sign-in/`. Take one screenshot of the changed view at 1440×900 and one at 390×844; check `document.documentElement.scrollWidth` equals the viewport width.
+Drive it with the globally installed Playwright (`require(\`${npm root -g}/playwright\`)`): demo sign-in button is `/Continue with quick sign-in/`. Take one screenshot of the changed view at 1440×900 and one at 390×844; check `document.documentElement.scrollWidth` equals the viewport width.

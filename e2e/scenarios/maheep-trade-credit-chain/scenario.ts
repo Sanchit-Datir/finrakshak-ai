@@ -10,7 +10,7 @@ export const maheepTradeCreditChain: LoanScenario = {
   title: 'Customer in liquidation at the end of a chain of unpaid dues',
   input: {
     borrowerType: 'Private limited company',
-    product: 'MSME working capital',
+    product: 'MSME loan',
     signatory: 'TEST Authorised Signatory',
     amountRupees: '2500000',
     tenureMonths: '12',

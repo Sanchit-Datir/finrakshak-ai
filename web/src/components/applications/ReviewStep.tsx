@@ -1,6 +1,11 @@
 import { ArrowLeft, ArrowRight, FileText, MessageSquarePlus, RefreshCw, Save } from 'lucide-react';
 import { useState } from 'react';
-import { BORROWER_TYPE_LABEL, PRODUCT_LABEL, SECTION_LABEL } from '../../domain/labels.js';
+import {
+  APPLICATION_PRODUCTS,
+  BORROWER_TYPE_LABEL,
+  PRODUCT_LABEL,
+  SECTION_LABEL,
+} from '../../domain/labels.js';
 import {
   BorrowerTypeSchema,
   LandUnitSchema,
@@ -285,7 +290,10 @@ export function ReviewStep({
             set('loan', { product: LoanProductSchema.parse(e.target.value) });
           }}
         >
-          {LoanProductSchema.options.map((p) => (
+          {(APPLICATION_PRODUCTS.includes(product)
+            ? APPLICATION_PRODUCTS
+            : [product, ...APPLICATION_PRODUCTS]
+          ).map((p) => (
             <option key={p} value={p}>
               {PRODUCT_LABEL[p]}
             </option>

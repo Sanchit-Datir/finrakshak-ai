@@ -9,7 +9,7 @@ import { STEPS, Stepper } from '../components/applications/Stepper.js';
 import { Button, LinkButton } from '../components/ui/Button.js';
 import { Card } from '../components/ui/Card.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
-import { DemoBadge, EmptyState, Notice } from '../components/ui/States.js';
+import { EmptyState, Notice } from '../components/ui/States.js';
 import { AppStatusBadge } from '../components/ui/StatusBadges.js';
 import {
   createDraftApplication,
@@ -50,10 +50,13 @@ export function NewApplicationPage(): React.JSX.Element {
     );
   }
 
-  const step = localStep ?? app?.step ?? 1;
-  const furthest = Math.max(step, app?.step ?? 1);
   const docs =
     app === null ? [] : app.documentIds.flatMap((id) => db.documents.filter((d) => d.id === id));
+  const hasDocs = docs.length > 0;
+  const requested = localStep ?? app?.step ?? 1;
+  // "Extract & verify" only applies to uploaded documents.
+  const step = requested === 2 && !hasDocs ? 1 : requested;
+  const furthest = Math.max(step, app?.step ?? 1);
 
   /** Creates the draft on first meaningful action, then moves to its edit URL. */
   const ensureApp = (): string => {
@@ -94,31 +97,34 @@ export function NewApplicationPage(): React.JSX.Element {
       <PageHeader
         docTitle={app === null ? 'New application' : `${app.id} · ${STEPS[step - 1] ?? ''}`}
         title={app === null ? 'New loan application' : `Application ${app.id}`}
-        badge={
-          <>
-            {app !== null && <AppStatusBadge status={app.status} />}
-            <DemoBadge />
-          </>
-        }
-        subtitle="Capture paper documents, verify what was read, review the application, then run checks."
+        badge={app === null ? undefined : <AppStatusBadge status={app.status} />}
+        subtitle="Fill the application form or upload documents, review the application, then run checks."
       />
-      <Stepper current={step} furthest={furthest} onSelect={go} />
+      <Stepper current={step} furthest={furthest} unavailable={hasDocs ? [] : [2]} onSelect={go} />
       {app !== null && (app.status === 'approved' || app.status === 'declined') && (
         <Notice tone="warn" className="mb-4">
-          This application already has a recorded decision (demo state). Changes here are recorded
-          in the audit history but do not change the decision.
+          This application already has a recorded decision. Changes here are recorded in the audit
+          history but do not change the decision.
         </Notice>
       )}
 
       {step === 1 && (
         <>
-          <CaptureStep app={app} docs={docs} actor={actor} ensureApp={ensureApp} />
+          <CaptureStep
+            app={app}
+            docs={docs}
+            actor={actor}
+            ensureApp={ensureApp}
+            onFillForm={() => {
+              go(3);
+            }}
+          />
           <StepNav
             onSave={saveDraft}
             onNext={() => {
-              go(2);
+              go(hasDocs ? 2 : 3);
             }}
-            nextLabel="Continue to extract & verify"
+            nextLabel={hasDocs ? 'Continue to extract & verify' : 'Continue to application form'}
           />
         </>
       )}
@@ -151,7 +157,7 @@ export function NewApplicationPage(): React.JSX.Element {
           db={db}
           actor={actor}
           onBack={() => {
-            go(2);
+            go(hasDocs ? 2 : 1);
           }}
           onContinue={() => {
             go(4);
@@ -190,7 +196,7 @@ export function NewApplicationPage(): React.JSX.Element {
         <Card>
           <EmptyState
             icon={FileQuestion}
-            title="Start by capturing documents"
+            title="Start the application"
             action={
               <Button
                 onClick={() => {
@@ -201,7 +207,7 @@ export function NewApplicationPage(): React.JSX.Element {
               </Button>
             }
           >
-            Add at least one document or save a draft first.
+            Fill the application form or add a document first.
           </EmptyState>
         </Card>
       )}

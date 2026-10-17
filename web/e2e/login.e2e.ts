@@ -23,7 +23,7 @@ test.describe('sign-in form validation', () => {
   }
 });
 
-test.describe('demo sign-in', () => {
+test.describe('quick sign-in', () => {
   for (const r of data.demoRoles) {
     test(`as ${r.role}`, async ({ page }) => {
       await demoSignIn(page, r.role);

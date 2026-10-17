@@ -1,8 +1,7 @@
-import { Database, Lock, RotateCcw, Save, Trash2 } from 'lucide-react';
+import { RotateCcw, Save, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Badge } from '../components/ui/Badge.js';
 import { Button } from '../components/ui/Button.js';
-import { CloudAiTab } from '../components/settings/CloudAiTab.js';
 import { Card, CardHeader } from '../components/ui/Card.js';
 import { ConfirmDialog } from '../components/ui/Dialog.js';
 import { Checkbox, SelectField, TextField } from '../components/ui/Field.js';
@@ -26,7 +25,7 @@ import { clearWorkspace, mutate, resetToDemo, useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
 
-type Tab = 'profile' | 'preferences' | 'risk' | 'checklists' | 'data' | 'cloud';
+type Tab = 'profile' | 'preferences' | 'risk' | 'checklists' | 'data';
 
 export function SettingsPage(): React.JSX.Element {
   const [tab, setTab] = useUrlState('tab', 'profile');
@@ -35,8 +34,7 @@ export function SettingsPage(): React.JSX.Element {
     { key: 'preferences' as const, label: 'Preferences' },
     { key: 'risk' as const, label: 'Risk & monitoring rules' },
     { key: 'checklists' as const, label: 'Document checklists' },
-    { key: 'data' as const, label: 'Data sources & demo' },
-    { key: 'cloud' as const, label: 'Cloud & AI' },
+    { key: 'data' as const, label: 'Workspace data' },
   ];
   const current = (tabs.some((t) => t.key === tab) ? tab : 'profile') as Tab;
   return (
@@ -59,7 +57,6 @@ export function SettingsPage(): React.JSX.Element {
         {current === 'risk' && <RiskTab />}
         {current === 'checklists' && <ChecklistTab />}
         {current === 'data' && <DataTab />}
-        {current === 'cloud' && <CloudAiTab />}
       </Tabs>
     </>
   );
@@ -136,7 +133,7 @@ function ProfileTab(): React.JSX.Element {
           hint={
             managed
               ? 'Set by your administrator.'
-              : "Set by demo sign-in. Real roles would come from your bank's identity system."
+              : "Set by quick sign-in. Real roles would come from your bank's identity system."
           }
         />
         <SelectField
@@ -530,69 +527,15 @@ function ChecklistTab(): React.JSX.Element {
   );
 }
 
-const SOURCES: [string, string, 'ok' | 'warn' | 'neutral'][] = [
-  ['Deterministic application checks', 'Running in browser', 'ok'],
-  ['Transaction monitoring rules', 'Running in browser on demo ledger + imported CSV', 'ok'],
-  ['Core banking transaction feed', 'Not connected — use CSV import', 'warn'],
-  [
-    'OCR / handwriting recognition',
-    'Not connected — demo samples show simulated output; uploads need manual entry',
-    'warn',
-  ],
-  ['Gemini on Vertex AI (document analysis)', 'Not connected — no AI analysis runs', 'warn'],
-  [
-    'Public records (courts, MCA, land records)',
-    'Not connected — no lookups are performed',
-    'warn',
-  ],
-  ['Authentication & role enforcement', 'Demo sign-in only — not secure', 'warn'],
-  ['Storage', 'This browser only (localStorage); files held in the open tab', 'neutral'],
-];
-
 function DataTab(): React.JSX.Element {
   const toast = useToast();
   const [confirm, setConfirm] = useState<'reset' | 'clear' | null>(null);
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader
-          title={
-            <span className="flex items-center gap-2">
-              <Database className="size-5" aria-hidden /> Data sources and integration status
-            </span>
-          }
-        />
-        <DataTable
-          caption="Integration status"
-          rows={SOURCES}
-          rowKey={(r) => r[0]}
-          dense
-          columns={[
-            {
-              key: 'n',
-              header: 'Source',
-              render: (r) => <span className="font-medium">{r[0]}</span>,
-            },
-            {
-              key: 's',
-              header: 'Status',
-              render: (r) =>
-                r[2] === 'warn' ? (
-                  <Badge tone="warn" icon={Lock}>
-                    {r[1]}
-                  </Badge>
-                ) : (
-                  <Badge tone={r[2]}>{r[1]}</Badge>
-                ),
-            },
-          ]}
-        />
-      </Card>
       <Card className="p-5">
-        <h3 className="mb-2 font-semibold">Demo data</h3>
+        <h3 className="mb-2 font-semibold">Workspace data</h3>
         <p className="text-muted mb-3 text-sm">
-          All records are synthetic. Resetting restores the original demo dataset; clearing shows
-          the empty states.
+          Resetting restores the original sample records; clearing removes every record.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -601,7 +544,7 @@ function DataTab(): React.JSX.Element {
               setConfirm('reset');
             }}
           >
-            Reset demo dataset
+            Reset sample records
           </Button>
           <Button
             variant="danger"
@@ -617,7 +560,7 @@ function DataTab(): React.JSX.Element {
       <ConfirmDialog
         open={confirm !== null}
         danger={confirm === 'clear'}
-        title={confirm === 'reset' ? 'Reset demo dataset?' : 'Clear all records?'}
+        title={confirm === 'reset' ? 'Reset sample records?' : 'Clear all records?'}
         confirmLabel={confirm === 'reset' ? 'Reset' : 'Clear workspace'}
         onCancel={() => {
           setConfirm(null);
@@ -627,14 +570,14 @@ function DataTab(): React.JSX.Element {
           else clearWorkspace();
           toast.push({
             tone: 'success',
-            title: confirm === 'reset' ? 'Demo dataset restored' : 'Workspace cleared',
+            title: confirm === 'reset' ? 'Sample records restored' : 'Workspace cleared',
           });
           setConfirm(null);
         }}
       >
         <p>
           {confirm === 'reset'
-            ? 'All changes you made (applications, reviews, notes, alert and case updates) will be replaced by the original synthetic dataset.'
+            ? 'All changes you made (applications, reviews, notes, alert and case updates) will be replaced by the original sample records.'
             : 'All applications, documents, loans, alerts and cases will be removed from this browser. Your profile and preferences are kept.'}
         </p>
       </ConfirmDialog>

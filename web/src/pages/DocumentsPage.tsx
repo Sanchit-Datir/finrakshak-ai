@@ -20,7 +20,7 @@ import { ConfirmDialog, Dialog } from '../components/ui/Dialog.js';
 import { FilterSelect, SelectField } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
-import { DemoBadge, EmptyState, Notice } from '../components/ui/States.js';
+import { EmptyState, Notice } from '../components/ui/States.js';
 import { ProcessingBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { cn } from '../components/ui/cn.js';
@@ -164,7 +164,6 @@ export function DocumentsPage(): React.JSX.Element {
       <PageHeader
         docTitle="Document Library"
         title="Document Library"
-        badge={<DemoBadge />}
         subtitle="All captured documents across applications. Documents not yet reviewed are marked."
       />
       <Notice className="mb-4">

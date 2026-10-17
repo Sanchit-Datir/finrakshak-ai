@@ -7,7 +7,7 @@ import { Card, CardHeader } from '../components/ui/Card.js';
 import { FilterSelect } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
-import { DemoBadge, EmptyState, Notice } from '../components/ui/States.js';
+import { EmptyState, Notice } from '../components/ui/States.js';
 import { CaseStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { Tabs } from '../components/ui/Tabs.js';
@@ -136,7 +136,7 @@ export function ReportsPage(): React.JSX.Element {
       ['generated_at', generatedAt],
       ['date_range', `${range.start.toISOString()} to ${range.end.toISOString()}`],
       ['scope', scope],
-      ['data', 'DEMO DATA - synthetic; identifiers masked'],
+      ['data', 'Sample records; identifiers masked'],
     ];
     const rows: (string | number)[][] = [
       ['applications_processed', d.apps.length],
@@ -181,7 +181,6 @@ export function ReportsPage(): React.JSX.Element {
       <PageHeader
         docTitle="Reports"
         title="Reports"
-        badge={<DemoBadge />}
         subtitle="Every value is calculated from the current dataset for the selected period and scope."
         actions={
           <>
@@ -218,8 +217,8 @@ export function ReportsPage(): React.JSX.Element {
         }
       />
       <p className="text-muted mb-4 text-xs">
-        Generated {f.dateTime(generatedAt)} · {range.label} · {scope} · Demo data. PDF output uses
-        your browser’s print dialog.
+        Generated {f.dateTime(generatedAt)} · {range.label} · {scope} · PDF output uses your
+        browser’s print dialog.
       </p>
 
       <Tabs

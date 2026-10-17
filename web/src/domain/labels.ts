@@ -37,12 +37,22 @@ export const BORROWER_TYPE_LABEL: Record<BorrowerType, string> = {
 
 export const PRODUCT_LABEL: Record<LoanProduct, string> = {
   kcc_crop: 'Kisan Credit Card (crop)',
-  agri_term: 'Agricultural term loan',
+  agri_term: 'Farmer loan',
   warehouse_receipt: 'Warehouse receipt loan',
-  msme_working_capital: 'MSME working capital',
+  msme_working_capital: 'MSME loan',
   msme_term: 'MSME term loan',
   personal: 'Personal loan',
+  business: 'Business loan',
+  education: 'Education loan',
 };
+
+/** Products offered on a new application; the others remain only on existing records. */
+export const APPLICATION_PRODUCTS: readonly LoanProduct[] = [
+  'business',
+  'education',
+  'msme_working_capital',
+  'agri_term',
+];
 
 export const APP_STATUS_LABEL: Record<ApplicationStatus, string> = {
   draft: 'Draft',

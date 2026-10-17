@@ -7,7 +7,7 @@ import { EntityGraph } from '../components/graph/EntityGraph.js';
 import { LinkButton } from '../components/ui/Button.js';
 import { Card, CardHeader } from '../components/ui/Card.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
-import { DemoBadge, EmptyState } from '../components/ui/States.js';
+import { EmptyState } from '../components/ui/States.js';
 import {
   AlertStatusBadge,
   CaseStatusBadge,
@@ -103,7 +103,6 @@ export function BorrowerProfilePage(): React.JSX.Element {
             <Badge tone={b.status === 'active' ? 'ok' : 'neutral'}>
               {b.status === 'active' ? 'Active' : 'Inactive'}
             </Badge>
-            <DemoBadge />
           </>
         }
         subtitle={

@@ -35,7 +35,7 @@ const SHOTS = 'screenshots/risk-scores';
 
 async function signIn(page: Page): Promise<void> {
   await page.goto('/login');
-  await page.getByRole('button', { name: /Continue with demo sign-in/ }).click();
+  await page.getByRole('button', { name: /Continue with quick sign-in/ }).click();
   await page.waitForURL(/dashboard/);
 }
 

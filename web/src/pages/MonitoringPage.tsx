@@ -21,7 +21,7 @@ import { LoanPublicRecordsBanner } from '../components/monitoring/LoanPublicReco
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
-import { DemoBadge, EmptyState, Notice } from '../components/ui/States.js';
+import { EmptyState, Notice } from '../components/ui/States.js';
 import { AlertStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { ALERT_STATUS_LABEL, PRODUCT_LABEL, TXN_TYPE_LABEL } from '../domain/labels.js';
@@ -172,7 +172,6 @@ export function MonitoringPage(): React.JSX.Element {
       <PageHeader
         docTitle="Monitoring"
         title="Post-disbursement Monitoring"
-        badge={<DemoBadge />}
         subtitle="Review transaction patterns and investigate movements that may need attention."
         actions={
           <>
@@ -326,6 +325,55 @@ export function MonitoringPage(): React.JSX.Element {
       ) : (
         <>
           <LoanPublicRecordsBanner watch={db.publicWatches.find((w) => w.loanId === loan.id)} />
+          <Card className="mb-6">
+            <CardHeader
+              title="Alerts for this loan"
+              subtitle="Select to highlight in the flow; open for evidence."
+            />
+            {loanAlerts.length === 0 ? (
+              <EmptyState icon={Bell} title="No alerts match these filters">
+                No configured rule raised an alert for this loan with the current filter. This is
+                not a guarantee that funds were used as declared.
+              </EmptyState>
+            ) : (
+              <ul className="divide-line grid divide-y md:grid-cols-2 md:divide-y-0 xl:grid-cols-3">
+                {loanAlerts.map((a) => (
+                  <li
+                    key={a.id}
+                    className={`px-5 py-3 ${selectedAlert === a.id ? 'bg-primary-soft/50' : ''}`}
+                  >
+                    <div className="flex flex-wrap gap-2">
+                      <PriorityBadge priority={a.priority} />
+                      <AlertStatusBadge status={a.status} />
+                    </div>
+                    <p className="mt-1 text-sm font-medium">{a.title}</p>
+                    <p className="text-muted text-xs">{a.reason}</p>
+                    <div className="mt-1.5 flex gap-3 text-xs font-semibold">
+                      <button
+                        type="button"
+                        className="text-primary hover:underline"
+                        aria-pressed={selectedAlert === a.id}
+                        onClick={() => {
+                          setSelectedAlert(selectedAlert === a.id ? null : a.id);
+                        }}
+                      >
+                        {selectedAlert === a.id ? 'Clear highlight' : 'Highlight in flow'}
+                      </button>
+                      <button
+                        type="button"
+                        className="text-primary hover:underline"
+                        onClick={() => {
+                          setOpenAlert(a.id);
+                        }}
+                      >
+                        Open details
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
           <Card className="mb-6 p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -414,55 +462,6 @@ export function MonitoringPage(): React.JSX.Element {
                   maxDepth={Number(depth)}
                 />
               </div>
-            </Card>
-            <Card>
-              <CardHeader
-                title="Alerts for this loan"
-                subtitle="Select to highlight in the flow; open for evidence."
-              />
-              {loanAlerts.length === 0 ? (
-                <EmptyState icon={Bell} title="No alerts match these filters">
-                  No configured rule raised an alert for this loan with the current filter. This is
-                  not a guarantee that funds were used as declared.
-                </EmptyState>
-              ) : (
-                <ul className="divide-line grid divide-y md:grid-cols-2 md:divide-y-0 xl:grid-cols-3">
-                  {loanAlerts.map((a) => (
-                    <li
-                      key={a.id}
-                      className={`px-5 py-3 ${selectedAlert === a.id ? 'bg-primary-soft/50' : ''}`}
-                    >
-                      <div className="flex flex-wrap gap-2">
-                        <PriorityBadge priority={a.priority} />
-                        <AlertStatusBadge status={a.status} />
-                      </div>
-                      <p className="mt-1 text-sm font-medium">{a.title}</p>
-                      <p className="text-muted text-xs">{a.reason}</p>
-                      <div className="mt-1.5 flex gap-3 text-xs font-semibold">
-                        <button
-                          type="button"
-                          className="text-primary hover:underline"
-                          aria-pressed={selectedAlert === a.id}
-                          onClick={() => {
-                            setSelectedAlert(selectedAlert === a.id ? null : a.id);
-                          }}
-                        >
-                          {selectedAlert === a.id ? 'Clear highlight' : 'Highlight in flow'}
-                        </button>
-                        <button
-                          type="button"
-                          className="text-primary hover:underline"
-                          onClick={() => {
-                            setOpenAlert(a.id);
-                          }}
-                        >
-                          Open details
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </Card>
           </div>
 

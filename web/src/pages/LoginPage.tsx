@@ -34,7 +34,7 @@ const T = {
     emailRequired: 'Enter your work email address. Employee ID sign-in is not available yet.',
     checking: 'Checking your sign-in…',
     notConnected:
-      'Secure sign-in is not connected in this prototype, so no credentials were checked. Use demo sign-in below to explore with synthetic data.',
+      'Secure sign-in is not connected in this prototype, so no credentials were checked. Use quick sign-in below to explore with synthetic data.',
   },
   mr: {
     welcome: 'पुन्हा स्वागत आहे',
@@ -364,14 +364,14 @@ export function LoginPage(): React.JSX.Element {
             {demoEnabled(import.meta.env) && (
               <div className="border-line mt-6 rounded-xl border border-dashed p-4">
                 <p className="flex items-center gap-1.5 text-sm font-semibold">
-                  <FlaskConical className="text-violet size-4" aria-hidden /> Demo sign-in
+                  <FlaskConical className="text-violet size-4" aria-hidden /> Quick sign-in
                 </p>
                 <p className="text-muted mt-1 text-xs">
                   Explore the prototype with synthetic data. No password is checked and this is not
                   access control.
                 </p>
                 <SelectField
-                  label="Demo role"
+                  label="Sign-in role"
                   className="mt-3"
                   value={role}
                   onChange={(e) => {
@@ -390,7 +390,7 @@ export function LoginPage(): React.JSX.Element {
                   icon={FlaskConical}
                   onClick={demoSignIn}
                 >
-                  Continue with demo sign-in
+                  Continue with quick sign-in
                 </Button>
               </div>
             )}
@@ -404,7 +404,7 @@ export function LoginPage(): React.JSX.Element {
         onClose={() => {
           setForgot(false);
         }}
-        title="Password reset (demo placeholder)"
+        title="Password reset (placeholder)"
         footer={
           <Button
             variant="primary"
