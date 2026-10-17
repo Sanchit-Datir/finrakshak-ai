@@ -61,7 +61,10 @@ branch scoping is kept in the service and will be decided later. Open for the ow
 
 At the owner's request, built the **pattern miner** and the **risk explainer** from main, following
 `docs/plans/AGENTS_PLAN.md`, `PATTERN_MINER_PLAN.md` and `RISK_EXPLAINER_PLAN.md` (steps 12, 14 and 17/E2).
-Pushed at the owner's request (checkpoint commits); no PR. What is left: `remaining-agent-changes.md`.
+Pushed at the owner's request; PR opened against `main` at the owner's request. **Owner confirmed (17 Oct
+2026):** explanations in their own collection `synthRiskExplanations` (one per alert; a prompt bump applies to
+new alerts only); the mock and the kill switches store nothing, a failed real model stores code-worded
+proposals with `model: null`; model-rejected candidates are not proposed and only their count is kept.
 
 - Shared: `runToolLoop` (`ingest/src/ai/toolLoop.ts`), the number check (`ai/outputChecks.ts`), the `agentRuns`
   envelope (all three agents write one). The 14a edge-case tests found a bug: once the input budget was used,
