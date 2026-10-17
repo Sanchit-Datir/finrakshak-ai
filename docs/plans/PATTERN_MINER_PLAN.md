@@ -28,8 +28,24 @@ I counted the timelines in `data/processed/case_timelines.json`:
   records (`case_events`, with `entities` holding about 18,000 rows in total; the exact population is fixed
   in MVP 1).
 
-So expect **few patterns, probably 3 to 8**, each backed by a handful of cases. That is fine: they are
-reviewed leads, and the scoring plan caps their weight while the seeds stay unverified.
+I first expected a few patterns, probably 3 to 8. **The first real run (17 Oct 2026, MVP 1) found none.**
+`npm run miner -- candidates` reports it:
+
+- 20 of the 23 seed cases have an insolvency or liquidation record; 3 do not.
+- **Only 2 of those 20 (IL&FS, Religare) have any other record before it**, and the two records are different
+  kinds (a voluntary liquidation and an RBI penalty). In the other 18 the insolvency announcement is the
+  earliest record the data holds. IBBI records start in January 2017, but the ED records in the dataset
+  start only in June 2022 and the NFRA records in December 2019, years after most of these cases'
+  2017–2019 insolvency announcements.
+- With nothing before the outcome there is nothing for a "this, then insolvency" sequence to start from, so
+  no step list is even tried. The population baseline (14,870 entities; 58% end at an insolvency record) is
+  built and ready, but nothing reaches it.
+
+This is the result of **checkpoint 1** in `README.md`: the public timelines cannot give early warning of
+insolvency. The tools are built and tested on planted patterns (a sequence found in four of six cases, lift
+worked out by hand, every threshold checked at its exact edge), so they will find a pattern if the data ever
+holds one: with earlier ED and NFRA records, or with other sources (rating changes, auditor resignations, stock exchange disclosures). Until then the
+pattern layer rests on hand-written patterns.
 
 ## Design decisions
 
