@@ -49,8 +49,12 @@ changed; add it to `RUNTIME_SAS` in `scripts/setup-gcp.sh` and re-run the script
 The web app stays in demo mode (no cloud calls, no AI) until it is built with the Firebase web
 config. Steps that only a project owner can do:
 
-1. **Enable sign-in:** Firebase console → Authentication → Sign-in method → Email/Password. Add users
-   under Authentication → Users (there is no public sign-up).
+1. **Enable sign-in:** Firebase console → Authentication → Sign-in method → Email/Password, and add
+   users under Authentication → Users. **Caution:** with this provider on, anyone who has the public web
+   config can usually register an account themselves. If your console offers Authentication → Settings →
+   User actions → "Enable create (sign-up)", turn it **off**. Otherwise treat every account as untrusted:
+   App Check and the per-user daily limit bound the damage (about 30 calls × accounts), but the real fix
+   is an allow-list of permitted emails checked inside `askGemini`. Do that before sharing the URL.
 2. **App Check:** create a reCAPTCHA v3 site key at <https://www.google.com/recaptcha/admin>
    (domains: `fund-tracer.web.app`, `fund-tracer.firebaseapp.com`), then Firebase console → App Check →
    Apps → register the web app with reCAPTCHA v3 and paste the **secret** key there. Keep the secret
