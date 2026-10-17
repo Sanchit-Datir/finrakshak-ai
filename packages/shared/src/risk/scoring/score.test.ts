@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { DirectResult } from './direct.js';
 import type { PatternLayerResult } from './patternLayer.js';
 import { bandOf, combineLayers, isStale, scoreIdOf, type CombineInput } from './score.js';
-import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
+import { SCORING_SETTINGS_V1 as S } from './settings.js';
 import type { LayerResult } from './types.js';
 
 const layer = (points: number): LayerResult => ({ points, reasons: [] });

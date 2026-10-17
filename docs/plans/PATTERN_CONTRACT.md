@@ -178,19 +178,34 @@ the kind lookup for both.
 
 ## 7. What the scorer does with a match (its half of the contract)
 
-- Loads patterns through one port, `PatternSource.load(): { libraryVersion, contentHash, patterns }`, with
-  three implementations (code, file, Firestore).
+- Loads patterns through one port, `PatternSource.load()`, with three implementations (code, file,
+  Firestore). It resolves to `{ libraryVersion, contentHash, patterns, skipped }`, or to `{ refused: reason }`
+  when the library as a whole is unusable (a broken envelope, a content hash that does not match, a source
+  that cannot be read). A refused library is a result, not an exception: the scorer records one
+  `library_refused` finding, scores the pattern layer 0 and marks the run `no_patterns`. `load` rejects only
+  for a bug. `readPatternLibrary` is the non-throwing reader every source uses; `parsePatternLibrary` still
+  throws `PatternLibraryError`, for callers that want it.
 - Validates with zod. An invalid pattern is skipped and counted as an `invalid_pattern` finding; it never
   stops the run. An empty library means the pattern layer scores 0 and the run is marked `no_patterns`, which
   is never shown as low risk (B-56).
 - Uses `approved` patterns only. Skips an unknown `template` with a finding (forward compatibility).
+- **Ignores `graph_proximity` patterns.** The scorer has a graph layer (up to 20 points) that already scores
+  closeness to a flagged entity through documented links; a `graph_proximity` pattern would count the same
+  neighbour twice. So the pattern layer neither matches nor scores it, and it is not an error or a finding.
+  If the only approved patterns are `graph_proximity`, the layer has nothing to match and the run is marked
+  `no_patterns`. The template stays in the contract because the miner's matcher and a consumer without a
+  graph layer can use it. _Decided in workstream W1c; the owner can reverse it._
 - Points per matched pattern: `round(30 × strength × support_weight)`, where `support_weight` is 1.0 for 3 or
   more **verified** supporting cases and 0.6 otherwise (and 0.6 for every hand-written hypothesis). **The
   pattern layer is the largest single pattern's points, capped at 30, not the sum**, so overlapping patterns
   do not double count. _Decided by the owner on 17 Oct 2026._
 - Writes one reason per matched pattern into `risk_scores.reasons`:
-  `{ code: 'pattern_match', pattern_id, pattern_name, strength, support_weight, points, evidence_event_ids, evidence_statuses }`,
+  `{ code: 'pattern_match', pattern_id, pattern_name, strength, support_weight, points, evidence_ids, evidence_statuses }`,
   and stores `pattern_version = library_version` on the score.
+  `evidence_ids` holds public event ids for a public-record pattern, the transaction ids of the fired
+  monitoring rule for a `transaction_typology`, and neighbour entity ids for a graph match (it was
+  `evidence_event_ids` before workstream W1c, which was too narrow). `MatchResult` keeps `matched_event_ids`
+  and `matched_neighbour_ids`.
 - Never writes to the library, never edits a pattern, never calls a model.
 
 ## 8. Versions and compatibility

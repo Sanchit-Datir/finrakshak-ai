@@ -33,7 +33,7 @@ export interface PatternLayerInput {
 
 export interface PatternLayerResult extends LayerResult {
   readonly findings: readonly RunFinding[];
-  /** B-56: no approved pattern to match, so the 0 here is not low risk. */
+  /** B-56: no approved pattern this layer can match, so the 0 here is not low risk. */
   readonly noPatterns: boolean;
 }
 
@@ -107,7 +107,7 @@ function patternReason(
     reason_key: `pattern_match|${p.pattern_id}`,
     subject_id: input.timeline.subject_id,
     points: patternPoints(m.strength, weight, s.pattern),
-    evidence_event_ids: [...m.matched_event_ids, ...m.matched_neighbour_ids],
+    evidence_ids: [...m.matched_event_ids, ...m.matched_neighbour_ids],
     evidence_statuses: isTypology ? ['fact'] : statusesOf(m, input),
     source: isTypology ? 'transactions' : 'public_records',
     facts:
@@ -123,11 +123,21 @@ function patternReason(
   };
 }
 
+/**
+ * Closeness to a flagged entity is scored by the graph layer (up to 20 points). A `graph_proximity`
+ * pattern would count the same neighbour a second time, so this layer ignores it (PATTERN_CONTRACT.md,
+ * section 7). Such a pattern is neither matched nor an error; a library of only these has nothing for this
+ * layer to match and is marked `no_patterns`.
+ */
+export const SCORED_BY_GRAPH_LAYER = 'graph_proximity';
+
 export function patternLayer(
   input: PatternLayerInput,
   settings: ScoringSettings,
 ): PatternLayerResult {
-  const approved = input.patterns.filter((p) => p.status === 'approved');
+  const approved = input.patterns.filter(
+    (p) => p.status === 'approved' && p.definition.template !== SCORED_BY_GRAPH_LAYER,
+  );
   if (approved.length === 0)
     return {
       points: 0,

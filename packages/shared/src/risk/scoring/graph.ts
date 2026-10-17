@@ -104,7 +104,7 @@ function neighbourReason(
     reason_key: `graph_proximity|${n.entity_id}`,
     subject_id: subjectId,
     points: pts,
-    evidence_event_ids: [n.entity_id],
+    evidence_ids: [n.entity_id],
     evidence_statuses: [n.link_status === 'verified' ? 'fact' : 'inference'],
     source: 'graph',
     facts: { hops: n.hops, link_status: n.link_status, kinds: n.kinds.join(',') },

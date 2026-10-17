@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { decideAlert, type AlertState, type ScoredRun } from './decide.js';
-import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
+import { SCORING_SETTINGS_V1 as S } from './settings.js';
 import type { AlertKind, Reason, ReasonCode, RiskBand } from './types.js';
 
 const reason = (key: string, code: ReasonCode = 'late_emi', points = 5): Reason => ({
@@ -9,7 +9,7 @@ const reason = (key: string, code: ReasonCode = 'late_emi', points = 5): Reason 
   reason_key: key,
   subject_id: 'L-1',
   points,
-  evidence_event_ids: [],
+  evidence_ids: [],
   evidence_statuses: [],
   source: 'transactions',
   facts: {},

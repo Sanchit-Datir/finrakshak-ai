@@ -3,7 +3,7 @@ import type { RuleTransaction } from '../rules/types.js';
 import { behaviourLayer, receiptsFallPercent, type BehaviourInput } from './behaviour.js';
 import { addMonths } from './calc.js';
 import { emiHistory, usualAmount } from './emi.js';
-import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
+import { SCORING_SETTINGS_V1 as S } from './settings.js';
 
 const LOAN = { id: 'L-1', amountMinor: 1_200_000, disbursedOn: '2024-01-10', accountEntityId: 'A' };
 const EMI = 100_000;
@@ -84,7 +84,7 @@ describe('own behaviour drift layer', () => {
     const missed = run(onTime(1, 5), '2024-07-16');
     expect(codes(missed)).toEqual(['missed_emi']);
     expect(missed.points).toBe(4);
-    expect(missed.reasons[0]?.evidence_event_ids).toEqual(['emi:L-1:6']);
+    expect(missed.reasons[0]?.evidence_ids).toEqual(['emi:L-1:6']);
   });
 
   it('scores 8 for two unmet EMIs in a row and 4 for two apart', () => {

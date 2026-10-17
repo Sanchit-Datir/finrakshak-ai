@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_SCORING_SETTINGS as S } from '@fund-tracker/shared';
+import { SCORING_SETTINGS_V1 as S, matchPattern } from '@fund-tracker/shared';
 import { writeSmallDataset } from '../test/synthScoring.js';
 import { fileScoringInputs } from './fileInputs.js';
 import type { ScoringData } from './inputs.js';
-import { noMatcher } from './matcher.js';
 import { codePatterns, loadLibrary } from './patternSources.js';
 import { monthsFrom, replay, type ReplayResult } from './replay.js';
 
@@ -12,7 +11,7 @@ const data = await fileScoringInputs({ dir, seedReviewFile: `${dir}/none.json` }
 const library = await loadLibrary(codePatterns());
 const MONTHS = monthsFrom('2024-01', 24);
 const run = (d: ScoringData = data, lib = library): ReplayResult =>
-  replay(d, { months: MONTHS, settings: S, library: lib, matcher: noMatcher });
+  replay(d, { months: MONTHS, settings: S, library: lib, matcher: matchPattern });
 
 describe('month-by-month replay', () => {
   const result = run();
@@ -32,6 +31,22 @@ describe('month-by-month replay', () => {
     for (const a of alerts) {
       const rec = data.records.find((r) => r.entity_id === a.score.borrower_id);
       expect(rec?.date?.slice(0, 7)).toBe(a.month);
+    }
+  });
+
+  it('scores a lone enforcement record as a half match of a two-step sequence with the real matcher', () => {
+    const rows = result.rows.filter((r) =>
+      r.score.reasons.some((x) => x.pattern?.pattern_name.startsWith('Enforcement record, then')),
+    );
+    expect(rows.length).toBeGreaterThan(0);
+    for (const row of rows) {
+      const reason = row.score.reasons.find((x) => x.facts['template'] === 'sequence');
+      expect(reason).toMatchObject({
+        points: 9,
+        evidence_statuses: ['allegation'],
+        pattern: { strength: 0.5, support_weight: 0.6 },
+      });
+      expect(reason?.evidence_ids).toHaveLength(1);
     }
   });
 

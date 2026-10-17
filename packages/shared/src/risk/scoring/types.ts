@@ -66,7 +66,7 @@ export const ReasonSchema = z.object({
   subject_id: z.string().min(1),
   points: z.number().int().min(0).max(100),
   /** Public-record event ids, transaction ids or neighbour ids behind the reason. */
-  evidence_event_ids: z.array(z.string()),
+  evidence_ids: z.array(z.string()),
   /** B-36: stored as found, never upgraded. Transaction evidence is `fact`. */
   evidence_statuses: z.array(ReasonEvidenceStatusSchema),
   /** Where the evidence came from: a public source id, `transactions` or `graph`. */

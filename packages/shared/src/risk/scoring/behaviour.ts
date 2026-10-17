@@ -86,7 +86,7 @@ function reason(
     reason_key: `${code}|${loanId}`,
     subject_id: loanId,
     points: pts,
-    evidence_event_ids: emis.map((e) => e.transactionId ?? `emi:${loanId}:${e.no}`),
+    evidence_ids: emis.map((e) => e.transactionId ?? `emi:${loanId}:${e.no}`),
     evidence_statuses: emis.length > 0 ? ['fact'] : [],
     source: 'transactions',
     facts,

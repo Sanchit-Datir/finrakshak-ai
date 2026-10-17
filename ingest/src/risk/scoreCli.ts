@@ -2,13 +2,17 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DEFAULT_SCORING_SETTINGS, SynthTruthSchema, type SynthTruth } from '@fund-tracker/shared';
+import {
+  settingsForVersion,
+  SynthTruthSchema,
+  matchPattern,
+  type SynthTruth,
+} from '@fund-tracker/shared';
 import { errorMessage, log } from '../log.js';
 import { assertSafeOutputDir } from '../synth/guards.js';
 import { USAGE, parseArgs } from './cliArgs.js';
 import { evaluate, type EvaluationReport } from './evaluate.js';
 import { fileScoringInputs } from './fileInputs.js';
-import { noMatcher } from './matcher.js';
 import { codePatterns, filePatterns, loadLibrary } from './patternSources.js';
 import { monthsFrom, replay, type ReplayResult } from './replay.js';
 
@@ -80,12 +84,13 @@ async function main(argv: readonly string[]): Promise<void> {
   const source =
     args.patterns === 'code' ? codePatterns() : filePatterns(path.resolve(repoRoot, args.patterns));
   const library = await loadLibrary(source);
-  const settings = DEFAULT_SCORING_SETTINGS;
+  const settings = settingsForVersion(args.settings);
+  if (settings === undefined) throw new Error(`Unknown settings version: ${args.settings}`);
   const result = replay(data, {
     months: monthsFrom(data.period.startMonth, data.period.months),
     settings,
     library,
-    matcher: noMatcher,
+    matcher: matchPattern,
   });
   const truth = readTruth(inDir);
   const report = truth.length === 0 ? null : evaluate(result.rows, truth, args.withinMonths);

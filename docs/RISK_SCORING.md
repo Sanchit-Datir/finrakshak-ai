@@ -14,6 +14,7 @@ reviewer, never a verdict (B-58).
 npm run synth                    # make data/synthetic/*.jsonl (not in git)
 npm run score                    # replay 24 months, compare with the truth labels
 npm run score -- --help          # options
+npm run score -- --settings v1                # an earlier published settings version
 npm run score -- --data-built-on 2024-06-30   # pretend the public data is old (B-56 demo)
 npm run score -- --patterns path/to/library.json   # or FUNDTRACE_PATTERN_LIBRARY=...
 ```
@@ -92,13 +93,17 @@ Money is compared in integer paise only (B-01, B-03).
 ### Patterns
 
 - Patterns come through a `PatternSource`: `codePatterns()` (the hand-written library) or
-  `filePatterns(path)`. Both run `parsePatternLibrary` with a real sha256, so a library whose content
-  hash does not match is **refused**: the run continues with the pattern layer at 0, marked
-  `no_patterns`, and a `library_refused` finding. An invalid pattern or an unknown template is skipped
+  `filePatterns(path)`. Both run `readPatternLibrary` with a real sha256, so a library whose content
+  hash does not match is **refused** (`load()` resolves to `{ refused: reason }`, it does not throw): the
+  run continues with the pattern layer at 0, marked `no_patterns`, and a `library_refused` finding. An
+  unreadable or non-JSON library file is refused the same way. An invalid pattern or an unknown template is skipped
   and counted as an `invalid_pattern` or `unknown_template` finding. Only `approved` patterns are used.
-- The matcher is **injected**. The real `matchPattern` is built by the miner side (step 7); until then
-  the command line injects `noMatcher`, which matches nothing, so only transaction typologies can match
-  in a replay. Tests use a fake matcher and the shared fixture library.
+- The matcher is **injected**. The score command injects the real `matchPattern`
+  (`packages/shared/src/risk/patterns/match.ts`, built on the miner side in step 7). The scorer builds
+  its inputs: a `SubjectTimeline` per borrower from the borrower's own public records through
+  `timelineFromEvents` (replay-safe: nothing after `as_of`), and the flagged neighbours from the
+  documented links (`flaggedNeighbours`). Tests that need to control the result use a fake matcher and the
+  shared fixture library.
 - A `transaction_typology` pattern matches when its monitoring rule fired on the loan (strength 1), from
   `detectMonitoring` in `packages/shared/src/risk/rules`. A match result that is malformed, or names
   another pattern, is skipped as an `invalid_match_result` finding.
@@ -106,16 +111,17 @@ Money is compared in integer paise only (B-01, B-03).
   a hand-written hypothesis. Verified cases come from `data/verification/seed_review.json` at score time;
   that file does not exist yet, so every run has the `no_seed_review` finding and every weight is 0.6.
 - Each matched pattern gives one `pattern_match` reason with `pattern_id`, `pattern_name`, `strength`,
-  `support_weight`, `points`, `evidence_event_ids` and `evidence_statuses`, and the score stores
+  `support_weight`, `points`, `evidence_ids` and `evidence_statuses`, and the score stores
   `pattern_version = library_version`. The scorer never writes or edits the library.
 
 **Hand-written library, version 1** (`handWritten.ts`; all approved hand-written hypotheses, so all at
 0.6): one `transaction_typology` per monitoring rule (rapid onward, linked counterparty, circular, cash
 split, repeated counterparty), an enforcement record then insolvency within 36 months, insolvency then
 liquidation within 24 months, and enforcement and insolvency records from two sources within 24 months.
-`graph_proximity` patterns are left out of v1 on purpose, because the graph layer already scores
-closeness to flagged entities. The ids and the content hash are fixed in the file; a test recomputes them
-and checks the library passes `PatternLibrarySchema`.
+`graph_proximity` patterns are not in v1, and the pattern layer would ignore them anyway: the graph layer already
+scores closeness to a flagged entity, so counting it again would double count (`PATTERN_CONTRACT.md`,
+section 7). The ids and the content hash are fixed in the file; a test recomputes them and checks the library
+passes `PatternLibrarySchema`.
 
 ## Alerts
 
@@ -154,7 +160,7 @@ when no patterns were available ("its 0 is not low risk").
 `no_patterns`, `invalid_pattern`, `unknown_template`, `library_refused`, `invalid_match_result`,
 `no_seed_review`, `stale_public_data` and `missing_input`. None of them stops the run.
 
-## First replay on the synthetic data (seed 20261017)
+## Replay on the synthetic data (full set, seed 20261017, real matcher, settings v1)
 
 This checks plumbing, not accuracy (B-55): the generator wrote both the data and the labels.
 
@@ -163,20 +169,98 @@ This checks plumbing, not accuracy (B-55): the generator wrote both the data and
 | `control`            |    45 |       0 |                                – |           100% |
 | `slow_burn`          |    20 |       0 |                                0 |          33.6% |
 | `sudden_enforcement` |    15 |      15 |                               15 |           100% |
+| `round_trip`         |    15 |       6 |                                6 |             0% |
 | `fund_diversion`     |    15 |       0 |                                0 |             0% |
+| `contagion`          |    15 |      10 |                               10 |          78.8% |
+| `shared_address`     |    15 |      15 |                                2 |          62.3% |
+| `cash_split`         |    10 |       8 |                                8 |             0% |
+| `dormant_burst`      |    10 |       0 |                                0 |           100% |
+| `seasonal`           |    15 |       0 |                                – |           100% |
+| `big_prepayment`     |    15 |       0 |                                – |           100% |
+| `near_threshold`     |    10 |       0 |                                – |           100% |
 
-15 alerts in 1,723 loan-months (8.7 per 1,000 loan-months, against a provisional budget of about 3% of
-loans a month). The expected monitoring rules fired for all 30 expected cases, with none unexpected.
+56 alerts in 3,690 loan-months (15.2 per 1,000 loan-months, against a provisional budget of about 3% of
+loans a month). The expected monitoring rules fired for all 70 expected cases, with none unexpected.
+Controls and look-alikes: 0 alerts. The held-out `dormant_burst` loans match no pattern. The only run
+finding is `no_seed_review`.
 
-The slow-burn and fund-diversion loans do not alert, as agreed with the owner (scorer brief, question 1).
-Under the agreed weights they cannot:
+**What the real matcher changed.** Compared with injecting a matcher that matches nothing, the same replay
+differs in 120 of 3,690 loan-month scores, all `sudden_enforcement`: a lone enforcement record is a half
+match (strength 0.5) of the two-step sequence "enforcement record, then insolvency", which scores
+`round(30 × 0.5 × 0.6)` = 9 pattern points. No band, alert or archetype row changed, because those loans are
+already Urgent review through the override. Every other public-record pattern needs two records, and each
+synthetic borrower has at most one.
+
+The slow-burn and fund-diversion loans do not alert, and 5 of 15 contagion loans do not either. Under the
+agreed weights they cannot:
 
 - Behaviour drift tops out at 10 points, but the truth labels expect Needs attention (30) from late EMIs
   alone.
 - Fund diversion scores 18: the two typology patterns at 0.6 support take the largest, not the sum. The
   linked party has no record, so the graph layer adds nothing.
+- Contagion: a flagged customer is a one-hop inferred neighbour, worth 10 points. That alerts only when the
+  loan's late EMIs add enough to rise 15 points.
 
-This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step and the cut-offs).
+That was the input for checkpoint 2 (next section). Under the published settings v2 the same replay gives 105
+alerts (28.5 per 1,000 loan-months), 0 controls or look-alikes alerted, 0 held-out loans alerted and 85 of
+105 defaulters caught on time; only the 20 slow-burn loans are still missed.
+
+## Tuning options for checkpoint 2 (workstream W1b)
+
+**Decision (owner, 17 Oct 2026): option 2, published as settings v2 and the default for a new run.** v1 stays
+readable (`SCORING_SETTINGS_V1`, `settingsForVersion('v1')`, `npm run score -- --settings v1`), because every
+stored score records its `settings_version` (B-24). v2 differs from v1 in one number: Needs attention starts
+at 18 instead of 30, so one monitoring-rule typology (18 points at the 0.6 hypothesis support) is a lead. The
+3% budget (30 alerts per 1,000 loan-months) stays the target. Every row below was measured by running the
+real replay and evaluation (`replay` and `evaluate`, the code behind `npm run score`) on the full
+200-customer set (seed 20261017) with the settings patched; nothing is estimated. Numbers are plumbing only
+(B-55): 105 of the 200 synthetic loans are defaulters, so the alert rate says nothing about real volume.
+
+**Why the v1 weights miss them.** (1) Every single monitoring-rule typology scores `round(30 × 1 × 0.6)` = 18,
+which is Routine review (cut-off 30). (2) Behaviour drift tops out at 10, so late EMIs alone never reach 30.
+(3) A flagged customer is worth at most 10 (an inferred one-hop link).
+
+"Controls and look-alikes" counts alerted loans out of 85 (45 controls, 40 look-alikes). "Defaulters caught"
+is alerted within 2 months of onset, out of 105. The held-out `dormant_burst` loans stay at 0 alerts in every row.
+All rows include the customer-record matching and trading links described below.
+
+| #   | What changes                                                             | Alerts per 1,000 loan-months | Controls and look-alikes alerted | Defaulters caught | Newly caught                                           |
+| --- | ------------------------------------------------------------------------ | ---------------------------: | -------------------------------: | ----------------: | ------------------------------------------------------ |
+| 0   | Nothing (v1)                                                             |                         15.2 |                                0 |            41/105 | contagion 10 of 15 (the customer links, already built) |
+| 1   | Hand-written typologies at support 1.0 (a rule hit scores 30)            |                         25.7 |                                0 |            80/105 | fund diversion, round trip, shared address, cash split |
+| 2   | Needs attention from 18 instead of 30 (a rule hit at 0.6 support alerts) |                         28.5 |                                0 |            85/105 | the same four, and contagion 15 of 15                  |
+| 3   | Behaviour max 30 (1 unmet EMI 10, 2 in a row 20, 3+ or growing delay 30) |                         25.7 |                                8 |            66/105 | slow burn, contagion 15 of 15                          |
+| 4   | Behaviour max 30, steeper (15 / 30 / 30)                                 |                         28.7 |                               12 |            66/105 | the same two                                           |
+| 5   | 1 + 3                                                                    |                         35.0 |                                8 |           105/105 | all                                                    |
+| 6   | 1 + 4                                                                    |                         37.9 |                               12 |           105/105 | all                                                    |
+
+Options 3 to 6 change the layer maxima to direct 30, pattern 30, graph 10, behaviour 30 (graph one hop 10,
+two hops 5, so the layers still add to 100). Options 1 and 2 need no change to the maxima.
+
+**Reading the table.**
+
+- Option 2 is the only one that stays inside the 30-per-1,000 budget with no false alarms and catches
+  fund diversion, round trip, shared address, cash split and all of contagion (85 of 105). Option 1 is close
+  (25.7, 80 of 105) but changes how much a hand-written hypothesis counts, which the contract fixed at 0.6.
+  Option 2 also lowers the bar for any other score of 18 to 29.
+- Slow burn (20 loans) is the one scenario that settings 1 and 2 cannot reach. Widening the behaviour layer
+  (options 3 to 6) catches it, but alerts 8 to 12 of the `big_prepayment` look-alikes and, combined with 1,
+  goes over budget (35 and 37.9).
+
+**Finding behind those false alarms (not fixed).** _Inferred EMIs misread a prepayment._ After a large
+prepayment the EMIs shrink, so the "usual EMI" (the most common repayment) makes the lower payments look
+partial; the prepayment also takes one EMI slot, which shifts the pairing of later EMIs. An earlier trial
+that treated a repayment of 2× the usual EMI or more as a prepayment (not an EMI, and the usual EMI worked
+out again after it) cut the false alarms in options 3 to 6 from 8, 12, 8 and 12 to 4, 5, 4 and 5 and left
+v1 unchanged; the rest were still `big_prepayment` loans where the pairing drifts. It is not in the code.
+
+**Built in this workstream (records on customers).** `matchRecords` now matches a record to customer and
+supplier entities (kind `counterparty`) as well as companies and individuals (exact normalised name,
+B-37); 15 contagion records had been dropped as unmatched. `deriveTradingLinks` (in the scoring core, so
+every input port gets it) links a borrower to the owners of the accounts it was paid by or paid, from the
+payments up to the scoring day. Lender payments (disbursement, repayment) are not trade. These links are
+`inferred`, so a flagged customer scores half of the one-hop 20, i.e. 10, in the graph layer, with evidence
+status `inference` (B-36). Under v1 that alone makes 10 of 15 contagion loans alert.
 
 ## Boundary conditions
 
@@ -186,8 +270,8 @@ This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step a
 - **B-24:** the score id is deterministic: loan, day, settings version, pattern version.
 - **B-27:** `as_of` is an IST day.
 - **B-36:** evidence status is stored on every reason and never upgraded.
-- **B-37:** records are matched only by exact CIN or exact normalised name.
-- **B-40:** hubs are excluded from the graph layer.
+- **B-37:** records are matched only by exact CIN or exact normalised name (customers and suppliers included).
+- **B-40:** hubs are excluded from the graph layer, including the trading links derived from payments.
 - **B-43:** every score stores `data_built_on`.
 - **B-54:** synthetic data only.
 - **New:** B-55 (ground truth is not evidence), B-56 (missing or stale inputs are not low risk) and B-58
@@ -197,14 +281,14 @@ This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step a
 
 - BigQuery tables, the Firestore writer, the `score` Cloud Run task and its lease (step 11).
 - The Firestore pattern source (step 15).
-- The real matcher (step 7, miner side).
 - The app view (step 13).
 
-## Proposed contract changes (for the PR description, not made)
+## Contract changes (workstream W1c)
 
-- `PatternSource.load()` throws on a refused library. A `{ refused: reason }` result would let every
-  consumer record the same finding without a try/catch.
-- `graph_proximity` patterns overlap with the graph layer. Should a scorer that has a graph layer
-  ignore them? Or should the contract say the two are meant to add up?
-- Monitoring-rule typologies have no events in the subject timeline. Their reasons carry transaction
-  ids in `evidence_event_ids`. The contract could name that field `evidence_ids` to cover both.
+1. **Done:** `PatternSource.load()` resolves to `LoadedLibrary | RefusedLibrary` (`{ refused: reason }`)
+   instead of throwing, so every consumer records the same finding without a try/catch.
+2. **Done:** the pattern layer ignores `graph_proximity` patterns, because the graph layer already scores that
+   neighbour (no double counting). Written into `PATTERN_CONTRACT.md` section 7.
+3. **Done:** `evidence_event_ids` is renamed `evidence_ids` on every reason. It holds public event ids,
+   transaction ids (a fired monitoring rule, the loan's repayments) or neighbour entity ids, whichever the
+   reason rests on. `MatchResult.matched_event_ids` keeps its name: it is events only.

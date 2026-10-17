@@ -10,7 +10,7 @@ import {
   supportWeight,
   type PatternLayerInput,
 } from './patternLayer.js';
-import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
+import { SCORING_SETTINGS_V1 as S } from './settings.js';
 
 const sample = PatternLibrarySchema.parse(
   JSON.parse(
@@ -136,7 +136,7 @@ describe('pattern match layer', () => {
         code: 'pattern_match',
         reason_key: `pattern_match|${SEQ.pattern_id}`,
         points: 18,
-        evidence_event_ids: ['e1', 'e2'],
+        evidence_ids: ['e1', 'e2'],
         evidence_statuses: ['allegation', 'fact'],
         pattern: {
           pattern_id: SEQ.pattern_id,
@@ -159,7 +159,7 @@ describe('pattern match layer', () => {
     const r = patternLayer(input({ patterns: typologies, matcher: never, firedRules: fired }), S);
     expect(r.points).toBe(18);
     expect(r.reasons[0]).toMatchObject({
-      evidence_event_ids: ['t1', 't2'],
+      evidence_ids: ['t1', 't2'],
       facts: { rule_id: 'rapid_onward' },
     });
     expect(r.findings).toEqual([]);
@@ -186,6 +186,26 @@ describe('pattern match layer', () => {
       expect(r.points).toBe(0);
       expect(r.findings.map((f) => f.code)).toEqual(['invalid_match_result']);
     }
+  });
+
+  it('ignores a graph_proximity pattern: the graph layer already scores that neighbour', () => {
+    const graph = byTemplate('graph_proximity');
+    const calls: string[] = [];
+    const matcher: PatternMatcher = (p) => {
+      calls.push(p.pattern_id);
+      return {
+        pattern_id: p.pattern_id,
+        strength: 1,
+        matched_event_ids: [],
+        matched_neighbour_ids: ['N-1'],
+      };
+    };
+    const r = patternLayer(input({ patterns: [graph], matcher }), S);
+    expect(calls).toEqual([]);
+    expect(r).toMatchObject({ points: 0, reasons: [], noPatterns: true });
+    const mixed = patternLayer(input({ patterns: [graph, SEQ], matcher }), S);
+    expect(calls).toEqual([SEQ.pattern_id]);
+    expect(mixed.noPatterns).toBe(false);
   });
 
   it('ignores a zero-strength match', () => {
