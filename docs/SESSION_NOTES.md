@@ -57,6 +57,14 @@ everyone signed in with a usable profile sees every branch's synthetic scores (`
 branch scoping is kept in the service and will be decided later. Open for the owner: the W2g dry run
 (`docs/DEPLOY.md` → Synthetic risk scores). The branch was pushed at the user's request; no PR.
 
+## EMI prepayment fix (18 Oct 2026, branch `fix/emi-prepayment`)
+
+`behaviour.prepayment_min_multiple` (B-59, `packages/shared/src/risk/scoring/emi.ts`): a large repayment made
+with no EMI overdue is a prepayment, not an EMI. Off in v1 and v2 (v2 replay unchanged, 105 alerts). With it
+on, v2 + behaviour option 4 catches 105 of 105 defaulters with 0 false alarms at 30.4 per 1,000 loan-months
+(table in `docs/RISK_SCORING.md`). **Open for the owner:** publish that as settings v3 (0.4 over the budget)
+or not. Committed on this branch (43447f1).
+
 ## Open decisions and next ideas
 
 - **Risk scoring programme (planned 17 Oct 2026):** synthetic transaction data, a daily risk-scoring
