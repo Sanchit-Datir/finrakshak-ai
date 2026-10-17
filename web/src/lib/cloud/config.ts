@@ -18,7 +18,7 @@ export interface CloudConfig {
   appId: string;
   /** Cloud Functions region; must match functions/src/callable/*.ts. */
   region: string;
-  /** reCAPTCHA v3 site key for App Check. Required against the deployed backend. */
+  /** reCAPTCHA Enterprise site key (key ID) for App Check. Required against the deployed backend. */
   recaptchaSiteKey: string | null;
   /** Talk to the local Firebase emulators instead of the real project (dev only). */
   useEmulators: boolean;

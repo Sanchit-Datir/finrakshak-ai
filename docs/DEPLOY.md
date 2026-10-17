@@ -62,23 +62,26 @@ them in this order; menu names are the current Firebase console ones (Security �
    enable (leave "Email link" off) → Save. Then the **Users** tab → Add user (email + password) for each
    person. Anyone with the public config can usually register themselves too, which is safe because billed
    AI is limited to the allow-list in step D.
-3. **App Check key:** open <https://www.google.com/recaptcha/admin/create>, choose **reCAPTCHA v3** (score
-   based), add domains `fund-tracer.web.app` and `fund-tracer.firebaseapp.com`, and copy the **Site key**
-   (public) and **Secret key** (private). Firebase now recommends reCAPTCHA Enterprise for new projects; v3
-   still works with this code. If that page only offers Enterprise, the code needs a small switch to
-   `ReCaptchaEnterpriseProvider` (and check its pricing first).
-4. Security → **App Check** → **Apps** tab → your web app → reCAPTCHA → paste the **Secret key** → Save.
-   Never put the secret key in the repo or in a GitHub variable.
+3. **App Check key (reCAPTCHA Enterprise).** Keys now live in the Google Cloud project, and the app uses
+   the Enterprise provider. In Google Cloud Console → Security → reCAPTCHA (or via
+   <https://www.google.com/recaptcha/admin/create>, which lands there), create a **website** key: type
+   **score based**, domains `fund-tracer.web.app` and `fund-tracer.firebaseapp.com`, no checkbox challenge.
+   Copy the **key ID** (it starts `6L…`; this is the "site key"). **There is no secret key** for these keys.
+   CLI: `gcloud recaptcha keys list --project fund-tracer`. Enterprise is billed per assessment beyond a
+   free monthly allowance; the site asks once per visitor per token lifetime (default one day), so usage
+   is tiny, but check <https://cloud.google.com/recaptcha/pricing> before relying on it.
+4. Security → **App Check** → **Apps** tab → your web app → **reCAPTCHA Enterprise** → paste the key ID →
+   Save. Nothing secret is entered anywhere for this provider.
 
 **B. GitHub** (repo → Settings → Secrets and variables → Actions → **Variables** tab → New repository
 variable; they must be Variables, not Secrets, because the browser needs them):
 
-| Name                        | Value                                |
-| --------------------------- | ------------------------------------ |
-| `VITE_FIREBASE_API_KEY`     | `apiKey` from step 1                 |
-| `VITE_FIREBASE_AUTH_DOMAIN` | `fund-tracer.firebaseapp.com`        |
-| `VITE_FIREBASE_APP_ID`      | `appId` from step 1                  |
-| `VITE_RECAPTCHA_SITE_KEY`   | the reCAPTCHA **Site key** (step A3) |
+| Name                        | Value                              |
+| --------------------------- | ---------------------------------- |
+| `VITE_FIREBASE_API_KEY`     | `apiKey` from step 1               |
+| `VITE_FIREBASE_AUTH_DOMAIN` | `fund-tracer.firebaseapp.com`      |
+| `VITE_FIREBASE_APP_ID`      | `appId` from step 1                |
+| `VITE_RECAPTCHA_SITE_KEY`   | the reCAPTCHA **key ID** (step A3) |
 
 The project ID is added by the workflow itself.
 
