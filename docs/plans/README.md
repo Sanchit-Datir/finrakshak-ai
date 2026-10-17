@@ -39,9 +39,9 @@ The steps run in four phases. A phase ends with something you can see working.
 
 | #   | Step                                                                                                                             | Needs from the owner                               | Status                           |
 | --- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------------------------------- |
-| 5   | S2 Population, flags, labels, CLI, contract sample and web contract test, first archetypes                                       |                                                    | [ ]                              |
-| 6   | S3 The remaining archetypes, including look-alikes and `near_threshold`                                                          |                                                    | [ ]                              |
-| 7   | M1 Pattern definitions, matcher, candidates with baseline lift, backtest (no model)                                              | **Checkpoint 1: do the candidates look useful?**   | [ ]                              |
+| 5   | S2 Population, flags, labels, CLI, contract sample and web contract test, first archetypes                                       |                                                    | [x] done                         |
+| 6   | S3 The remaining archetypes, including look-alikes and `near_threshold`                                                          |                                                    | [x] done                         |
+| 7   | M1 Pattern definitions, matcher, candidates with baseline lift, backtest (no model)                                              | **Checkpoint 1: do the candidates look useful?**   | [x] done, no candidates found    |
 | 8   | R2 Scoring core, settings, alert decision, replay harness, templated reason text with the "new / unchanged / score change" block | **Checkpoint 2: tune the 3% budget and 15 points** | [x] done, `docs/RISK_SCORING.md` |
 | 9   | R4 Pattern layer with hand-written version 1 patterns (kept in code until step 15)                                               |                                                    | [x] done, with step 8            |
 
@@ -71,13 +71,13 @@ End of phase C: a staging dry run writes `risk_scores`, and the rules emulator t
 
 Work stops at these for the owner's decision.
 
-| Checkpoint                              | After step | What you decide                                                                                                                                                         |
-| --------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1. Are the mined candidates useful?     | 7          | If they are weak, steps 12, 14 and 15 shrink or go, and hand-written patterns carry the pattern layer                                                                   |
-| 2. Does the alert behaviour feel right? | 8          | Tune the 3% alert budget, the 15-point step and the cut-offs against the synthetic replay                                                                               |
-| 3. Cloud setup and budget               | before 11  | Run the GCP setup yourself and create the budget alert before anything cloud is switched on (B-15)                                                                      |
-| 4. Spend on a real model                | before 14  | Approve one capped Vertex dry run, with the miner A/B (cheapest vs one tier up) that you score by accept or reject. Until then every agent stays on the `mock` provider |
-| (Optional) Explainer                    | after 13   | Build it only if multi-reason alerts read badly in the templated form and the budget alert exists                                                                       |
+| Checkpoint                              | After step | What you decide                                                                                                                                                                                                        |
+| --------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Are the mined candidates useful?     | 7          | **Result (17 Oct 2026): no candidates** (see `PATTERN_MINER_PLAN.md`). **Owner decided to keep steps 12, 14 and 15 in the plan for when better data exists;** until then hand-written patterns carry the pattern layer |
+| 2. Does the alert behaviour feel right? | 8          | Tune the 3% alert budget, the 15-point step and the cut-offs against the synthetic replay                                                                                                                              |
+| 3. Cloud setup and budget               | before 11  | Run the GCP setup yourself and create the budget alert before anything cloud is switched on (B-15)                                                                                                                     |
+| 4. Spend on a real model                | before 14  | Approve one capped Vertex dry run, with the miner A/B (cheapest vs one tier up) that you score by accept or reject. Until then every agent stays on the `mock` provider                                                |
+| (Optional) Explainer                    | after 13   | Build it only if multi-reason alerts read badly in the templated form and the budget alert exists                                                                                                                      |
 
 ## Decisions taken (17 Oct 2026)
 

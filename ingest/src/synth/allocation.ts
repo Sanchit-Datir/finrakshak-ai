@@ -40,3 +40,17 @@ export function scaleAllocation(
   for (const { id } of order.slice(0, total - given)) out[id] += 1;
   return out;
 }
+
+/**
+ * Sizes of the groups for `count` loans: full groups of `size`, and a short last group merged into the
+ * one before it so no group has a single loan.
+ */
+export function groupSizes(count: number, size: number): number[] {
+  if (!Number.isSafeInteger(count) || count < 0 || !Number.isSafeInteger(size) || size < 2)
+    throw new RangeError('count must be a whole number and size at least 2');
+  const sizes = Array.from({ length: Math.floor(count / size) }, () => size);
+  const rest = count % size;
+  if (rest === 1 && sizes.length > 0) sizes[sizes.length - 1] = (sizes.at(-1) ?? size) + 1;
+  else if (rest > 0) sizes.push(rest);
+  return count === 1 ? [1] : sizes;
+}

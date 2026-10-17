@@ -1,4 +1,9 @@
-import type { SynthEntity, SynthLoan, SynthTransaction } from '@fund-tracker/shared';
+import type {
+  SynthEntity,
+  SynthLoan,
+  SynthRelationship,
+  SynthTransaction,
+} from '@fund-tracker/shared';
 import { addDays, addMonths, addMonthsToMonth, istInstant, monthEnd } from './calendar.js';
 import type { Horizon, LoanContext } from './archetypes/types.js';
 import type { TxnFields } from './ledger.js';
@@ -91,15 +96,26 @@ const counterparties = (
 export const defaultMaxStart = (months: number): number =>
   Math.max(0, Math.min(Math.floor(months / 2) - 1, months - 8));
 
-export function makeLoanBase(
-  ctx: LoanContext,
-  maxStartIndex = defaultMaxStart(ctx.horizon.months),
-): LoanBase {
+export interface LoanOptions {
+  /** Latest start month index; the default leaves room for the loan's life inside the period. */
+  readonly maxStartIndex?: number;
+  /** Fixes the disbursement day (the day is still drawn, so other draws do not shift). */
+  readonly disbursedOn?: string;
+  /** Smallest loan amount in paise. */
+  readonly minAmount?: number;
+}
+
+export function makeLoanBase(ctx: LoanContext, opts: LoanOptions = {}): LoanBase {
   const { rng, horizon } = ctx;
   const no = pad(ctx.n, 4);
-  const month = addMonthsToMonth(horizon.startMonth, rng.int(0, maxStartIndex));
-  const disbursedOn = `${month}-${pad(rng.int(1, 25), 2)}`;
-  const amount = rng.amount(50_000_000, 500_000_000, 1_000_000);
+  const drawnMonth = addMonthsToMonth(
+    horizon.startMonth,
+    rng.int(0, opts.maxStartIndex ?? defaultMaxStart(horizon.months)),
+  );
+  const drawnDay = `${drawnMonth}-${pad(rng.int(1, 25), 2)}`;
+  const disbursedOn = opts.disbursedOn ?? drawnDay;
+  const month = disbursedOn.slice(0, 7);
+  const amount = rng.amount(Math.max(50_000_000, opts.minAmount ?? 0), 500_000_000, 1_000_000);
   const tenor = rng.pick([12, 18, 24, 36] as const);
   const emi = roundTo(
     Math.floor(amount / tenor) + Math.floor((amount * 1200) / 120_000),
@@ -170,6 +186,14 @@ export interface LifePlan {
   emi(k: number): EmiOutcome;
   /** Customer receipts in loan month k, as a percent of normal. */
   revenuePercent(k: number): number;
+  /** Receipts per month (default: 2 or 3 at random). */
+  receiptCount?(k: number): number;
+  /** Payments to suppliers per month (default: 1 or 2 at random). */
+  paymentCount?(k: number): number;
+  /** Each customer's share of the monthly receipts, in percent; one receipt per customer. */
+  readonly customerShares?: readonly number[];
+  /** False when customer `i` (0 = the first) does not pay in loan month k. */
+  receiptFrom?(k: number, i: number): boolean;
 }
 
 const CHANNELS = ['neft', 'imps', 'upi', 'rtgs', 'cheque'] as const;
@@ -214,19 +238,22 @@ export function lifeTransactions(base: LoanBase, ctx: LoanContext, plan: LifePla
     const start = addMonths(base.disbursedOn, k - 1);
     const due = addMonths(base.disbursedOn, k);
     const revenue = percent(Math.floor((base.emi * rng.int(18, 26)) / 10), plan.revenuePercent(k));
-    const receipts = rng.int(2, 3);
+    const shares = plan.customerShares;
+    const receipts = shares?.length ?? plan.receiptCount?.(k) ?? rng.int(2, 3);
     for (let i = 0; i < receipts; i++) {
       const customer = base.customers[i % base.customers.length];
-      if (customer)
-        add(
-          addDays(start, rng.int(2, 24)),
-          customer.accountId,
-          base.accountId,
-          roundTo(Math.floor(revenue / receipts), MONEY_STEP),
-          rng.pick(CHANNELS),
-        );
+      if (customer === undefined || plan.receiptFrom?.(k, i) === false) continue;
+      const share =
+        shares === undefined ? Math.floor(revenue / receipts) : percent(revenue, shares[i] ?? 0);
+      add(
+        addDays(start, rng.int(2, 24)),
+        customer.accountId,
+        base.accountId,
+        roundTo(share, MONEY_STEP),
+        rng.pick(CHANNELS),
+      );
     }
-    const payments = rng.int(1, 2);
+    const payments = plan.paymentCount?.(k) ?? rng.int(1, 2);
     for (let i = 0; i < payments; i++) {
       const supplier = base.suppliers[i % base.suppliers.length];
       if (supplier)
@@ -250,4 +277,71 @@ export function lifeTransactions(base: LoanBase, ctx: LoanContext, plan: LifePla
       );
   }
   return out;
+}
+
+export interface HealthyOverrides {
+  readonly useOfFunds?: LifePlan['useOfFunds'];
+  readonly emi?: LifePlan['emi'];
+  readonly revenuePercent?: LifePlan['revenuePercent'];
+  readonly receiptCount?: (k: number) => number;
+  readonly paymentCount?: (k: number) => number;
+}
+
+/** A healthy borrower's plan: EMIs 0–2 days after the due date, normal receipts, two supplier payments up front. */
+export function healthyPlan(ctx: LoanContext, over: HealthyOverrides = {}): LifePlan {
+  const jitter = Array.from({ length: 40 }, () => ctx.rng.int(0, 2));
+  const useOfFunds: LifePlan['useOfFunds'] = over.useOfFunds ?? [
+    [ctx.rng.int(40, 55), 5, 15],
+    [ctx.rng.int(15, 25), 20, 40],
+  ];
+  return {
+    useOfFunds,
+    emi: over.emi ?? ((k) => ({ offsetDays: jitter[k - 1] ?? 0, percent: 100 })),
+    revenuePercent: over.revenuePercent ?? ((): number => 100),
+    ...(over.receiptCount === undefined ? {} : { receiptCount: over.receiptCount }),
+    ...(over.paymentCount === undefined ? {} : { paymentCount: over.paymentCount }),
+  };
+}
+
+/** A single transaction outside the monthly life, with an id of its own kind (e.g. `X1`, `P1`). */
+export function extraTxn(
+  base: LoanBase,
+  tag: string,
+  date: string,
+  from: string,
+  to: string,
+  amountMinor: number,
+  type: SynthTransaction['type'],
+  hm: readonly [number, number] = [11, 0],
+): TxnFields {
+  return {
+    id: `T-${base.no}-${tag}`,
+    loanId: base.loanId,
+    at: istInstant(date, hm[0], hm[1]),
+    fromId: from,
+    toId: to,
+    amountMinor,
+    type,
+  };
+}
+
+/** A relationship in the web app's shape, marked synthetic. */
+export function synthRelationship(
+  id: string,
+  from: string,
+  to: string,
+  type: SynthRelationship['type'],
+  observedAt: string,
+): SynthRelationship {
+  return {
+    id,
+    from,
+    to,
+    type,
+    status: 'verified',
+    source: 'SYNTH test',
+    observedAt,
+    evidence: 'SYNTH test',
+    synthetic: true,
+  };
 }

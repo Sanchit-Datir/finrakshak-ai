@@ -48,15 +48,37 @@ describe('synthetic sample in the app', () => {
       );
   });
 
-  it('covers a quiet loan and a loan that trips two rules', () => {
+  it('covers every kind of alert the sample is meant to exercise, and nothing extra', () => {
+    const expected = sample.truth.reduce((n, t) => n + t.expected_rules.length, 0);
+    expect(alerts).toHaveLength(expected);
+    expect(new Set(alerts.map((a) => a.ruleId))).toEqual(
+      new Set([
+        'rapid_onward',
+        'linked_counterparty',
+        'circular',
+        'cash_split',
+        'repeated_counterparty',
+      ]),
+    );
     expect(sample.truth.some((t) => t.expected_rules.length === 0)).toBe(true);
-    expect(sample.truth.some((t) => t.expected_rules.length === 2)).toBe(true);
-    expect(alerts.length).toBe(2);
+  });
+
+  it('keeps the quiet loans quiet, including the one built to sit just under every limit', () => {
+    for (const archetype of ['control', 'near_threshold'])
+      for (const t of sample.truth.filter((x) => x.archetype === archetype))
+        expect(rulesOf(t.loan_id), archetype).toEqual([]);
   });
 
   it('names the diversion payee, a linked entity, in its alert', () => {
     const linked = alerts.find((a) => a.ruleId === 'linked_counterparty');
     expect(linked?.title).toMatch(/^Payment to linked entity: SYNTH Related party /);
     expect(linked?.priority).toBe('needs_attention');
+  });
+
+  it('raises the loop as an urgent alert and the common payee once for each cluster loan', () => {
+    expect(alerts.find((a) => a.ruleId === 'circular')?.priority).toBe('urgent');
+    const repeated = alerts.filter((a) => a.ruleId === 'repeated_counterparty');
+    expect(repeated).toHaveLength(2);
+    expect(new Set(repeated.map((a) => a.entityIds.join()))).toHaveLength(1);
   });
 });

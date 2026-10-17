@@ -11,6 +11,7 @@ import {
   type SynthTransaction,
   type SynthTruth,
 } from '@fund-tracker/shared';
+import { groupSizes } from './allocation.js';
 import { ARCHETYPES } from './archetypes/index.js';
 import type { BuiltLoan, LoanContext } from './archetypes/types.js';
 import { BANK_ACCOUNT_ID, bankEntities, makeHorizon } from './base.js';
@@ -88,10 +89,19 @@ export function generate(options: GenerateOptions): SynthDataset {
     const archetype = ARCHETYPES[id];
     if (count > 0 && archetype === undefined) notBuilt.push(id);
     if (archetype === undefined) continue;
-    for (let i = 0; i < count; i++) {
+    const nextContext = (): LoanContext => {
       n++;
-      const ctx: LoanContext = { n, rng: root.fork(`${id}/${n}`), names, horizon };
-      built.push(archetype.build(ctx));
+      return { n, rng: root.fork(`${id}/${n}`), names, horizon };
+    };
+    if ('buildGroup' in archetype) {
+      for (const size of groupSizes(count, archetype.groupSize)) {
+        const contexts = Array.from({ length: size }, nextContext);
+        built.push(
+          ...archetype.buildGroup(contexts, root.fork(`${id}/group-${contexts[0]?.n ?? 0}`)),
+        );
+      }
+    } else {
+      for (let i = 0; i < count; i++) built.push(archetype.build(nextContext()));
     }
   }
   const dataset = {
