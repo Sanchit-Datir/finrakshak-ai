@@ -51,11 +51,11 @@ owner decided. Only the borrowers are real; the loan values are made up.
 ## Remaining-work session (17 Oct 2026, branch `remaining-work-changes`)
 
 Built the rest of `docs/plans/REMAINING_WORK.md` that needs no GCP: the cloud scoring job (W2a–W2f, off
-by default) and the app side (W3a–W3e). See the status table at the top of that page. Open for the owner:
-W2g dry run (`docs/DEPLOY.md` → Synthetic risk scores), confirming Q1–Q4 and Q6 (built with the suggested
-answers), and which roles see every branch's scores (built: risk analyst, investigator, administrator
-and the `admin` claim; branch officers and managers see their own branch, and every SYNTH loan is in
-`br-synth`). The branch was pushed at the user's request; no PR.
+by default) and the app side (W3a–W3e). See the status table at the top of that page. The owner confirmed
+Q1–Q4 and Q6 and the flags-from-`fundtrace_synth` choice. **Score visibility (owner, 17 Oct 2026):** for now
+everyone signed in with a usable profile sees every branch's synthetic scores (`RISK_SCORES_SCOPE`);
+branch scoping is kept in the service and will be decided later. Open for the owner: the W2g dry run
+(`docs/DEPLOY.md` → Synthetic risk scores). The branch was pushed at the user's request; no PR.
 
 ## Open decisions and next ideas
 

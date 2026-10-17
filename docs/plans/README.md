@@ -95,6 +95,10 @@ Work stops at these for the owner's decision.
   "new since last check / unchanged / score change" block from step 8; the explainer is built only if
   multi-reason alerts read badly and the budget alert exists (`RISK_EXPLAINER_PLAN.md`).
 - Pattern contract (`PATTERN_CONTRACT.md`): patterns carry no weights; verified support is computed at score time; the live library is ONE Firestore document `riskPatternLibrary/current` with immutable `v<n>` copies; the pattern layer takes the largest single matched pattern's points (capped at 30), not the sum. Step C0 builds the contract; the scorer side and the miner side then work in parallel.
+- Synthetic risk scores (17 Oct 2026): a separate app page; the scorer may create load files only under
+  `interim/risk-load/`; it reads the `dry-run` build date while publishing is off; it keeps the project-wide
+  Firestore role (a test lists the collections it writes); everyone with a usable profile sees every
+  branch's scores for now (branch scoping to be decided later).
 - Autonomy: the only automatic action is a code-triggered retry of an idempotent failed step, at most once
   per run (the source re-run, and the scoring job). Scores, bands, alerts, patterns, thresholds and settings
   change only through a person. Pending proposals are surfaced by a code-computed `proposals_waiting`

@@ -25,7 +25,7 @@ import type { LoanScore, RunFinding } from './types.js';
 
 export interface ScoringLoan extends RuleLoan {
   readonly borrowerId: string;
-  /** The branch that holds the loan; the app shows a score only to that branch or a cross-branch role. */
+  /** The branch that holds the loan; stored with each score so the app can scope by branch later. */
   readonly branchId?: string;
 }
 

@@ -7,16 +7,16 @@ import { describeError } from '../services/log.js';
 import { defaultProfileStore, type ProfileStore } from '../services/profiles.js';
 import { createRateLimiter, type RateLimiter } from '../services/rate-limit.js';
 import {
+  RISK_SCORES_SCOPE,
   firestoreRiskReader,
   readRiskScores,
-  scopeFor,
   type RiskScoreReader,
   type RiskScoresResult,
 } from '../services/riskScores.js';
 
 /**
- * Synthetic risk scores for the app (REMAINING_WORK.md, W3b). Thin: auth, input, the caller's profile
- * (branch or cross-branch role), then the service. SYNTH data only (B-54); a score is a lead, never a
+ * Synthetic risk scores for the app (REMAINING_WORK.md, W3b). Thin: auth, input, a usable profile, then
+ * the service. For now every person with a profile sees every branch (owner's decision, 17 Oct 2026). SYNTH data only (B-54); a score is a lead, never a
  * verdict (B-58).
  */
 
@@ -70,7 +70,8 @@ export async function getRiskScoresHandler(
   const email = typeof request.auth.token.email === 'string' ? request.auth.token.email : null;
   const profile = await deps.profiles.get(uid, email);
   if (profile === null) throw new HttpsError('permission-denied', 'Your account is not set up');
-  const scope = scopeFor(profile, request.auth.token['admin'] === true);
+  // Sign-in and a usable profile are required; for now that profile sees every branch.
+  const scope = RISK_SCORES_SCOPE;
   try {
     const result = await readRiskScores(deps.reader, { scope, loanId: input.data.loanId ?? null });
     logger.info('getRiskScores', {

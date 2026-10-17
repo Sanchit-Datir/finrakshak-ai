@@ -51,7 +51,7 @@ export class ScoringOrderError extends Error {
   }
 }
 
-/** A loan without a branch is visible only to cross-branch roles in the app. */
+/** Branch of a loan that has none (stored so branch scoping can be added later). */
 export const UNKNOWN_BRANCH = 'unknown';
 
 const sha256 = (s: string): string => createHash('sha256').update(s).digest('hex');

@@ -1,7 +1,6 @@
 import { getFirestore } from 'firebase-admin/firestore';
 import type { RiskAlertDoc, RiskLatestDoc } from '@fund-tracker/shared';
 import { z } from 'zod';
-import type { UserProfile } from './profiles.js';
 
 /**
  * Reads the synthetic risk scores for the getRiskScores callable (REMAINING_WORK.md, W3b). The job
@@ -15,13 +14,6 @@ export const ALERTS_COLLECTION = 'synthRiskAlerts';
 /** Most documents one call returns (Firestore reads are billed per document, B-15). */
 export const SCORES_PAGE = 500;
 export const ALERTS_PAGE = 200;
-
-/** Roles that work across branches and so see every loan; the others see their own branch. */
-export const CROSS_BRANCH_ROLES: readonly UserProfile['role'][] = [
-  'risk_analyst',
-  'investigator',
-  'administrator',
-];
 
 const Scoped = z
   .object({
@@ -39,10 +31,11 @@ export type AlertInSync = AssertTrue<RiskAlertDoc extends z.infer<typeof Scoped>
 export type Scope =
   { readonly kind: 'all' } | { readonly kind: 'branch'; readonly branchId: string };
 
-export function scopeFor(profile: UserProfile, isAdmin: boolean): Scope {
-  if (isAdmin || CROSS_BRANCH_ROLES.includes(profile.role)) return { kind: 'all' };
-  return { kind: 'branch', branchId: profile.branchId };
-}
+/**
+ * Owner's decision (17 Oct 2026): for now everyone with a usable profile sees every branch's synthetic
+ * scores. Branch scoping stays supported here (a `branch` scope) for when that decision is revisited.
+ */
+export const RISK_SCORES_SCOPE: Scope = { kind: 'all' };
 
 export interface RiskQuery {
   readonly scope: Scope;

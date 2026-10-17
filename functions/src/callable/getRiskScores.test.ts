@@ -4,6 +4,7 @@ import type { ProfileStore, UserProfile } from '../services/profiles.js';
 import { createRateLimiter } from '../services/rate-limit.js';
 import {
   ALERTS_PAGE,
+  readRiskScores,
   SCORES_PAGE,
   type RiskQuery,
   type RiskScoreReader,
@@ -88,27 +89,28 @@ describe('getRiskScoresHandler', () => {
     expect(r.queries).toHaveLength(0);
   });
 
-  it("shows a branch officer only their branch's loans and never the stored alert state", async () => {
+  it('shows every branch to anyone with a profile, and never the stored alert state', async () => {
     const r = reader([doc('L-1', 'br-synth'), doc('L-2', 'br-other')]);
-    const out = await getRiskScoresHandler(req({}), deps(r));
-    expect(r.queries[0]?.scope).toEqual({ kind: 'branch', branchId: 'br-synth' });
-    expect(out.scores.map((s) => s['loan_id'])).toEqual(['L-1']);
-    expect(out.scores[0]).not.toHaveProperty('state');
-    expect(out.scores[0]).not.toHaveProperty('previous');
+    for (const role of ['branch_officer', 'branch_manager', 'risk_analyst'] as const) {
+      const out = await getRiskScoresHandler(
+        req({}),
+        deps(r, { ...officer, role, branchId: 'br-x' }),
+      );
+      expect(out.scores.map((s) => s['loan_id'])).toEqual(['L-1', 'L-2']);
+      expect(out.scores[0]).not.toHaveProperty('state');
+      expect(out.scores[0]).not.toHaveProperty('previous');
+    }
+    expect(r.queries.every((q) => q.scope.kind === 'all')).toBe(true);
   });
 
-  it('shows every branch to a cross-branch role or an admin', async () => {
+  it('still filters by branch when the service is given a branch scope (kept for later)', async () => {
     const r = reader([doc('L-1', 'br-synth'), doc('L-2', 'br-other')]);
-    const analyst = await getRiskScoresHandler(
-      req({}),
-      deps(r, { ...officer, role: 'risk_analyst', branchId: 'hq' }),
-    );
-    expect(analyst.scores).toHaveLength(2);
-    const admin = await getRiskScoresHandler(
-      req({}, { admin: true }),
-      deps(r, { ...officer, branchId: 'hq' }),
-    );
-    expect(admin.scores).toHaveLength(2);
+    const out = await readRiskScores(r, {
+      scope: { kind: 'branch', branchId: 'br-synth' },
+      loanId: null,
+    });
+    expect(out.scores.map((s) => s['loan_id'])).toEqual(['L-1']);
+    expect(out.skipped).toBe(1);
   });
 
   it('drops malformed and non-synthetic documents (B-54)', async () => {
