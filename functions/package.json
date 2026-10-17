@@ -13,7 +13,6 @@
     "serve": "npm run build && firebase emulators:start --only functions"
   },
   "dependencies": {
-    "@fund-tracker/shared": "*",
     "@google/genai": "^1.0.0",
     "firebase-admin": "^13.0.0",
     "firebase-functions": "^6.3.0",
