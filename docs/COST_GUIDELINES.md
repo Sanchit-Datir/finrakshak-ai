@@ -78,6 +78,11 @@ BigQuery job has a deterministic id, so a retried run never loads (or bills) twi
 
 ## 6. Known gaps
 
-- No per-user quota on `askGemini` yet (B-15). Until it exists, `maxInstances` is the only cap on
-  how much a signed-in user can spend. Add a daily per-user counter before opening sign-up widely.
+- Billed AI is limited to people whose profile (`users/{Firebase user ID}`) has `aiEnabled: true`, so
+  self-registered strangers cannot spend (see `docs/DEPLOY.md`, step D). Each billed call costs one
+  Firestore read for that check, and each login one for `getProfile`; both are far inside the free quota.
+- `askGemini` has a per-user daily limit (`GEMINI_DAILY_LIMIT`, default 30 calls per Indian day,
+  counted in the `usage` collection) that applies only to billed providers. The Firestore counter is
+  unit-tested with an in-memory store but has not yet been run against a Firestore emulator.
+- The count is not refunded when the model call fails, so a flaky upstream can use up a user's day.
 - The budget alert only emails; it does not stop spending.

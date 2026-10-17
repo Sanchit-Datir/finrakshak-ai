@@ -9,12 +9,29 @@ export type GeminiProvider = (typeof GEMINI_PROVIDERS)[number];
  * GEMINI_PROVIDER is set explicitly (e.g. `npm run serve:live -w functions`).
  * Only a deployed function defaults to the real model.
  */
-function defaultProvider(source: NodeJS.ProcessEnv): GeminiProvider {
-  const isLocal =
+function isLocal(source: NodeJS.ProcessEnv): boolean {
+  return (
     source['FUNCTIONS_EMULATOR'] === 'true' ||
     source['NODE_ENV'] === 'test' ||
-    source['VITEST'] === 'true';
-  return isLocal ? 'mock' : 'apikey';
+    source['VITEST'] === 'true'
+  );
+}
+
+function defaultProvider(source: NodeJS.ProcessEnv): GeminiProvider {
+  return isLocal(source) ? 'mock' : 'apikey';
+}
+
+/**
+ * Where user profiles come from. Local runs without a Firestore emulator use a built-in dev profile,
+ * so the emulator can never read the real project's data by accident. A deployed function always
+ * uses Firestore.
+ */
+export const PROFILE_SOURCES = ['firestore', 'dev'] as const;
+export type ProfileSource = (typeof PROFILE_SOURCES)[number];
+
+function defaultProfileSource(source: NodeJS.ProcessEnv): ProfileSource {
+  if (source['FIRESTORE_EMULATOR_HOST']) return 'firestore';
+  return isLocal(source) ? 'dev' : 'firestore';
 }
 
 const EnvSchema = z.object({
@@ -23,6 +40,9 @@ const EnvSchema = z.object({
   /** Cheapest model that handles text tasks; override per environment, see docs/COST_GUIDELINES.md. */
   GEMINI_MODEL: z.string().default('gemini-3.1-flash-lite'),
   GEMINI_PROVIDER: z.enum(GEMINI_PROVIDERS).optional(),
+  PROFILE_SOURCE: z.enum(PROFILE_SOURCES).optional(),
+  /** Billed AI calls each signed-in user may make per Indian calendar day (B-15). */
+  GEMINI_DAILY_LIMIT: z.coerce.number().int().min(1).max(10_000).default(30),
   /** Injected from Secret Manager at runtime (see `geminiApiKey` in config/secrets.ts). */
   GEMINI_API_KEY: z.string().min(1).optional(),
   /** Bucket the cloud ingestion publishes to (default `<project>-ingest-publish`). */
@@ -31,8 +51,12 @@ const EnvSchema = z.object({
   PUBLIC_DATA_CHANNEL: z.enum(['live', 'dry-run']).default('live'),
 });
 
-export type Env = Omit<z.infer<typeof EnvSchema>, 'GEMINI_PROVIDER' | 'PUBLIC_DATA_BUCKET'> & {
+export type Env = Omit<
+  z.infer<typeof EnvSchema>,
+  'GEMINI_PROVIDER' | 'PROFILE_SOURCE' | 'PUBLIC_DATA_BUCKET'
+> & {
   GEMINI_PROVIDER: GeminiProvider;
+  PROFILE_SOURCE: ProfileSource;
   PUBLIC_DATA_BUCKET: string;
 };
 
@@ -49,9 +73,19 @@ export function getEnv(): Env {
   cached = {
     ...raw,
     GEMINI_PROVIDER: provider,
+    PROFILE_SOURCE: raw.PROFILE_SOURCE ?? defaultProfileSource(process.env),
     PUBLIC_DATA_BUCKET: raw.PUBLIC_DATA_BUCKET ?? `${raw.GCLOUD_PROJECT}-ingest-publish`,
   };
   return cached;
+}
+
+/**
+ * The profile source on its own. Functions that do not use Gemini (getProfile) must not depend on the
+ * Gemini settings being present, so this does not go through getEnv().
+ */
+export function getProfileSource(): ProfileSource {
+  const parsed = z.enum(PROFILE_SOURCES).safeParse(process.env['PROFILE_SOURCE']);
+  return parsed.success ? parsed.data : defaultProfileSource(process.env);
 }
 
 /** Test helper: drop the cached value so a test can change process.env. */

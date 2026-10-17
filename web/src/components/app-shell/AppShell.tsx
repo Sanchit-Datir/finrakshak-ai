@@ -2,6 +2,7 @@ import { X } from 'lucide-react';
 import { Suspense, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import { useThemeEffect } from '../../state/hooks.js';
+import { useCloudAuth } from '../../state/cloud-auth.js';
 import { useSession } from '../../state/session.js';
 import { useAutoWatch } from '../../state/useAutoWatch.js';
 import { dismissLoadIssue, useStoreStatus } from '../../state/store.js';
@@ -23,6 +24,7 @@ function readCollapsed(): boolean {
 
 export function AppShell(): React.JSX.Element {
   const session = useSession();
+  const cloudAuth = useCloudAuth();
   const location = useLocation();
   const status = useStoreStatus();
   const [collapsed, setCollapsed] = useState(readCollapsed);
@@ -35,6 +37,15 @@ export function AppShell(): React.JSX.Element {
   if (lastPath !== location.pathname) {
     setLastPath(location.pathname);
     setDrawer(false);
+  }
+
+  // Firebase restores a previous sign-in asynchronously: wait for it instead of flashing the login page.
+  if (session === null && cloudAuth.status === 'loading') {
+    return (
+      <div className="p-8">
+        <PageSkeleton />
+      </div>
+    );
   }
 
   if (session === null) {

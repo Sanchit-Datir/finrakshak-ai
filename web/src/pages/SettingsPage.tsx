@@ -2,6 +2,7 @@ import { Database, Lock, RotateCcw, Save, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Badge } from '../components/ui/Badge.js';
 import { Button } from '../components/ui/Button.js';
+import { CloudAiTab } from '../components/settings/CloudAiTab.js';
 import { Card, CardHeader } from '../components/ui/Card.js';
 import { ConfirmDialog } from '../components/ui/Dialog.js';
 import { Checkbox, SelectField, TextField } from '../components/ui/Field.js';
@@ -25,7 +26,7 @@ import { clearWorkspace, mutate, resetToDemo, useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
 
-type Tab = 'profile' | 'preferences' | 'risk' | 'checklists' | 'data';
+type Tab = 'profile' | 'preferences' | 'risk' | 'checklists' | 'data' | 'cloud';
 
 export function SettingsPage(): React.JSX.Element {
   const [tab, setTab] = useUrlState('tab', 'profile');
@@ -35,6 +36,7 @@ export function SettingsPage(): React.JSX.Element {
     { key: 'risk' as const, label: 'Risk & monitoring rules' },
     { key: 'checklists' as const, label: 'Document checklists' },
     { key: 'data' as const, label: 'Data sources & demo' },
+    { key: 'cloud' as const, label: 'Cloud & AI' },
   ];
   const current = (tabs.some((t) => t.key === tab) ? tab : 'profile') as Tab;
   return (
@@ -57,6 +59,7 @@ export function SettingsPage(): React.JSX.Element {
         {current === 'risk' && <RiskTab />}
         {current === 'checklists' && <ChecklistTab />}
         {current === 'data' && <DataTab />}
+        {current === 'cloud' && <CloudAiTab />}
       </Tabs>
     </>
   );
@@ -65,6 +68,8 @@ export function SettingsPage(): React.JSX.Element {
 function ProfileTab(): React.JSX.Element {
   const db = useDb();
   const toast = useToast();
+  // A signed-in cloud account is managed by the administrator; only a demo profile is editable here.
+  const managed = useSession()?.demo === false;
   const [p, setP] = useState(db.settings.profile);
   const [lang, setLang] = useState(db.settings.preferences.language);
   const [err, setErr] = useState<string | null>(null);
@@ -90,10 +95,16 @@ function ProfileTab(): React.JSX.Element {
   };
   return (
     <Card className="max-w-3xl p-5">
+      {managed && (
+        <Notice className="mb-3">
+          Your name, employee ID, role and branch are managed by your administrator.
+        </Notice>
+      )}
       <div className="grid gap-3 sm:grid-cols-2">
         <TextField
           label="Name"
           required
+          readOnly={managed}
           value={p.name}
           error={err !== null && p.name.trim() === '' ? err : null}
           onChange={(e) => {
@@ -102,6 +113,7 @@ function ProfileTab(): React.JSX.Element {
         />
         <TextField
           label="Employee ID"
+          readOnly={managed}
           value={p.employeeId}
           onChange={(e) => {
             setP({ ...p, employeeId: e.target.value });
@@ -110,6 +122,7 @@ function ProfileTab(): React.JSX.Element {
         <TextField
           label="Work email"
           type="email"
+          readOnly={managed}
           value={p.email}
           error={err !== null && p.name.trim() !== '' ? err : null}
           onChange={(e) => {
@@ -120,10 +133,15 @@ function ProfileTab(): React.JSX.Element {
           label="Role"
           value={ROLE_LABEL[p.role]}
           readOnly
-          hint="Set by demo sign-in. Real roles would come from your bank's identity system."
+          hint={
+            managed
+              ? 'Set by your administrator.'
+              : "Set by demo sign-in. Real roles would come from your bank's identity system."
+          }
         />
         <SelectField
           label="Branch"
+          disabled={managed}
           value={p.branchId}
           onChange={(e) => {
             setP({ ...p, branchId: e.target.value });

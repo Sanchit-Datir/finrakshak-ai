@@ -9,8 +9,11 @@ import { Notice } from '../components/ui/States.js';
 import { ROLE_LABEL } from '../domain/labels.js';
 import { RoleSchema, type Role } from '../domain/schemas.js';
 import { DEMO_USERS } from '../demo/seed.js';
+import { demoEnabled } from '../lib/cloud/config.js';
+import { explainCloudError } from '../lib/cloud/errors.js';
 import { safeInternalPath } from '../lib/safe-url.js';
 import { useDocumentTitle } from '../state/hooks.js';
+import { signInWithPassword, signOutCloud, useCloudAuth } from '../state/cloud-auth.js';
 import { startDemoSession, useSession } from '../state/session.js';
 import { mutate } from '../state/store.js';
 
@@ -28,6 +31,8 @@ const T = {
     footer: 'Secure access for authorized banking staff.',
     idRequired: 'Enter your employee ID or work email.',
     pwRequired: 'Enter your password.',
+    emailRequired: 'Enter your work email address. Employee ID sign-in is not available yet.',
+    checking: 'Checking your sign-in…',
     notConnected:
       'Secure sign-in is not connected in this prototype, so no credentials were checked. Use demo sign-in below to explore with synthetic data.',
   },
@@ -42,6 +47,9 @@ const T = {
     footer: 'अधिकृत बँक कर्मचाऱ्यांसाठी सुरक्षित प्रवेश.',
     idRequired: 'कर्मचारी आयडी किंवा ईमेल भरा.',
     pwRequired: 'पासवर्ड भरा.',
+    emailRequired:
+      'तुमचा कार्यालयीन ईमेल पत्ता प्रविष्ट करा. कर्मचारी आयडीने साइन इन अद्याप उपलब्ध नाही.',
+    checking: 'तुमचे साइन इन तपासत आहे…',
     notConnected:
       'या प्रोटोटाइपमध्ये सुरक्षित साइन-इन जोडलेले नाही; कोणतीही माहिती तपासली गेली नाही. खालील डेमो साइन-इन वापरा.',
   },
@@ -119,6 +127,10 @@ export function LoginPage(): React.JSX.Element {
   const [notice, setNotice] = useState(false);
   const [forgot, setForgot] = useState(false);
   const [role, setRole] = useState<Role>('branch_manager');
+  const cloudAuth = useCloudAuth();
+  const cloudMode = cloudAuth.status !== 'off';
+  const [busy, setBusy] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const t = T[lang];
   const from = (location.state as { from?: unknown } | null)?.from;
   const target = safeInternalPath(from);
@@ -128,12 +140,31 @@ export function LoginPage(): React.JSX.Element {
   const onSubmit = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const next = {
-      ...(userId.trim() === '' ? { id: t.idRequired } : {}),
+      ...(userId.trim() === ''
+        ? { id: t.idRequired }
+        : cloudMode && !userId.includes('@')
+          ? { id: t.emailRequired }
+          : {}),
       ...(password === '' ? { pw: t.pwRequired } : {}),
     };
     setErrors(next);
-    setNotice(Object.keys(next).length === 0);
-    setPassword('');
+    setFormError(null);
+    if (!cloudMode) {
+      // Plain demo build: there is no sign-in service, so say so (and check nothing).
+      setNotice(Object.keys(next).length === 0);
+      setPassword('');
+      return;
+    }
+    if (Object.keys(next).length > 0) return;
+    setBusy(true);
+    signInWithPassword(userId, password, remember)
+      .catch((error: unknown) => {
+        setFormError(explainCloudError(error));
+      })
+      .finally(() => {
+        setPassword('');
+        setBusy(false);
+      });
   };
 
   const demoSignIn = (): void => {
@@ -291,43 +322,71 @@ export function LoginPage(): React.JSX.Element {
                   {t.forgot}
                 </button>
               </div>
-              {notice && <Notice tone="warn">{t.notConnected}</Notice>}
-              <Button type="submit" variant="primary" className="w-full">
+              {!cloudMode && notice && <Notice tone="warn">{t.notConnected}</Notice>}
+              {formError !== null && <Notice tone="danger">{formError}</Notice>}
+              {cloudAuth.status === 'loading' && <p className="text-muted text-sm">{t.checking}</p>}
+              {cloudAuth.status === 'needs-setup' && (
+                <Notice tone="warn" title="Your account is not set up yet">
+                  You are signed in, but an administrator has not set up your profile. Send them
+                  this Account ID: <code className="select-all break-all">{cloudAuth.uid}</code>
+                </Notice>
+              )}
+              {cloudAuth.status === 'error' && <Notice tone="danger">{cloudAuth.message}</Notice>}
+              <Button
+                type="submit"
+                variant="primary"
+                className="w-full"
+                loading={busy}
+                disabled={cloudAuth.status === 'loading'}
+              >
                 {t.signIn}
               </Button>
+              {(cloudAuth.status === 'needs-setup' || cloudAuth.status === 'error') && (
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                  onClick={() => {
+                    void signOutCloud();
+                  }}
+                >
+                  Sign out of this account
+                </Button>
+              )}
             </form>
 
-            <div className="border-line mt-6 rounded-xl border border-dashed p-4">
-              <p className="flex items-center gap-1.5 text-sm font-semibold">
-                <FlaskConical className="text-violet size-4" aria-hidden /> Demo sign-in
-              </p>
-              <p className="text-muted mt-1 text-xs">
-                Explore the prototype with synthetic data. No password is checked and this is not
-                access control.
-              </p>
-              <SelectField
-                label="Demo role"
-                className="mt-3"
-                value={role}
-                onChange={(e) => {
-                  setRole(RoleSchema.parse(e.target.value));
-                }}
-              >
-                {RoleSchema.options.map((r) => (
-                  <option key={r} value={r}>
-                    {ROLE_LABEL[r]} — {DEMO_USERS[r].name}
-                  </option>
-                ))}
-              </SelectField>
-              <Button
-                variant="subtle"
-                className="mt-3 w-full"
-                icon={FlaskConical}
-                onClick={demoSignIn}
-              >
-                Continue with demo sign-in
-              </Button>
-            </div>
+            {demoEnabled(import.meta.env) && (
+              <div className="border-line mt-6 rounded-xl border border-dashed p-4">
+                <p className="flex items-center gap-1.5 text-sm font-semibold">
+                  <FlaskConical className="text-violet size-4" aria-hidden /> Demo sign-in
+                </p>
+                <p className="text-muted mt-1 text-xs">
+                  Explore the prototype with synthetic data. No password is checked and this is not
+                  access control.
+                </p>
+                <SelectField
+                  label="Demo role"
+                  className="mt-3"
+                  value={role}
+                  onChange={(e) => {
+                    setRole(RoleSchema.parse(e.target.value));
+                  }}
+                >
+                  {RoleSchema.options.map((r) => (
+                    <option key={r} value={r}>
+                      {ROLE_LABEL[r]} — {DEMO_USERS[r].name}
+                    </option>
+                  ))}
+                </SelectField>
+                <Button
+                  variant="subtle"
+                  className="mt-3 w-full"
+                  icon={FlaskConical}
+                  onClick={demoSignIn}
+                >
+                  Continue with demo sign-in
+                </Button>
+              </div>
+            )}
             <p className="text-muted mt-6 text-center text-xs">{t.footer}</p>
           </div>
         </div>
