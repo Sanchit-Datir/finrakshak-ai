@@ -9,13 +9,16 @@ import { stamp } from '../delta/report.js';
 import { log } from '../log.js';
 import type { GraphOutputs } from '../pipeline/graph.js';
 import { ABSENT, blobs, joinKey, PreconditionFailedError } from '../storage/index.js';
-import { readJsonVersioned, sameAs, writeJson } from '../store/jsonl.js';
+import { readJson, readJsonVersioned, sameAs, writeJson } from '../store/jsonl.js';
 
 export const channelPrefix = (channel: PublishChannel): string => joinKey('publish', channel);
 export const currentKey = (channel: PublishChannel): string =>
   joinKey(channelPrefix(channel), 'current.json');
 const versionsPrefix = (channel: PublishChannel): string =>
   joinKey(channelPrefix(channel), 'versions');
+/** Every pointer ever published, so a rollback can restore the exact previous one. */
+const historyKey = (channel: PublishChannel, version: string): string =>
+  joinKey(channelPrefix(channel), 'history', `${version}.json`);
 
 /** The version the app serves on a channel, with the generation needed to replace it safely. */
 export async function readCurrent(
@@ -86,6 +89,7 @@ export async function publishVersion(req: PublishRequest): Promise<PublishedVers
     bundle_bytes: bundleBytes,
     gates: req.gates,
   });
+  await writeJson(historyKey(req.channel, version), next);
   await writeJson(currentKey(req.channel), next, sameAs(current.generation));
   log.info('published', {
     channel: req.channel,
@@ -96,14 +100,26 @@ export async function publishVersion(req: PublishRequest): Promise<PublishedVers
   return next;
 }
 
-/** Points a channel back at an older version that still exists (rollback). */
-export async function repoint(channel: PublishChannel, target: PublishedVersion): Promise<void> {
+/**
+ * Rollback: points the channel at the newest earlier version whose files still exist. Returns the
+ * version now served, or null when there is nothing to go back to.
+ */
+export async function rollbackToPrevious(channel: PublishChannel): Promise<string | null> {
   const current = await readCurrent(channel);
-  await writeJson(
-    currentKey(channel),
-    PublishedVersionSchema.parse(target),
-    sameAs(current.generation),
-  );
+  if (!current.value) return null;
+  const keys = (await blobs().list(joinKey(channelPrefix(channel), 'history'))).map((b) => b.key);
+  for (const key of keys.sort().reverse()) {
+    const candidate = await readJson(key, PublishedVersionSchema);
+    if (!candidate || candidate.version >= current.value.version) continue;
+    const first = candidate.files[0];
+    const folder = joinKey(versionsPrefix(channel), candidate.version);
+    if (!first || !(await blobs().stat(joinKey(folder, first.file)))) continue;
+    const restored = { ...candidate, published_at: new Date().toISOString() };
+    await writeJson(currentKey(channel), restored, sameAs(current.generation));
+    log.warn('rolled back', { channel, from: current.value.version, to: candidate.version });
+    return candidate.version;
+  }
+  return null;
 }
 
 async function pruneVersions(

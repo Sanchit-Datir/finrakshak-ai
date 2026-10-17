@@ -70,6 +70,8 @@ const CloudEnvSchema = z.object({
     .regex(/^\w{1,1024}$/)
     .optional(),
   FUNDTRACE_BIGQUERY_LOCATION: z.string().default('asia-south1'),
+  /** 1 = first review of a run; 2 = after the automatic re-run (no further automatic re-runs). */
+  FUNDTRACE_AGENT_PASS: z.coerce.number().int().min(1).max(2).default(1),
 });
 
 export interface CloudEnv {
@@ -86,6 +88,7 @@ export interface CloudEnv {
   readonly publishKeep: number;
   readonly gateMaxDrop: number;
   readonly bigquery: { readonly dataset: string; readonly location: string } | null;
+  readonly agentPass: 1 | 2;
 }
 
 /** Parses the job environment once; fails fast with the field that is wrong. */
@@ -114,6 +117,7 @@ export function readCloudEnv(source: NodeJS.ProcessEnv = process.env): CloudEnv 
             dataset: env.FUNDTRACE_PUBLISH_ENABLED ? dataset : `${dataset}_dryrun`,
             location: env.FUNDTRACE_BIGQUERY_LOCATION,
           },
+    agentPass: env.FUNDTRACE_AGENT_PASS === 2 ? 2 : 1,
   };
 }
 

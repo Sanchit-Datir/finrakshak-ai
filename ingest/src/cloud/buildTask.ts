@@ -6,12 +6,14 @@ import { ADAPTERS } from '../pipeline/adapters.js';
 import { buildGraphOutputs } from '../pipeline/graph.js';
 import { blobs, joinKey } from '../storage/index.js';
 import { BigQueryLoader } from './bigquery.js';
+import { emptyRun } from '../coordination/runLog.js';
 import type { CloudDeps } from './context.js';
 import type { CloudEnv } from './env.js';
 import { allPassed, evaluateGates, seedCasesIn } from './gates.js';
 import { loadHistory } from './history.js';
 import { mcaChanged } from './mcaState.js';
-import { publishVersion, readCurrent } from './publish.js';
+import { publishVersion, readCurrent, rollbackToPrevious } from './publish.js';
+import { markApplied } from '../agent/proposals.js';
 
 interface Decision {
   readonly build: boolean;
@@ -21,7 +23,10 @@ interface Decision {
 
 /** Rebuild only when something changed: a source delta, a new MCA upload, or nothing published yet. */
 async function decide(run: IngestRun, env: CloudEnv, channel: PublishChannel): Promise<Decision> {
+  // On a re-run pass, only sources finished after this run's earlier build count as new changes.
+  const builtAt = run.build && run.build.status !== 'failed' ? run.build.finished_at : null;
   const reasons = Object.values(run.sources)
+    .filter((s) => builtAt === null || s.finished_at > builtAt)
     .filter((s) => s.added + s.changed + s.removed > 0)
     .map((s) => `${s.source_id}: +${s.added} ~${s.changed} -${s.removed}`);
   const mca = await mcaChanged();
@@ -137,11 +142,45 @@ async function history(
  * publish gates, publishes a new version, loads BigQuery and records the outcome. A failed gate
  * or step leaves the previously published version live. Returns false when the run needs attention.
  */
+/**
+ * An owner-approved `rollback_publish` replaces this run's build: the channel goes back one
+ * version and nothing new is published until the next run.
+ */
+async function rollbackIfApproved(
+  env: CloudEnv,
+  deps: CloudDeps,
+  channel: PublishChannel,
+): Promise<BuildFields | null> {
+  const approved = (await deps.agent.openProposals()).filter(
+    (p) => p.action === 'rollback_publish' && p.status === 'approved',
+  );
+  if (approved.length === 0) return null;
+  const restored = await rollbackToPrevious(channel);
+  await markApplied(deps.agent, approved, env.runId);
+  return {
+    ...EMPTY,
+    status: restored ? 'published' : 'failed',
+    version: restored,
+    error: restored ? null : 'rollback approved but no earlier version is available',
+  };
+}
+
 export async function runBuildTask(env: CloudEnv, deps: CloudDeps): Promise<boolean> {
   const startedAt = new Date().toISOString();
-  const run = (await deps.runs.get(env.runId)) ?? { run_id: env.runId, sources: {}, build: null };
+  const run = (await deps.runs.get(env.runId)) ?? emptyRun(env.runId);
   const channel: PublishChannel = env.publishEnabled ? 'live' : 'dry-run';
   const loader = loaderFor(env);
+  const rollback = await rollbackIfApproved(env, deps, channel);
+  if (rollback) {
+    const record = {
+      ...rollback,
+      started_at: startedAt,
+      finished_at: new Date().toISOString(),
+      reason: 'owner-approved rollback',
+    };
+    await deps.runs.recordBuild(env.runId, record);
+    return rollback.status !== 'failed';
+  }
   const decision = await decide(run, env, channel);
   log.info('build decision', {
     run: env.runId,

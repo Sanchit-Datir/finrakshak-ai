@@ -24,6 +24,9 @@ DATASET="fundtrace_public"
 AR_REPO="ingest"
 RUNNER_SA="ingest-runner@${PROJECT_ID}.iam.gserviceaccount.com"
 ORCH_SA="ingest-orchestrator@${PROJECT_ID}.iam.gserviceaccount.com"
+AGENT_SA="ingest-agent@${PROJECT_ID}.iam.gserviceaccount.com"
+# Gen2 functions run as the App Engine default account (see docs/DEPLOY.md); publicData reads bundles.
+FUNCTIONS_SA="${PROJECT_ID}@appspot.gserviceaccount.com"
 DEPLOY_SA="github-deployer@${PROJECT_ID}.iam.gserviceaccount.com"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -65,6 +68,8 @@ ensure_dataset() { # <dataset>
       --description "FundTrace public-records dataset (loaded by ingest-build)" "$PROJECT_ID:$1"
   bq --project_id "$PROJECT_ID" add-iam-policy-binding --dataset \
     --member "serviceAccount:$RUNNER_SA" --role roles/bigquery.dataEditor "$PROJECT_ID:$1" >/dev/null
+  bq --project_id "$PROJECT_ID" add-iam-policy-binding --dataset \
+    --member "serviceAccount:$AGENT_SA" --role roles/bigquery.dataViewer "$PROJECT_ID:$1" >/dev/null
 }
 ensure_metric() { # <name> <description> <filter>
   gcloud logging metrics describe "$1" --project "$PROJECT_ID" >/dev/null 2>&1 ||
@@ -83,11 +88,12 @@ echo "› Enabling APIs"
 gcloud services enable run.googleapis.com workflows.googleapis.com workflowexecutions.googleapis.com \
   cloudscheduler.googleapis.com bigquery.googleapis.com storage.googleapis.com \
   firestore.googleapis.com artifactregistry.googleapis.com logging.googleapis.com \
-  monitoring.googleapis.com iam.googleapis.com --project "$PROJECT_ID"
+  monitoring.googleapis.com iam.googleapis.com aiplatform.googleapis.com --project "$PROJECT_ID"
 
 echo "› Service accounts"
 ensure_sa "$RUNNER_SA" "Ingest jobs: acquire and build"
 ensure_sa "$ORCH_SA" "Ingest orchestration: Scheduler and Workflows"
+ensure_sa "$AGENT_SA" "Ingest agent: read-only reviewer (B-49)"
 
 echo "› Cloud Storage (private, uniform access, $REGION)"
 for b in "$RAW_BUCKET" "$STATE_BUCKET" "$PUBLISH_BUCKET"; do ensure_bucket "$b"; done
@@ -99,6 +105,10 @@ gcloud storage buckets update "gs://$STATE_BUCKET" --project "$PROJECT_ID" --ver
 grant_bucket "$RAW_BUCKET" "$RUNNER_SA" roles/storage.objectCreator roles/storage.objectViewer
 grant_bucket "$STATE_BUCKET" "$RUNNER_SA" roles/storage.objectUser
 grant_bucket "$PUBLISH_BUCKET" "$RUNNER_SA" roles/storage.objectUser
+# The agent reads everything and writes no pipeline data (B-49).
+for b in "$RAW_BUCKET" "$STATE_BUCKET" "$PUBLISH_BUCKET"; do grant_bucket "$b" "$AGENT_SA" roles/storage.objectViewer; done
+# The app's publicData function only reads the published bundles.
+grant_bucket "$PUBLISH_BUCKET" "$FUNCTIONS_SA" roles/storage.objectViewer
 
 echo "› BigQuery datasets ($DATASET and the dry-run copy)"
 ensure_dataset "$DATASET"
@@ -109,7 +119,11 @@ grant_project "$RUNNER_SA" roles/bigquery.jobUser roles/datastore.user roles/log
   roles/monitoring.metricWriter
 # The orchestrator only starts the workflow and runs the jobs (with per-run env overrides); it
 # touches no data. Falls back to Cloud Run Developer only if the narrower role is unavailable.
-grant_project "$ORCH_SA" roles/workflows.invoker roles/logging.logWriter
+grant_project "$ORCH_SA" roles/workflows.invoker roles/logging.logWriter roles/datastore.viewer
+# Agent: Firestore for reviews and proposals (its code has no tool that writes anything else),
+# BigQuery jobs for read-only baseline queries, Vertex AI for the model.
+grant_project "$AGENT_SA" roles/datastore.user roles/bigquery.jobUser roles/aiplatform.user \
+  roles/logging.logWriter
 grant_project "$ORCH_SA" roles/run.jobsExecutorWithOverrides ||
   { echo "  falling back to roles/run.developer for $ORCH_SA" && grant_project "$ORCH_SA" roles/run.developer; }
 
@@ -124,7 +138,7 @@ echo "› Deploy account (main branch only) may ship the jobs and the workflow"
 gcloud artifacts repositories add-iam-policy-binding "$AR_REPO" --location "$REGION" \
   --project "$PROJECT_ID" --member "serviceAccount:$DEPLOY_SA" --role roles/artifactregistry.writer >/dev/null
 grant_project "$DEPLOY_SA" roles/run.developer roles/workflows.editor
-for sa in "$RUNNER_SA" "$ORCH_SA"; do
+for sa in "$RUNNER_SA" "$ORCH_SA" "$AGENT_SA"; do
   gcloud iam service-accounts add-iam-policy-binding "$sa" --project "$PROJECT_ID" \
     --member "serviceAccount:$DEPLOY_SA" --role roles/iam.serviceAccountUser >/dev/null
 done

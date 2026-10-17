@@ -1,7 +1,9 @@
 # Daily cloud ingestion run (docs/plans/GCP_INGESTION_AGENT_PLAN.md §7).
 # Started by Cloud Scheduler `ingest-daily`; deployed by scripts/deploy-ingest.sh.
 # Each step is a Cloud Run job of the same image. A failing step is recorded and the remaining
-# steps still run (the build always records the run); the execution then fails so alerting fires.
+# steps still run (the build always records the run, the agent always reviews it). When the agent
+# asks for it (transient errors only), the failed sources are re-run once within the same run.
+# The execution fails, so alerting fires, when the agent's code-computed status is `failed`.
 # Optional input: {"force_build": "true"} rebuilds and republishes even when nothing changed.
 main:
   params: [input]
@@ -35,6 +37,96 @@ main:
                   - failed: ${list.concat(failed, "acquire")}
     - build:
         try:
+          call: build_and_review
+          args:
+            project: ${project}
+            region: ${region}
+            runId: ${runId}
+            runAt: ${runAt}
+            forceBuild: ${forceBuild}
+            pass: '1'
+          result: stepFailures
+        except:
+          as: e
+          steps:
+            - noteBuild:
+                assign:
+                  - stepFailures: ['build']
+    - collect:
+        assign:
+          - failed: ${list.concat(failed, stepFailures)}
+    - reruns:
+        call: read_run
+        args:
+          project: ${project}
+          runId: ${runId}
+        result: runState
+    - maybeRerun:
+        switch:
+          - condition: ${runState.rerun_count > 0}
+            steps:
+              - rerunAcquire:
+                  try:
+                    call: run_job_tasks
+                    args:
+                      project: ${project}
+                      region: ${region}
+                      job: ingest-acquire
+                      taskCount: ${runState.rerun_count}
+                      env:
+                        - name: FUNDTRACE_RUN_ID
+                          value: ${runId}
+                        - name: FUNDTRACE_RUN_AT
+                          value: ${runAt}
+                        - name: FUNDTRACE_SOURCES
+                          value: ${runState.rerun_csv}
+                      timeout: 25200
+                  except:
+                    as: e
+                    steps:
+                      - noteRerun:
+                          assign:
+                            - failed: ${list.concat(failed, "rerun")}
+              - rebuild:
+                  call: build_and_review
+                  args:
+                    project: ${project}
+                    region: ${region}
+                    runId: ${runId}
+                    runAt: ${runAt}
+                    forceBuild: 'false'
+                    pass: '2'
+                  result: secondFailures
+              - collectSecond:
+                  assign:
+                    - failed: ${list.concat(failed, secondFailures)}
+              - rereadRun:
+                  call: read_run
+                  args:
+                    project: ${project}
+                    runId: ${runId}
+                  result: runState
+    - finish:
+        switch:
+          - condition: ${"agent" in failed or runState.review_status == "failed" or runState.review_status == ""}
+            raise:
+              message: ${"Run " + runId + " needs attention; see Firestore ingestRuns/" + runId + " and ingestReviews/" + runId}
+              failed_steps: ${failed}
+    - done:
+        return:
+          run_id: ${runId}
+          review_status: ${runState.review_status}
+          failed_steps: ${failed}
+
+# Build (publish gates, versioned publish, BigQuery), then the agent review. Returns failed steps.
+build_and_review:
+  params: [project, region, runId, runAt, forceBuild, pass]
+  steps:
+    - init:
+        assign:
+          - failures: []
+    - build:
+        try:
           call: run_job
           args:
             project: ${project}
@@ -53,16 +145,65 @@ main:
           steps:
             - noteBuild:
                 assign:
-                  - failed: ${list.concat(failed, "build")}
-    - finish:
-        switch:
-          - condition: ${len(failed) > 0}
-            raise:
-              message: ${"Run " + runId + " needs attention; failed steps recorded in ingestRuns/" + runId}
-              failed_steps: ${failed}
+                  - failures: ${list.concat(failures, "build")}
+    - review:
+        try:
+          call: run_job
+          args:
+            project: ${project}
+            region: ${region}
+            job: ingest-agent
+            env:
+              - name: FUNDTRACE_RUN_ID
+                value: ${runId}
+              - name: FUNDTRACE_RUN_AT
+                value: ${runAt}
+              - name: FUNDTRACE_AGENT_PASS
+                value: ${pass}
+            timeout: 1800
+        except:
+          as: e
+          steps:
+            - noteAgent:
+                assign:
+                  - failures: ${list.concat(failures, "agent")}
+    - done:
+        return: ${failures}
+
+# Reads the run record the jobs wrote: the agent's status and the sources it asked to re-run.
+read_run:
+  params: [project, runId]
+  steps:
+    - get:
+        try:
+          call: googleapis.firestore.v1.projects.databases.documents.get
+          args:
+            name: ${"projects/" + project + "/databases/(default)/documents/ingestRuns/" + runId}
+          result: doc
+        except:
+          as: e
+          steps:
+            - none:
+                assign:
+                  - doc: {}
+    - parse:
+        assign:
+          - values: ${default(map.get(doc, ["fields", "rerun_sources", "arrayValue", "values"]), [])}
+          - status: ${default(map.get(doc, ["fields", "review_status", "stringValue"]), "")}
+          - csv: ''
+    - join:
+        for:
+          value: v
+          in: ${values}
+          steps:
+            - append:
+                assign:
+                  - csv: ${if(csv == "", v.stringValue, csv + "," + v.stringValue)}
     - done:
         return:
-          run_id: ${runId}
+          review_status: ${status}
+          rerun_csv: ${csv}
+          rerun_count: ${len(values)}
 
 # Runs one Cloud Run job with per-run environment overrides and waits for it to finish.
 run_job:
@@ -74,6 +215,25 @@ run_job:
           name: ${"projects/" + project + "/locations/" + region + "/jobs/" + job}
           body:
             overrides:
+              containerOverrides:
+                - env: ${env}
+          connector_params:
+            timeout: ${timeout}
+        result: execution
+    - ok:
+        return: ${execution}
+
+# Same, with a task count override (the re-run starts one task per re-run source).
+run_job_tasks:
+  params: [project, region, job, env, timeout, taskCount]
+  steps:
+    - run:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project + "/locations/" + region + "/jobs/" + job}
+          body:
+            overrides:
+              taskCount: ${taskCount}
               containerOverrides:
                 - env: ${env}
           connector_params:

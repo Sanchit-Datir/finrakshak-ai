@@ -66,5 +66,8 @@ export const IngestRunSchema = z.object({
   run_id: z.string().min(1),
   sources: z.record(z.string(), SourceRunRecordSchema).default({}),
   build: BuildRecordSchema.nullable().default(null),
+  /** Sources the agent re-runs within this run (automatic `rerun_source`, transient errors only). */
+  rerun_sources: z.array(SourceIdSchema).default([]),
+  review_status: z.enum(['healthy', 'degraded', 'failed']).nullable().default(null),
 });
 export type IngestRun = z.infer<typeof IngestRunSchema>;

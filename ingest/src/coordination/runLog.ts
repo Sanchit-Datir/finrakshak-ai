@@ -4,19 +4,36 @@ import {
   SourceRunRecordSchema,
   type BuildRecord,
   type IngestRun,
+  type SourceId,
   type SourceRunRecord,
 } from '@fund-tracker/shared';
+import { z } from 'zod';
 import type { DocumentReference, Firestore } from '@google-cloud/firestore';
 import { dataKey } from '../config.js';
 import { blobs } from '../storage/index.js';
 import { readJson, writeJson } from '../store/jsonl.js';
 
+export interface ReviewMark {
+  readonly status: NonNullable<IngestRun['review_status']>;
+  /** Sources Workflows re-runs within this run (automatic `rerun_source`, B-49). */
+  readonly rerunSources: readonly SourceId[];
+}
+
 /** Where each step of a run reports its outcome; the agent and the admin page read it back. */
 export interface RunLog {
   recordSource(runId: string, record: SourceRunRecord): Promise<void>;
   recordBuild(runId: string, record: BuildRecord): Promise<void>;
+  recordReview(runId: string, mark: ReviewMark): Promise<void>;
   get(runId: string): Promise<IngestRun | null>;
 }
+
+/** A run that has no recorded step yet. */
+export const emptyRun = (runId: string): IngestRun => IngestRunSchema.parse({ run_id: runId });
+
+const ReviewMarkSchema = z.object({
+  review_status: IngestRunSchema.shape.review_status,
+  rerun_sources: IngestRunSchema.shape.rerun_sources,
+});
 
 const runPrefix = (runId: string): string => dataKey('interim', 'runs', runId);
 
@@ -42,7 +59,15 @@ export class BlobRunLog implements RunLog {
       if (record) sources[record.source_id] = record;
     }
     const build = await readJson(dataKey(runPrefix(runId), 'build.json'), BuildRecordSchema);
-    return IngestRunSchema.parse({ run_id: runId, sources, build });
+    const review = await readJson(dataKey(runPrefix(runId), 'review.json'), ReviewMarkSchema);
+    return IngestRunSchema.parse({ run_id: runId, sources, build, ...(review ?? {}) });
+  }
+
+  async recordReview(runId: string, mark: ReviewMark): Promise<void> {
+    await writeJson(dataKey(runPrefix(runId), 'review.json'), {
+      review_status: mark.status,
+      rerun_sources: [...mark.rerunSources],
+    });
   }
 }
 
@@ -70,6 +95,13 @@ export class FirestoreRunLog implements RunLog {
     );
   }
 
+  async recordReview(runId: string, mark: ReviewMark): Promise<void> {
+    await this.doc(runId).set(
+      { run_id: runId, review_status: mark.status, rerun_sources: [...mark.rerunSources] },
+      { merge: true },
+    );
+  }
+
   async get(runId: string): Promise<IngestRun | null> {
     const snap = await this.doc(runId).get();
     if (!snap.exists) return null;
@@ -88,6 +120,10 @@ export class CompositeRunLog implements RunLog {
 
   async recordBuild(runId: string, record: BuildRecord): Promise<void> {
     for (const l of this.logs) await l.recordBuild(runId, record);
+  }
+
+  async recordReview(runId: string, mark: ReviewMark): Promise<void> {
+    for (const l of this.logs) await l.recordReview(runId, mark);
   }
 
   get(runId: string): Promise<IngestRun | null> {

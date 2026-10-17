@@ -1,6 +1,6 @@
 # Plan: cloud ingestion pipeline and data agent on GCP
 
-_Status: MVP 1 implemented on branch `ingestion-agent` (code, container, infra scripts, workflow); GCP resources are created by `scripts/setup-ingest-gcp.sh` (not run yet). MVP 2 and 3 follow._
+_Status: MVP 1 and MVP 2 implemented on branch `ingestion-agent`; GCP resources are created by `scripts/setup-ingest-gcp.sh` (not run yet). MVP 3 follows. Deviations from this draft: the agent's model client lives in `ingest/src/ai/` (functions keep their own, because their tests mock the SDK directly), and reviews are stored in Firestore and the state bucket rather than a BigQuery table, so the agent needs no BigQuery write access._
 _Project `fund-tracer` (number 728958349363), region `asia-south1`, as set up in `docs/DEPLOY.md`._
 
 ## 1. Goal

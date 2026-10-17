@@ -105,4 +105,6 @@ jobs:
       - name: Deploy jobs and workflow
         env:
           PUBLISH_ENABLED: ${{ vars.INGEST_PUBLISH_ENABLED || 'false' }}
+          # Kill switch for the agent's model calls (reviews fall back to the templated text).
+          AGENT_ENABLED: ${{ vars.INGEST_AGENT_ENABLED || 'true' }}
         run: scripts/deploy-ingest.sh "$FIREBASE_PROJECT_ID" "$IMAGE" "$REGION"

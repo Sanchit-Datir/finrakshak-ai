@@ -25,10 +25,15 @@ const EnvSchema = z.object({
   GEMINI_PROVIDER: z.enum(GEMINI_PROVIDERS).optional(),
   /** Injected from Secret Manager at runtime (see `geminiApiKey` in config/secrets.ts). */
   GEMINI_API_KEY: z.string().min(1).optional(),
+  /** Bucket the cloud ingestion publishes to (default `<project>-ingest-publish`). */
+  PUBLIC_DATA_BUCKET: z.string().min(3).optional(),
+  /** `live` for the app; `dry-run` only to inspect the dry run. */
+  PUBLIC_DATA_CHANNEL: z.enum(['live', 'dry-run']).default('live'),
 });
 
-export type Env = Omit<z.infer<typeof EnvSchema>, 'GEMINI_PROVIDER'> & {
+export type Env = Omit<z.infer<typeof EnvSchema>, 'GEMINI_PROVIDER' | 'PUBLIC_DATA_BUCKET'> & {
   GEMINI_PROVIDER: GeminiProvider;
+  PUBLIC_DATA_BUCKET: string;
 };
 
 let cached: Env | undefined;
@@ -41,7 +46,11 @@ export function getEnv(): Env {
   if (provider === 'apikey' && raw.GEMINI_API_KEY === undefined) {
     throw new Error('GEMINI_API_KEY is required when GEMINI_PROVIDER=apikey');
   }
-  cached = { ...raw, GEMINI_PROVIDER: provider };
+  cached = {
+    ...raw,
+    GEMINI_PROVIDER: provider,
+    PUBLIC_DATA_BUCKET: raw.PUBLIC_DATA_BUCKET ?? `${raw.GCLOUD_PROJECT}-ingest-publish`,
+  };
   return cached;
 }
 

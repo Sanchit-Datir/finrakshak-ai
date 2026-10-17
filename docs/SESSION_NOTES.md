@@ -61,8 +61,13 @@ owner decided. Only the borrowers are real; the loan values are made up.
   Firestore leases and run records, Cloud Run job entrypoints (`ingest/src/cloud/`), publish gates,
   versioned publish, BigQuery loads, container (`ingest/Dockerfile`), `scripts/setup-ingest-gcp.sh`,
   `scripts/deploy-ingest.sh`, workflow `infra/workflows/ingest-daily.yaml`. Verified locally on disk
-  and against Cloud Storage + Firestore emulators; BigQuery loads untested (no emulator). Next: MVP 2
-  (UI on cloud data + agent supervisor), MVP 3 (extraction, SEBI full index).
+  and against Cloud Storage + Firestore emulators; BigQuery loads untested (no emulator).
+- **Cloud ingestion MVP 2 (same branch):** `ingest-agent` job (`ingest/src/agent/`, `ingest/src/ai/`):
+  code-computed findings and baselines, Gemini tool loop (mock by default), proposals with an
+  approval flow (`decideProposal` callable, Firestore console until sign-in), automatic re-run of
+  transient failures in the workflow, rollback. App: `publicData` function behind Hosting `/data/**`
+  (signed-in only), web loader falls back to `/graph-lab/`. Next: MVP 3 (extraction in shadow mode,
+  SEBI full index, layout diagnostician). Open: D3 (web sign-in), D2 confirmed as Vertex AI by default.
 - **Daily delta ingestion (GCP plan, MVP 1+2 done locally):** `acquire` now diffs and merges listings
   (`ingest/src/delta/`), pages incrementally for IBBI/NFRA/SFIO/RBI with a weekly/monthly full relist,
   and writes change reports to `data/interim/delta/`; guards stop empty, broken or shrunken listings from

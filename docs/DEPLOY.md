@@ -95,6 +95,34 @@ week (see the plan's MVP 1 exit criteria), set **`INGEST_PUBLISH_ENABLED=true`**
 - **Rollback:** copy an earlier `versions/<version>` entry into `current.json` (the previous 14
   versions are kept), or let the next good build replace it. Bundles are immutable once written.
 - **Alerts** (Monitoring → Alerting; no notification channel yet, by decision): run failed, a
-  source failed, a publish gate failed.
+  source failed, a publish gate failed. The run fails when the agent's code-computed status is
+  `failed` (a source failed and its retry did not fix it, a gate failed, or the agent crashed).
+
+### The agent and its proposals
+
+After every build the `ingest-agent` job reviews the run (`ingestReviews/<runId>`). Findings and
+their severity come from code; the model (Vertex AI, `gemini-3.1-flash-lite`) only writes the
+summary and may propose actions from a fixed list. Healthy days never call the model.
+
+| Action                          | Applied                                                    | Who decides                                                             |
+| ------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `rerun_source`                  | Re-runs the source within the same run                     | Automatic only for transient errors (once per run); otherwise the owner |
+| `full_relist` / `accept_shrink` | Next run of that source, once                              | Owner                                                                   |
+| `pause_source`                  | Every run skips the source until the proposal is resolved  | Owner                                                                   |
+| `rollback_publish`              | Next build repoints `current.json` to the previous version | Owner                                                                   |
+| `adapter_fix_needed`            | Nothing automatic: a developer changes the adapter         | Owner / developer                                                       |
+
+Approve or reject: call `decideProposal` (needs the custom claim `admin: true`; set it once with the
+Admin SDK), or, until the app has sign-in, edit `agentProposals/<id>.status` to `approved` /
+`rejected` / `resolved` in the Firestore console. Kill switch: repo variable
+`INGEST_AGENT_ENABLED=false` and redeploy (reviews become templated text, no model calls).
+
+### The app reads the published data
+
+`/data/**` on Hosting is rewritten to the `publicData` function, which serves the current version
+from the publish bucket (same origin, so the CSP stays strict). It needs a signed-in Firebase user
+(registered addresses are in the bundle, B-38); until the app has real sign-in, the web loader
+falls back to the local `/graph-lab/` copy.
+
 - **Permissions:** the runner can add and read raw evidence but never delete or overwrite it;
   only `github-deployer` (main branch) can change the jobs and the workflow.

@@ -6,6 +6,23 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // Cloud ingestion (docs/plans/GCP_INGESTION_AGENT_PLAN.md): written only by the pipeline's
+    // service accounts (Admin SDK, rules do not apply) and the decideProposal callable. The
+    // owner (custom claim `admin`) may read them for the admin page; nobody writes from a client.
+    match /ingestRuns/{runId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow write: if false;
+    }
+    match /ingestReviews/{runId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow write: if false;
+    }
+    match /agentProposals/{proposalId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow write: if false;
+    }
+    // ingestLocks/{name}: leases between pipeline tasks; no client access (default deny).
+
     match /funds/{fundId} {
       allow read: if request.auth != null && resource.data.ownerUid == request.auth.uid;
       allow create: if request.auth != null
