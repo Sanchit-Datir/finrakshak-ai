@@ -12,9 +12,10 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Accounts allowed to use billed AI features (document ID = Firebase Auth user ID). Managed by the
-    // owner in the console and read only by Cloud Functions (Admin SDK); clients get no access.
-    match /allowedUsers/{userId} {
+    // One profile per person (document ID = Firebase Auth user ID): name, role, branch, AI on/off.
+    // Written by the owner in the console and read only by Cloud Functions (Admin SDK); the browser
+    // asks the getProfile function, so clients get no direct access.
+    match /users/{userId} {
       allow read, write: if false;
     }
 

@@ -78,7 +78,12 @@ export function connectCloud(config: CloudConfig): Promise<Cloud> {
     }
 
     const auth = authLib.initializeAuth(app, {
-      persistence: [authLib.indexedDBLocalPersistence, authLib.browserLocalPersistence],
+      // Look in every place a sign-in may have been saved: long-term ("remember me") or this tab only.
+      persistence: [
+        authLib.indexedDBLocalPersistence,
+        authLib.browserLocalPersistence,
+        authLib.browserSessionPersistence,
+      ],
     });
     const functions = fnLib.getFunctions(app, config.region);
     if (config.useEmulators) {

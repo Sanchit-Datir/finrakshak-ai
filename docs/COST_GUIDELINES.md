@@ -58,8 +58,9 @@ uses, and what stops it from growing without bound (quota, cap, or budget).
 
 ## 5. Known gaps
 
-- Billed AI is limited to accounts listed in `allowedUsers` (keyed by Firebase user ID, see
-  `docs/DEPLOY.md`), so self-registered strangers cannot spend. The list is managed by hand in the console.
+- Billed AI is limited to people whose profile (`users/{Firebase user ID}`) has `aiEnabled: true`, so
+  self-registered strangers cannot spend (see `docs/DEPLOY.md`, step D). Each billed call costs one
+  Firestore read for that check, and each login one for `getProfile`; both are far inside the free quota.
 - `askGemini` has a per-user daily limit (`GEMINI_DAILY_LIMIT`, default 30 calls per Indian day,
   counted in the `usage` collection) that applies only to billed providers. The Firestore counter is
   unit-tested with an in-memory store but has not yet been run against a Firestore emulator.

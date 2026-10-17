@@ -42,3 +42,11 @@ export function readCloudConfig(env: Record<string, unknown>, isDev: boolean): C
     useEmulators: isDev && env['VITE_USE_EMULATORS'] === 'true',
   };
 }
+
+/**
+ * Whether the "Try demo" sign-in is offered. On unless explicitly switched off with
+ * VITE_ENABLE_DEMO=false, so a missing variable can never lock everyone out of the prototype.
+ */
+export function demoEnabled(env: Record<string, unknown>): boolean {
+  return env['VITE_ENABLE_DEMO'] !== 'false';
+}
