@@ -1,0 +1,167 @@
+[
+  {
+    "id": "mon:rapid_onward:L-2026-0108",
+    "ruleId": "rapid_onward",
+    "loanId": "L-2026-0108",
+    "priority": "needs_attention",
+    "title": "95% of disbursement moved within 72 h",
+    "explanation": "1 outgoing transfer(s) totalling ₹6,20,000 left the credited account within 72 hours of a ₹6,50,000 disbursement.",
+    "threshold": "≥ 70% of disbursed amount",
+    "window": "72 hours from disbursement",
+    "transactionIds": ["T-5002"],
+    "entityIds": ["a-shivneri"],
+    "totalMinor": 62000000,
+    "totalBasis": "Sum of outgoing transfers from the credited account inside the window (repayments excluded).",
+    "benign": [
+      "Payment to a supplier or dealer for the stated purpose (e.g. equipment purchase) is often immediate.",
+      "Pre-arranged vendor payments may be made as soon as funds arrive."
+    ],
+    "steps": [
+      "Compare payees with the quotation / pro forma invoice on file.",
+      "Request the purchase invoice or delivery proof.",
+      "Confirm the asset or inventory physically at site visit."
+    ],
+    "detectedAt": "2026-09-06T08:30:00.000Z"
+  },
+  {
+    "id": "mon:rapid_onward:L-2026-0110",
+    "ruleId": "rapid_onward",
+    "loanId": "L-2026-0110",
+    "priority": "needs_attention",
+    "title": "75% of disbursement moved within 72 h",
+    "explanation": "2 outgoing transfer(s) totalling ₹9,00,000 left the credited account within 72 hours of a ₹12,00,000 disbursement.",
+    "threshold": "≥ 70% of disbursed amount",
+    "window": "72 hours from disbursement",
+    "transactionIds": ["T-5006", "T-5007"],
+    "entityIds": ["a-bhosale-infra", "a-navnath"],
+    "totalMinor": 90000000,
+    "totalBasis": "Sum of outgoing transfers from the credited account inside the window (repayments excluded).",
+    "benign": [
+      "Payment to a supplier or dealer for the stated purpose (e.g. equipment purchase) is often immediate.",
+      "Pre-arranged vendor payments may be made as soon as funds arrive."
+    ],
+    "steps": [
+      "Compare payees with the quotation / pro forma invoice on file.",
+      "Request the purchase invoice or delivery proof.",
+      "Confirm the asset or inventory physically at site visit."
+    ],
+    "detectedAt": "2026-09-21T12:30:00.000Z"
+  },
+  {
+    "id": "mon:linked_counterparty:L-2026-0110:c-bhosale-infra",
+    "ruleId": "linked_counterparty",
+    "loanId": "L-2026-0110",
+    "priority": "needs_attention",
+    "title": "Payment to linked entity: Bhosale Infra Developers Pvt Ltd",
+    "explanation": "₹5,00,000 was paid to Bhosale Infra Developers Pvt Ltd, which is connected to the borrower via 2 recorded relationship(s).",
+    "threshold": "Any outflow to an entity within two relationship hops",
+    "window": "90 days from disbursement",
+    "transactionIds": ["T-5006"],
+    "entityIds": ["c-bhosale-infra", "e-sachin", "c-omsai", "e-sachin", "c-bhosale-infra"],
+    "totalMinor": 50000000,
+    "totalBasis": "Sum of outflows from the credited account to accounts held by the linked entity.",
+    "benign": [
+      "Related businesses may legitimately trade with each other at market terms.",
+      "A shared director or family relationship does not by itself indicate misuse."
+    ],
+    "steps": [
+      "Obtain invoices / contracts for the payment and check pricing against market.",
+      "Confirm goods or services were delivered for the stated purpose.",
+      "Record the relationship disclosure in the borrower file."
+    ],
+    "detectedAt": "2026-09-21T02:30:00.000Z"
+  },
+  {
+    "id": "mon:circular:L-2026-0110:T-5007",
+    "ruleId": "circular",
+    "loanId": "L-2026-0110",
+    "priority": "urgent",
+    "title": "Funds returned to borrower account after 3 hops",
+    "explanation": "₹4,00,000 left the borrower account and ₹3,50,000 (88%) came back within 2.8 days through 2 intermediate party(ies).",
+    "threshold": "Return ≥ 50% of first transfer",
+    "window": "30 days from disbursement",
+    "transactionIds": ["T-5007", "T-5008", "T-5009"],
+    "entityIds": ["a-omsai", "a-navnath", "a-sachin"],
+    "totalMinor": 40000000,
+    "totalBasis": "Amount of the first outgoing transfer in the observed sequence; the return leg is shown separately.",
+    "benign": [
+      "A supplier refund or cancelled order could return funds.",
+      "An owner's capital introduction may coincidentally follow a supplier payment."
+    ],
+    "steps": [
+      "Request the supply contract and refund/cancellation documentation.",
+      "Verify whether the intermediate party delivered any goods or services.",
+      "Escalate to the investigations team if no commercial explanation is documented."
+    ],
+    "detectedAt": "2026-09-24T08:30:00.000Z"
+  },
+  {
+    "id": "mon:cash_split:L-2026-0112",
+    "ruleId": "cash_split",
+    "loanId": "L-2026-0112",
+    "priority": "needs_attention",
+    "title": "3 cash withdrawals just below ₹1,00,000",
+    "explanation": "3 cash withdrawals between ₹90,000 and ₹1,00,000 totalling ₹2,90,500 occurred within 7 days.",
+    "threshold": "3+ withdrawals each 90–100% of reference",
+    "window": "7 days",
+    "transactionIds": ["T-5017", "T-5018", "T-5019"],
+    "entityIds": ["x-cash"],
+    "totalMinor": 29050000,
+    "totalBasis": "Sum of qualifying cash withdrawals inside the window.",
+    "benign": [
+      "Rural labour and contractor payments are frequently made in cash.",
+      "ATM / counter limits can force multiple withdrawals."
+    ],
+    "steps": [
+      "Ask the borrower for the purpose of the cash withdrawals and supporting vouchers.",
+      "Check the stated purpose (e.g. installation work) against contractor receipts."
+    ],
+    "detectedAt": "2026-10-07T07:30:00.000Z"
+  },
+  {
+    "id": "mon:repeated_counterparty:L-2026-0110:c-navnath",
+    "ruleId": "repeated_counterparty",
+    "loanId": "L-2026-0110",
+    "priority": "needs_attention",
+    "title": "Navnath Enterprises received funds from 2 monitored loans",
+    "explanation": "Navnath Enterprises received 2 payment(s) of at least ₹1,00,000 from accounts linked to loans L-2026-0110, L-2026-0111 within 12 days.",
+    "threshold": "≥ 2 loans, each payment ≥ ₹1,00,000",
+    "window": "60 days",
+    "transactionIds": ["T-5007", "T-5014"],
+    "entityIds": ["c-navnath"],
+    "totalMinor": 65000000,
+    "totalBasis": "Sum of qualifying payments to the counterparty across all monitored loans.",
+    "benign": [
+      "The counterparty may be a common regional supplier used by many borrowers.",
+      "Seasonal purchasing often concentrates on a few dealers."
+    ],
+    "steps": [
+      "Check whether the counterparty is an established supplier for this loan purpose.",
+      "Compare invoices across the loans for duplicate invoice numbers or identical amounts."
+    ],
+    "detectedAt": "2026-10-03T07:30:00.000Z"
+  },
+  {
+    "id": "mon:repeated_counterparty:L-2026-0111:c-navnath",
+    "ruleId": "repeated_counterparty",
+    "loanId": "L-2026-0111",
+    "priority": "needs_attention",
+    "title": "Navnath Enterprises received funds from 2 monitored loans",
+    "explanation": "Navnath Enterprises received 2 payment(s) of at least ₹1,00,000 from accounts linked to loans L-2026-0110, L-2026-0111 within 12 days.",
+    "threshold": "≥ 2 loans, each payment ≥ ₹1,00,000",
+    "window": "60 days",
+    "transactionIds": ["T-5007", "T-5014"],
+    "entityIds": ["c-navnath"],
+    "totalMinor": 65000000,
+    "totalBasis": "Sum of qualifying payments to the counterparty across all monitored loans.",
+    "benign": [
+      "The counterparty may be a common regional supplier used by many borrowers.",
+      "Seasonal purchasing often concentrates on a few dealers."
+    ],
+    "steps": [
+      "Check whether the counterparty is an established supplier for this loan purpose.",
+      "Compare invoices across the loans for duplicate invoice numbers or identical amounts."
+    ],
+    "detectedAt": "2026-10-03T07:30:00.000Z"
+  }
+]
