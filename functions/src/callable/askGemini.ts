@@ -1,17 +1,38 @@
 import { logger } from 'firebase-functions';
 import { HttpsError, onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { z } from 'zod';
+import { getEnv } from '../config/env.js';
 import { geminiApiKey } from '../config/secrets.js';
 import { GEMINI_LIMITS, GeminiError, generateText } from '../services/gemini.js';
+import { firestoreAccessStore, type AccessStore } from '../services/access.js';
+import {
+  consumeDailyQuota,
+  firestoreUsageStore,
+  type UsageStore,
+} from '../services/usage-limit.js';
 
 const InputSchema = z.object({
   prompt: z.string().trim().min(1).max(GEMINI_LIMITS.maxPromptChars),
 });
 
+export interface AskGeminiResult {
+  text: string;
+  /** True when the reply came from the free mock provider, not a billed model. */
+  mock: boolean;
+  /** Billed calls left today for this user; null when the mock answered (no limit applies). */
+  remainingToday: number | null;
+}
+
+export interface AskGeminiDeps {
+  usage: UsageStore;
+  access: AccessStore;
+}
+
 /** Exported separately so it can be unit-tested without the Functions runtime. */
 export async function askGeminiHandler(
   request: CallableRequest<unknown>,
-): Promise<{ text: string }> {
+  deps: AskGeminiDeps = { usage: firestoreUsageStore(), access: firestoreAccessStore() },
+): Promise<AskGeminiResult> {
   if (request.auth === undefined) {
     throw new HttpsError('unauthenticated', 'Sign in required');
   }
@@ -19,9 +40,29 @@ export async function askGeminiHandler(
   if (!input.success) {
     throw new HttpsError('invalid-argument', 'A prompt of 1 to 8000 characters is required');
   }
+
+  // Only billed providers are gated: the mock is free and needs no Firestore. Order matters: the
+  // allow-list runs first so unlisted accounts never create usage records or reach the model.
+  const env = getEnv();
+  const mock = env.GEMINI_PROVIDER === 'mock';
+  let remainingToday: number | null = null;
+  if (!mock) {
+    if (!(await deps.access.isAllowed(request.auth.uid))) {
+      throw new HttpsError(
+        'permission-denied',
+        'This account is not enabled for AI features. Ask an administrator.',
+      );
+    }
+    const quota = await consumeDailyQuota(deps.usage, request.auth.uid, env.GEMINI_DAILY_LIMIT);
+    if (!quota.allowed) {
+      throw new HttpsError('resource-exhausted', 'Daily AI limit reached. Try again tomorrow.');
+    }
+    remainingToday = quota.remaining;
+  }
+
   try {
     // Output is untrusted text: callers that need structure must validate it (B-13).
-    return { text: await generateText(input.data.prompt) };
+    return { text: await generateText(input.data.prompt), mock, remainingToday };
   } catch (error) {
     // Never log the prompt (B-16); the upstream status and message are enough to debug.
     if (error instanceof GeminiError) {
@@ -43,10 +84,10 @@ export const askGemini = onCall(
     region: 'asia-south1',
     enforceAppCheck: true,
     secrets: [geminiApiKey],
-    // Cost guard until per-user quotas exist (B-15): at most 5 copies run at once.
+    // Cost guards: at most 5 copies at once, plus the per-user daily limit in the handler (B-15).
     maxInstances: 5,
     memory: '256MiB',
     timeoutSeconds: 60,
   },
-  askGeminiHandler,
+  (request) => askGeminiHandler(request),
 );

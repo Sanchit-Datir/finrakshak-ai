@@ -20,4 +20,14 @@ describe('security headers', () => {
     expect(CONTENT_SECURITY_POLICY).toContain("script-src 'self'");
     expect(CONTENT_SECURITY_POLICY).not.toContain('unsafe-eval');
   });
+  it('allows only named Google hosts for the cloud features, never wildcards or unsafe-inline scripts', () => {
+    const directive = (name: string): string =>
+      CONTENT_SECURITY_POLICY.split('; ').find((d) => d.startsWith(`${name} `)) ?? '';
+    expect(CONTENT_SECURITY_POLICY).not.toMatch(/\*|https:(?!\/\/)|http:/);
+    expect(directive('script-src')).not.toContain('unsafe-inline');
+    expect(directive('connect-src')).toContain('https://asia-south1-fund-tracer.cloudfunctions.net');
+    expect(directive('frame-src')).toBe(
+      'frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/',
+    );
+  });
 });

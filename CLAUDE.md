@@ -52,6 +52,7 @@ CI enforces the same. Never bypass with `--no-verify`, `@ts-ignore`, or `eslint-
 - Prefer converters/typed accessors for Firestore so reads are zod-validated at the boundary.
 - **Cost first** (`docs/COST_GUIDELINES.md`): tests, CI and the emulator never call a billed API (mock provider is the default); pick the cheapest model that passes our quality check; every function sets `maxInstances`, small `memory`, and `minInstances: 0`.
 - Dependencies: add sparingly, pin via lockfile (`npm ci` in CI), justify heavy ones in the PR.
+- Web uses only the specific `@firebase/*` packages (`app`, `auth`, `functions`, `app-check`), **not** the `firebase` umbrella: the umbrella installs Firestore, whose nested gRPC copy fails the CI `audit:prod` scan, and the web app never uses it. Add another `@firebase/*` package only if a feature needs it.
 
 ## Money & data rules
 
