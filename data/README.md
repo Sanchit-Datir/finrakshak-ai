@@ -18,6 +18,7 @@ data/
 │   ├── listings/history/<source>/<YYYY-MM-DD>.jsonl   listing snapshot per run
 │   ├── item_documents/<source>.jsonl  listing item → document URLs
 │   └── text/<aa>/<sha256>.json      extracted text per page (+ needs_ocr flag)
+├── verification/                   owner review of the seed case timelines            (git)
 └── processed/                       canonical dataset for BigQuery / the app            (git)
     ├── <table>.jsonl                11 tables (below), UTF-8 JSON Lines
     ├── bigquery/<table>.schema.json  BigQuery schemas generated from the zod models
