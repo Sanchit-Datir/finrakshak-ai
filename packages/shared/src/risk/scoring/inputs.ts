@@ -1,4 +1,5 @@
 import { EVIDENCE_STATUSES } from '../../evidence/graph.js';
+import type { RuleEntity, RuleTransaction } from '../rules/types.js';
 import type { ReasonEvidenceStatus } from './types.js';
 
 /**
@@ -43,3 +44,37 @@ export const relatedPartiesOf = (borrowerId: string, links: readonly ScoringLink
 /** An unknown or missing status stays `unknown`; it is never upgraded (B-36). */
 export const statusOf = (s: string | null): ReasonEvidenceStatus =>
   EVIDENCE_STATUSES.find((v) => v === s) ?? 'unknown';
+
+/** The link type for "this borrower paid, or was paid by, that entity". Derived, never documented. */
+export const TRADING_LINK_TYPE = 'trades_with';
+
+/**
+ * Links from each borrower to the owners of the accounts it traded with, worked out from the payments
+ * (customers it was paid by, suppliers it paid). They are `inferred`: a payment shows contact, not a
+ * documented relationship, so the graph layer counts them at half. Payments to and from the lender
+ * (`disbursement`, `repayment`) are not trade. Sorted and de-duplicated, so a re-run gives the same links.
+ */
+export function deriveTradingLinks(
+  loans: readonly { readonly borrowerId: string; readonly accountEntityId: string }[],
+  txns: readonly RuleTransaction[],
+  entities: readonly RuleEntity[],
+): ScoringLink[] {
+  const borrowerOf = new Map(loans.map((l) => [l.accountEntityId, l.borrowerId]));
+  const ownerOf = new Map(entities.map((e) => [e.id, e.ownerId ?? e.id]));
+  const pairs = new Set<string>();
+  for (const t of txns) {
+    if (t.type === 'disbursement' || t.type === 'repayment') continue;
+    for (const [mine, other] of [
+      [t.fromId, t.toId],
+      [t.toId, t.fromId],
+    ] as const) {
+      const borrower = borrowerOf.get(mine);
+      const owner = ownerOf.get(other) ?? other;
+      if (borrower !== undefined && owner !== borrower) pairs.add(`${borrower}\u0000${owner}`);
+    }
+  }
+  return [...pairs].sort().map((pair) => {
+    const [from = '', to = ''] = pair.split('\u0000');
+    return { from, to, type: TRADING_LINK_TYPE, status: 'inferred' };
+  });
+}

@@ -4,6 +4,7 @@ import type { PatternMatcher } from '../patterns/timeline.js';
 import type { RuleTransaction } from '../rules/types.js';
 import type { PublicRecord } from './inputs.js';
 import { scoreRun, type ScoringLoan, type ScoringRunInput } from './run.js';
+import type { LoanScore } from './types.js';
 import { DEFAULT_SCORING_SETTINGS as S } from './settings.js';
 
 const loan = (n: number, disbursedAt = '2024-01-10T05:00:00.000Z'): ScoringLoan => ({
@@ -93,5 +94,49 @@ describe('one scoring run', () => {
 
   it('is deterministic', () => {
     expect(scoreRun(input())).toEqual(out);
+  });
+});
+
+describe('a flagged customer', () => {
+  const customerRecord = record('B-1-C1', '2024-01-20');
+  const pay: RuleTransaction = {
+    id: 'T-1-in',
+    at: '2024-01-15T08:00:00.000Z',
+    fromId: 'B-1-C1-acc',
+    toId: 'B-1-acc',
+    amountMinor: 1_000,
+    type: 'neft',
+  };
+  const entities = [
+    { id: 'B-1-acc', ownerId: 'B-1' },
+    { id: 'B-1-C1-acc', ownerId: 'B-1-C1' },
+  ];
+  const score = (over: Partial<ScoringRunInput> = {}): LoanScore | undefined =>
+    scoreRun(
+      input({
+        links: [],
+        loans: [loan(1)],
+        transactions: [pay],
+        entities,
+        records: [customerRecord],
+        ...over,
+      }),
+    ).scores[0];
+
+  it('reaches the graph layer through the trading link, at half (inferred)', () => {
+    const s = score();
+    expect(s?.points.graph).toBe(10);
+    expect(s?.reasons.find((r) => r.code === 'graph_proximity')).toMatchObject({
+      subject_id: 'B-1',
+      evidence_ids: ['B-1-C1'],
+      evidence_statuses: ['inference'],
+      facts: { hops: 1, link_status: 'inferred' },
+    });
+    expect(s?.override).toBe(false);
+  });
+
+  it('does not reach the score before the payment, or when there is no payment', () => {
+    expect(score({ transactions: [] })?.points.graph).toBe(0);
+    expect(score({ asOf: '2024-01-10' })?.points.graph).toBe(0);
   });
 });

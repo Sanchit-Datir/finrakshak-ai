@@ -7,7 +7,12 @@ import type { MonitoringRuleId, RuleEntity, RuleLoan, RuleTransaction } from '..
 import { behaviourLayer } from './behaviour.js';
 import { directLayer } from './direct.js';
 import { flaggedNeighbours, graphLayer } from './graph.js';
-import { relatedPartiesOf, type PublicRecord, type ScoringLink } from './inputs.js';
+import {
+  deriveTradingLinks,
+  relatedPartiesOf,
+  type PublicRecord,
+  type ScoringLink,
+} from './inputs.js';
 import { patternLayer } from './patternLayer.js';
 import { combineLayers } from './score.js';
 import type { ScoringSettings } from './settings.js';
@@ -94,6 +99,8 @@ interface RunCtx {
   readonly records: readonly PublicRecord[];
   readonly fired: Fired;
   readonly flagged: ReadonlyMap<string, readonly RecordKind[]>;
+  /** The documented links plus the trading links derived from this run's payments. */
+  readonly graphLinks: readonly ScoringLink[];
   readonly findings: RunFinding[];
 }
 
@@ -114,7 +121,7 @@ function scoreLoan(ctx: RunCtx, loan: ScoringLoan): LoanScore {
   );
   const neighbours = flaggedNeighbours(
     loan.borrowerId,
-    input.links,
+    ctx.graphLinks,
     ctx.flagged,
     settings.graph.hub_min_links,
   );
@@ -189,6 +196,7 @@ export function scoreRun(input: ScoringRunInput): ScoringRunOutput {
     records,
     fired: firedRules(input, loans, txns),
     flagged: flaggedKinds(records),
+    graphLinks: [...input.links, ...deriveTradingLinks(loans, txns, input.entities)],
     findings: [],
   };
   const scores = loans.map((l) => scoreLoan(ctx, l));

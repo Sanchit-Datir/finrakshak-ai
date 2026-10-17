@@ -170,7 +170,7 @@ This checks plumbing, not accuracy (B-55): the generator wrote both the data and
 | `sudden_enforcement` |    15 |      15 |                               15 |           100% |
 | `round_trip`         |    15 |       6 |                                6 |             0% |
 | `fund_diversion`     |    15 |       0 |                                0 |             0% |
-| `contagion`          |    15 |       0 |                                0 |          78.8% |
+| `contagion`          |    15 |      10 |                               10 |          78.8% |
 | `shared_address`     |    15 |      15 |                                2 |          62.3% |
 | `cash_split`         |    10 |       8 |                                8 |             0% |
 | `dormant_burst`      |    10 |       0 |                                0 |           100% |
@@ -178,7 +178,7 @@ This checks plumbing, not accuracy (B-55): the generator wrote both the data and
 | `big_prepayment`     |    15 |       0 |                                – |           100% |
 | `near_threshold`     |    10 |       0 |                                – |           100% |
 
-46 alerts in 3,690 loan-months (12.5 per 1,000 loan-months, against a provisional budget of about 3% of
+56 alerts in 3,690 loan-months (15.2 per 1,000 loan-months, against a provisional budget of about 3% of
 loans a month). The expected monitoring rules fired for all 70 expected cases, with none unexpected.
 Controls and look-alikes: 0 alerts. The held-out `dormant_burst` loans match no pattern. The only run
 finding is `no_seed_review`.
@@ -190,12 +190,15 @@ match (strength 0.5) of the two-step sequence "enforcement record, then insolven
 already Urgent review through the override. Every other public-record pattern needs two records, and each
 synthetic borrower has at most one.
 
-The slow-burn, fund-diversion and contagion loans do not alert. Under the agreed weights they cannot:
+The slow-burn and fund-diversion loans do not alert, and 5 of 15 contagion loans do not either. Under the
+agreed weights they cannot:
 
 - Behaviour drift tops out at 10 points, but the truth labels expect Needs attention (30) from late EMIs
   alone.
 - Fund diversion scores 18: the two typology patterns at 0.6 support take the largest, not the sum. The
-  linked party has no record, so the graph layer adds nothing. The same holds for contagion.
+  linked party has no record, so the graph layer adds nothing.
+- Contagion: a flagged customer is a one-hop inferred neighbour, worth 10 points. That alerts only when the
+  loan's late EMIs add enough to rise 15 points.
 
 This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step and the cut-offs).
 
@@ -209,51 +212,50 @@ replay and evaluation (`replay` and `evaluate`, the code behind `npm run score`)
 budget is about 3% of loans a month, which is 30 alerts per 1,000 loan-months.
 
 **Why the v1 weights miss them.** (1) Every single monitoring-rule typology scores `round(30 × 1 × 0.6)` = 18,
-which is Routine review (cut-off 30). (2) Behaviour drift tops out at 10, so late EMIs alone never reach 30. (3) Contagion, a customer of the borrower named in a public record, has no path to the score at all:
-the file input drops that record (see below) and nothing links a borrower to its customers.
+which is Routine review (cut-off 30). (2) Behaviour drift tops out at 10, so late EMIs alone never reach 30.
+(3) A flagged customer is worth at most 10 (an inferred one-hop link).
 
 "Controls and look-alikes" counts alerted loans out of 85 (45 controls, 40 look-alikes). "Defaulters caught"
 is alerted within 2 months of onset, out of 105. The held-out `dormant_burst` loans stay at 0 alerts in every row.
+All rows include the customer-record matching and trading links described below.
 
 | #   | What changes                                                             | Alerts per 1,000 loan-months | Controls and look-alikes alerted | Defaulters caught | Newly caught                                           |
 | --- | ------------------------------------------------------------------------ | ---------------------------: | -------------------------------: | ----------------: | ------------------------------------------------------ |
-| 0   | Nothing (v1)                                                             |                         12.5 |                                0 |            31/105 | –                                                      |
-| 1   | Hand-written typologies at support 1.0 (a rule hit scores 30)            |                         23.0 |                                0 |            70/105 | fund diversion, round trip, shared address, cash split |
-| 2   | Needs attention from 18 instead of 30 (a rule hit at 0.6 support alerts) |                         23.0 |                                0 |            70/105 | the same four                                          |
-| 3   | Behaviour max 30 (1 unmet EMI 10, 2 in a row 20, 3+ or growing delay 30) |                         21.7 |                                4 |            66/105 | slow burn, contagion (via its late EMIs)               |
-| 4   | Behaviour max 30, steeper (15 / 30 / 30)                                 |                         23.6 |                                5 |            66/105 | the same two                                           |
-| 5   | 1 + 3                                                                    |                         30.9 |                                4 |           105/105 | all of the above                                       |
-| 6   | 1 + 4                                                                    |                         32.8 |                                5 |           105/105 | all of the above                                       |
-| 7   | 1 + customers matched + trading links (inferred, derived from payments)  |                         25.7 |                                0 |            80/105 | contagion through the customer's record, 10 of 15      |
-| 8   | 5 + customers matched + trading links                                    |                         32.5 |                                4 |           105/105 | all                                                    |
-| 9   | 2 + customers matched + trading links                                    |                         28.5 |                                0 |            85/105 | contagion through the customer's record, 15 of 15      |
+| 0   | Nothing (v1)                                                             |                         15.2 |                                0 |            41/105 | contagion 10 of 15 (the customer links, already built) |
+| 1   | Hand-written typologies at support 1.0 (a rule hit scores 30)            |                         25.7 |                                0 |            80/105 | fund diversion, round trip, shared address, cash split |
+| 2   | Needs attention from 18 instead of 30 (a rule hit at 0.6 support alerts) |                         28.5 |                                0 |            85/105 | the same four, and contagion 15 of 15                  |
+| 3   | Behaviour max 30 (1 unmet EMI 10, 2 in a row 20, 3+ or growing delay 30) |                         25.7 |                                8 |            66/105 | slow burn, contagion 15 of 15                          |
+| 4   | Behaviour max 30, steeper (15 / 30 / 30)                                 |                         28.7 |                               12 |            66/105 | the same two                                           |
+| 5   | 1 + 3                                                                    |                         35.0 |                                8 |           105/105 | all                                                    |
+| 6   | 1 + 4                                                                    |                         37.9 |                               12 |           105/105 | all                                                    |
 
-Options 3 to 8 change the layer maxima to direct 30, pattern 30, graph 10, behaviour 30 (graph one hop 10,
-two hops 5, so the layers still add to 100). Options 1, 2, 7 and 9 need no change to the maxima.
+Options 3 to 6 change the layer maxima to direct 30, pattern 30, graph 10, behaviour 30 (graph one hop 10,
+two hops 5, so the layers still add to 100). Options 1 and 2 need no change to the maxima.
 
 **Reading the table.**
 
-- Options 1 and 2 are equivalent on this data and give no false alarms: pick one. Option 2 is a cut-off
-  change that also lowers the bar for any other Needs-attention score of 18 to 29 (for example behaviour plus
-  graph); option 1 changes how much a hand-written hypothesis counts, which the contract fixed at 0.6.
-- Slow burn cannot be caught without widening the behaviour layer (options 3 to 6). That is the only route
-  that also raises false alarms, and every one of them is a `big_prepayment` look-alike (below).
-- Contagion needs code, not only settings (options 7 to 9).
+- Option 2 is the only one that stays inside the 30-per-1,000 budget with no false alarms and catches
+  fund diversion, round trip, shared address, cash split and all of contagion (85 of 105). Option 1 is close
+  (25.7, 80 of 105) but changes how much a hand-written hypothesis counts, which the contract fixed at 0.6.
+  Option 2 also lowers the bar for any other score of 18 to 29.
+- Slow burn (20 loans) is the one scenario that settings 1 and 2 cannot reach. Widening the behaviour layer
+  (options 3 to 6) catches it, but alerts 8 to 12 of the `big_prepayment` look-alikes and, combined with 1,
+  goes over budget (35 and 37.9).
 
-**Two findings behind the false alarms and the contagion gap (not fixed; they need the owner's say).**
+**Finding behind those false alarms (not fixed).** _Inferred EMIs misread a prepayment._ After a large
+prepayment the EMIs shrink, so the "usual EMI" (the most common repayment) makes the lower payments look
+partial; the prepayment also takes one EMI slot, which shifts the pairing of later EMIs. An earlier trial
+that treated a repayment of 2× the usual EMI or more as a prepayment (not an EMI, and the usual EMI worked
+out again after it) cut the false alarms in options 3 to 6 from 8, 12, 8 and 12 to 4, 5, 4 and 5 and left
+v1 unchanged; the rest were still `big_prepayment` loans where the pairing drifts. It is not in the code.
 
-1. _Inferred EMIs misread a prepayment._ After a large prepayment the EMIs shrink, so the "usual EMI" (the most
-   common repayment) makes the lower payments look partial; the prepayment also takes one EMI slot, which
-   shifts the pairing of later EMIs. Treating a repayment of 2× the usual EMI or more as a prepayment (not an
-   EMI, and the usual EMI worked out again after it) cut the false alarms in options 3 to 6 from 8, 12, 8 and 12 to 4, 5, 4 and 5, and left v1 identical (46 alerts).
-   The 4 to 5 that remain are still `big_prepayment` loans where the pairing drifts. The table is with that
-   fix; without it, options 3 to 6 give 24.1, 28.2, 33.3 and 37.4 alerts per 1,000 loan-months (options 7 to
-   9 were measured only with it). The fix is not committed.
-2. _Records on customers are dropped._ `matchRecords` (`ingest/src/risk/fileInputs.ts`) matches a record only to
-   a `company` or `individual` entity, but the contagion records name customers, which are `counterparty`
-   entities. All 15 are counted in `unmatched_records` and never reach the scorer. Matching them is safe
-   (exact normalised name only, B-37) but changes nothing by itself, because no link joins a borrower to its
-   customers. Options 7 to 9 add that link, inferred from payments, so the graph layer scores it at half (10).
+**Built in this workstream (records on customers).** `matchRecords` now matches a record to customer and
+supplier entities (kind `counterparty`) as well as companies and individuals (exact normalised name,
+B-37); 15 contagion records had been dropped as unmatched. `deriveTradingLinks` (in the scoring core, so
+every input port gets it) links a borrower to the owners of the accounts it was paid by or paid, from the
+payments up to the scoring day. Lender payments (disbursement, repayment) are not trade. These links are
+`inferred`, so a flagged customer scores half of the one-hop 20, i.e. 10, in the graph layer, with evidence
+status `inference` (B-36). Under v1 that alone makes 10 of 15 contagion loans alert.
 
 ## Boundary conditions
 
@@ -263,8 +265,8 @@ two hops 5, so the layers still add to 100). Options 1, 2, 7 and 9 need no chang
 - **B-24:** the score id is deterministic: loan, day, settings version, pattern version.
 - **B-27:** `as_of` is an IST day.
 - **B-36:** evidence status is stored on every reason and never upgraded.
-- **B-37:** records are matched only by exact CIN or exact normalised name.
-- **B-40:** hubs are excluded from the graph layer.
+- **B-37:** records are matched only by exact CIN or exact normalised name (customers and suppliers included).
+- **B-40:** hubs are excluded from the graph layer, including the trading links derived from payments.
 - **B-43:** every score stores `data_built_on`.
 - **B-54:** synthetic data only.
 - **New:** B-55 (ground truth is not evidence), B-56 (missing or stale inputs are not low risk) and B-58

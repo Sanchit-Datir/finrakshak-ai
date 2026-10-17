@@ -55,6 +55,11 @@ describe('file scoring inputs', () => {
     expect(twice).toEqual({ records: [], unmatched: 1 });
     const account = matchRecords([flag], [entity('B-1', 'SYNTH Alpha Pvt Ltd', 'account')]);
     expect(account.unmatched).toBe(1);
+    const customer = matchRecords(
+      [flag],
+      [entity('B-1-C1', 'SYNTH Alpha Pvt Ltd', 'counterparty')],
+    );
+    expect(customer.records.map((r) => r.entity_id)).toEqual(['B-1-C1']);
   });
 
   it('never reads truth.jsonl (B-55)', async () => {

@@ -64,15 +64,19 @@ const readJson = (file: string): unknown => JSON.parse(readFileSync(file, 'utf8'
 
 /**
  * Matches each flag to an entity by exact CIN, then exact normalised name (B-37). A name shared by
- * several entities is ambiguous and matches nothing.
+ * several entities is ambiguous and matches nothing. Customers and suppliers match too, so a record on a
+ * borrower's customer reaches the graph layer.
  */
+/** Entities a public record can name: not accounts, loans, documents or proceedings. */
+const MATCHABLE_KINDS: readonly SynthEntity['kind'][] = ['company', 'individual', 'counterparty'];
+
 export function matchRecords(
   flags: readonly SynthFlag[],
   entities: readonly SynthEntity[],
 ): { records: PublicRecord[]; unmatched: number } {
   const byName = new Map<string, string[]>();
   for (const e of entities) {
-    if (e.kind !== 'company' && e.kind !== 'individual') continue;
+    if (!MATCHABLE_KINDS.includes(e.kind)) continue;
     const key = normalizeCompanyName(e.name);
     byName.set(key, [...(byName.get(key) ?? []), e.id]);
   }
