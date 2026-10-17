@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import firebase from '../../../firebase.json';
 import { BUILD_SECURITY_HEADERS, CONTENT_SECURITY_POLICY } from '../../security-headers.js';
@@ -29,5 +30,37 @@ describe('security headers', () => {
     expect(directive('frame-src')).toBe(
       'frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/',
     );
+  });
+});
+
+describe('security headers allow what the Firebase libraries really contact', () => {
+  // A wrong guess here silently breaks sign-in checks in the browser (the request is blocked, not failed),
+  // so read the hosts out of the installed library instead of trusting a hand-written list.
+  const source = readFileSync(
+    new URL('../../../node_modules/@firebase/app-check/dist/esm/index.esm.js', import.meta.url),
+    'utf8',
+  );
+  const connectSrc =
+    CONTENT_SECURITY_POLICY.split('; ').find((d) => d.startsWith('connect-src ')) ?? '';
+
+  it('lets the browser reach every App Check API host the library calls', () => {
+    const hosts = [...source.matchAll(/https:\/\/[a-z0-9-]*firebaseappcheck\.googleapis\.com/g)].map(
+      (m) => m[0],
+    );
+    expect(hosts.length).toBeGreaterThan(0);
+    for (const host of new Set(hosts)) expect(connectSrc, host).toContain(host);
+  });
+
+  it('lets the browser load the reCAPTCHA scripts the library injects', () => {
+    const scriptSrc =
+      CONTENT_SECURITY_POLICY.split('; ').find((d) => d.startsWith('script-src ')) ?? '';
+    const scripts = [...source.matchAll(/https:\/\/www\.google\.com\/recaptcha\/[a-z]+\.js/g)].map(
+      (m) => m[0],
+    );
+    expect(scripts.length).toBeGreaterThan(0);
+    for (const script of new Set(scripts)) {
+      const prefix = script.slice(0, script.lastIndexOf('/') + 1);
+      expect(scriptSrc, script).toContain(prefix);
+    }
   });
 });

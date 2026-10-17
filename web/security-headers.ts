@@ -13,6 +13,9 @@ const FIREBASE_API_HOSTS = [
   'https://identitytoolkit.googleapis.com',
   'https://securetoken.googleapis.com',
   'https://firebaseappcheck.googleapis.com',
+  // The App Check library exchanges its token at this host, not the one above. A test checks the library's
+  // own source, so this list cannot silently drift again.
+  'https://content-firebaseappcheck.googleapis.com',
   'https://asia-south1-fund-tracer.cloudfunctions.net',
 ];
 const RECAPTCHA_SCRIPTS = [
