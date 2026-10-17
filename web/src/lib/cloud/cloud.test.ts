@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { readCloudConfig } from './config.js';
-import { explainCloudError } from './errors.js';
+import { diagnosticReference, explainCloudError } from './errors.js';
 
 const FULL = {
   VITE_FIREBASE_API_KEY: 'k',
@@ -75,5 +75,42 @@ describe('explainCloudError', () => {
     expect(message).toBe('Something went wrong. Try again.');
     expect(explainCloudError('weird')).toBe('Something went wrong. Try again.');
     expect(explainCloudError(null)).toBe('Something went wrong. Try again.');
+  });
+});
+
+describe('server failures the person can act on', () => {
+  it('explains a profile that could not be loaded, and points to the reference', () => {
+    const error = { code: 'functions/internal', details: { reason: 'profile_lookup_failed' } };
+    expect(explainCloudError(error)).toMatch(/profile could not be loaded/);
+    expect(explainCloudError(error)).toMatch(/reference below/);
+  });
+
+  it('explains an access check that failed, and a generic server fault, without raw text', () => {
+    expect(
+      explainCloudError({ code: 'functions/internal', details: { reason: 'access_lookup_failed' } }),
+    ).toMatch(/check your access/);
+    const generic = explainCloudError({ code: 'functions/internal', message: 'stack trace /srv/x' });
+    expect(generic).toMatch(/Something went wrong on our side/);
+    expect(generic).not.toContain('/srv/x');
+  });
+});
+
+describe('diagnosticReference', () => {
+  const at = new Date('2026-10-17T12:00:00Z');
+
+  it('combines the error code, the server reason and the UTC time', () => {
+    const error = { code: 'functions/internal', details: { reason: 'profile_lookup_failed' } };
+    expect(diagnosticReference(error, at)).toBe(
+      'functions/internal / profile_lookup_failed @ 2026-10-17T12:00:00.000Z',
+    );
+  });
+
+  it('works without a reason or a code, and never includes the error message text', () => {
+    expect(diagnosticReference({ code: 'functions/unauthenticated' }, at)).toBe(
+      'functions/unauthenticated @ 2026-10-17T12:00:00.000Z',
+    );
+    expect(diagnosticReference(new Error('private detail'), at)).toBe(
+      'unknown @ 2026-10-17T12:00:00.000Z',
+    );
   });
 });

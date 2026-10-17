@@ -147,6 +147,10 @@ gcloud run services add-iam-policy-binding <function-name-in-lowercase> --region
 and re-run the Deploy. This only makes the function _reachable_: every callable must itself reject callers
 without sign-in and App Check (see the existing ones). Never do this for a function that skips those checks.
 
+## When something does not work
+
+Save the logs to files and read them: see `docs/LOGS.md`.
+
 ## When a deploy fails
 
 - **Permission denied on one API:** read the error, add that single role to `github-deployer`.

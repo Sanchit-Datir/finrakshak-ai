@@ -331,7 +331,14 @@ export function LoginPage(): React.JSX.Element {
                   this Account ID: <code className="select-all break-all">{cloudAuth.uid}</code>
                 </Notice>
               )}
-              {cloudAuth.status === 'error' && <Notice tone="danger">{cloudAuth.message}</Notice>}
+              {cloudAuth.status === 'error' && (
+                <Notice tone="danger">
+                  {cloudAuth.message}
+                  <span className="mt-1 block text-xs">
+                    Reference: <code className="break-all select-all">{cloudAuth.reference}</code>
+                  </span>
+                </Notice>
+              )}
               <Button
                 type="submit"
                 variant="primary"

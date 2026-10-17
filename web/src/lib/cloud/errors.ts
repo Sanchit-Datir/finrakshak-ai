@@ -34,6 +34,16 @@ export function explainCloudError(error: unknown): string {
       return 'Could not reach the service. Check your connection and try again.';
     case 'functions/unauthenticated':
       return 'Your sign-in or app check was not accepted. Sign in again; if it persists, the site is not fully set up for this address.';
+    case 'functions/internal': {
+      const { reason } = detailsOf(error);
+      if (reason === 'profile_lookup_failed') {
+        return 'Your account is valid, but your profile could not be loaded. Please tell an administrator and give them the reference below.';
+      }
+      if (reason === 'access_lookup_failed') {
+        return 'We could not check your access just now. Try again, and if it keeps happening tell an administrator and give them the reference below.';
+      }
+      return 'Something went wrong on our side. Try again; if it keeps happening tell an administrator and give them the reference below.';
+    }
     case 'functions/permission-denied':
       return 'This account is not enabled for AI features yet. Send your account ID (shown above) to an administrator.';
     case 'functions/resource-exhausted': {
@@ -52,4 +62,14 @@ export function explainCloudError(error: unknown): string {
     default:
       return 'Something went wrong. Try again.';
   }
+}
+
+/**
+ * A short line a person can read out or paste to an administrator: the error code, the server's reason if
+ * it gave one, and the time (UTC). It contains no personal data, and the time lets the logs be searched.
+ */
+export function diagnosticReference(error: unknown, now: Date = new Date()): string {
+  const code = codeOf(error) || 'unknown';
+  const { reason } = detailsOf(error);
+  return `${code}${reason === '' ? '' : ` / ${reason}`} @ ${now.toISOString()}`;
 }

@@ -8,6 +8,9 @@ import { createRateLimiter, type RateLimiter } from '../services/rate-limit.js';
 import type { UsageStore } from '../services/usage-limit.js';
 import { askGeminiHandler, type AskGeminiDeps } from './askGemini.js';
 
+const log = vi.hoisted(() => ({ info: vi.fn(), warn: vi.fn(), error: vi.fn() }));
+vi.mock('firebase-functions', () => ({ logger: log }));
+
 const generateText = vi.hoisted(() => vi.fn());
 vi.mock('../services/gemini.js', async (importOriginal) => ({
   ...(await importOriginal<typeof GeminiModule>()),
@@ -83,6 +86,9 @@ async function detailsOf(promise: Promise<unknown>): Promise<unknown> {
 beforeEach(() => {
   resetEnvCache();
   generateText.mockReset();
+  log.info.mockClear();
+  log.warn.mockClear();
+  log.error.mockClear();
   vi.stubEnv('GCLOUD_PROJECT', 'fund-tracer');
 });
 
@@ -221,4 +227,75 @@ describe('askGeminiHandler burst limit (per person, before any other work)', () 
       reason: 'daily_limit',
     });
   });
+});
+
+describe('askGeminiHandler logging and lookup failures', () => {
+  beforeEach(() => {
+    vi.stubEnv('GEMINI_PROVIDER', 'apikey');
+    vi.stubEnv('GEMINI_API_KEY', 'AIza-not-a-real-key');
+    generateText.mockResolvedValue('the secret answer');
+  });
+
+  it('logs sizes and outcome only: never the question or the answer', async () => {
+    await askGeminiHandler(req({ prompt: 'my private question' }), depsFor({ allowed: true }));
+    expect(log.info).toHaveBeenCalledWith(
+      'askGemini',
+      expect.objectContaining({
+        uid: 'u1',
+        outcome: 'ok',
+        mock: false,
+        promptChars: 19,
+        replyChars: 17,
+      }),
+    );
+    const everything = JSON.stringify([
+      log.info.mock.calls,
+      log.warn.mock.calls,
+      log.error.mock.calls,
+    ]);
+    expect(everything).not.toContain('my private question');
+    expect(everything).not.toContain('the secret answer');
+  });
+
+  it('logs why a person was refused', async () => {
+    await codeOf(askGeminiHandler(req({ prompt: 'a' }), depsFor({ allowed: false })));
+    expect(log.warn).toHaveBeenCalledWith('askGemini: refused, AI not enabled for this account', {
+      uid: 'u1',
+    });
+    await codeOf(
+      askGeminiHandler(req({ prompt: 'a' }), depsFor({ allowed: true, allowedCalls: 0 })),
+    );
+    expect(log.warn).toHaveBeenCalledWith('askGemini: refused, daily limit reached', { uid: 'u1' });
+  });
+
+  it.each([
+    [
+      'the access check',
+      {
+        ...depsFor({ allowed: true }),
+        access: { isAllowed: () => Promise.reject(new Error('boom')) },
+      },
+    ],
+    [
+      'the daily-limit counter',
+      {
+        ...depsFor({ allowed: true }),
+        usage: { tryIncrement: () => Promise.reject(new Error('boom')) },
+      },
+    ],
+  ])(
+    'fails closed with a clear error when %s itself breaks, and never calls the model',
+    async (_label, deps) => {
+      const attempt = askGeminiHandler(req({ prompt: 'a' }), deps);
+      expect(await codeOf(attempt)).toBe('internal');
+      expect(await detailsOf(askGeminiHandler(req({ prompt: 'a' }), deps))).toEqual({
+        reason: 'access_lookup_failed',
+      });
+      expect(generateText).not.toHaveBeenCalled();
+      expect(log.error).toHaveBeenCalledWith(
+        'askGemini: access or usage lookup failed',
+        expect.objectContaining({ uid: 'u1', errorMessage: 'boom' }),
+      );
+    },
+  );
 });

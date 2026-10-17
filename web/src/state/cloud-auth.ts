@@ -1,7 +1,7 @@
 import type { UserProfile } from '@fund-tracker/shared';
 import { useSyncExternalStore } from 'react';
 import { cloudDataHeaders } from '../lib/cloud/data-access.js';
-import { explainCloudError } from '../lib/cloud/errors.js';
+import { diagnosticReference, explainCloudError } from '../lib/cloud/errors.js';
 import { cloudConfig, connectCloud, type Cloud } from '../lib/cloud/firebase.js';
 import { fetchProfile, profileToSession } from '../lib/cloud/profile.js';
 import { setDataHeadersProvider } from '../lib/graph-lab.js';
@@ -20,7 +20,7 @@ export type CloudAuthState =
   /** Signed in with Firebase, but no usable profile: the owner has not set this person up. */
   | { status: 'needs-setup'; uid: string; email: string | null }
   /** Signed in, but the profile could not be loaded (for example App Check is refusing this site). */
-  | { status: 'error'; message: string }
+  | { status: 'error'; message: string; reference: string }
   | { status: 'ready'; cloud: Cloud; uid: string; email: string | null; profile: UserProfile };
 
 const CONFIG = cloudConfig();
@@ -86,7 +86,11 @@ async function onUser(
   } catch (error) {
     if (mine !== generation) return;
     setCloudSession(null);
-    set({ status: 'error', message: explainCloudError(error) });
+    set({
+      status: 'error',
+      message: explainCloudError(error),
+      reference: diagnosticReference(error),
+    });
   }
 }
 
@@ -108,6 +112,7 @@ export function initCloudAuth(): void {
       set({
         status: 'error',
         message: 'Could not start the sign-in service. Reload and try again.',
+        reference: diagnosticReference({ code: 'startup' }),
       });
     });
 }
