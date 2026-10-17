@@ -71,7 +71,7 @@ export function connectCloud(config: CloudConfig): Promise<Cloud> {
       appCheckActive = true;
     } else if (config.recaptchaSiteKey !== null) {
       appCheckLib.initializeAppCheck(app, {
-        provider: new appCheckLib.ReCaptchaV3Provider(config.recaptchaSiteKey),
+        provider: new appCheckLib.ReCaptchaEnterpriseProvider(config.recaptchaSiteKey),
         isTokenAutoRefreshEnabled: true,
       });
       appCheckActive = true;
