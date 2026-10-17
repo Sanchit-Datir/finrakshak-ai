@@ -1,8 +1,9 @@
 # Plan: Risk explainer agent (optional)
 
-_Status: proposed, for discussion with the owner. Nothing here is implemented. This is step 17 of the build
+_Status: **deferred** by the owner on 17 Oct 2026. Nothing here is implemented. This is step 17 of the build
 order and is optional: the scoring job ships with deterministic, templated reason text and works without
-this agent. See `AGENTS_PLAN.md` for the pattern it follows._
+this agent. It is built only if the go conditions below are met after step 13. See `AGENTS_PLAN.md` for the
+pattern it follows._
 
 ## Goal
 
@@ -26,7 +27,29 @@ the dates, record kinds and evidence status. The scoring job and the app use it 
 - the template is the fallback whenever the agent is off, fails or is rejected;
 - reviewers can judge whether the templates are already good enough before any model is paid for.
 
-The agent is worth building only if the templated text turns out hard to read when several reasons combine.
+The templated alert text also carries a **deterministic "what changed" block**, computed by code from the
+previous and current reasons, so the most useful part of an explanation never depends on a model:
+
+> **New since last check:** a linked company is named in an ED provisional attachment record (allegation).
+> **Unchanged:** the borrower and a second company share a registered address. **Score:** 34 → 52
+> (Needs attention).
+
+It lists reasons added, reasons no longer present and reasons unchanged, each from its template, plus the
+score and band change. It is part of step 8 (scoring core) and has its own tests: every combination of
+added, removed and unchanged reasons; the first score of a loan (every reason is new); and a band step-up
+with no new reason (possible when points on an existing reason grow), where the block says no new reason
+appeared and names the reasons whose points changed.
+
+## Go conditions (after step 13)
+
+Build the explainer only if **both** hold:
+
+1. Reviewers (you, to start) read the synthetic alerts in the app and find the templated text hard to follow
+   when several reasons combine.
+2. The budget alert exists (B-15), so a real provider can be switched on safely.
+
+**Stop rule for the dry run (E3):** if more than about 1 in 10 of the model's sentences fails the output
+checks, or reads as stronger than the recorded reasons, stop and keep the templates.
 
 ## Design
 
@@ -88,11 +111,11 @@ web: alert view shows the sentence with its label and the reasons list under it
 
 ## Steps (when you decide to build it)
 
-| Step | Content                                                                                       | Done when                                                       |
-| ---- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| E1   | Templates for every reason code, used by the scoring job and the app (part of steps 8 and 13) | Reviewers can read every alert without a model                  |
-| E2   | Digest, placeholders, output checks, prompt, task and job, all against the mock model         | Every hostile-output test passes                                |
-| E3   | One capped dry run on synthetic alerts, reviewed by you                                       | You judge the sentences better than the templates, or stop here |
+| Step | Content                                                                                                                                             | Done when                                                       |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| E1   | Templates for every reason code plus the "what changed" block, used by the scoring job and the app (part of steps 8 and 13; **happens regardless**) | Reviewers can read every alert without a model                  |
+| E2   | Digest, placeholders, output checks, prompt, task and job, all against the mock model                                                               | Every hostile-output test passes                                |
+| E3   | One capped dry run on synthetic alerts, reviewed by you                                                                                             | You judge the sentences better than the templates, or stop here |
 
 ## Boundary conditions
 
@@ -106,8 +129,7 @@ web: alert view shows the sentence with its label and the reasons list under it
 
 ## For discussion
 
-1. **Build it at all?** Recommended: decide after reviewers have used the templated text on the synthetic
-   alerts (after step 13).
+1. **Build it at all?** _Decided 17 Oct 2026:_ defer; decide after step 13 against the go conditions above.
 2. **Label wording** in the app for the AI sentence.
 3. **Language.** The templates and the prompt are English. Do reviewers need Hindi or Marathi? The app has a
    language preference; templates would then need translation by a person, not the model.

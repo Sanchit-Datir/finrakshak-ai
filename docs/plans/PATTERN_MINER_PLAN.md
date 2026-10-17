@@ -171,13 +171,13 @@ the input-hash skip makes an accidental extra run free.
 
 ## MVPs (one commit each, on request only)
 
-| MVP | Content                                                                                                 | Done when                                                                                                       |
-| --- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 0   | `minerCli verify-sheet`: the per-case review sheet; you verify cases                                    | sheet generated for 23 cases; verified status stored for those you confirm                                      |
-| 1   | Pattern definition and matcher, features, candidates with baseline lift, backtest, `candidates` command | planted-pattern and one-case-one-vote tests pass; real run prints the candidate table                           |
-| 2   | Proposal and pattern schemas, Firestore store, `decidePattern`, rules and emulator tests                | decision tests pass for every case in the table                                                                 |
-| 3   | The agent: tools, prompt, loop, output checks, `mine` task, service account, job (off)                  | mock run on the real timelines stores proposals with correct numbers; one capped Vertex dry run reviewed by you |
-| 4   | Approval view in the admin page; scoring job reads approved patterns                                    | an approved pattern changes a synthetic score with its reason shown                                             |
+| MVP | Content                                                                                                                                   | Done when                                                                                                       |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 0   | `minerCli verify-sheet`: the per-case review sheet; you verify cases                                                                      | sheet generated for 23 cases; verified status stored for those you confirm                                      |
+| 1   | Pattern definition and matcher, features, candidates with baseline lift, backtest, `candidates` command                                   | planted-pattern and one-case-one-vote tests pass; real run prints the candidate table                           |
+| 2   | Proposal and pattern schemas, Firestore store, `decidePattern`, the `agentRuns` envelope (see `AGENTS_PLAN.md`), rules and emulator tests | decision tests pass for every case in the table                                                                 |
+| 3   | The agent: tools, prompt, loop, output checks, `mine` task, service account, job (off)                                                    | mock run on the real timelines stores proposals with correct numbers; one capped Vertex dry run reviewed by you |
+| 4   | Approval view in the admin page; scoring job reads approved patterns                                                                      | an approved pattern changes a synthetic score with its reason shown                                             |
 
 ## Boundary conditions
 

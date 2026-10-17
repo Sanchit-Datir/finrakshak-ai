@@ -1,6 +1,6 @@
 # Plan: How agents are implemented
 
-_Status: proposed, for discussion with the owner. Nothing here is implemented. It describes the one pattern
+_Status: the six agent decisions were taken by the owner on 17 Oct 2026 (listed under "For discussion"). Nothing here is implemented. It describes the one pattern
 every agent in this project follows, using the ingestion agent that already exists and the two planned ones
 (`PATTERN_MINER_PLAN.md`, `RISK_EXPLAINER_PLAN.md`)._
 
@@ -66,15 +66,25 @@ need a loop). Copying the loop would let two copies of the code that enforces th
   added (below). If checkpoint 1 drops the miner, the extraction is skipped.
 - **A shared output-check helper** for "every number in the text must be one the code computed" (the
   ingestion agent and the extractor each have a version of this idea; the miner and explainer need it too).
-- **One run-record shape** (`model`, `prompt_version`, `input_hash`, `tool_calls`, token usage, status,
-  whether the result was templated) so one admin view can show every agent.
+- **One run envelope in a new `agentRuns` collection** (decided 17 Oct 2026). Each agent execution writes one
+  small document: `agent` (`ingestion`, `extractor`, `miner`, `explainer`), `trigger` (`daily` or `manual`),
+  start and finish times, `status` (`done`, `skipped`, `failed`, `templated`), `model`, `prompt_version`,
+  `input_hash`, `tool_calls`, input and output tokens, a count of outputs, a pointer to them (for example
+  `ingestReviews/<runId>`) and a note of at most 300 characters that never holds a prompt or a response. The
+  schema lives in `packages/shared`. One admin view can then show every agent, summing tokens gives a spend
+  estimate to watch against the budget alert (B-15), and the share of `templated` runs is a health signal.
+  `ingestReviews` and `ingestRuns` stay exactly as they are: `ingestRuns` is shaped around sources and
+  builds, and the miner is on demand and tied to no daily run, so the existing run collections would fit it
+  badly. Envelopes carry an `expiresAt` field (about 400 days) and get a Firestore TTL policy, set up the way
+  `ingestLocks` already is in `scripts/setup-ingest-gcp.sh`.
 
 Nothing else is new. No agent framework, no new platform.
 
 ## Authority and identity
 
-Each agent has a closed action list, its own service account and its own Firestore collection, in the style
-of B-49:
+Each agent has a closed action list, its own service account and its own Firestore collections, in the style
+of B-49. The "Can write" column describes what the agent's **code** does; see the caveat below the table for
+what the cloud itself enforces:
 
 | Agent     | Service account    | Can read                   | Can write                          | Cannot                                         |
 | --------- | ------------------ | -------------------------- | ---------------------------------- | ---------------------------------------------- |
@@ -84,7 +94,22 @@ of B-49:
 | Explainer | `ingest-explainer` | Alert rows, reason codes   | The explanation field of an alert  | Change scores, bands, reasons or alerts        |
 
 Applying a decision always goes through a callable that checks the signed-in person and role, validates the
-input, acts, and returns a typed result. The agent's account has no path to that write.
+input, acts, and returns a typed result. The agent's code has no path to that write.
+
+**Caveat: what is and is not enforced by the cloud.** `scripts/setup-ingest-gcp.sh` gives the ingestion agent
+and the extractor `roles/datastore.user` on the whole project, without an IAM condition. Firestore security
+rules do not apply to the Admin SDK these jobs use, so **nothing in the cloud stops a job's account from
+writing a collection that its code never touches**. Today the limit is the job's code (it calls only its own
+store functions) and its tests, plus rules that block every client write. Bucket access is different: it is
+scoped per bucket with viewer or creator roles, which the cloud does enforce.
+
+To verify when the writes are added (steps 12 and 14):
+
+- whether an IAM condition can scope Firestore access tighter than the project (I believe it can scope by
+  database but not by collection; this needs checking, I have not confirmed it);
+- if not, whether the miner and explainer should write to their own Firestore database, or whether the code
+  guard plus an emulator test that lists the collections each task writes is enough;
+- reword the "Can write" column to say "writes (by code)" if the cloud cannot enforce it.
 
 ## Prompts and versions
 
@@ -129,6 +154,35 @@ All figures are my estimates from the existing caps and should be confirmed on t
 The budget alert is still parked (B-15). Create it **before** any provider other than `mock` is switched on
 in the cloud. Every agent stays on `mock` until you set its provider explicitly.
 
+## Autonomy
+
+Decided by the owner on 17 Oct 2026.
+
+| Level | Meaning                                                                         | Where it applies                                                  |
+| ----- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| 0     | The agent proposes, a person applies                                            | Ingestion proposals, miner patterns, any change that touches risk |
+| 1     | Code, not a model, retries a failed step once; idempotent, no effect on content | The source re-run today; the scoring job                          |
+| 2     | A model chooses an action that runs without approval                            | Nowhere                                                           |
+
+Rules:
+
+1. **The only automatic action** is a code-triggered retry of an idempotent failed step, at most once per
+   run. The workflow does it (the source re-run exists; the scoring job gets the same retry, safe because
+   its ids are deterministic). A model never triggers it.
+2. **Scores, bands, alerts, patterns, thresholds and settings change only through a person.** No automatic
+   approval or retirement of a pattern, no automatic tuning of thresholds, no automatic closing of an alert,
+   no automatic rollback of a publish.
+3. **A future exception** needs the owner's recorded decision and must meet all of these: reversible in one
+   step, idempotent, no effect on any score or pattern content, capped per day, logged in `agentRuns`, and
+   triggered by code, never by a model.
+4. **Pending decisions must not rot.** The daily review gets a code-computed finding, `proposals_waiting`
+   ("N proposals waiting, the oldest X days"), covering ingestion proposals and pattern proposals. It
+   needs one new entry in the closed `FINDING_CODES` list in `packages/shared/src/ingest/agent.ts` and a
+   rule in `agent/findings.ts`. It is built with the approval view (step 15).
+
+Why this asymmetry: a wrong alert costs a reviewer a few minutes, while a silently changed or suppressed
+signal can go unnoticed for months, and in a bank a named person must stand behind the decision.
+
 ## Failure modes
 
 | What goes wrong                        | What happens                                                             |
@@ -167,17 +221,35 @@ Then the approval view (step 15) and the optional explainer (step 17). The extra
 1. **Extract the shared loop now or when the miner arrives?** _Decided 17 Oct 2026:_ with the miner, in its
    own commit, edge-case tests first, skipped if the miner is dropped. Reason: the extraction is justified by
    a real second user, and step 7 may show the miner is not worth building.
-2. **Is the explainer worth building?** Recommended: not until reviewers say the templated reason text is
-   hard to read. The templated text ships with scoring either way.
-3. **Model choice per agent.** The default is the cheapest model. The miner makes very few calls, so a
-   stronger model would cost cents more; worth a trial after the first dry run.
-4. **Where run history lives.** Recommended: one shared run-record shape in the existing run collections,
-   with an agent field, rather than a new collection per agent.
-5. **Autonomy.** Today only the ingestion agent has one automatic action (re-running a source after a
-   transient error, set by code, not by the model). Recommended: no automatic actions for anything that
-   touches risk.
-6. **Platform.** Recommended: keep Cloud Run jobs. A managed agent platform would add a service and a
-   billing surface that a daily batch job of this size does not need.
+2. **Is the explainer worth building?** _Decided 17 Oct 2026:_ defer it until after step 13. The templated
+   text ships with scoring and includes a deterministic "new since last check / unchanged / score change"
+   block (step 8). Build the explainer only if multi-reason alerts read badly in that form **and** the budget
+   alert exists (B-15). Details and the stop rule are in `RISK_EXPLAINER_PLAN.md`.
+3. **Model choice per agent.** _Decided 17 Oct 2026:_ the cheapest model everywhere (`FUNDTRACE_AI_MODEL`,
+   set per job). For the miner only, run one A/B at checkpoint 4: the same candidates through the cheapest
+   model and one tier up, the owner marks each proposal accept or reject, and the cheapest model that
+   matches the owner's choices is kept. The model id and prompt version are stored on every output, so
+   changing the model is a setting change. The availability and price of the stronger model are checked on
+   the Vertex pricing page at that time.
+4. **Where run history lives.** _Decided 17 Oct 2026:_ a new `agentRuns` collection with one shared envelope
+   schema for every agent, `ingestReviews` and `ingestRuns` unchanged, a TTL on envelopes, and the
+   service-account write scoping verified in steps 12 and 14. The earlier idea of reusing the existing run
+   collections was dropped because `ingestRuns` is shaped around sources and builds.
+5. **Autonomy.** _Decided 17 Oct 2026:_ the only automatic action is a code-triggered retry of an
+   idempotent failed step, at most once per run (today the source re-run; also the scoring job). Everything
+   that touches risk changes only through a person. See the Autonomy section for the rules and the exception
+   criteria.
+6. **Platform.** _Decided 17 Oct 2026:_ keep Cloud Run jobs: `ingest-miner` (on demand) and, only if it is
+   ever built, `ingest-explain`, in the same image as the rest of ingest. A managed agent platform would add
+   a service, a billing surface and a different deploy path that batch jobs of this size do not need. The
+   choice is low-stakes to reverse: the agent logic is plain TypeScript behind `ToolModel`, with one small
+   entrypoint per task in `cloud/main.ts`, so another runtime would change that wrapper, not the agents.
+   **Conditions that would change the answer:**
+   - an agent the user chats with from inside the app (that needs a service behind a callable, not a job);
+   - long-running agents that remember across days, which this plan does not include;
+   - a bank rule that requires a specific managed platform.
+
+   Another model provider would be one new class beside `GeminiToolModel`; no plan change is needed for that.
 
 ## Not in this plan
 

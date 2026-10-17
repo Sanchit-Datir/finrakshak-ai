@@ -46,8 +46,10 @@ The owner's rules already accepted (17 Oct 2026):
 3. **Inputs come through a port**, like the storage port in `ingest/src/storage/`: a BigQuery
    implementation for the cloud and a file implementation for local runs on `data/processed` and
    `data/synthetic`.
-4. **No model calls in the scoring job.** Reasons are templated from reason codes. An explainer agent that
-   rewrites them in plain language is optional and comes last.
+4. **No model calls in the scoring job.** Reasons are templated from reason codes, and each alert carries a
+   deterministic "new since last check / unchanged / score change" block computed from the previous and
+   current reasons. An explainer agent that rewrites them in plain language is optional, deferred until after
+   the app view exists, and built only if the templated text reads badly (`RISK_EXPLAINER_PLAN.md`).
 5. **Synthetic and real never mix (B-54).** The job runs in a `synthetic` mode that reads and writes only
    `*_synth` datasets and `synth`-prefixed Firestore collections. A real mode is created only when real
    bank data exists, with its own dataset, service account and review.
@@ -127,6 +129,9 @@ missing previous row; stale inputs.
 - **Reads only the published, gated build** (B-50), never an interim one.
 - **Lease:** a Firestore lease `score-synthetic` stops two runs from writing at once (B-51).
 - **Idempotent:** deterministic `score_id`; a re-run for the same `as_of` inserts nothing new.
+- **One retry, by the workflow:** a failed `score` task is retried once by `ingest-daily.yaml` (a code
+  trigger, safe because of the idempotence above), never by an agent. Nothing else about scores, bands or
+  alerts is automatic beyond the daily run itself (`AGENTS_PLAN.md`, Autonomy).
 - **Replay:** `--as-of` and a replay mode run the months in order, which is how the delta is tested.
 - **Local CLI** `scoreCli.ts`, like `graphCli.ts`, runs the same core on files.
 - **Cost (B-15):** queries set `maximumBytesBilled`. My estimate is a few hundred MB scanned per run
@@ -172,15 +177,15 @@ web/src/lib/monitoring.ts                   keeps wording, calls the shared dete
 
 ## MVPs (one commit each, on request only)
 
-| MVP | Content                                                                                                                                         | Done when                                                           |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 0   | Characterisation tests for `monitoring.ts` (it has only 35 lines of tests) and the record-kind mapping                                          | tests pass on the unchanged code, so a move can be proven identical |
-| 1   | Move rule detection and record kinds to `packages/shared/src/risk/`; web calls them                                                             | the MVP 0 tests still pass; `npm run check && npm run build` pass   |
-| 2   | Settings, the four layers, score, bands, `decideAlert`; file inputs; `scoreCli`; evaluation on the sample                                       | decision table passes; controls and look-alikes give no alert       |
-| 3   | BigQuery tables and writer, `score` task, workflow step (off), Firestore collections, rules and tests                                           | dry run in staging writes `risk_scores`; rules emulator tests pass  |
-| 4   | Pattern library v1 (hand-written from the case timelines and the five rules) and the pattern layer                                              | pattern tests pass; support caps applied                            |
-| 5   | `getRiskScores` callable and the app view: score, band, reasons, "since last check", Alerts source `risk_score`, labelled "Synthetic test data" | e2e scenario on the synthetic sample passes                         |
-| 6   | Optional explainer agent for the reasons of alerted loans                                                                                       | capped per run; mock model in tests                                 |
+| MVP | Content                                                                                                                                                  | Done when                                                           |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 0   | Characterisation tests for `monitoring.ts` (it has only 35 lines of tests) and the record-kind mapping                                                   | tests pass on the unchanged code, so a move can be proven identical |
+| 1   | Move rule detection and record kinds to `packages/shared/src/risk/`; web calls them                                                                      | the MVP 0 tests still pass; `npm run check && npm run build` pass   |
+| 2   | Settings, the four layers, score, bands, `decideAlert`; reason templates and the "what changed" block; file inputs; `scoreCli`; evaluation on the sample | decision table passes; controls and look-alikes give no alert       |
+| 3   | BigQuery tables and writer, `score` task, workflow step (off), Firestore collections, rules and tests                                                    | dry run in staging writes `risk_scores`; rules emulator tests pass  |
+| 4   | Pattern library v1 (hand-written from the case timelines and the five rules) and the pattern layer                                                       | pattern tests pass; support caps applied                            |
+| 5   | `getRiskScores` callable and the app view: score, band, reasons, "since last check", Alerts source `risk_score`, labelled "Synthetic test data"          | e2e scenario on the synthetic sample passes                         |
+| 6   | Optional explainer agent for the reasons of alerted loans                                                                                                | capped per run; mock model in tests                                 |
 
 The **pattern miner agent** (drafting patterns from the case timelines for the owner to approve) is a
 separate plan. MVP 4 hand-writes version 1 so scoring is not blocked on it.
