@@ -1,5 +1,5 @@
 import { getFirestore } from 'firebase-admin/firestore';
-import type { RiskAlertDoc, RiskLatestDoc } from '@fund-tracker/shared';
+import type { RiskAlertDoc, RiskExplanationDoc, RiskLatestDoc } from '@fund-tracker/shared';
 import { z } from 'zod';
 
 /**
@@ -11,6 +11,8 @@ import { z } from 'zod';
 
 export const LATEST_COLLECTION = 'synthRiskLatest';
 export const ALERTS_COLLECTION = 'synthRiskAlerts';
+/** The risk explainer's sentences, one per alert (RISK_EXPLAINER_PLAN.md; B-62). */
+export const EXPLANATIONS_COLLECTION = 'synthRiskExplanations';
 /** Most documents one call returns (Firestore reads are billed per document, B-15). */
 export const SCORES_PAGE = 500;
 export const ALERTS_PAGE = 200;
@@ -26,6 +28,11 @@ const Scoped = z
 type AssertTrue<T extends true> = T;
 export type LatestInSync = AssertTrue<RiskLatestDoc extends z.infer<typeof Scoped> ? true : false>;
 export type AlertInSync = AssertTrue<RiskAlertDoc extends z.infer<typeof Scoped> ? true : false>;
+
+const ExplanationScoped = Scoped.extend({ alert_id: z.string().min(1) });
+export type ExplanationInSync = AssertTrue<
+  RiskExplanationDoc extends z.infer<typeof ExplanationScoped> ? true : false
+>;
 
 /** Who the caller may see: every branch, or one. */
 export type Scope =
@@ -46,11 +53,15 @@ export interface RiskScoreReader {
   /** Raw documents, at most `limit`. */
   latest(q: RiskQuery, limit: number): Promise<unknown[]>;
   alerts(q: RiskQuery, limit: number): Promise<unknown[]>;
+  /** Raw explanation documents of these alerts (missing ones are left out). */
+  explanations(alertIds: readonly string[]): Promise<unknown[]>;
 }
 
 export interface RiskScoresResult {
   scores: Record<string, unknown>[];
   alerts: Record<string, unknown>[];
+  /** AI-written sentences for the returned alerts only, labelled as such in the app. */
+  explanations: Record<string, unknown>[];
   truncated: boolean;
   /** Documents dropped because they were malformed or outside the caller's scope. */
   skipped: number;
@@ -78,6 +89,20 @@ function visible(
   return { items, skipped: docs.length - items.length };
 }
 
+/** Explanations of returned alerts only, in scope, without the input hash. */
+function visibleExplanations(
+  docs: readonly unknown[],
+  scope: Scope,
+  alertIds: ReadonlySet<string>,
+): Record<string, unknown>[] {
+  return docs.flatMap((raw) => {
+    const parsed = ExplanationScoped.safeParse(raw);
+    if (!parsed.success || !inScope(scope, parsed.data) || !alertIds.has(parsed.data.alert_id))
+      return [];
+    return [Object.fromEntries(Object.entries(parsed.data).filter(([k]) => k !== 'input_hash'))];
+  });
+}
+
 export async function readRiskScores(
   reader: RiskScoreReader,
   q: RiskQuery,
@@ -89,7 +114,15 @@ export async function readRiskScores(
   const truncated = latest.length > SCORES_PAGE || alerts.length > ALERTS_PAGE;
   const s = visible(latest.slice(0, SCORES_PAGE), q.scope);
   const a = visible(alerts.slice(0, ALERTS_PAGE), q.scope);
-  return { scores: s.items, alerts: a.items, truncated, skipped: s.skipped + a.skipped };
+  const ids = a.items.flatMap((x) => (typeof x['alert_id'] === 'string' ? [x['alert_id']] : []));
+  const explanations = visibleExplanations(await reader.explanations(ids), q.scope, new Set(ids));
+  return {
+    scores: s.items,
+    alerts: a.items,
+    explanations,
+    truncated,
+    skipped: s.skipped + a.skipped,
+  };
 }
 
 export const firestoreRiskReader: RiskScoreReader = {
@@ -115,5 +148,13 @@ export const firestoreRiskReader: RiskScoreReader = {
     return (await scoped.orderBy('created_at', 'desc').limit(limit).get()).docs.map((d) =>
       d.data(),
     );
+  },
+  async explanations(alertIds) {
+    if (alertIds.length === 0) return [];
+    const db = getFirestore();
+    const col = db.collection(EXPLANATIONS_COLLECTION);
+    // One read per returned alert at most (ALERTS_PAGE), billed per document (B-15).
+    const snaps = await db.getAll(...alertIds.map((id) => col.doc(id)));
+    return snaps.filter((d) => d.exists).map((d) => d.data());
   },
 };

@@ -5,7 +5,7 @@ only from the repo docs: `docs/plans/AGENTS_PLAN.md`, `docs/plans/PATTERN_MINER_
 `docs/plans/RISK_EXPLAINER_PLAN.md`, `docs/plans/PATTERN_CONTRACT.md`. This file is updated at every
 checkpoint commit; delete it once everything below is done.
 
-_Last checkpoint: 3 (explainer ingest side). Next: explanations in getRiskScores and the web view, then infra and docs._
+_Last checkpoint: 4 (explainer in getRiskScores and the app). Next: infra and docs._
 
 ## Done so far
 
@@ -38,13 +38,12 @@ _Last checkpoint: 3 (explainer ingest side). Next: explanations in getRiskScores
       `cloud/explainTask.ts`); tests for every check, the mock, the cap and idempotence, and the
       Firestore store against the emulator.
 
+- [x] `getRiskScores` returns `explanations` for the returned alerts only (no input hash); the web loader
+      parses them and the risk score drawer shows the latest alert's sentence labelled
+      "AI-written summary of the recorded reasons", followed by that alert's recorded reasons
+      (`components/risk-scores/AiExplanation.tsx`).
+
 ## Remaining
-
-### Risk explainer (step 17, E2)
-
-- [ ] `functions/src/services/riskScores.ts`: attach explanations (`explanations` array in the result).
-- [ ] Web: parse `explanations` in `web/src/lib/cloud/risk-scores.ts`; show the sentence labelled
-      `AI_EXPLANATION_LABEL` with the reasons list under it (load the `fundtrace-ui` skill first).
 
 ### Infra and docs
 

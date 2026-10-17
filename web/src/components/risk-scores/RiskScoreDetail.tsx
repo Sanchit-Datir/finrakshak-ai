@@ -4,14 +4,19 @@ import { Dialog } from '../ui/Dialog.js';
 import { Notice } from '../ui/States.js';
 import { PriorityBadge } from '../ui/StatusBadges.js';
 import { useFormat } from '../../state/hooks.js';
+import type { ExplainedAlert } from '../../lib/cloud/risk-scores.js';
+import { AiExplanation } from './AiExplanation.js';
 import { ALERT_KIND_LABEL, LAYER_LABEL } from './labels.js';
 
 /** One synthetic loan's latest score: band, points per layer, reasons and the "what changed" block. */
 export function RiskScoreDetail({
   score,
+  explained,
   onClose,
 }: {
   score: RiskScoreView | null;
+  /** The loan's latest alert with its AI sentence, when the explainer wrote one. */
+  explained: ExplainedAlert | null;
   onClose: () => void;
 }): React.JSX.Element {
   return (
@@ -22,12 +27,18 @@ export function RiskScoreDetail({
       title={score === null ? 'Risk score' : `Risk score · ${score.loan_id}`}
       description="SYNTH test loan. A score is a lead for review, never a verdict."
     >
-      {score !== null && <DetailBody score={score} />}
+      {score !== null && <DetailBody score={score} explained={explained} />}
     </Dialog>
   );
 }
 
-function DetailBody({ score }: { score: RiskScoreView }): React.JSX.Element {
+function DetailBody({
+  score,
+  explained,
+}: {
+  score: RiskScoreView;
+  explained: ExplainedAlert | null;
+}): React.JSX.Element {
   const f = useFormat();
   const s = score.latest;
   const reasons = s.reasons.filter((r) => r.points > 0);
@@ -53,6 +64,7 @@ function DetailBody({ score }: { score: RiskScoreView }): React.JSX.Element {
           risk.
         </Notice>
       )}
+      {explained !== null && <AiExplanation explained={explained} />}
       <section aria-labelledby="risk-points">
         <h3 id="risk-points" className="mb-2 text-sm font-semibold">
           Points by layer
