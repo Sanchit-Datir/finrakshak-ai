@@ -45,6 +45,7 @@ export const askGemini = onCall(
     secrets: [geminiApiKey],
     // Cost guard until per-user quotas exist (B-15): at most 5 copies run at once.
     maxInstances: 5,
+    memory: '256MiB',
     timeoutSeconds: 60,
   },
   askGeminiHandler,

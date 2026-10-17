@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { getEnv } from '../config/env.js';
+import { mockGenerateText } from './gemini-mock.js';
 
 /** Hard limits — see docs/BOUNDARY_CONDITIONS.md (B-10..B-14). */
 export const GEMINI_LIMITS = {
@@ -41,6 +42,8 @@ export class GeminiError extends Error {
 export async function generateText(prompt: string): Promise<string> {
   if (prompt.trim().length === 0) throw new GeminiError('Empty prompt');
   if (prompt.length > GEMINI_LIMITS.maxPromptChars) throw new GeminiError('Prompt too long');
+  // Cost guard: the mock provider never creates a client or touches the network.
+  if (getEnv().GEMINI_PROVIDER === 'mock') return mockGenerateText();
 
   const controller = new AbortController();
   const timer = setTimeout(() => {
