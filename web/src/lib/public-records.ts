@@ -1,4 +1,4 @@
-import type { GraphEdge, GraphNode } from '@fund-tracker/shared';
+import { recordKindOf, type GraphEdge, type GraphNode } from '@fund-tracker/shared';
 import type {
   ApplicationData,
   PrExposure,
@@ -23,23 +23,6 @@ import { publicRecordsInputsKey } from './public-records-findings.js';
  * SFIO and SEBI records) and follows documented insolvency links. Pure, except the loader.
  * Matching is exact only (B-37): CIN first, then exact normalised name; never fuzzy.
  */
-
-const RECORD_KIND: Readonly<Record<string, PrRecord['kind']>> = {
-  ibbi_cirp: 'insolvency',
-  ibbi_liquidation: 'liquidation',
-  ed_provisional_attachment: 'enforcement',
-  ed_search_seizure: 'enforcement',
-  ed_prosecution_complaint: 'enforcement',
-  ed_arrest: 'enforcement',
-  ed_conviction: 'enforcement',
-  ed_feo_declaration: 'enforcement',
-  sfio_conviction_list: 'enforcement',
-  sfio_proclaimed_offenders: 'enforcement',
-  sebi_final_order: 'enforcement',
-  sebi_interim_order: 'enforcement',
-  rbi_licence_cancellation: 'enforcement',
-  rbi_cor_cancellation: 'enforcement',
-};
 
 /** MCA statuses that mean the company is not a going concern. */
 export const NOT_GOING_CONCERN = /^(Under CIRP|Under Liquidation|Strike Off|Dissolved.*|Under process of striking off)$/;
@@ -90,7 +73,7 @@ function recordsOf(ix: LabIndex, id: string): PrRecord[] {
   for (const e of ix.all.out.get(id) ?? []) {
     const event = ix.nodes.get(e.to);
     if (e.type !== 'named_in' || e.from !== id || event === undefined || seen.has(event.id)) continue;
-    const kind = RECORD_KIND[caseTypeOf(event)];
+    const kind = recordKindOf(caseTypeOf(event));
     if (kind === undefined) continue;
     seen.add(event.id);
     const doc = ix.docs.get(e.document_id ?? event.document_id ?? '');
