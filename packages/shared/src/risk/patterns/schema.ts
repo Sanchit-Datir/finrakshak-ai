@@ -79,7 +79,7 @@ export const PatternSupportSchema = z
     supporting_case_ids: z.array(CaseIdSchema),
     /** Distinct cases, never entries (B-60). */
     supporting_case_count: z.number().int().nonnegative(),
-    /** Baseline among entities named in adverse records (B-59). Null for a hypothesis. */
+    /** Baseline among entities named in adverse records (B-63). Null for a hypothesis. */
     population: PopulationSchema.nullable(),
     median_gap_months: z.number().nonnegative().nullable(),
   })

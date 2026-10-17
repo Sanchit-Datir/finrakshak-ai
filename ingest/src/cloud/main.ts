@@ -5,6 +5,8 @@ import { runBuildTask } from './buildTask.js';
 import { runExtractTask } from './extractTask.js';
 import { runAgentTask } from './agentTask.js';
 import { runScoreTask } from './scoreTask.js';
+import { runMineTask } from './mineTask.js';
+import { runExplainTask } from './explainTask.js';
 import { makeDeps, type CloudDeps, type TaskRole } from './context.js';
 import { readCloudEnv, type CloudEnv } from './env.js';
 
@@ -20,6 +22,8 @@ const TASKS: Readonly<Record<string, Task>> = {
   build: { role: 'runner', run: runBuildTask },
   score: { role: 'scorer', run: (env, deps) => runScoreTask(env, deps) },
   agent: { role: 'agent', run: runAgentTask },
+  mine: { role: 'miner', run: (env, deps) => runMineTask(env, deps) },
+  explain: { role: 'explainer', run: (env, deps) => runExplainTask(env, deps) },
 };
 
 async function main(argv: readonly string[]): Promise<void> {

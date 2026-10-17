@@ -79,9 +79,15 @@ export async function getRiskScoresHandler(
       scope: scope.kind,
       scores: result.scores.length,
       alerts: result.alerts.length,
+      explanations: result.explanations.length,
       skipped: result.skipped,
     });
-    return { scores: result.scores, alerts: result.alerts, truncated: result.truncated };
+    return {
+      scores: result.scores,
+      alerts: result.alerts,
+      explanations: result.explanations,
+      truncated: result.truncated,
+    };
   } catch (error) {
     logger.error('getRiskScores: read failed', { uid, ...describeError(error) });
     throw new HttpsError('internal', 'The risk scores could not be loaded.', {

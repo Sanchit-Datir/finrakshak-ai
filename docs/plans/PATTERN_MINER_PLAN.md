@@ -1,8 +1,11 @@
 # Plan: Pattern miner agent
 
-_Status: approved by the owner on 17 Oct 2026 (decisions listed at the end). Nothing here is implemented. It feeds the pattern
-layer of `docs/plans/RISK_SCORING_PLAN.md`; the scoring job does not wait for it (version 1 patterns are
-hand-written in that plan's MVP 4)._
+_Status: approved by the owner on 17 Oct 2026 (decisions listed at the end). MVPs 0 to 3 are built: the agent
+(`ingest/src/miner/agent.ts`, `tools.ts`, `wording.ts`, `proposals.ts`, `store.ts`), the on-demand task `mine`
+(job `ingest-miner`, off by default), `minerCli propose` (prints only) and the `decidePattern` callable. MVP 4
+(approval view, scoring reading the Firestore library) is open. It feeds the pattern layer of
+`docs/plans/RISK_SCORING_PLAN.md`; the scoring job does not wait for it (version 1 patterns are hand-written in
+that plan's MVP 4)._
 
 ## Goal
 
@@ -147,7 +150,7 @@ support weight. Starting with the largest and the best-known cases covers most e
   default and in all tests (B-15).
 - **Off by default:** `FUNDTRACE_MINER_ENABLED=false`, plus the existing agent kill switch.
 - **Authority list (like B-49):** the miner has exactly three actions, `propose_pattern`,
-  `reject_candidate` and `submit_summary`, and three read-only lookups. It cannot fetch URLs, approve,
+  `reject_candidate` and `submit_summary`, and two read-only lookups (`get_candidate`, `get_case_timeline`). It cannot fetch URLs, approve,
   or write to pipeline data.
 - **Service account** `ingest-miner`: read on the published data, write only to `patternProposals` and its
   own run record. No bucket write, no BigQuery write.
@@ -217,7 +220,7 @@ Touched, with how each is handled:
 
 New, to be added to `docs/BOUNDARY_CONDITIONS.md`:
 
-- **B-59 Patterns from hand-picked defaulters:** the seeds were chosen because they defaulted, so a pattern's
+- **B-63 Patterns from hand-picked defaulters** (planned as B-59; that number went to the prepayment rule): the seeds were chosen because they defaulted, so a pattern's
   support says it appeared before known failures, not that it predicts them. Lift is measured only against
   entities already in adverse records. No precision or hit rate is quoted.
 - **B-60 One case, one vote:** support counts distinct cases; the four largest cases hold 72% of the entries

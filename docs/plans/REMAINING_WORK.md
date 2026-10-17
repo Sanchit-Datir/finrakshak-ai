@@ -283,7 +283,7 @@ Name the ID in your reply and your PR whenever you touch one. New ones are added
 | B-54, B-55       | Synthetic data only, never mixed with real; results prove plumbing, not accuracy                            |
 | B-56, B-58       | Stale or missing inputs are not low risk; a score is a lead, not a verdict (wording, W3c)                   |
 | **B-57 (new)**   | Score history is immutable; corrections are new rows. Add in W2c.                                           |
-| B-59 to B-62     | Miner and explainer only; added if those steps are ever built                                               |
+| B-60 to B-63     | Miner and explainer: built (B-59 went to the prepayment rule, so the defaulters condition is B-63)          |
 
 ## 10. Rules for everyone
 

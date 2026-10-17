@@ -9,7 +9,7 @@ import { PageHeader } from '../components/ui/PageHeader.js';
 import { EmptyState, ErrorState, Notice, Skeleton } from '../components/ui/States.js';
 import { PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
-import type { RiskScores } from '../lib/cloud/risk-scores.js';
+import { latestExplained, type RiskScores } from '../lib/cloud/risk-scores.js';
 import { useFormat } from '../state/hooks.js';
 import { useUrlState } from '../state/url.js';
 import { useRiskScores } from '../state/useRiskScores.js';
@@ -135,6 +135,7 @@ function Scores({ data }: { data: RiskScores }): React.JSX.Element {
       </Card>
       <RiskScoreDetail
         score={open}
+        explained={open === null ? null : latestExplained(data, open.loan_id)}
         onClose={() => {
           setLoan('');
         }}

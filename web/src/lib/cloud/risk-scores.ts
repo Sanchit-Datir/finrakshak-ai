@@ -1,8 +1,10 @@
 import {
   GetRiskScoresResultSchema,
   RiskAlertDocSchema,
+  RiskExplanationViewSchema,
   RiskScoreViewSchema,
   type RiskAlertDoc,
+  type RiskExplanationView,
   type RiskScoreView,
 } from '@fund-tracker/shared';
 import type { Cloud } from './firebase.js';
@@ -11,6 +13,8 @@ import type { Cloud } from './firebase.js';
 export interface RiskScores {
   readonly scores: RiskScoreView[];
   readonly alerts: RiskAlertDoc[];
+  /** AI-written sentences for some alerts (RISK_EXPLAINER_PLAN.md); always shown labelled. */
+  readonly explanations: RiskExplanationView[];
   readonly truncated: boolean;
   /** Items dropped because they did not match the shared schema (never shown, never trusted). */
   readonly dropped: number;
@@ -36,7 +40,29 @@ export function parseRiskScores(raw: unknown, origin: RiskScores['origin']): Ris
     const p = RiskAlertDocSchema.safeParse(x);
     return p.success ? p.data : null;
   });
-  return { scores, alerts, truncated: envelope.truncated, dropped, origin };
+  const explanations = keep(envelope.explanations, (x) => {
+    const p = RiskExplanationViewSchema.safeParse(x);
+    return p.success ? p.data : null;
+  });
+  return { scores, alerts, explanations, truncated: envelope.truncated, dropped, origin };
+}
+
+export interface ExplainedAlert {
+  readonly alert: RiskAlertDoc;
+  readonly explanation: RiskExplanationView;
+}
+
+/**
+ * The loan's most recent alert with its AI sentence, or null. Only the latest alert counts: an older
+ * sentence would describe reasons that may have changed since.
+ */
+export function latestExplained(data: RiskScores, loanId: string): ExplainedAlert | null {
+  const latest = data.alerts
+    .filter((a) => a.loan_id === loanId)
+    .reduce<RiskAlertDoc | null>((best, a) => (best === null || a.created_at > best.created_at ? a : best), null);
+  if (latest === null) return null;
+  const explanation = data.explanations.find((e) => e.alert_id === latest.alert_id);
+  return explanation === undefined ? null : { alert: latest, explanation };
 }
 
 /** Calls the `getRiskScores` function; it checks sign-in, App Check and the caller's branch. */

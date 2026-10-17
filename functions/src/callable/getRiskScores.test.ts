@@ -43,15 +43,22 @@ const doc = (
 function reader(
   latest: unknown[],
   alerts: unknown[] = [],
-): RiskScoreReader & { queries: RiskQuery[] } {
+  explanations: unknown[] = [],
+): RiskScoreReader & { queries: RiskQuery[]; asked: string[][] } {
   const queries: RiskQuery[] = [];
+  const asked: string[][] = [];
   return {
     queries,
+    asked,
     latest: (q, limit) => {
       queries.push(q);
       return Promise.resolve(latest.slice(0, limit));
     },
     alerts: (_q, limit) => Promise.resolve(alerts.slice(0, limit)),
+    explanations: (ids) => {
+      asked.push([...ids]);
+      return Promise.resolve(explanations);
+    },
   };
 }
 
@@ -131,10 +138,43 @@ describe('getRiskScoresHandler', () => {
     const failing: RiskScoreReader = {
       latest: () => Promise.reject(new Error('PERMISSION_DENIED: secret detail')),
       alerts: () => Promise.resolve([]),
+      explanations: () => Promise.resolve([]),
     };
     const e = await getRiskScoresHandler(req({}), deps(failing)).catch((x: unknown) => x);
     expect(e).toBeInstanceOf(HttpsError);
     expect((e as HttpsError).message).toBe('The risk scores could not be loaded.');
+  });
+
+  it('returns explanations of the returned alerts only, without the input hash (B-62)', async () => {
+    const alert = doc('L-1', 'br-synth', { alert_id: 'L-1_a' });
+    const explanation = (
+      id: string,
+      extra: Record<string, unknown> = {},
+    ): Record<string, unknown> => ({
+      alert_id: id,
+      loan_id: 'L-1',
+      branch_id: 'br-synth',
+      synthetic: true,
+      text: 'A sentence.',
+      input_hash: 'a'.repeat(64),
+      ...extra,
+    });
+    const r = reader(
+      [],
+      [alert],
+      [explanation('L-1_a'), explanation('L-9_other'), explanation('L-1_b', { synthetic: false })],
+    );
+    const out = await getRiskScoresHandler(req({}), deps(r));
+    expect(r.asked).toEqual([['L-1_a']]);
+    expect(out.explanations).toEqual([
+      {
+        loan_id: 'L-1',
+        branch_id: 'br-synth',
+        synthetic: true,
+        alert_id: 'L-1_a',
+        text: 'A sentence.',
+      },
+    ]);
   });
 
   it('rate-limits a caller', async () => {

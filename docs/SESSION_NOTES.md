@@ -65,6 +65,29 @@ on, v2 + behaviour option 4 catches 105 of 105 defaulters with 0 false alarms at
 (table in `docs/RISK_SCORING.md`). **Open for the owner:** publish that as settings v3 (0.4 over the budget)
 or not. Committed on this branch (43447f1).
 
+## Agents session (17 Oct 2026, branch `pattern-miner-risk-explainer-agent`)
+
+At the owner's request, built the **pattern miner** and the **risk explainer** from main, following
+`docs/plans/AGENTS_PLAN.md`, `PATTERN_MINER_PLAN.md` and `RISK_EXPLAINER_PLAN.md` (steps 12, 14 and 17/E2).
+Pushed at the owner's request; PR opened against `main` at the owner's request. **Owner confirmed (17 Oct
+2026):** explanations in their own collection `synthRiskExplanations` (one per alert; a prompt bump applies to
+new alerts only); the mock and the kill switches store nothing, a failed real model stores code-worded
+proposals with `model: null`; model-rejected candidates are not proposed and only their count is kept.
+
+- Shared: `runToolLoop` (`ingest/src/ai/toolLoop.ts`), the number check (`ai/outputChecks.ts`), the `agentRuns`
+  envelope (all three agents write one). The 14a edge-case tests found a bug: once the input budget was used,
+  the ingestion agent's `submit_review` was refused too, so it could never finish; fixed in the shared loop.
+- Miner: `ingest/src/miner/{agent,tools,wording,proposals,store,load}.ts`, task `mine` (job `ingest-miner`, on
+  demand, `FUNDTRACE_MINER_ENABLED=false`), `npm run miner -- propose` (prints only). On the real timelines:
+  0 candidates, nothing proposed (as at checkpoint 1). `decidePattern` callable writes the library (B-61).
+- Explainer: `ingest/src/explain/`, task `explain` (job `ingest-explain`, after `score`,
+  `FUNDTRACE_EXPLAIN_ENABLED=false`); sentences in `synthRiskExplanations` (not on the alert: B-57), shown
+  labelled in the risk score drawer (B-62).
+- B-60 to B-63 added (B-59 was taken by the prepayment fix on `main`, so "patterns from hand-picked defaulters" is B-63). Everything runs on the mock; the mock and the kill switches store nothing.
+- Open for the owner: the budget alert (B-15), re-running `scripts/setup-ingest-gcp.sh` for the two new
+  accounts, checkpoint 4 (miner Vertex dry run) and E3 (explainer dry run); step 15 (approval view, scorer
+  reading the Firestore library, `proposals_waiting`) is not built.
+
 ## Open decisions and next ideas
 
 - **Risk scoring programme (planned 17 Oct 2026):** synthetic transaction data, a daily risk-scoring

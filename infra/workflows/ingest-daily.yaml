@@ -138,8 +138,8 @@ main:
           review_status: ${runState.review_status}
           failed_steps: ${failed}
 
-# Build (publish gates, versioned publish, BigQuery), then the synthetic risk scores (a no-op unless
-# switched on for the job), then the agent review. Returns failed steps.
+# Build (publish gates, versioned publish, BigQuery), then the synthetic risk scores and their
+# explanations (each a no-op unless switched on for its job), then the agent review. Returns failed steps.
 build_and_review:
   params: [project, region, runId, runAt, forceBuild, pass]
   steps:
@@ -194,6 +194,27 @@ build_and_review:
                     - noteScore:
                         assign:
                           - failures: ${list.concat(failures, "score")}
+    # The risk explainer words the new alerts (a no-op unless switched on for the job). It runs after
+    # score and never changes a score or an alert (B-57, B-62); a failure is recorded and the run goes on.
+    - explain:
+        try:
+          call: run_job
+          args:
+            project: ${project}
+            region: ${region}
+            job: ingest-explain
+            env:
+              - name: FUNDTRACE_RUN_ID
+                value: ${runId}
+              - name: FUNDTRACE_RUN_AT
+                value: ${runAt}
+            timeout: 1800
+        except:
+          as: e
+          steps:
+            - noteExplain:
+                assign:
+                  - failures: ${list.concat(failures, "explain")}
     - review:
         try:
           call: run_job

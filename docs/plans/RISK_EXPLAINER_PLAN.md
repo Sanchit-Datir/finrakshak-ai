@@ -1,9 +1,11 @@
 # Plan: Risk explainer agent (optional)
 
-_Status: **deferred** by the owner on 17 Oct 2026. Nothing here is implemented. This is step 17 of the build
-order and is optional: the scoring job ships with deterministic, templated reason text and works without
-this agent. It is built only if the go conditions below are met after step 13. See `AGENTS_PLAN.md` for the
-pattern it follows._
+_Status: deferred by the owner on 17 Oct 2026, then **E2 built at the owner's request the same day** (branch
+`pattern-miner-risk-explainer-agent`): `ingest/src/explain/`, task `explain` (job `ingest-explain`, off by
+default), explanations in `getRiskScores` and the app. E3 (the capped dry run) still waits on the go conditions
+below. One change from the design: the sentence is stored in its own collection `synthRiskExplanations/{alertId}`
+instead of a field on the alert, because an alert is created once and never rewritten (B-57); the alert's
+`change_text` is the template. See `AGENTS_PLAN.md` for the pattern it follows._
 
 ## Goal
 

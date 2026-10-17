@@ -8,3 +8,4 @@ export { health } from './callable/health.js';
 export { decideProposal } from './callable/decideProposal.js';
 export { publicData } from './http/publicData.js';
 export { getRiskScores } from './callable/getRiskScores.js';
+export { decidePattern } from './callable/decidePattern.js';

@@ -1,11 +1,11 @@
 import type { Finding, IngestRun } from '@fund-tracker/shared';
-import type { ToolCall, ToolModel, ToolResult } from '../ai/toolModel.js';
-import { errorMessage, log } from '../log.js';
+import { runToolLoop } from '../ai/toolLoop.js';
+import type { ToolModel, Usage } from '../ai/toolModel.js';
+import { log } from '../log.js';
 import type { Assessment } from './findings.js';
-import type { HistorySource } from './history.js';
 import { RUN_REVIEW_SYSTEM } from './prompts/runReview.js';
 import type { ProposalDraft } from './proposals.js';
-import { AGENT_TOOLS, type AgentTool, type ToolContext } from './tools.js';
+import { AGENT_TOOLS, type ToolContext, type ToolOutcome } from './tools.js';
 import { violatesWording } from './wording.js';
 
 export interface SupervisorLimits {
@@ -20,13 +20,9 @@ export interface SupervisorResult {
   readonly summary: string | null;
   readonly drafts: ProposalDraft[];
   readonly toolCalls: number;
+  readonly usage: Usage;
   readonly note: string | null;
 }
-
-/** Read through a function so the compiler does not narrow away updates made inside `handle`. */
-const hasSummary = (state: { summary: string | null }): boolean => state.summary !== null;
-
-const TOOLS = new Map<string, AgentTool>(AGENT_TOOLS.map((t) => [t.spec.name, t]));
 
 function renderDigest(run: IngestRun, assessment: Assessment): string {
   return JSON.stringify({
@@ -48,100 +44,67 @@ function renderDigest(run: IngestRun, assessment: Assessment): string {
   });
 }
 
-interface LoopState {
-  calls: number;
-  chars: number;
+interface Kept {
   summary: string | null;
   drafts: ProposalDraft[];
-  note: string | null;
 }
 
-async function handle(
-  call: ToolCall,
-  ctx: ToolContext,
-  state: LoopState,
-  limits: SupervisorLimits,
-): Promise<ToolResult> {
-  const tool = TOOLS.get(call.name);
-  const reply = (response: Record<string, unknown>): ToolResult => ({
-    id: call.id,
-    name: call.name,
-    response,
-  });
-  if (!tool) return reply({ error: `unknown tool ${call.name}` });
-  if (state.chars > limits.maxInputChars)
-    return reply({ error: 'input budget used up: call submit_review now' });
-  try {
-    const out = await tool.run(call.args, ctx);
-    if (out.kind === 'proposal') {
-      if (violatesWording(out.draft.reason))
-        return reply({ error: 'reason uses verdict words; describe the record neutrally' });
-      if (state.drafts.length >= limits.maxProposals)
-        return reply({ error: 'proposal limit reached' });
-      state.drafts.push(out.draft);
-    }
-    if (out.kind === 'review') {
-      if (violatesWording(out.summary))
-        return reply({ error: 'summary uses verdict words; rewrite neutrally' });
-      state.summary = out.summary;
-    }
-    state.chars += JSON.stringify(out.response).length;
-    return reply(out.response);
-  } catch (e) {
-    // Invalid arguments are reported back to the model; nothing was executed.
-    return reply({ error: errorMessage(e).slice(0, 300) });
+/** The ingestion agent's own output rules: neutral wording and the proposal cap (B-49). */
+function acceptOutcome(out: ToolOutcome, kept: Kept, limits: SupervisorLimits): string | null {
+  if (out.kind === 'proposal') {
+    if (violatesWording(out.draft.reason))
+      return 'reason uses verdict words; describe the record neutrally';
+    if (kept.drafts.length >= limits.maxProposals) return 'proposal limit reached';
+    kept.drafts.push(out.draft);
   }
+  if (out.kind === 'review') {
+    if (violatesWording(out.summary)) return 'summary uses verdict words; rewrite neutrally';
+    kept.summary = out.summary;
+  }
+  return null;
 }
 
 /**
  * The agent's tool loop: the model reads the code-computed digest, may look up details with
  * read-only tools, may propose allowlisted actions, and must finish with submit_review. Bounded
- * by a tool-call budget and an input budget; any model failure falls back to the templated review.
+ * by a tool-call budget and an input budget (shared `runToolLoop`); any model failure falls back
+ * to the templated review.
  */
 export async function supervise(
   model: ToolModel,
-  ctx: { run: IngestRun; assessment: Assessment; history: HistorySource },
+  ctx: ToolContext,
   limits: SupervisorLimits,
 ): Promise<SupervisorResult> {
-  const user = renderDigest(ctx.run, ctx.assessment);
-  const state: LoopState = {
-    calls: 0,
-    chars: user.length + RUN_REVIEW_SYSTEM.length,
-    summary: null,
-    drafts: [],
-    note: null,
-  };
-  const session = model.start(
-    RUN_REVIEW_SYSTEM,
-    user,
-    AGENT_TOOLS.map((t) => t.spec),
-  );
-  let results: ToolResult[] = [];
-  try {
-    while (!hasSummary(state) && state.calls < limits.maxToolCalls) {
-      const calls = await session.step(results);
-      if (calls.length === 0) break;
-      results = [];
-      for (const call of calls.slice(0, limits.maxToolCalls - state.calls)) {
-        state.calls++;
-        results.push(await handle(call, ctx, state, limits));
-        if (call.name === 'submit_review' && hasSummary(state)) break;
-      }
-    }
-    if (state.summary === null)
-      state.note = 'model did not submit a valid review within its budget';
-  } catch (e) {
-    state.note = `model unavailable: ${errorMessage(e).slice(0, 200)}`;
-    log.warn('agent model failed; using the templated review', { error: errorMessage(e) });
-  }
-  const usage = session.usage();
-  log.info('agent loop done', {
-    calls: state.calls,
-    inputTokens: usage.inputTokens,
-    outputTokens: usage.outputTokens,
-    submitted: state.summary !== null,
+  const kept: Kept = { summary: null, drafts: [] };
+  const loop = await runToolLoop(model, {
+    system: RUN_REVIEW_SYSTEM,
+    user: renderDigest(ctx.run, ctx.assessment),
+    tools: AGENT_TOOLS,
+    ctx,
+    limits,
+    finish: ['submit_review'],
+    finishHint: 'submit_review',
+    accept: (out) => acceptOutcome(out, kept, limits),
+    done: () => kept.summary !== null,
   });
-  return { summary: state.summary, drafts: state.drafts, toolCalls: state.calls, note: state.note };
+  let note: string | null = null;
+  if (loop.failure !== null) {
+    note = `model unavailable: ${loop.failure}`;
+    log.warn('agent model failed; using the templated review', { error: loop.failure });
+  } else if (kept.summary === null) note = 'model did not submit a valid review within its budget';
+  log.info('agent loop done', {
+    calls: loop.toolCalls,
+    inputTokens: loop.usage.inputTokens,
+    outputTokens: loop.usage.outputTokens,
+    submitted: kept.summary !== null,
+  });
+  return {
+    summary: kept.summary,
+    drafts: kept.drafts,
+    toolCalls: loop.toolCalls,
+    usage: loop.usage,
+    note,
+  };
 }
 
 /** Code-written summary: used on healthy days, with the kill switch, and as the fallback. */

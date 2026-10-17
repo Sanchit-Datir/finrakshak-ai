@@ -20,6 +20,8 @@ describe('readAiConfig', () => {
       timeoutMs: 30_000,
       maxInputChars: 60_000,
       extraction: { enabled: false, maxDocs: 50, maxPages: 10, maxChars: 30_000 },
+      miner: { enabled: false, maxToolCalls: 12 },
+      explainer: { enabled: false, maxAlerts: 30 },
     });
   });
 
@@ -104,5 +106,18 @@ describe('readAiConfig', () => {
     });
     expect(cfg.maxToolCalls).toBe(3);
     expect(cfg.extraction).toEqual({ enabled: false, maxDocs: 7, maxPages: 2, maxChars: 5000 });
+  });
+
+  it('keeps the miner and the explainer off unless switched on, with their caps (B-15)', () => {
+    const on = readAiConfig({
+      FUNDTRACE_MINER_ENABLED: 'true',
+      FUNDTRACE_MINER_MAX_TOOL_CALLS: '5',
+      FUNDTRACE_EXPLAIN_ENABLED: 'true',
+      FUNDTRACE_EXPLAIN_MAX_ALERTS: '3',
+    });
+    expect(on.miner).toEqual({ enabled: true, maxToolCalls: 5 });
+    expect(on.explainer).toEqual({ enabled: true, maxAlerts: 3 });
+    expect(() => readAiConfig({ FUNDTRACE_EXPLAIN_MAX_ALERTS: '0' })).toThrow();
+    expect(() => readAiConfig({ FUNDTRACE_MINER_ENABLED: 'yes' })).toThrow();
   });
 });

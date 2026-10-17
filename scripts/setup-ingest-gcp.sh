@@ -27,6 +27,8 @@ ORCH_SA="ingest-orchestrator@${PROJECT_ID}.iam.gserviceaccount.com"
 AGENT_SA="ingest-agent@${PROJECT_ID}.iam.gserviceaccount.com"
 EXTRACTOR_SA="ingest-extractor@${PROJECT_ID}.iam.gserviceaccount.com"
 SCORER_SA="ingest-scorer@${PROJECT_ID}.iam.gserviceaccount.com"
+MINER_SA="ingest-miner@${PROJECT_ID}.iam.gserviceaccount.com"
+EXPLAINER_SA="ingest-explainer@${PROJECT_ID}.iam.gserviceaccount.com"
 # Synthetic test data only (B-54): never the public dataset.
 SYNTH_DATASET="fundtrace_synth"
 # Gen2 functions run as one of these default accounts, depending on the firebase-tools version
@@ -118,6 +120,8 @@ ensure_sa "$ORCH_SA" "Ingest orchestration: Scheduler and Workflows"
 ensure_sa "$AGENT_SA" "Ingest agent: read-only reviewer (B-49)"
 ensure_sa "$EXTRACTOR_SA" "Ingest AI extraction: create-only shadow claims (B-52)"
 ensure_sa "$SCORER_SA" "Ingest scoring: synthetic risk scores, no model (B-15, B-54)"
+ensure_sa "$MINER_SA" "Pattern miner: proposals only, never the library (B-61)"
+ensure_sa "$EXPLAINER_SA" "Risk explainer: explanations beside alerts only (B-62)"
 
 echo "› Cloud Storage (private, uniform access, $REGION)"
 for b in "$RAW_BUCKET" "$STATE_BUCKET" "$PUBLISH_BUCKET"; do ensure_bucket "$b"; done
@@ -142,6 +146,10 @@ grant_bucket "$STATE_BUCKET" "$SCORER_SA" roles/storage.objectViewer
 gcloud storage buckets add-iam-policy-binding "gs://$STATE_BUCKET" --project "$PROJECT_ID" \
   --member "serviceAccount:$SCORER_SA" --role roles/storage.objectCreator \
   --condition "title=risk-load-only,expression=resource.name.startsWith('projects/_/buckets/$STATE_BUCKET/objects/interim/risk-load/')" >/dev/null
+# The miner reads the processed tables, the seed review and the published pointer (B-50); it writes
+# no bucket. The explainer reads only Firestore, so it has no bucket role at all.
+grant_bucket "$STATE_BUCKET" "$MINER_SA" roles/storage.objectViewer
+grant_bucket "$PUBLISH_BUCKET" "$MINER_SA" roles/storage.objectViewer
 # The app's publicData function only reads the published bundles.
 for sa in "${FUNCTIONS_SAS[@]}"; do grant_bucket "$PUBLISH_BUCKET" "$sa" roles/storage.objectViewer; done
 
@@ -169,6 +177,11 @@ grant_project "$EXTRACTOR_SA" roles/datastore.user roles/aiplatform.user roles/l
 # Scorer: BigQuery jobs and Firestore for the synthRisk* collections (question Q6: the role is
 # project-wide, so its code is limited to those collections and a test lists them). No model role.
 grant_project "$SCORER_SA" roles/bigquery.jobUser roles/datastore.user roles/logging.logWriter
+# Miner and explainer: Firestore for their own collections and agentRuns, Vertex AI for the model.
+# As for the agent, datastore.user is project-wide: their code writes only patternProposals or
+# synthRiskExplanations (tests list the collections); the cloud does not enforce it (AGENTS_PLAN.md).
+grant_project "$MINER_SA" roles/datastore.user roles/aiplatform.user roles/logging.logWriter
+grant_project "$EXPLAINER_SA" roles/datastore.user roles/aiplatform.user roles/logging.logWriter
 grant_project "$ORCH_SA" roles/run.jobsExecutorWithOverrides ||
   { echo "  falling back to roles/run.developer for $ORCH_SA" && grant_project "$ORCH_SA" roles/run.developer; }
 
@@ -183,13 +196,16 @@ echo "› Deploy account (main branch only) may ship the jobs and the workflow"
 gcloud artifacts repositories add-iam-policy-binding "$AR_REPO" --location "$REGION" \
   --project "$PROJECT_ID" --member "serviceAccount:$DEPLOY_SA" --role roles/artifactregistry.writer >/dev/null
 grant_project "$DEPLOY_SA" roles/run.developer roles/workflows.editor
-for sa in "$RUNNER_SA" "$ORCH_SA" "$AGENT_SA" "$EXTRACTOR_SA" "$SCORER_SA"; do
+for sa in "$RUNNER_SA" "$ORCH_SA" "$AGENT_SA" "$EXTRACTOR_SA" "$SCORER_SA" "$MINER_SA" "$EXPLAINER_SA"; do
   gcloud iam service-accounts add-iam-policy-binding "$sa" --project "$PROJECT_ID" \
     --member "serviceAccount:$DEPLOY_SA" --role roles/iam.serviceAccountUser >/dev/null
 done
 
 echo "› Firestore TTL: expired leases are deleted automatically"
 gcloud firestore fields ttls update expiresAt --collection-group ingestLocks --enable-ttl \
+  --project "$PROJECT_ID" --async >/dev/null || echo "  (TTL already set or pending)"
+# Agent run envelopes carry expiresAt (about 400 days, AGENTS_PLAN.md).
+gcloud firestore fields ttls update expiresAt --collection-group agentRuns --enable-ttl \
   --project "$PROJECT_ID" --async >/dev/null || echo "  (TTL already set or pending)"
 
 echo "› Cloud Scheduler: daily at 03:05 IST"
