@@ -45,6 +45,7 @@ describe('paging helpers', () => {
     expect(shouldStopPaging(plan, ['a'])).toBe(true);
     expect(shouldStopPaging(plan, ['a', 'new'])).toBe(false);
     expect(shouldStopPaging({ ...plan, mode: 'full' }, ['a'])).toBe(false);
+    expect(shouldStopPaging(plan, [])).toBe(false); // an empty or error page never ends a run
   });
   it('rejects an empty first page for a collection that was listed before', () => {
     expect(() => {

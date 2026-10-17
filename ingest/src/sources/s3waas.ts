@@ -50,6 +50,9 @@ export async function listS3waasCategory(
   for (let page = 1; page <= MAX_PAGES; page++) {
     const url = page === 1 ? category.url : `${category.url}page/${page}/`;
     const res = await ctx.fetcher.fetch(url);
+    // A missing first page for a category we hold means it moved; past the end, 404 just ends it.
+    if (res.status === 404 && page === 1)
+      assertFirstPageHasRows(ctx.listing, category.collection, 0, url);
     if (res.status === 404) break;
     const rows = parseTable(res.body.toString('utf8'), res.finalUrl);
     if (page === 1) assertFirstPageHasRows(ctx.listing, category.collection, rows.length, url);

@@ -51,9 +51,16 @@ export function makePlan(mode: ListingMode, previous: readonly ListingItem[]): L
   };
 }
 
-/** Incremental listing stops paging once a whole page holds only items we already have. */
+/**
+ * Incremental listing stops paging once a whole page holds only items we already have. An empty page
+ * (an error page or a blip) never counts as "all known", so it cannot end the run early.
+ */
 export function shouldStopPaging(plan: ListingPlan, pageItemIds: readonly string[]): boolean {
-  return plan.mode === 'incremental' && pageItemIds.every((id) => plan.known.has(id));
+  return (
+    plan.mode === 'incremental' &&
+    pageItemIds.length > 0 &&
+    pageItemIds.every((id) => plan.known.has(id))
+  );
 }
 
 /** A first page with no rows for a collection we already hold means the page layout changed. */

@@ -36,6 +36,7 @@ Options:
 
 - `--list-only` / `--docs-only` — run only the listing or only the document step.
 - `--full` — force a full relist (ignores the incremental schedule).
+- `--allow-shrink` — accept a complete relist that lost more than half of the listed items (see below).
 - `--max N` — documents per source (default 1500, env `FUNDTRACE_MAX_DOCS_PER_SOURCE`; SEBI 10 via
   `SOURCE_DOC_CAPS` in `src/config.ts`).
 - `--max-items N` — listing rows per source (SEBI 10 via `SOURCE_ITEM_CAPS`).
@@ -60,24 +61,42 @@ changed document becomes a new manifest line (new version), never an overwrite.
   API call and SEBI is a capped sample, so both always list in full.
 - **Diff** is by `item_id` (a hash of the source URL or key). An item is `changed` when its content
   hash differs (title, dates, document URLs, fields; `listed_at` is ignored), `added` when new, and
-  `removed` when a full relist no longer shows it. Removed items are **flagged, never deleted**: they stay in
-  the listing and are reported once (`missing_ids` in the state file); if they reappear the flag clears.
-- **Merge**: the stored listing is upserted, so a partial (incremental) listing never drops older items.
-  Unchanged items keep their stored record, which keeps `build` output byte-identical when nothing changed.
-- **Downloads and extract** already skip known URLs and checksums, so only added/changed items cost requests.
-- **Nothing is overwritten on failure.** If an adapter throws, a full relist returns no items although items
-  were listed before, or a first page parses to zero rows for a collection we already hold (a layout change),
-  that source's listing, history and state stay as they were. Sources are independent: one failing is logged,
-  recorded as `failed` in the run summary, the others still run, and the process exits with code 1.
+  `removed` when a **complete** relist no longer shows it. Removed items are **flagged, never deleted**: they
+  stay in the listing and are reported once (`missing_ids` in the state file); if they reappear the flag clears.
+- **Complete vs partial**: only a full listing without a `maxItems` cap is complete. A capped run (the SEBI
+  sample, or `--max-items`) and an incremental run never report removals and do not reset the relist clock;
+  the report's `complete` field says which it was.
+- **Merge**: the stored listing is upserted, so a partial listing never drops older items. Unchanged items
+  keep their stored record, which keeps `build` output byte-identical when nothing changed.
+- **Downloads** skip known URLs, except for items the listing marked `changed`: their documents are
+  re-resolved (a corrected PDF often gets a new URL) and re-fetched, and a changed file becomes a new
+  manifest version (the old one stays). `extract` already skips known checksums.
+- **Nothing is overwritten on failure.** That source's listing, history and state stay as they were when:
+  - the adapter throws;
+  - the listing comes back empty although items were listed before (every mode returns at least its
+    first page);
+  - a first page parses to zero rows, or is gone (404), for a collection we already hold (a layout change);
+  - a complete relist lost more than half of the items still listed (from 20 items up; `src/delta/guards.ts`).
+    If the drop is real, re-run with `--allow-shrink`.
+
+  An empty page in the middle never ends an incremental run early. Sources are independent: one failing
+  (listing or downloads) is logged, recorded as `failed` with the step in the run summary, the others still
+  run, and the process exits with code 1. A download step where every selected item failed counts as failed.
+
+- **One run at a time**: `acquire` holds `data/interim/acquire.lock` for the whole run, because listings are
+  read, merged and written back. A second run exits with an error; a lock older than 12 hours (a crashed run)
+  is replaced with a warning.
 - **Reports**: each run writes `data/interim/delta/<source>/<UTC timestamp>.json` and a run summary
-  `data/interim/delta/runs/<UTC timestamp>.json` (mode, counts, error per source). Timestamps are UTC;
-  which timezone defines "a day" for the scheduler is still open (B-27).
-- **History** (`interim/listings/history/<source>/<date>.jsonl`) now holds the items fetched in that run, which
+  `data/interim/delta/runs/<UTC timestamp>.json` (mode, counts, failed step and error per source). All sources
+  in one run share the timestamp. Timestamps are UTC; which timezone defines "a day" for the scheduler is
+  still open (B-27).
+- **History** (`interim/listings/history/<source>/<date>.jsonl`) holds the items fetched in that run, which
   is a partial snapshot for incremental runs.
 
 ```bash
 node ingest/dist/cli.js acquire ibbi nfra        # incremental when the relist is not yet due
 node ingest/dist/cli.js acquire all --full       # force a full relist of every source
+node ingest/dist/cli.js acquire nfra --full --allow-shrink   # after checking that a big drop is real
 ```
 
 ## Sources (see `data/registry/sources.json` for the full audit)

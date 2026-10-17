@@ -63,6 +63,14 @@ describe('IBBI listing', () => {
     expect(requested.some((u) => u.endsWith('page=3'))).toBe(false);
   });
 
+  it('does not end an incremental run on an empty page in the middle', async () => {
+    const full = await ibbiAdapter.list(fakeContext(ibbiPages, FULL_PLAN).ctx);
+    const pages = { ...ibbiPages, [`${IBBI}?page=2`]: '<html>temporarily unavailable</html>' };
+    const { ctx, requested } = fakeContext(pages, makePlan('incremental', full.slice(1)));
+    await ibbiAdapter.list(ctx);
+    expect(requested.some((u) => u.endsWith('page=3'))).toBe(true);
+  });
+
   it('fails instead of returning nothing when a known page suddenly has no rows', async () => {
     const full = await ibbiAdapter.list(fakeContext(ibbiPages, FULL_PLAN).ctx);
     const { ctx } = fakeContext(
@@ -93,6 +101,12 @@ describe('S3waaS listing (NFRA)', () => {
     const items = await nfraAdapter.list(ctx);
     expect(items.map((i) => i.title)).toEqual(['o1', 'o2', 'o3', 'o4']);
     expect(requested).not.toContain(`${orders}page/3/`);
+  });
+
+  it('fails when the first page of a category we hold is gone (404)', async () => {
+    const full = await nfraAdapter.list(fakeContext(pages, FULL_PLAN).ctx);
+    const { ctx } = fakeContext({}, makePlan('incremental', full));
+    await expect(nfraAdapter.list(ctx)).rejects.toThrow(/No rows parsed from .*orders/);
   });
 });
 

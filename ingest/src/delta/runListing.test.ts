@@ -78,10 +78,12 @@ describe('runListing', () => {
     expect(first).toMatchObject({ mode: 'full', total_after: 3 });
     expect(first.removed).toEqual(['b']);
     expect((await readState('ibbi'))?.missing_ids).toEqual(['b']);
-    const second = await runListing(adapter, ctxAt('2026-10-17T04:00:00.000Z'), true);
+    const second = await runListing(adapter, ctxAt('2026-10-17T04:00:00.000Z'), {
+      forceFull: true,
+    });
     expect(second.removed).toEqual([]);
     rows = [item('a', 'Edited'), item('b'), item('c')];
-    await runListing(adapter, ctxAt('2026-10-17T05:00:00.000Z'), true);
+    await runListing(adapter, ctxAt('2026-10-17T05:00:00.000Z'), { forceFull: true });
     expect((await readState('ibbi'))?.missing_ids).toEqual([]);
   });
 
@@ -89,9 +91,9 @@ describe('runListing', () => {
     const before = listingText();
     const state = await readState('ibbi');
     rows = [];
-    await expect(runListing(adapter, ctxAt('2026-10-18T03:00:00.000Z'), true)).rejects.toThrow(
-      /no items/,
-    );
+    await expect(
+      runListing(adapter, ctxAt('2026-10-18T03:00:00.000Z'), { forceFull: true }),
+    ).rejects.toThrow(/no items/);
     const failing: SourceAdapter = { ...adapter, list: () => Promise.reject(new Error('layout')) };
     await expect(runListing(failing, ctxAt('2026-10-18T03:00:00.000Z'))).rejects.toThrow('layout');
     expect(listingText()).toBe(before);
@@ -102,5 +104,32 @@ describe('runListing', () => {
     const files = readdirSync(dataPath('interim', 'delta', 'ibbi'));
     expect(files.length).toBeGreaterThanOrEqual(5);
     expect(files.every((f) => f.endsWith('.json') && !f.includes(':'))).toBe(true);
+  });
+});
+
+describe('runListing guards for capped and shrinking listings', () => {
+  const ctxCapped = (runAt: string): SourceContext => ({ ...ctxAt(runAt), maxItems: 2 });
+  const sebi: SourceAdapter = { ...adapter, id: 'sebi' };
+  const nfra: SourceAdapter = { ...adapter, id: 'nfra' };
+  const many = (n: number): ListingItem[] => Array.from({ length: n }, (_, i) => item(`n${i}`));
+
+  it('a capped sample never reports removals or counts as a full relist', async () => {
+    rows = [item('s1'), item('s2')];
+    await runListing(sebi, ctxCapped('2026-10-10T03:00:00.000Z'));
+    rows = [item('s3'), item('s1')];
+    const report = await runListing(sebi, ctxCapped('2026-10-11T03:00:00.000Z'));
+    expect(report).toMatchObject({ mode: 'full', complete: false, total_after: 3, removed: [] });
+    expect((await readState('sebi'))?.last_full_listing_at).toBeNull();
+  });
+
+  it('refuses a complete relist that lost most items unless --allow-shrink confirms it', async () => {
+    rows = many(30);
+    await runListing(nfra, ctxAt('2026-10-10T03:00:00.000Z'));
+    rows = many(10);
+    const at = ctxAt('2026-10-17T03:00:00.000Z');
+    await expect(runListing(nfra, at)).rejects.toThrow(/shrank from 30 to 10/);
+    const report = await runListing(nfra, at, { allowShrink: true });
+    expect(report.removed).toHaveLength(20);
+    expect(report.total_after).toBe(30);
   });
 });

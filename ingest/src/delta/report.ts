@@ -9,6 +9,8 @@ export const DeltaReportSchema = z.object({
   source_id: SourceIdSchema,
   run_at: z.string().datetime(),
   mode: z.enum(['full', 'incremental']),
+  /** False for a capped (`maxItems`) or incremental run: `removed` is not evaluated. */
+  complete: z.boolean(),
   fetched: z.number().int().nonnegative(),
   total_after: z.number().int().nonnegative(),
   unchanged: z.number().int().nonnegative(),
@@ -18,20 +20,25 @@ export const DeltaReportSchema = z.object({
 });
 export type DeltaReport = z.infer<typeof DeltaReportSchema>;
 
-export function makeReport(
-  source: SourceId,
-  runAt: string,
-  mode: ListingMode,
-  fetched: number,
-  totalAfter: number,
-  delta: ListingDelta,
-): DeltaReport {
+export interface ReportInput {
+  readonly source: SourceId;
+  readonly runAt: string;
+  readonly mode: ListingMode;
+  readonly complete: boolean;
+  readonly fetched: number;
+  readonly totalAfter: number;
+  readonly delta: ListingDelta;
+}
+
+export function makeReport(input: ReportInput): DeltaReport {
+  const { delta } = input;
   return {
-    source_id: source,
-    run_at: runAt,
-    mode,
-    fetched,
-    total_after: totalAfter,
+    source_id: input.source,
+    run_at: input.runAt,
+    mode: input.mode,
+    complete: input.complete,
+    fetched: input.fetched,
+    total_after: input.totalAfter,
     unchanged: delta.unchanged,
     added: [...delta.added],
     changed: [...delta.changed],

@@ -58,7 +58,9 @@ owner decided. Only the borrowers are real; the loan values are made up.
   - a scheduled daily check on a backend with a live feed
 - **Daily delta ingestion (GCP plan, MVP 1+2 done locally):** `acquire` now diffs and merges listings
   (`ingest/src/delta/`), pages incrementally for IBBI/NFRA/SFIO/RBI with a weekly/monthly full relist,
-  and writes change reports to `data/interim/delta/`. See `ingest/README.md` → "Daily delta". Next MVPs
+  and writes change reports to `data/interim/delta/`; guards stop empty, broken or shrunken listings from
+  overwriting data, changed items re-fetch their documents, and a lock allows one `acquire` at a time.
+  See `ingest/README.md` → "Daily delta". Next MVPs
   (storage abstraction, publish step, Cloud Run job) need the GCP project; B-27 (timezone of "a day") is open.
 - **Merge with `main`:** `main` has a separate Playwright setup under `web/e2e/`
   (`Sanchit-Datir/fund-tracer#3`). Expect conflicts in `package.json`, the lockfile,
