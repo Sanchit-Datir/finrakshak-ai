@@ -1,6 +1,11 @@
 import { ListingItemSchema, type ListingItem, type SourceId } from '@fund-tracker/shared';
 import { z } from 'zod';
 import { dataPath, getConfig } from './config.js';
+import { diffListings, mergeListing, type ListingDelta } from './delta/diff.js';
+import { assertPlausibleListing } from './delta/guards.js';
+import { chooseMode, FULL_PLAN, makePlan } from './delta/policy.js';
+import { makeReport, writeReport, type DeltaReport } from './delta/report.js';
+import { readState, writeState } from './delta/state.js';
 import { PoliteFetcher } from './http/fetcher.js';
 import { errorMessage, log } from './log.js';
 import { selectForDownload } from './select/relevance.js';
@@ -20,26 +25,109 @@ export const listingFile = (s: SourceId): string => dataPath('interim', 'listing
 export const itemDocsFile = (s: SourceId): string =>
   dataPath('interim', 'item_documents', `${s}.jsonl`);
 
-export async function makeContext(sourceId: SourceId, maxItems?: number): Promise<SourceContext> {
+export async function makeContext(
+  sourceId: SourceId,
+  maxItems?: number,
+  runAt = new Date().toISOString(),
+): Promise<SourceContext> {
   const base = {
     fetcher: new PoliteFetcher(getConfig()),
     store: await RawStore.open(sourceId),
-    runAt: new Date().toISOString(),
+    runAt,
+    listing: FULL_PLAN,
   };
   return maxItems === undefined ? base : { ...base, maxItems };
 }
 
-/** Step 1: list everything the source publishes (metadata only). */
+export interface ListingOptions {
+  /** Ignore the incremental schedule and list everything (`--full`). */
+  readonly forceFull?: boolean;
+  /** Accept a complete relist that lost most items (`--allow-shrink`). */
+  readonly allowShrink?: boolean;
+}
+
+/**
+ * Step 1: list what the source publishes (metadata only), diff it against what we hold and merge it
+ * into the stored listing. Nothing is written if the adapter throws or the listing looks broken.
+ */
 export async function runListing(
   adapter: SourceAdapter,
   ctx: SourceContext,
-): Promise<ListingItem[]> {
-  const items = validListing(adapter.id, await adapter.list(ctx));
-  await writeJsonl(listingFile(adapter.id), items);
-  const day = ctx.runAt.slice(0, 10);
-  await writeJsonl(dataPath('interim', 'listings', 'history', adapter.id, `${day}.jsonl`), items);
-  log.info('listing saved', { source: adapter.id, items: items.length });
-  return items;
+  options: ListingOptions = {},
+): Promise<DeltaReport> {
+  const previous = await readJsonl(listingFile(adapter.id), ListingItemSchema);
+  const state = await readState(adapter.id);
+  const mode = chooseMode(adapter.id, state, ctx.runAt, options.forceFull ?? false);
+  // A capped run (`maxItems`, e.g. the SEBI sample) cannot tell what disappeared from the source.
+  const complete = mode === 'full' && ctx.maxItems === undefined;
+  const items = validListing(
+    adapter.id,
+    await adapter.list({ ...ctx, listing: makePlan(mode, previous) }),
+  );
+  const alreadyMissing = new Set(state?.missing_ids ?? []);
+  assertPlausibleListing({
+    source: adapter.id,
+    fetched: new Set(items.map((i) => i.item_id)).size,
+    activeBefore: previous.filter((i) => !alreadyMissing.has(i.item_id)).length,
+    complete,
+    allowShrink: options.allowShrink ?? false,
+  });
+  const delta = diffListings(previous, items, { evaluateRemoved: complete, alreadyMissing });
+  const merged = mergeListing(previous, items);
+  const report = makeReport({
+    source: adapter.id,
+    runAt: ctx.runAt,
+    mode,
+    complete,
+    fetched: items.length,
+    totalAfter: merged.length,
+    delta,
+  });
+  await saveListing(adapter.id, ctx.runAt, merged, items, report);
+  await writeState({
+    source_id: adapter.id,
+    last_success_at: ctx.runAt,
+    last_full_listing_at: complete ? ctx.runAt : (state?.last_full_listing_at ?? null),
+    item_count: merged.length,
+    missing_ids: nextMissing(merged, items, delta, alreadyMissing),
+  });
+  log.info('listing saved', {
+    source: adapter.id,
+    mode,
+    fetched: items.length,
+    total: merged.length,
+  });
+  return report;
+}
+
+/** Writes the merged listing, this run's snapshot and its delta report (state is written last). */
+async function saveListing(
+  source: SourceId,
+  runAt: string,
+  merged: readonly ListingItem[],
+  fetched: readonly ListingItem[],
+  report: DeltaReport,
+): Promise<void> {
+  await writeJsonl(listingFile(source), merged);
+  await writeJsonl(
+    dataPath('interim', 'listings', 'history', source, `${runAt.slice(0, 10)}.jsonl`),
+    fetched,
+  );
+  await writeReport(report);
+}
+
+/** Items flagged as missing: kept while still absent from a full relist, cleared when they return. */
+function nextMissing(
+  merged: readonly ListingItem[],
+  fetched: readonly ListingItem[],
+  delta: ListingDelta,
+  alreadyMissing: ReadonlySet<string>,
+): string[] {
+  const returned = new Set(fetched.map((i) => i.item_id));
+  const exists = new Set(merged.map((i) => i.item_id));
+  const missing = new Set([...alreadyMissing, ...delta.removed]);
+  for (const id of missing) if (returned.has(id) || !exists.has(id)) missing.delete(id);
+  return [...missing].sort();
 }
 
 const MAX_TITLE = 2_000;
@@ -60,11 +148,16 @@ function validListing(source: SourceId, raw: readonly ListingItem[]): ListingIte
   return items;
 }
 
-/** Step 2: download documents for selected items. Already-stored URLs are skipped. */
+/**
+ * Step 2: download documents for selected items. Already-stored URLs are skipped, except for items in
+ * `refresh` (changed in this run's listing): their documents are re-resolved and re-fetched, and a
+ * changed file becomes a new manifest version.
+ */
 export async function runDownloads(
   adapter: SourceAdapter,
   ctx: SourceContext,
   max: number,
+  refresh: ReadonlySet<string> = new Set(),
 ): Promise<void> {
   const items = await readJsonl(listingFile(adapter.id), ListingItemSchema);
   const resolved = new Map(
@@ -75,10 +168,11 @@ export async function runDownloads(
   let ok = 0;
   let failed = 0;
   for (const [index, item] of selected.entries()) {
+    const force = refresh.has(item.item_id);
     try {
-      const urls =
-        resolved.get(item.item_id)?.document_urls ?? (await resolveAndRecord(adapter, item, ctx));
-      for (const url of urls) if (await downloadOne(adapter, url, ctx)) ok++;
+      const cached = force ? undefined : resolved.get(item.item_id)?.document_urls;
+      const urls = cached ?? (await resolveAndRecord(adapter, item, ctx));
+      for (const url of urls) if (await downloadOne(adapter, url, ctx, force)) ok++;
     } catch (e) {
       failed++;
       log.warn('item failed', { source: adapter.id, item: item.item_id, error: errorMessage(e) });
@@ -86,6 +180,8 @@ export async function runDownloads(
     if (index % 50 === 0) log.info('progress', { source: adapter.id, index, ok, failed });
   }
   log.info('downloads done', { source: adapter.id, ok, failed });
+  if (failed > 0 && ok === 0 && failed === selected.length)
+    throw new Error(`${adapter.id}: all ${failed} selected items failed to download`);
 }
 
 async function resolveAndRecord(
@@ -108,8 +204,9 @@ async function downloadOne(
   adapter: SourceAdapter,
   url: string,
   ctx: SourceContext,
+  force: boolean,
 ): Promise<boolean> {
-  if (ctx.store.get(url)) return false;
+  if (!force && ctx.store.get(url)) return false;
   const res = await ctx.fetcher.fetch(url);
   if (res.status !== 200) {
     log.warn('document not downloaded', { url, status: res.status });
