@@ -1,0 +1,197 @@
+{
+  "_note": "FIXTURE for the pattern contract tests. The numbers in support are illustrative, not real findings.",
+  "schema_version": 1,
+  "library_version": 7,
+  "content_hash": "def7919f363be793296073677a8b95698fd54832996f440e220bc13fb26549c2",
+  "patterns": [
+    {
+      "schema_version": 1,
+      "pattern_id": "pat_3f0e9805d351f4be",
+      "version": 1,
+      "status": "approved",
+      "definition": {
+        "template": "sequence",
+        "steps": [
+          {
+            "by": "case_type",
+            "value": "ed_search_seizure"
+          },
+          {
+            "by": "kind",
+            "value": "insolvency"
+          }
+        ],
+        "max_gap_months": 12,
+        "min_lead_months": 1
+      },
+      "created_at": "2026-10-17T00:00:00.000Z",
+      "approved_by": "owner",
+      "approved_at": "2026-10-17T00:00:00.000Z",
+      "retired_at": null,
+      "supersedes": null,
+      "name": "ED search, then insolvency within a year",
+      "description": "An ED search and seizure record is followed by an insolvency (CIRP) record for the same entity within twelve months.",
+      "benign_explanations": [
+        "A search record is an allegation and does not mean wrongdoing; many searched entities keep trading."
+      ],
+      "origin": "miner",
+      "support": {
+        "basis": "mined",
+        "supporting_case_ids": ["dhfl", "ilfs", "reliance_adag_finance"],
+        "supporting_case_count": 3,
+        "population": {
+          "n": 420,
+          "follow_on": 36,
+          "lift": 2.4
+        },
+        "median_gap_months": 8.5
+      },
+      "evidence_statuses": ["allegation", "fact"]
+    },
+    {
+      "schema_version": 1,
+      "pattern_id": "pat_4bfebf5efd553056",
+      "version": 1,
+      "status": "approved",
+      "definition": {
+        "template": "transaction_typology",
+        "rule_id": "circular"
+      },
+      "created_at": "2026-10-17T00:00:00.000Z",
+      "approved_by": "owner",
+      "approved_at": "2026-10-17T00:00:00.000Z",
+      "retired_at": null,
+      "supersedes": null,
+      "name": "Funds returning to the borrower account",
+      "description": "The monitoring rule for circular movement fired: money left the borrower account and a large share came back within the window.",
+      "benign_explanations": ["A supplier refund or a cancelled order can return funds."],
+      "origin": "hand_written",
+      "support": {
+        "basis": "hand_written_hypothesis",
+        "supporting_case_ids": [],
+        "supporting_case_count": 0,
+        "population": null,
+        "median_gap_months": null
+      },
+      "evidence_statuses": []
+    },
+    {
+      "schema_version": 1,
+      "pattern_id": "pat_515677af7a082e40",
+      "version": 1,
+      "status": "approved",
+      "definition": {
+        "template": "co_occurrence",
+        "matchers": [
+          {
+            "by": "source",
+            "value": "nfra"
+          },
+          {
+            "by": "kind",
+            "value": "enforcement"
+          }
+        ],
+        "min_sources": 2,
+        "window_months": 24
+      },
+      "created_at": "2026-10-17T00:00:00.000Z",
+      "approved_by": "owner",
+      "approved_at": "2026-10-17T00:00:00.000Z",
+      "retired_at": null,
+      "supersedes": null,
+      "name": "Audit finding and enforcement record together",
+      "description": "An NFRA record and an enforcement record for the same entity appear within twenty-four months of each other.",
+      "benign_explanations": [
+        "Large groups are named in many unrelated regulatory documents.",
+        "The same name can refer to different companies until checked by CIN."
+      ],
+      "origin": "miner",
+      "support": {
+        "basis": "mined",
+        "supporting_case_ids": ["dhfl", "ilfs"],
+        "supporting_case_count": 2,
+        "population": {
+          "n": 300,
+          "follow_on": 18,
+          "lift": 1.8
+        },
+        "median_gap_months": null
+      },
+      "evidence_statuses": ["finding", "allegation"]
+    },
+    {
+      "schema_version": 1,
+      "pattern_id": "pat_b3c0b217e63a3573",
+      "version": 1,
+      "status": "approved",
+      "definition": {
+        "template": "graph_proximity",
+        "kind": "liquidation",
+        "max_hops": 2,
+        "exclude_hubs": true
+      },
+      "created_at": "2026-10-17T00:00:00.000Z",
+      "approved_by": "owner",
+      "approved_at": "2026-10-17T00:00:00.000Z",
+      "retired_at": null,
+      "supersedes": null,
+      "name": "Close link to a company in liquidation",
+      "description": "A company within two documented links of the borrower has a liquidation record; shared service addresses and large creditors are ignored.",
+      "benign_explanations": [
+        "A documented link such as a shared director does not mean the companies act together."
+      ],
+      "origin": "hand_written",
+      "support": {
+        "basis": "hand_written_hypothesis",
+        "supporting_case_ids": [],
+        "supporting_case_count": 0,
+        "population": null,
+        "median_gap_months": null
+      },
+      "evidence_statuses": ["fact"]
+    },
+    {
+      "schema_version": 1,
+      "pattern_id": "pat_c435c04c3a9a4c7b",
+      "version": 1,
+      "status": "retired",
+      "definition": {
+        "template": "sequence",
+        "steps": [
+          {
+            "by": "case_type",
+            "value": "ed_arrest"
+          },
+          {
+            "by": "kind",
+            "value": "liquidation"
+          }
+        ],
+        "max_gap_months": 6,
+        "min_lead_months": 0
+      },
+      "created_at": "2026-10-17T00:00:00.000Z",
+      "approved_by": "owner",
+      "approved_at": "2026-10-17T00:00:00.000Z",
+      "retired_at": "2026-10-17T12:00:00.000Z",
+      "supersedes": null,
+      "name": "ED arrest, then liquidation within six months",
+      "description": "An older version of a pattern: an ED arrest record followed by a liquidation record within six months.",
+      "benign_explanations": ["An arrest record concerns a person, not the whole company."],
+      "origin": "miner",
+      "support": {
+        "basis": "mined",
+        "supporting_case_ids": ["gitanjali", "kingfisher"],
+        "supporting_case_count": 2,
+        "population": {
+          "n": 150,
+          "follow_on": 6,
+          "lift": 1.6
+        },
+        "median_gap_months": 4
+      },
+      "evidence_statuses": ["allegation"]
+    }
+  ]
+}

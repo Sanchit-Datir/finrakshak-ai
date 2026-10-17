@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "timelines": {
+    "ed_then_cirp": {
+      "subject_id": "ent_synth_a",
+      "as_of": "2024-01-01",
+      "events": [
+        {
+          "event_id": "evt_synth_ed1",
+          "date": "2023-01-10",
+          "case_type": "ed_search_seizure",
+          "kind": "enforcement",
+          "source_id": "ed",
+          "evidence_status": "allegation"
+        },
+        {
+          "event_id": "evt_synth_cirp1",
+          "date": "2023-09-15",
+          "case_type": "ibbi_cirp",
+          "kind": "insolvency",
+          "source_id": "ibbi",
+          "evidence_status": "fact"
+        }
+      ]
+    },
+    "gap_exactly_12_months": {
+      "subject_id": "ent_synth_b",
+      "as_of": "2024-06-01",
+      "events": [
+        {
+          "event_id": "evt_synth_ed1",
+          "date": "2023-01-10",
+          "case_type": "ed_search_seizure",
+          "kind": "enforcement",
+          "source_id": "ed",
+          "evidence_status": "allegation"
+        },
+        {
+          "event_id": "evt_synth_cirp1",
+          "date": "2024-01-10",
+          "case_type": "ibbi_cirp",
+          "kind": "insolvency",
+          "source_id": "ibbi",
+          "evidence_status": "fact"
+        }
+      ]
+    },
+    "gap_13_months": {
+      "subject_id": "ent_synth_c",
+      "as_of": "2024-06-01",
+      "events": [
+        {
+          "event_id": "evt_synth_ed1",
+          "date": "2023-01-10",
+          "case_type": "ed_search_seizure",
+          "kind": "enforcement",
+          "source_id": "ed",
+          "evidence_status": "allegation"
+        },
+        {
+          "event_id": "evt_synth_cirp1",
+          "date": "2024-02-10",
+          "case_type": "ibbi_cirp",
+          "kind": "insolvency",
+          "source_id": "ibbi",
+          "evidence_status": "fact"
+        }
+      ]
+    },
+    "lead_too_short": {
+      "subject_id": "ent_synth_d",
+      "as_of": "2024-01-01",
+      "events": [
+        {
+          "event_id": "evt_synth_ed1",
+          "date": "2023-01-10",
+          "case_type": "ed_search_seizure",
+          "kind": "enforcement",
+          "source_id": "ed",
+          "evidence_status": "allegation"
+        },
+        {
+          "event_id": "evt_synth_cirp1",
+          "date": "2023-01-20",
+          "case_type": "ibbi_cirp",
+          "kind": "insolvency",
+          "source_id": "ibbi",
+          "evidence_status": "fact"
+        }
+      ]
+    },
+    "only_cirp": {
+      "subject_id": "ent_synth_e",
+      "as_of": "2024-01-01",
+      "events": [
+        {
+          "event_id": "evt_synth_cirp1",
+          "date": "2023-09-15",
+          "case_type": "ibbi_cirp",
+          "kind": "insolvency",
+          "source_id": "ibbi",
+          "evidence_status": "fact"
+        }
+      ]
+    },
+    "wrong_order": {
+      "subject_id": "ent_synth_f",
+      "as_of": "2024-01-01",
+      "events": [
+        {
+          "event_id": "evt_synth_cirp1",
+          "date": "2022-05-01",
+          "case_type": "ibbi_cirp",
+          "kind": "insolvency",
+          "source_id": "ibbi",
+          "evidence_status": "fact"
+        },
+        {
+          "event_id": "evt_synth_ed1",
+          "date": "2023-01-10",
+          "case_type": "ed_search_seizure",
+          "kind": "enforcement",
+          "source_id": "ed",
+          "evidence_status": "allegation"
+        }
+      ]
+    },
+    "nfra_and_ed": {
+      "subject_id": "ent_synth_g",
+      "as_of": "2024-01-01",
+      "events": [
+        {
+          "event_id": "evt_synth_nfra1",
+          "date": "2023-03-01",
+          "case_type": "nfra_disciplinary_order",
+          "kind": null,
+          "source_id": "nfra",
+          "evidence_status": "finding"
+        },
+        {
+          "event_id": "evt_synth_ed2",
+          "date": "2023-10-01",
+          "case_type": "ed_arrest",
+          "kind": "enforcement",
+          "source_id": "ed",
+          "evidence_status": "allegation"
+        }
+      ]
+    },
+    "two_ed_only": {
+      "subject_id": "ent_synth_h",
+      "as_of": "2024-01-01",
+      "events": [
+        {
+          "event_id": "evt_synth_ed3",
+          "date": "2023-03-01",
+          "case_type": "ed_arrest",
+          "kind": "enforcement",
+          "source_id": "ed",
+          "evidence_status": "allegation"
+        },
+        {
+          "event_id": "evt_synth_ed4",
+          "date": "2023-10-01",
+          "case_type": "ed_conviction",
+          "kind": "enforcement",
+          "source_id": "ed",
+          "evidence_status": "allegation"
+        }
+      ]
+    },
+    "empty": {
+      "subject_id": "ent_synth_i",
+      "as_of": "2024-01-01",
+      "events": []
+    }
+  }
+}

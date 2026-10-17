@@ -1,0 +1,35 @@
+{
+  "seed": 20261017,
+  "generator_version": "1",
+  "as_of_start": "2024-01-01",
+  "months": 24,
+  "counts": {
+    "entities": 2532,
+    "relationships": 27,
+    "loans": 200,
+    "transactions": 18071,
+    "flags": 33,
+    "truth": 200,
+    "archetype_control": 45,
+    "archetype_slow_burn": 20,
+    "archetype_sudden_enforcement": 15,
+    "archetype_round_trip": 15,
+    "archetype_fund_diversion": 15,
+    "archetype_contagion": 15,
+    "archetype_shared_address": 15,
+    "archetype_cash_split": 10,
+    "archetype_dormant_burst": 10,
+    "archetype_seasonal": 15,
+    "archetype_big_prepayment": 15,
+    "archetype_near_threshold": 10
+  },
+  "sha256": {
+    "entities.jsonl": "5d79624320d157b42b4b93743fb0c8b25134d156c8dee97ab816f1c9766e048e",
+    "relationships.jsonl": "b92c68c25fed021864128102e1db7e5e6a515845b08ed0aad734d672e174404d",
+    "loans.jsonl": "8c54b5be028dd008b346a062abd6f6898715eabfdc65fca60bf0eafe70bb1d95",
+    "transactions.jsonl": "97de4e51a370cea94436388529a9845fffdd02f802900e009a46b49a6bdb9b2c",
+    "flags.jsonl": "deb3c23c424a2742dfca52984229242bd1387f9a22bb23740ff462e7b864bff9",
+    "truth.jsonl": "9b413adc44cde8fea20840119f9524200b8bbbb338a9168d0d17297398b09f6a"
+  },
+  "synthetic": true
+}

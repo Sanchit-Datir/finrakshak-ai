@@ -42,3 +42,8 @@ playwright/.cache/
 
 # Saved diagnostics (scripts/collect-logs.sh): local only
 logs/
+
+# Synthetic test data (docs/plans/SYNTHETIC_TRANSACTIONS_PLAN.md): rebuilt from the seed with `npm run synth`.
+# Only data/synthetic/README.md and manifest.json are tracked.
+data/synthetic/*.jsonl
+data/synthetic/score_report.json

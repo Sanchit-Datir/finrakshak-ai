@@ -7,3 +7,5 @@ export * from './ingest/index.js';
 export * from './ai.js';
 export * from './profile.js';
 export * from './time.js';
+export * from './risk/index.js';
+export * from './synth/index.js';
