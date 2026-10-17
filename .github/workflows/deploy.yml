@@ -127,4 +127,7 @@ jobs:
           AI_EXTRACT_ENABLED: ${{ vars.INGEST_AI_EXTRACT_ENABLED || 'false' }}
           # Synthetic risk scoring stays off until the owner's dry run (REMAINING_WORK.md, W2g).
           SCORE_ENABLED: ${{ vars.INGEST_SCORE_ENABLED || 'false' }}
+          # Pattern miner and risk explainer stay off until the budget alert and a dry run (B-15).
+          MINER_ENABLED: ${{ vars.INGEST_MINER_ENABLED || 'false' }}
+          EXPLAIN_ENABLED: ${{ vars.INGEST_EXPLAIN_ENABLED || 'false' }}
         run: scripts/deploy-ingest.sh "$FIREBASE_PROJECT_ID" "$IMAGE" "$REGION"

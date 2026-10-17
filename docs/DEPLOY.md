@@ -297,3 +297,36 @@ retried once by the workflow, and is a no-op until `INGEST_SCORE_ENABLED=true`.
 
 Until a public build is published, every score is marked `stale_inputs` (B-50, B-56); the scorer reads the
 `dry-run` channel's build date while `INGEST_PUBLISH_ENABLED=false` (Q2).
+
+### Pattern miner and risk explainer (off by default)
+
+Both follow `docs/plans/AGENTS_PLAN.md`: code computes the facts, the model only words them, a person decides.
+Each execution writes one `agentRuns/<agent>_<runId>` record (counts, versions and tokens, never a prompt or a
+response; removed after about 400 days by a TTL policy). Create the budget alert (B-15) before switching either
+on with a billed model.
+
+1. **Setup** (once, Owner): re-run `scripts/setup-ingest-gcp.sh <project>`. It creates `ingest-miner` (reads
+   the state and publish buckets, Firestore, Vertex AI) and `ingest-explainer` (Firestore and Vertex AI only)
+   and the TTL on `agentRuns`. The next deploy creates the jobs `ingest-miner` and `ingest-explain`.
+2. **Pattern miner** (`ingest-miner`, on demand only, never in the daily workflow): try it locally first with
+   `npm run miner -- propose` (mock model; prints what would be proposed and writes nothing). In the cloud:
+   ```bash
+   gcloud run jobs execute ingest-miner --region asia-south1 --project <project> --wait \
+     --update-env-vars FUNDTRACE_MINER_ENABLED=true
+   ```
+   It refuses to run before a build is published (B-50), proposes at most 5 patterns to `patternProposals`,
+   and does nothing new on the same input. Decide with the `decidePattern` callable (custom claim
+   `admin: true`): `{ decision: 'approve' | 'reject', proposalId }` or `{ decision: 'retire', patternId }`.
+   Approving writes `riskPatternLibrary/current` and `riskPatternLibrary/v<n>` (B-61). Proposals expire after
+   30 days. The scorer still uses the hand-written patterns until step 15 (it does not read the library yet).
+3. **Risk explainer** (`ingest-explain`, after `score` in the daily workflow, a no-op while
+   `INGEST_EXPLAIN_ENABLED=false`): dry run (E3) on one day's synthetic alerts:
+   ```bash
+   gcloud run jobs execute ingest-explain --region asia-south1 --project <project> --wait \
+     --update-env-vars FUNDTRACE_EXPLAIN_ENABLED=true,FUNDTRACE_RUN_ID=<a run id with alerts>
+   ```
+   Read the sentences in `synthRiskExplanations` against their alerts' reasons. Stop rule: if more than about 1
+   in 10 reads stronger than the reasons, keep the templates. To switch on, set `INGEST_EXPLAIN_ENABLED=true`.
+   The app shows each sentence labelled "AI-written summary of the recorded reasons", with the reasons under it.
+4. **Kill switches**: the repository variables `INGEST_MINER_ENABLED` and `INGEST_EXPLAIN_ENABLED` (both `false`
+   by default); the mock provider and a switched-off job never store a proposal or an explanation.

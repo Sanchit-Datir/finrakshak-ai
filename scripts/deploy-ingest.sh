@@ -16,6 +16,8 @@ ORCH_SA="ingest-orchestrator@${PROJECT_ID}.iam.gserviceaccount.com"
 AGENT_SA="ingest-agent@${PROJECT_ID}.iam.gserviceaccount.com"
 EXTRACTOR_SA="ingest-extractor@${PROJECT_ID}.iam.gserviceaccount.com"
 SCORER_SA="ingest-scorer@${PROJECT_ID}.iam.gserviceaccount.com"
+MINER_SA="ingest-miner@${PROJECT_ID}.iam.gserviceaccount.com"
+EXPLAINER_SA="ingest-explainer@${PROJECT_ID}.iam.gserviceaccount.com"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Shared by every job; parsed and validated by ingest/src/config.ts and ingest/src/cloud/env.ts.
@@ -37,6 +39,11 @@ EXTRACT_ENV+=",FUNDTRACE_AI_EXTRACT_MAX_DOCS=${AI_EXTRACT_MAX_DOCS:-50}"
 # Synthetic risk scoring: plain code, no model (B-15); off until the owner's dry run (W2g).
 SCORE_ENV="$ENV_VARS,FUNDTRACE_SCORE_ENABLED=${SCORE_ENABLED:-false},FUNDTRACE_SYNTH_DATASET=fundtrace_synth"
 SCORE_ENV+=",FUNDTRACE_SCORE_SETTINGS=${SCORE_SETTINGS:-v2}"
+# Pattern miner (on demand) and risk explainer (after score): both off until the owner switches them
+# on after the budget alert (B-15) and a capped dry run (checkpoint 4, E3).
+MINER_ENV="$AGENT_ENV,FUNDTRACE_MINER_ENABLED=${MINER_ENABLED:-false}"
+EXPLAIN_ENV="$AGENT_ENV,FUNDTRACE_EXPLAIN_ENABLED=${EXPLAIN_ENABLED:-false}"
+EXPLAIN_ENV+=",FUNDTRACE_EXPLAIN_MAX_ALERTS=${EXPLAIN_MAX_ALERTS:-30}"
 
 deploy_job() { # <name> <task> <tasks> <timeout> <retries> <cpu> <memory> <service-account> <env>
   gcloud run jobs deploy "$1" --project "$PROJECT_ID" --region "$REGION" --image "$IMAGE" \
@@ -57,6 +64,17 @@ else
   echo "Skipping ingest-score: $SCORER_SA does not exist yet (re-run scripts/setup-ingest-gcp.sh)"
 fi
 deploy_job ingest-agent agent 1 15m 0 1 512Mi "$AGENT_SA" "$AGENT_ENV"
+# As for the scorer: skipped until scripts/setup-ingest-gcp.sh has created their accounts.
+if gcloud iam service-accounts describe "$MINER_SA" --project "$PROJECT_ID" >/dev/null 2>&1; then
+  deploy_job ingest-miner mine 1 30m 0 1 1Gi "$MINER_SA" "$MINER_ENV"
+else
+  echo "Skipping ingest-miner: $MINER_SA does not exist yet (re-run scripts/setup-ingest-gcp.sh)"
+fi
+if gcloud iam service-accounts describe "$EXPLAINER_SA" --project "$PROJECT_ID" >/dev/null 2>&1; then
+  deploy_job ingest-explain explain 1 15m 0 1 512Mi "$EXPLAINER_SA" "$EXPLAIN_ENV"
+else
+  echo "Skipping ingest-explain: $EXPLAINER_SA does not exist yet (re-run scripts/setup-ingest-gcp.sh)"
+fi
 
 gcloud workflows deploy ingest-daily --project "$PROJECT_ID" --location "$REGION" \
   --source "$HERE/infra/workflows/ingest-daily.yaml" --service-account "$ORCH_SA" --quiet

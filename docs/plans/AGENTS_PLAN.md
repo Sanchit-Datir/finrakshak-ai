@@ -1,8 +1,10 @@
 # Plan: How agents are implemented
 
-_Status: the six agent decisions were taken by the owner on 17 Oct 2026 (listed under "For discussion"). Nothing here is implemented. It describes the one pattern
-every agent in this project follows, using the ingestion agent that already exists and the two planned ones
-(`PATTERN_MINER_PLAN.md`, `RISK_EXPLAINER_PLAN.md`)._
+_Status: the six agent decisions were taken by the owner on 17 Oct 2026 (listed under "For discussion"). Built on
+17 Oct 2026 (branch `pattern-miner-risk-explainer-agent`): the shared `runToolLoop` (`ingest/src/ai/toolLoop.ts`),
+the number check (`ai/outputChecks.ts`), the `agentRuns` envelope (`ai/agentRuns.ts`), the pattern miner and the
+risk explainer, both off by default and on the mock until the owner's dry runs. It describes the one pattern
+every agent in this project follows (`PATTERN_MINER_PLAN.md`, `RISK_EXPLAINER_PLAN.md`)._
 
 ## The pattern in one sentence
 
@@ -32,8 +34,8 @@ and says so in the record.
 | --------------------- | ------------------ | ---------------- | ---------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------- |
 | Ingestion agent       | Built              | `ingest-agent`   | Daily, after the build                   | Run records, deltas, history, layout diagnostics  | `get_run_summary`, `get_delta`, `get_source_history`, `get_diagnostic_page`, `propose_action`, `submit_review` | `ingestReviews`, `agentProposals` | `decideProposal` callable                                                 |
 | AI evidence extractor | Built, shadow mode | `ingest-extract` | Daily, **off by default**                | Extracted text of new documents                   | Structured output, checked against the document text                                                           | Shadow claims, never the graph    | Quality gate before use (B-52)                                            |
-| Pattern miner         | Planned            | `ingest-miner`   | On demand only                           | Candidate patterns the code found in the 23 cases | `get_candidate`, `get_case_timeline`, `propose_pattern`, `reject_candidate`, `submit_summary`                  | `patternProposals`                | `decidePattern` callable                                                  |
-| Risk explainer        | Planned, optional  | `ingest-explain` | Daily, after scoring, **off by default** | Stored reason codes of alerted loans              | `submit_explanation`                                                                                           | An explanation field on the alert | None needed: it only words recorded reasons, and the reasons stay visible |
+| Pattern miner         | Built, off         | `ingest-miner`   | On demand only                           | Candidate patterns the code found in the 23 cases | `get_candidate`, `get_case_timeline`, `propose_pattern`, `reject_candidate`, `submit_summary`                  | `patternProposals`                | `decidePattern` callable                                                  |
+| Risk explainer        | Built, off         | `ingest-explain` | Daily, after scoring, **off by default** | Stored reason codes of alerted loans              | `submit_explanation`                                                                                           | An explanation field on the alert | None needed: it only words recorded reasons, and the reasons stay visible |
 
 The scoring job is **not** an agent. Matching, scoring, thresholds and the alert decision are deterministic
 code and SQL (`RISK_SCORING_PLAN.md`). No model decides a score or whether to alert.

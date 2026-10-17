@@ -57,6 +57,26 @@ everyone signed in with a usable profile sees every branch's synthetic scores (`
 branch scoping is kept in the service and will be decided later. Open for the owner: the W2g dry run
 (`docs/DEPLOY.md` → Synthetic risk scores). The branch was pushed at the user's request; no PR.
 
+## Agents session (17 Oct 2026, branch `pattern-miner-risk-explainer-agent`)
+
+At the owner's request, built the **pattern miner** and the **risk explainer** from main, following
+`docs/plans/AGENTS_PLAN.md`, `PATTERN_MINER_PLAN.md` and `RISK_EXPLAINER_PLAN.md` (steps 12, 14 and 17/E2).
+Pushed at the owner's request (checkpoint commits); no PR. What is left: `remaining-agent-changes.md`.
+
+- Shared: `runToolLoop` (`ingest/src/ai/toolLoop.ts`), the number check (`ai/outputChecks.ts`), the `agentRuns`
+  envelope (all three agents write one). The 14a edge-case tests found a bug: once the input budget was used,
+  the ingestion agent's `submit_review` was refused too, so it could never finish; fixed in the shared loop.
+- Miner: `ingest/src/miner/{agent,tools,wording,proposals,store,load}.ts`, task `mine` (job `ingest-miner`, on
+  demand, `FUNDTRACE_MINER_ENABLED=false`), `npm run miner -- propose` (prints only). On the real timelines:
+  0 candidates, nothing proposed (as at checkpoint 1). `decidePattern` callable writes the library (B-61).
+- Explainer: `ingest/src/explain/`, task `explain` (job `ingest-explain`, after `score`,
+  `FUNDTRACE_EXPLAIN_ENABLED=false`); sentences in `synthRiskExplanations` (not on the alert: B-57), shown
+  labelled in the risk score drawer (B-62).
+- B-59 to B-62 added. Everything runs on the mock; the mock and the kill switches store nothing.
+- Open for the owner: the budget alert (B-15), re-running `scripts/setup-ingest-gcp.sh` for the two new
+  accounts, checkpoint 4 (miner Vertex dry run) and E3 (explainer dry run); step 15 (approval view, scorer
+  reading the Firestore library, `proposals_waiting`) is not built.
+
 ## Open decisions and next ideas
 
 - **Risk scoring programme (planned 17 Oct 2026):** synthetic transaction data, a daily risk-scoring
