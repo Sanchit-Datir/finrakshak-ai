@@ -45,6 +45,12 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      # Ship the public-records bundle with Hosting (/graph-lab/, git-ignored, built from the committed
+      # data/processed). Fallback until the cloud /data/** feed is live; it is NOT behind sign-in (B-46).
+      - name: Publish public-records bundle for Hosting
+        run: |
+          npm run build -w @fund-tracker/shared && npm run build -w ingest
+          node ingest/dist/graphCli.js --web
       # Lint, types and tests already run in ci.yml for every PR; only build here.
       - run: npm run build -w @fund-tracker/shared && npm run build -w web
         env:
@@ -72,6 +78,12 @@ jobs:
       - run: npm ci
       # Re-check on main so a broken merge can never reach production.
       - run: npm run check
+      # Ship the public-records bundle with Hosting (/graph-lab/, git-ignored, built from the committed
+      # data/processed). Fallback until the cloud /data/** feed is live; it is NOT behind sign-in (B-46).
+      - name: Publish public-records bundle for Hosting
+        run: |
+          npm run build -w @fund-tracker/shared && npm run build -w ingest
+          node ingest/dist/graphCli.js --web
       - run: npm run build
         env:
           VITE_FIREBASE_PROJECT_ID: ${{ env.FIREBASE_PROJECT_ID }}
