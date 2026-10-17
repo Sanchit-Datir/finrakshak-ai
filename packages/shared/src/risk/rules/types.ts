@@ -54,3 +54,13 @@ export interface RuleConfig {
   readonly cashMinCount: number;
   readonly cashWindowDays: number;
 }
+
+/** The monitoring rules, in the order the detection runs them per loan. */
+export const MONITORING_RULE_IDS = [
+  'rapid_onward',
+  'linked_counterparty',
+  'circular',
+  'cash_split',
+  'repeated_counterparty',
+] as const;
+export type MonitoringRuleId = (typeof MONITORING_RULE_IDS)[number];

@@ -8,15 +8,16 @@ PR)._
 
 ## The plans
 
-| Plan                             | What it covers                                                                                               | Status                                                |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
-| `DELTA_INGESTION_PLAN.md`        | Daily detection of what changed at each public source                                                        | Built (see `docs/SESSION_NOTES.md`)                   |
-| `GCP_INGESTION_AGENT_PLAN.md`    | Cloud pipeline, publish gates, ingestion agent, AI extraction in shadow mode                                 | Built and merged; GCP resources are the owner's steps |
-| `SYNTHETIC_TRANSACTIONS_PLAN.md` | A seeded generator of fictional loans and transactions with ground-truth labels, in the web app's own shapes | Approved, not started                                 |
-| `RISK_SCORING_PLAN.md`           | Score 0–100, bands, alert decision, history, daily Cloud Run job, app view                                   | Approved, steps 1–4 done (rules moved to shared)      |
-| `PATTERN_MINER_PLAN.md`          | An agent that proposes patterns from the 23 seed cases for the owner to approve                              | Approved, not started                                 |
-| `AGENTS_PLAN.md`                 | The one pattern all agents follow, shared parts, authority, testing, cost, failure modes                     | Six decisions taken, nothing built                    |
-| `RISK_EXPLAINER_PLAN.md`         | Optional agent that words the recorded reasons of an alert                                                   | Deferred until after step 13                          |
+| Plan                             | What it covers                                                                                                                                                  | Status                                                |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `DELTA_INGESTION_PLAN.md`        | Daily detection of what changed at each public source                                                                                                           | Built (see `docs/SESSION_NOTES.md`)                   |
+| `GCP_INGESTION_AGENT_PLAN.md`    | Cloud pipeline, publish gates, ingestion agent, AI extraction in shadow mode                                                                                    | Built and merged; GCP resources are the owner's steps |
+| `SYNTHETIC_TRANSACTIONS_PLAN.md` | A seeded generator of fictional loans and transactions with ground-truth labels, in the web app's own shapes                                                    | Approved, not started                                 |
+| `RISK_SCORING_PLAN.md`           | Score 0–100, bands, alert decision, history, daily Cloud Run job, app view                                                                                      | Approved, steps 1–2 done (rules moved to shared)      |
+| `PATTERN_MINER_PLAN.md`          | An agent that proposes patterns from the 23 seed cases for the owner to approve                                                                                 | Approved, not started                                 |
+| `PATTERN_CONTRACT.md`            | The interface between the pattern miner and the risk scoring job: the `Pattern` object, the library, the timeline input, the matcher signature, shared fixtures | Proposed, to agree before parallel work               |
+| `AGENTS_PLAN.md`                 | The one pattern all agents follow, shared parts, authority, testing, cost, failure modes                                                                        | Six decisions taken, nothing built                    |
+| `RISK_EXPLAINER_PLAN.md`         | Optional agent that words the recorded reasons of an alert                                                                                                      | Deferred until after step 13                          |
 
 ## Build order
 
@@ -26,22 +27,23 @@ The steps run in four phases. A phase ends with something you can see working.
 
 ### Phase A: foundations (local, no cloud)
 
-| #   | Step                                                                                                                          | Needs from the owner                | Status              |
-| --- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ------------------- |
-| 1   | R0 Characterisation tests for the monitoring rules and record kinds                                                           |                                     | [x] done, `0775b52` |
-| 2   | R1 Move rule detection and record kinds into `packages/shared`                                                                |                                     | [x] done, `72727d6` |
-| 3   | S1 Synthetic schemas (web-shaped), seeded random generator, calendar, ledger, guards (`f596fe0`, built by the forked session) |                                     | [x] done            |
-| 4   | M0 Seed verification sheet for the 23 cases (`c96df4f`; `npm run miner`, see `data/verification/README.md`)                   | **Built. Now you review the cases** | [x] done            |
+| #   | Step                                                                                                                                                                | Needs from the owner                | Status              |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ------------------- |
+| 1   | R0 Characterisation tests for the monitoring rules and record kinds                                                                                                 |                                     | [x] done, `0775b52` |
+| 2   | R1 Move rule detection and record kinds into `packages/shared`                                                                                                      |                                     | [x] done, `72727d6` |
+| 3   | S1 Synthetic schemas (web-shaped), seeded random generator, calendar, ledger, guards (`f596fe0`, built by the forked session)                                       |                                     | [x] done            |
+| 4   | M0 Seed verification sheet for the 23 cases (`c96df4f`; `npm run miner`, see `data/verification/README.md`)                                                         | **Built. Now you review the cases** | [x] done            |
+| 4a  | C0 Pattern contract: schemas, interfaces, `timelineFromEvents`, library helpers and shared fixtures in `packages/shared/src/risk/patterns/` (`PATTERN_CONTRACT.md`) |                                     | [x] done            |
 
 ### Phase B: first end-to-end result (local, no cloud)
 
-| #   | Step                                                                                                                             | Needs from the owner                               | Status   |
-| --- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
-| 5   | S2 Population, flags, labels, CLI, contract sample and web contract test, first archetypes                                       |                                                    | [x] done |
-| 6   | S3 The remaining archetypes, including look-alikes and `near_threshold`                                                          |                                                    | [ ]      |
-| 7   | M1 Pattern definitions, matcher, candidates with baseline lift, backtest (no model)                                              | **Checkpoint 1: do the candidates look useful?**   | [ ]      |
-| 8   | R2 Scoring core, settings, alert decision, replay harness, templated reason text with the "new / unchanged / score change" block | **Checkpoint 2: tune the 3% budget and 15 points** | [ ]      |
-| 9   | R4 Pattern layer with hand-written version 1 patterns (kept in code until step 15)                                               |                                                    | [ ]      |
+| #   | Step                                                                                                                             | Needs from the owner                               | Status |
+| --- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------ |
+| 5   | S2 Population, flags, labels, CLI, contract sample and web contract test, first archetypes                                       |                                                    | [ ]    |
+| 6   | S3 The remaining archetypes, including look-alikes and `near_threshold`                                                          |                                                    | [ ]    |
+| 7   | M1 Pattern definitions, matcher, candidates with baseline lift, backtest (no model)                                              | **Checkpoint 1: do the candidates look useful?**   | [ ]    |
+| 8   | R2 Scoring core, settings, alert decision, replay harness, templated reason text with the "new / unchanged / score change" block | **Checkpoint 2: tune the 3% budget and 15 points** | [ ]    |
+| 9   | R4 Pattern layer with hand-written version 1 patterns (kept in code until step 15)                                               |                                                    | [ ]    |
 
 End of phase B: month-by-month scores and "risk rose because..." on synthetic data, run from the command line.
 
@@ -92,6 +94,7 @@ Work stops at these for the owner's decision.
 - The risk explainer agent is deferred until after step 13. Alert text is templated with a deterministic
   "new since last check / unchanged / score change" block from step 8; the explainer is built only if
   multi-reason alerts read badly and the budget alert exists (`RISK_EXPLAINER_PLAN.md`).
+- Pattern contract (`PATTERN_CONTRACT.md`): patterns carry no weights; verified support is computed at score time; the live library is ONE Firestore document `riskPatternLibrary/current` with immutable `v<n>` copies; the pattern layer takes the largest single matched pattern's points (capped at 30), not the sum. Step C0 builds the contract; the scorer side and the miner side then work in parallel.
 - Autonomy: the only automatic action is a code-triggered retry of an idempotent failed step, at most once
   per run (the source re-run, and the scoring job). Scores, bands, alerts, patterns, thresholds and settings
   change only through a person. Pending proposals are surfaced by a code-computed `proposals_waiting`

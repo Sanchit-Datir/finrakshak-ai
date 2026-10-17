@@ -80,7 +80,10 @@ non-override rows; the override rows follow the owner's decision above.
 One hop 20 (10 if the link is only inferred), two hops 10 (5), three or more 0. Hubs (large bank creditors,
 regulators, shared service addresses, busy insolvency professionals) are excluded (B-40).
 
-**Pattern match (max 30).** Points are `30 × match strength × support`. Support is 1.0 for a pattern backed
+**Pattern match (max 30).** For each matched pattern, points are `round(30 × match strength × support)`; the
+layer takes the **largest single pattern's points, not the sum**, so overlapping patterns do not double
+count (decided 17 Oct 2026). Patterns carry no weights; the scorer computes support from the seed
+verification file at score time (`PATTERN_CONTRACT.md`). Support is 1.0 for a pattern backed
 by 3 or more **verified** cases, 0.6 for 1–2, and capped at 0.6 while the seed cases are still
 `seed_candidate_unverified` (all 23 are today). Two families of pattern:
 
@@ -101,15 +104,17 @@ BigQuery tables, append-only (corrections are new rows), in `fundtrace_synth` fo
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `risk_scores`   | `score_id` (deterministic), `run_id`, `as_of` (IST day), `loan_id`, `borrower_id`, `score`, `band`, points per layer, `reasons` (repeated record), `settings_version`, `pattern_version`, `data_built_at` (B-43), `previous_score`, `previous_band`, `delta`, `alert_kind`, `stale_inputs` |
 | `risk_alerts`   | `alert_id` = loan + reason code + evidence key (so a repeat is the same row), `band`, `reasons`, `created_at`, `status`                                                                                                                                                                    |
-| `risk_patterns` | `pattern_id`, `version`, `definition` (JSON), `supporting_case_ids`, `status` (`draft`/`approved`/`retired`), `approved_by`, `approved_at`                                                                                                                                                 |
+| `risk_patterns` | per run: `library_version`, `content_hash`, and each `Pattern` of the library (`PATTERN_CONTRACT.md`)                                                                                                                                                                                      |
 
 Firestore (written by the job, read only through the callable): `synthRiskLatest/{loanId}` with the latest
 score, band, top reasons, `as_of`, settings version and data date; `synthRiskAlerts/{alertId}`. Rules are
 default-deny with no client writes, plus an emulator rules test for each collection (CLAUDE.md).
 
-The live pattern library is Firestore `riskPatterns` (approved by the owner, see
-`docs/plans/PATTERN_MINER_PLAN.md`); the BigQuery `risk_patterns` table is a **snapshot of the approved
-patterns taken on each scoring run**, so any past score can be reproduced.
+The live pattern library is **one Firestore document**, `riskPatternLibrary/current` (approved by the owner,
+see `docs/plans/PATTERN_MINER_PLAN.md`), with immutable copies `riskPatternLibrary/v<n>`; the scorer reads one
+consistent snapshot. Its exact shape, and how the scorer and the miner share it, is
+`docs/plans/PATTERN_CONTRACT.md`. The BigQuery `risk_patterns` table is a **snapshot of the library taken on
+each scoring run** (`library_version`, `content_hash` and the patterns), so any past score can be reproduced.
 
 ## Alert decision (pure function, one table-driven test)
 

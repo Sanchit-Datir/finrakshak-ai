@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "seq-full",
+      "description": "ED search then CIRP about eight months later is a full match",
+      "pattern_id": "pat_3f0e9805d351f4be",
+      "timeline_id": "ed_then_cirp",
+      "neighbours": [],
+      "expect": {
+        "outcome": "full_match",
+        "matched_event_ids": ["evt_synth_ed1", "evt_synth_cirp1"],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "seq-gap-at-limit",
+      "description": "a gap of exactly twelve months is inside the limit",
+      "pattern_id": "pat_3f0e9805d351f4be",
+      "timeline_id": "gap_exactly_12_months",
+      "neighbours": [],
+      "expect": {
+        "outcome": "full_match",
+        "matched_event_ids": ["evt_synth_ed1", "evt_synth_cirp1"],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "seq-gap-over",
+      "description": "a gap of thirteen months is outside the limit",
+      "pattern_id": "pat_3f0e9805d351f4be",
+      "timeline_id": "gap_13_months",
+      "neighbours": [],
+      "expect": {
+        "outcome": "not_full_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "seq-lead-short",
+      "description": "the outcome ten days after the first step is under the one-month lead",
+      "pattern_id": "pat_3f0e9805d351f4be",
+      "timeline_id": "lead_too_short",
+      "neighbours": [],
+      "expect": {
+        "outcome": "not_full_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "seq-first-missing",
+      "description": "an insolvency record alone, without the first step, does not match",
+      "pattern_id": "pat_3f0e9805d351f4be",
+      "timeline_id": "only_cirp",
+      "neighbours": [],
+      "expect": {
+        "outcome": "no_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "seq-wrong-order",
+      "description": "the steps in the wrong order are not a full match",
+      "pattern_id": "pat_3f0e9805d351f4be",
+      "timeline_id": "wrong_order",
+      "neighbours": [],
+      "expect": {
+        "outcome": "not_full_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "seq-empty",
+      "description": "no events means no match",
+      "pattern_id": "pat_3f0e9805d351f4be",
+      "timeline_id": "empty",
+      "neighbours": [],
+      "expect": {
+        "outcome": "no_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "co-full",
+      "description": "an NFRA record and an enforcement record from two sources inside the window",
+      "pattern_id": "pat_515677af7a082e40",
+      "timeline_id": "nfra_and_ed",
+      "neighbours": [],
+      "expect": {
+        "outcome": "full_match",
+        "matched_event_ids": ["evt_synth_nfra1", "evt_synth_ed2"],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "co-one-source",
+      "description": "two ED records are one source and have no NFRA record",
+      "pattern_id": "pat_515677af7a082e40",
+      "timeline_id": "two_ed_only",
+      "neighbours": [],
+      "expect": {
+        "outcome": "not_full_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "co-empty",
+      "description": "no events means no match",
+      "pattern_id": "pat_515677af7a082e40",
+      "timeline_id": "empty",
+      "neighbours": [],
+      "expect": {
+        "outcome": "no_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "graph-full",
+      "description": "a verified link, two hops away, to a liquidation record that is not a hub",
+      "pattern_id": "pat_b3c0b217e63a3573",
+      "timeline_id": "empty",
+      "neighbours": [
+        {
+          "entity_id": "ent_synth_n1",
+          "hops": 2,
+          "link_status": "verified",
+          "kinds": ["liquidation"],
+          "is_hub": false
+        }
+      ],
+      "expect": {
+        "outcome": "full_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": ["ent_synth_n1"]
+      }
+    },
+    {
+      "id": "graph-hub",
+      "description": "a hub never counts (B-40)",
+      "pattern_id": "pat_b3c0b217e63a3573",
+      "timeline_id": "empty",
+      "neighbours": [
+        {
+          "entity_id": "ent_synth_n2",
+          "hops": 1,
+          "link_status": "verified",
+          "kinds": ["liquidation"],
+          "is_hub": true
+        }
+      ],
+      "expect": {
+        "outcome": "no_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "graph-too-far",
+      "description": "three hops is beyond max_hops 2",
+      "pattern_id": "pat_b3c0b217e63a3573",
+      "timeline_id": "empty",
+      "neighbours": [
+        {
+          "entity_id": "ent_synth_n3",
+          "hops": 3,
+          "link_status": "verified",
+          "kinds": ["liquidation"],
+          "is_hub": false
+        }
+      ],
+      "expect": {
+        "outcome": "no_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "graph-inferred",
+      "description": "an inferred link is not a documented link",
+      "pattern_id": "pat_b3c0b217e63a3573",
+      "timeline_id": "empty",
+      "neighbours": [
+        {
+          "entity_id": "ent_synth_n4",
+          "hops": 1,
+          "link_status": "inferred",
+          "kinds": ["liquidation"],
+          "is_hub": false
+        }
+      ],
+      "expect": {
+        "outcome": "no_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "graph-wrong-kind",
+      "description": "a neighbour with only an enforcement record is not a liquidation",
+      "pattern_id": "pat_b3c0b217e63a3573",
+      "timeline_id": "empty",
+      "neighbours": [
+        {
+          "entity_id": "ent_synth_n5",
+          "hops": 1,
+          "link_status": "verified",
+          "kinds": ["enforcement"],
+          "is_hub": false
+        }
+      ],
+      "expect": {
+        "outcome": "no_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    },
+    {
+      "id": "typology-never",
+      "description": "a transaction typology is never matched against a timeline",
+      "pattern_id": "pat_4bfebf5efd553056",
+      "timeline_id": "ed_then_cirp",
+      "neighbours": [],
+      "expect": {
+        "outcome": "no_match",
+        "matched_event_ids": [],
+        "matched_neighbour_ids": []
+      }
+    }
+  ]
+}

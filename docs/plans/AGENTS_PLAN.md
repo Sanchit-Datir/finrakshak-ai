@@ -86,12 +86,12 @@ Each agent has a closed action list, its own service account and its own Firesto
 of B-49. The "Can write" column describes what the agent's **code** does; see the caveat below the table for
 what the cloud itself enforces:
 
-| Agent     | Service account    | Can read                   | Can write                          | Cannot                                         |
-| --------- | ------------------ | -------------------------- | ---------------------------------- | ---------------------------------------------- |
-| Ingestion | `ingest-agent`     | Buckets, BigQuery (read)   | Its review and proposal documents  | Fetch URLs, change pipeline data               |
-| Extractor | `ingest-extractor` | Extracted text             | Create-only shadow objects         | Alter listings, raw evidence or published data |
-| Miner     | `ingest-miner`     | Published case data (read) | `patternProposals`, its run record | Approve, write `riskPatterns`, write buckets   |
-| Explainer | `ingest-explainer` | Alert rows, reason codes   | The explanation field of an alert  | Change scores, bands, reasons or alerts        |
+| Agent     | Service account    | Can read                   | Can write                          | Cannot                                             |
+| --------- | ------------------ | -------------------------- | ---------------------------------- | -------------------------------------------------- |
+| Ingestion | `ingest-agent`     | Buckets, BigQuery (read)   | Its review and proposal documents  | Fetch URLs, change pipeline data                   |
+| Extractor | `ingest-extractor` | Extracted text             | Create-only shadow objects         | Alter listings, raw evidence or published data     |
+| Miner     | `ingest-miner`     | Published case data (read) | `patternProposals`, its run record | Approve, write `riskPatternLibrary`, write buckets |
+| Explainer | `ingest-explainer` | Alert rows, reason codes   | The explanation field of an alert  | Change scores, bands, reasons or alerts            |
 
 Applying a decision always goes through a callable that checks the signed-in person and role, validates the
 input, acts, and returns a typed result. The agent's code has no path to that write.
