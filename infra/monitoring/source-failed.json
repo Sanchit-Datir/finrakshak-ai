@@ -1,0 +1,23 @@
+{
+  "displayName": "Ingest: a source failed",
+  "documentation": {
+    "content": "A source's listing or downloads failed (a guard tripped, the site changed, or it was unreachable). Its stored data was not changed. See `ingestRuns/<runId>.sources.<source>.error`.",
+    "mimeType": "text/markdown"
+  },
+  "combiner": "OR",
+  "conditions": [
+    {
+      "displayName": "ingest_source_failed > 0",
+      "conditionThreshold": {
+        "filter": "resource.type = \"cloud_run_job\" AND metric.type = \"logging.googleapis.com/user/ingest_source_failed\"",
+        "aggregations": [{ "alignmentPeriod": "300s", "perSeriesAligner": "ALIGN_SUM" }],
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 0,
+        "duration": "0s",
+        "trigger": { "count": 1 }
+      }
+    }
+  ],
+  "alertStrategy": { "autoClose": "86400s" },
+  "enabled": true
+}

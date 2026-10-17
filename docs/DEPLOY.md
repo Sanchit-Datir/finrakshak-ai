@@ -51,3 +51,50 @@ changed; add it to `RUNTIME_SAS` in `scripts/setup-gcp.sh` and re-run the script
   Hosting also keeps every version (Firebase console → Hosting → Release history → Rollback).
 - **Cost:** deploys only run on merges to `main` and non-docs PRs. A Functions deploy uses Cloud
   Build (inside the free allowance) and leaves a container image; the cleanup policy removes old ones.
+
+## Cloud ingestion (public-records pipeline)
+
+The daily pipeline runs entirely in Google Cloud: Cloud Scheduler (03:05 IST) → Cloud Workflows
+`ingest-daily` → Cloud Run jobs `ingest-acquire` (one task per source) and `ingest-build`.
+Design: [`docs/plans/GCP_INGESTION_AGENT_PLAN.md`](plans/GCP_INGESTION_AGENT_PLAN.md); code:
+`ingest/src/cloud/`.
+
+### One-time setup (Owner, from Cloud Shell in a clone of the repo)
+
+```bash
+SEED=1 scripts/setup-ingest-gcp.sh fund-tracer            # buckets, datasets, accounts, scheduler, alerts
+# optional budget: BILLING_ACCOUNT=XXXXXX-XXXXXX-XXXXXX BUDGET_USD=25 scripts/setup-ingest-gcp.sh fund-tracer
+```
+
+`SEED=1` copies the five MCA master parts and `data/registry/sources.json` into the state bucket.
+Then set the repo variable **`INGEST_ENABLED=true`**: the next merge to `main` builds the image
+(tag = commit), pushes it to Artifact Registry `ingest` and runs `scripts/deploy-ingest.sh`.
+
+### Dry run, then publish
+
+New deployments run as a **dry run** (`FUNDTRACE_PUBLISH_ENABLED=false`): bundles go to
+`gs://fund-tracer-ingest-publish/dry-run/`, BigQuery to `fundtrace_public_dryrun`. After a clean
+week (see the plan's MVP 1 exit criteria), set **`INGEST_PUBLISH_ENABLED=true`** and redeploy.
+
+| Resource  | Name                                                                                     |
+| --------- | ---------------------------------------------------------------------------------------- |
+| Buckets   | `fund-tracer-ingest-raw` (create-only evidence), `-state` (versioned), `-publish`        |
+| BigQuery  | `fundtrace_public` (+ `_dryrun`): 11 snapshot tables, `delta_events`, `ingest_runs`      |
+| Firestore | `ingestRuns/{runId}` (per-run record), `ingestLocks/{name}` (leases, TTL on `expiresAt`) |
+| Accounts  | `ingest-runner` (jobs), `ingest-orchestrator` (Scheduler + Workflows)                    |
+
+### Operating it
+
+- **Run now:** `gcloud workflows run ingest-daily --location asia-south1 --data '{}'`; force a
+  rebuild and republish: `--data '{"force_build": "true"}'`.
+- **One source only (debugging):** `gcloud run jobs execute ingest-acquire --region asia-south1
+--tasks 1 --update-env-vars FUNDTRACE_SOURCES=nfra`.
+- **What happened:** Firestore `ingestRuns/<runId>` (per-source status, counts, errors; build
+  status, gates, version), or the Workflows execution. Logs are structured JSON (filter
+  `jsonPayload.run="<runId>"`).
+- **Rollback:** copy an earlier `versions/<version>` entry into `current.json` (the previous 14
+  versions are kept), or let the next good build replace it. Bundles are immutable once written.
+- **Alerts** (Monitoring → Alerting; no notification channel yet, by decision): run failed, a
+  source failed, a publish gate failed.
+- **Permissions:** the runner can add and read raw evidence but never delete or overwrite it;
+  only `github-deployer` (main branch) can change the jobs and the workflow.

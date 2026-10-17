@@ -132,16 +132,55 @@ Download selection lives in `src/select/relevance.ts`; seed cases (brief step 2)
 | `case_seeds`, `case_documents` | Seed cases and the documents that mention them                                                                                                                                                        |
 | `entity_match_candidates`      | Similar names deliberately **not** merged — for human review                                                                                                                                          |
 
-## Load into Google Cloud
+## Running in Google Cloud
+
+In production the pipeline runs in the cloud every day; nothing is fetched from a laptop. Setup,
+operations and rollback: [`docs/DEPLOY.md` → Cloud ingestion](../docs/DEPLOY.md#cloud-ingestion-public-records-pipeline).
+Design and diagrams: [`docs/plans/GCP_INGESTION_AGENT_PLAN.md`](../docs/plans/GCP_INGESTION_AGENT_PLAN.md).
+
+```
+Cloud Scheduler 03:05 IST → Workflows ingest-daily → Cloud Run job ingest-acquire (task i = source i)
+                                                    → Cloud Run job ingest-build  (build, gates, publish, BigQuery)
+```
+
+| Module              | Role                                                                                                                                                                                                                                                                                                                             |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/storage/`      | `BlobStore` port: `FsBlobStore` (local disk) and `GcsBlobStore` (Cloud Storage). Keys are the same paths as under `data/`; `raw/<source>/files/**` goes to the raw bucket, `publish/**` to the publish bucket, everything else to the state bucket. Writes are atomic; `ABSENT` = create-only, `ifGeneration` = compare-and-swap |
+| `src/coordination/` | Leases (`FileLeaseManager`, `FirestoreLeaseManager`) and run records (`BlobRunLog`, `FirestoreRunLog`)                                                                                                                                                                                                                           |
+| `src/pipeline/`     | What the CLI and the cloud share: adapters, `acquireSource` (listing + downloads for one source), `buildGraphOutputs`                                                                                                                                                                                                            |
+| `src/cloud/`        | Job entrypoints (`main.ts acquire                                                                                                                                                                                                                                                                                                | build`), env (`env.ts`), publish gates (`gates.ts`), versioned publish (`publish.ts`), BigQuery loads (`bigquery.ts`, `history.ts`) |
+
+Cloud configuration (all validated with zod; set by `scripts/deploy-ingest.sh`):
+
+| Variable                                                                                | Meaning                                                                             |
+| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `FUNDTRACE_STORAGE=gcs`, `FUNDTRACE_{RAW,STATE,PUBLISH}_BUCKET`, `FUNDTRACE_PROJECT_ID` | Cloud Storage instead of `data/`                                                    |
+| `FUNDTRACE_COORDINATION=firestore`                                                      | Firestore leases and run records (required with `gcs`)                              |
+| `FUNDTRACE_RUN_ID`, `FUNDTRACE_RUN_AT`                                                  | Shared by every job of one run (passed by Workflows)                                |
+| `FUNDTRACE_SOURCES`                                                                     | Sources, comma-separated (default: all six); task `i` takes every `i`-th            |
+| `FUNDTRACE_SOURCE_FLAGS`                                                                | JSON per-source one-run flags: `{"nfra":{"forceFull":true}}`, `allowShrink`, `skip` |
+| `FUNDTRACE_PUBLISH_ENABLED`                                                             | `false` (default) = dry run: `dry-run` channel and `<dataset>_dryrun`               |
+| `FUNDTRACE_BIGQUERY_DATASET`, `FUNDTRACE_BIGQUERY_LOCATION`                             | Where tables and history are loaded                                                 |
+| `FUNDTRACE_MAX_DOCS_PER_SOURCE`                                                         | New documents per source per run (300 in the cloud: paced backfill, B-53)           |
+| `FUNDTRACE_GATE_MAX_DROP`, `FUNDTRACE_PUBLISH_KEEP`, `FUNDTRACE_FORCE_BUILD`            | Gate threshold (0.2), versions kept (14), rebuild without changes                   |
+
+What the build publishes: `publish/<live|dry-run>/versions/<builtAt>/…` (immutable bundles) and
+`publish/<channel>/current.json` (the pointer, `PublishedVersion` in `packages/shared`). The build
+is skipped when no source changed and the MCA upload is unchanged.
+
+**Try the cloud tasks locally** (file system, no GCP):
 
 ```bash
-gcloud storage rsync -r data/raw gs://$BUCKET/raw          # immutable originals
-for t in documents case_events entities persons addresses relationships evidence_claims \
-         risk_signals case_seeds case_documents entity_match_candidates; do
-  bq load --replace --source_format=NEWLINE_DELIMITED_JSON \
-    $DATASET.$t data/processed/$t.jsonl data/processed/bigquery/$t.schema.json
-done
+npm run build -w @fund-tracker/shared && npm run build -w ingest
+FUNDTRACE_DATA_DIR=/tmp/ft FUNDTRACE_SOURCES=sfio FUNDTRACE_MAX_DOCS_PER_SOURCE=3 \
+  FUNDTRACE_RUN_ID=run_local node ingest/dist/cloud/main.js acquire
+FUNDTRACE_DATA_DIR=/tmp/ft FUNDTRACE_RUN_ID=run_local node ingest/dist/cloud/main.js build
 ```
+
+Against emulators (Cloud Storage: `fake-gcs-server`; Firestore: `firebase emulators:start --only
+firestore`), add `FUNDTRACE_STORAGE=gcs FUNDTRACE_GCS_ENDPOINT=http://localhost:4443
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FUNDTRACE_COORDINATION=firestore` and the bucket names.
+The container: `docker build -f ingest/Dockerfile -t ingest .` (from the repository root).
 
 `documents.file_location` uses `gs://<bucket>/raw/...`; substitute your bucket name.
 

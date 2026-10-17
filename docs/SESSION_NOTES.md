@@ -3,7 +3,7 @@
 Read this first in a new session. It records what has been built, the rules the owner has set,
 and what is open. Update it at the end of every session.
 
-_Last updated: 16 Oct 2026. Branch `feat/public-data-ingest` (pushed). No PR has been opened._
+_Last updated: 17 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
 
 ## Owner's working rules (keep following them)
 
@@ -13,8 +13,9 @@ _Last updated: 16 Oct 2026. Branch `feat/public-data-ingest` (pushed). No PR has
 - **Data:** never change `data/raw`, `data/processed` or `data/registry`. Derived output goes in
   new files (e.g. `data/graph/`). Checksums of the 30 source files were verified unchanged after
   every change.
-- **Cloud and AI:** no cloud deployment, Gemini, BigQuery or Firebase backend work until the owner
-  approves the local results.
+- **Cloud and AI:** the owner approved the cloud ingestion plan (`docs/plans/GCP_INGESTION_AGENT_PLAN.md`)
+  on 17 Oct 2026: MVPs are built on branch `ingestion-agent`, one commit per MVP. Creating GCP
+  resources (`scripts/setup-ingest-gcp.sh`) and enabling publishing stay the owner's steps.
 - **Definition of done:** `npm run check && npm run build` (CLAUDE.md), plus `npm run e2e` for UI
   scenarios.
 - **Wording:** leads, never verdicts ("Urgent review / Needs attention / Routine review"; never
@@ -56,6 +57,12 @@ owner decided. Only the borrowers are real; the loan values are made up.
 - **Later (needs owner approval):**
   - sync the loan book from the bank's system
   - a scheduled daily check on a backend with a live feed
+- **Cloud ingestion MVP 1 (branch `ingestion-agent`):** storage port (disk / Cloud Storage),
+  Firestore leases and run records, Cloud Run job entrypoints (`ingest/src/cloud/`), publish gates,
+  versioned publish, BigQuery loads, container (`ingest/Dockerfile`), `scripts/setup-ingest-gcp.sh`,
+  `scripts/deploy-ingest.sh`, workflow `infra/workflows/ingest-daily.yaml`. Verified locally on disk
+  and against Cloud Storage + Firestore emulators; BigQuery loads untested (no emulator). Next: MVP 2
+  (UI on cloud data + agent supervisor), MVP 3 (extraction, SEBI full index).
 - **Daily delta ingestion (GCP plan, MVP 1+2 done locally):** `acquire` now diffs and merges listings
   (`ingest/src/delta/`), pages incrementally for IBBI/NFRA/SFIO/RBI with a weekly/monthly full relist,
   and writes change reports to `data/interim/delta/`; guards stop empty, broken or shrunken listings from

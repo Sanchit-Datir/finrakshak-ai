@@ -1,4 +1,3 @@
-import { readFile } from 'node:fs/promises';
 import {
   AddressSchema,
   CaseEventSchema,
@@ -16,8 +15,8 @@ import {
   type Relationship,
 } from '@fund-tracker/shared';
 import { z } from 'zod';
-import { dataPath } from '../config.js';
-import { isNotFound, readJsonl } from '../store/jsonl.js';
+import { dataKey } from '../config.js';
+import { readJson, readJsonl } from '../store/jsonl.js';
 
 /** Everything the graph builder needs; real data comes from data/processed (read-only). */
 export interface GraphInput {
@@ -35,15 +34,13 @@ const StatsSchema = z.object({ built_at: z.string() });
 
 async function builtAt(): Promise<string | null> {
   try {
-    const raw: unknown = JSON.parse(await readFile(dataPath('processed', 'stats.json'), 'utf8'));
-    return StatsSchema.parse(raw).built_at;
+    return (await readJson(dataKey('processed', 'stats.json'), StatsSchema))?.built_at ?? null;
   } catch (e) {
-    if (isNotFound(e)) return null;
     throw new Error('Unreadable data/processed/stats.json', { cause: e });
   }
 }
 
-const table = (name: string): string => dataPath('processed', `${name}.jsonl`);
+const table = (name: string): string => dataKey('processed', `${name}.jsonl`);
 
 /** Loads the canonical tables built by `ingest build`. Never writes to data/processed. */
 export async function loadProcessed(): Promise<GraphInput> {

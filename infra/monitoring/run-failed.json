@@ -1,0 +1,23 @@
+{
+  "displayName": "Ingest: daily run failed",
+  "documentation": {
+    "content": "A step of the daily ingestion workflow failed. Open Firestore `ingestRuns/<runId>` (the error says which run) or the Workflows execution for details. The previously published dataset stays live.",
+    "mimeType": "text/markdown"
+  },
+  "combiner": "OR",
+  "conditions": [
+    {
+      "displayName": "ingest-daily execution failed",
+      "conditionThreshold": {
+        "filter": "resource.type = \"workflows.googleapis.com/Workflow\" AND resource.label.workflow_id = \"ingest-daily\" AND metric.type = \"workflows.googleapis.com/finished_execution_count\" AND metric.label.status = \"FAILED\"",
+        "aggregations": [{ "alignmentPeriod": "300s", "perSeriesAligner": "ALIGN_SUM" }],
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 0,
+        "duration": "0s",
+        "trigger": { "count": 1 }
+      }
+    }
+  ],
+  "alertStrategy": { "autoClose": "86400s" },
+  "enabled": true
+}

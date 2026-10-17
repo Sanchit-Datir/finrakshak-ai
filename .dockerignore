@@ -1,0 +1,15 @@
+# Only the files ingest/Dockerfile copies are needed; keep the build context small and secret-free.
+**/node_modules
+**/dist
+**/lib
+.git
+.env*
+**/*.log
+data
+web/src
+web/public
+e2e/scenarios
+e2e/tests
+functions/src
+**/*.test.ts
+service-account*.json

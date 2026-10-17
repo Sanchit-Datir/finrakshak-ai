@@ -56,7 +56,25 @@ Rules:
 Write down, in the PR: what it costs per call or per month at expected volume, which free quota it
 uses, and what stops it from growing without bound (quota, cap, or budget).
 
-## 5. Known gaps
+## 5. Cloud ingestion pipeline (monthly estimate)
+
+Estimated at today's volume (six sources, a few hundred new documents a day at most); confirm
+with the first month's bill and update this table.
+
+| Item                                                                  | What stops it growing                                                       | Estimate           |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------ |
+| Cloud Run jobs (~40 min acquire across 6 tasks, ~5 min build per day) | Jobs scale to zero; CPU/memory/timeout capped; `maxRetries` 1 / 0           | free tier to ~US$3 |
+| Workflows + Scheduler (~10 steps, 1 trigger per day)                  | One schedule                                                                | free tier          |
+| Cloud Storage (~1–3 GB, raw kept forever)                             | Create-only raw, state versions expire after 90 days, 14 published versions | < US$0.20          |
+| BigQuery (~100 MB, batch loads, small queries)                        | Load jobs are free; history tables partitioned by `run_date`                | < US$0.50          |
+| Firestore (a few hundred reads/writes per day)                        | One document per run, one lease per source                                  | free tier          |
+| Artifact Registry                                                     | Cleanup policy keeps 10 images                                              | < US$0.20          |
+
+Rules: documents per source per run are capped (`FUNDTRACE_MAX_DOCS_PER_SOURCE`, 300 in the cloud)
+so a backlog is fetched over several days; the build is skipped when no source changed; every
+BigQuery job has a deterministic id, so a retried run never loads (or bills) twice.
+
+## 6. Known gaps
 
 - No per-user quota on `askGemini` yet (B-15). Until it exists, `maxInstances` is the only cap on
   how much a signed-in user can spend. Add a daily per-user counter before opening sign-up widely.

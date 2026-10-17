@@ -1,9 +1,19 @@
 type Level = 'info' | 'warn' | 'error';
 type Fields = Record<string, string | number | boolean | null | undefined>;
 
+/** Cloud Logging reads `severity` and `message` from JSON lines (Cloud Run jobs log stderr). */
+const SEVERITY: Readonly<Record<Level, string>> = { info: 'INFO', warn: 'WARNING', error: 'ERROR' };
+
 /** Structured JSON-line logger on stderr. Never log document contents or secrets. */
 function write(level: Level, msg: string, fields: Fields): void {
-  const line = JSON.stringify({ ts: new Date().toISOString(), level, msg, ...fields });
+  const line = JSON.stringify({
+    ts: new Date().toISOString(),
+    severity: SEVERITY[level],
+    level,
+    msg,
+    message: msg,
+    ...fields,
+  });
   process.stderr.write(`${line}\n`);
 }
 
