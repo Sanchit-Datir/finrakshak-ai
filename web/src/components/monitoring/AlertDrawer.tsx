@@ -195,7 +195,7 @@ export function AlertDrawer({
                       </p>
                       <p className="text-muted text-xs">
                         {f.dateTime(t.at)} · {t.id} · {t.reference} · source:{' '}
-                        {t.source === 'demo' ? 'core banking extract (demo)' : 'imported file'}
+                        {t.source === 'demo' ? 'core banking extract' : 'imported file'}
                       </p>
                     </li>
                   ))}

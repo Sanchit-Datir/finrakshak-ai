@@ -360,13 +360,13 @@ export function attachSample(appId: string, sampleId: string, actor: string): st
         audit(
           actor,
           'Sample attached',
-          `${sample.title} (synthetic). Fields are simulated demo output.`,
+          `${sample.title} (synthetic). Fields are simulated output.`,
         ),
       ],
     });
     a.documentIds.push(id);
     a.updatedAt = at;
-    a.audit.push(audit(actor, 'Document attached', `${id} — ${sample.title} (demo sample)`));
+    a.audit.push(audit(actor, 'Document attached', `${id} — ${sample.title} (sample)`));
   });
   return id;
 }

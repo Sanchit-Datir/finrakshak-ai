@@ -2,7 +2,7 @@ import { Check } from 'lucide-react';
 import { cn } from '../ui/cn.js';
 
 export const STEPS = [
-  'Capture documents',
+  'Form or documents',
   'Extract & verify',
   'Review application',
   'Risk analysis',
@@ -11,10 +11,13 @@ export const STEPS = [
 export function Stepper({
   current,
   furthest,
+  unavailable = [],
   onSelect,
 }: {
   current: number;
   furthest: number;
+  /** Steps that do not apply right now (e.g. "Extract & verify" with no documents). */
+  unavailable?: readonly number[];
   onSelect: (step: number) => void;
 }): React.JSX.Element {
   return (
@@ -24,7 +27,7 @@ export function Stepper({
           const step = i + 1;
           const done = step < current;
           const active = step === current;
-          const reachable = step <= furthest;
+          const reachable = step <= furthest && !unavailable.includes(step);
           return (
             <li key={label}>
               <button

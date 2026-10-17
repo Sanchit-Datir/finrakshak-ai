@@ -40,6 +40,8 @@ export const SYNTH_LOAN_PRODUCTS = [
   'msme_working_capital',
   'msme_term',
   'personal',
+  'business',
+  'education',
 ] as const;
 export const SYNTH_TRANSACTION_TYPES = [
   'disbursement',

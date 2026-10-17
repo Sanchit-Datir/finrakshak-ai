@@ -6,7 +6,7 @@ import { Card } from '../components/ui/Card.js';
 import { FilterSelect } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
-import { DemoBadge, EmptyState } from '../components/ui/States.js';
+import { EmptyState } from '../components/ui/States.js';
 import { APP_STATUS_LABEL, PRIORITY_LABEL, PRODUCT_LABEL } from '../domain/labels.js';
 import { ApplicationStatusSchema, LoanProductSchema } from '../domain/schemas.js';
 import { reviewPriority } from '../lib/checks.js';
@@ -53,7 +53,6 @@ export function ApplicationsPage(): React.JSX.Element {
       <PageHeader
         docTitle="Loan applications"
         title="Loan applications"
-        badge={<DemoBadge />}
         subtitle="All applications in this workspace. Filters are kept in the address bar."
         actions={
           <LinkButton to="/applications/new" variant="primary" icon={Plus}>

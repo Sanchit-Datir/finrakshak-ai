@@ -41,7 +41,7 @@ See `CLAUDE.md` for standards and `docs/BOUNDARY_CONDITIONS.md` for edge cases t
 
 ```bash
 npm install
-npm run dev -w web        # http://localhost:5173 → “Continue with demo sign-in”
+npm run dev -w web        # http://localhost:5173 → “Continue with quick sign-in”
 npm run build -w web && npx vite preview --root web   # production build
 ```
 

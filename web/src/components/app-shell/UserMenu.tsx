@@ -77,7 +77,7 @@ export function UserMenu({
             <p className="text-muted text-xs">
               {ROLE_LABEL[session.role]} · {branch}
             </p>
-            <p className="text-muted text-xs">{db.bankName} (demo)</p>
+            <p className="text-muted text-xs">{db.bankName}</p>
           </div>
           <button
             type="button"

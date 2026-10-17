@@ -101,7 +101,7 @@ export function DocumentViewer({
         icon={FileQuestion}
         title={
           doc.source === 'demo'
-            ? 'No page image in the demo dataset'
+            ? 'No page image for this sample document'
             : 'Original file not available'
         }
       >

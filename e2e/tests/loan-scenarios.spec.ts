@@ -10,7 +10,7 @@ import type { LoanScenario, ScenarioExpectation, ScenarioInput } from '../scenar
 
 async function signIn(page: Page): Promise<void> {
   await page.goto('/login');
-  await page.getByRole('button', { name: /Continue with demo sign-in/ }).click();
+  await page.getByRole('button', { name: /Continue with quick sign-in/ }).click();
   await page.waitForURL(/dashboard/);
 }
 
@@ -68,8 +68,7 @@ async function runScenario(page: Page, s: LoanScenario): Promise<void> {
   await test.step('Start a new application and fill it', async () => {
     await signIn(page);
     await page.goto('/applications/new');
-    await page.getByRole('button', { name: 'Continue to extract & verify' }).click();
-    await page.getByRole('button', { name: 'Continue to review application' }).click();
+    await page.getByRole('button', { name: 'Fill the application form' }).click();
     await fillApplication(page, s.input);
     await page
       .getByRole('group', { name: /Trade receivables/ })

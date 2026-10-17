@@ -20,7 +20,7 @@ watch the browser with `--headed`. Failures keep a screenshot, video and trace i
 
 | File                     | Drives                                                          |
 | ------------------------ | --------------------------------------------------------------- |
-| `data/login.json`        | Sign-in form validation cases and demo sign-in per role         |
+| `data/login.json`        | Sign-in form validation cases and quick sign-in per role        |
 | `data/applications.json` | Full "New loan application" workflow: capture → review → submit |
 
 Each file is validated by a zod schema in `support/data.ts`; a typo fails fast with a message
@@ -37,11 +37,10 @@ E2E_APPLICATIONS_DATA=/path/to/my-cases.json npm run test:e2e -w web
 ```jsonc
 {
   "name": "shown as the test title",
-  "role": "branch_officer", // demo sign-in role
-  "samples": ["Aadhaar card (masked)", { "title": "Aadhaar card (masked)", "occurrence": 2 }],
+  "role": "branch_officer", // quick sign-in role
   "review": [
     // step 3 inputs, applied in order; `label` is the field's visible label
-    { "label": "Loan product", "select": "MSME working capital" }, // <select>, by option text
+    { "label": "Loan product", "select": "MSME loan" }, // <select>, by option text
     { "label": "Requested amount (₹)", "fill": "500000" }, // text / number / date / textarea
     { "label": "Applicant has signed the loan-purpose declaration", "check": true },
   ],
@@ -50,8 +49,8 @@ E2E_APPLICATIONS_DATA=/path/to/my-cases.json npm run test:e2e -w web
 }
 ```
 
-`samples` are titles from the "Add demo sample" menu; use `occurrence` when a title appears more
-than once. Any labelled field on the review step can be filled, no code change needed.
+Each case starts with "Fill the application form" (no documents). Any labelled field on the review
+step can be filled, no code change needed.
 
 ## Layout
 

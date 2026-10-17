@@ -52,7 +52,7 @@ borrower that looks **clean at disbursement** and then has a **sudden enforcemen
 ```bash
 npm run build -w @fund-tracker/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # publish the public-records data (once per machine)
-npm run dev -w web                   # http://localhost:5173 → Continue with demo sign-in
+npm run dev -w web                   # http://localhost:5173 → Continue with quick sign-in
 ```
 
 1. Sign in. Within a few seconds a toast reports the new public-record alerts. Scenario 2's loan

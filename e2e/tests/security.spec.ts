@@ -89,7 +89,7 @@ test('an uploaded bundle cannot inject a javascript: link', async ({ page }) => 
     identity: [],
   };
   await page.goto('/login');
-  await page.getByRole('button', { name: /Continue with demo sign-in/ }).click();
+  await page.getByRole('button', { name: /Continue with quick sign-in/ }).click();
   await page.waitForURL(/dashboard/);
   await page.goto('/graph-lab');
   await page.locator('input[type="file"]').setInputFiles({

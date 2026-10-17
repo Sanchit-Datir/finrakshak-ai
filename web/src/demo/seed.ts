@@ -92,7 +92,8 @@ function emptyData(): ApplicationData {
 }
 
 export function newApplicationData(): ApplicationData {
-  return emptyData();
+  const data = emptyData();
+  return { ...data, loan: { ...data.loan, product: 'agri_term' } };
 }
 
 type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? Partial<T[K]> : T[K] };
@@ -158,6 +159,8 @@ export function defaultSettings(): Settings {
       msme_working_capital: ['gst', 'udyam', 'bank_statement', 'financial_statements'],
       msme_term: ['gst', 'udyam', 'quotation', 'financial_statements', 'board_resolution'],
       personal: ['aadhaar', 'pan', 'bank_statement', 'income_proof'],
+      business: ['pan', 'gst', 'bank_statement', 'financial_statements', 'itr'],
+      education: ['aadhaar', 'pan', 'income_proof', 'bank_statement'],
     },
   };
 }
@@ -522,7 +525,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       qualityWarnings: o.warnings ?? sample?.qualityWarnings ?? [],
       sampleId: sample?.id ?? null,
       fields,
-      audit: [audit(at, officer, 'Uploaded', `${o.filename} added (demo dataset)`)],
+      audit: [audit(at, officer, 'Uploaded', `${o.filename} added (sample records)`)],
     });
     return id;
   };
@@ -563,7 +566,7 @@ export function createDemoDb(now: Date = new Date()): Db {
         at: plus(created, 5 + i * 20),
         text,
       })),
-      audit: [audit(created, officer, 'Application created', 'Created from branch counter (demo)')],
+      audit: [audit(created, officer, 'Application created', 'Created from branch counter')],
       checksRunAt: o.checks === false ? null : plus(created, 4),
       findingStates: {},
       publicRecords: null,
@@ -1457,7 +1460,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       'user_provided',
       'Analyst note — demo record, no public-record lookup performed',
       10,
-      'Named as a party in a commercial dispute (demo)',
+      'Named as a party in a commercial dispute',
     ),
     rel(
       'c-navnath',
@@ -1466,7 +1469,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       'user_provided',
       'Analyst note — demo record, no public-record lookup performed',
       10,
-      'Named as a party in a commercial dispute (demo)',
+      'Named as a party in a commercial dispute',
     ),
   ];
 
@@ -1520,7 +1523,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       purpose,
       monitoringDays: 90,
       accountEntityId,
-      dataSource: 'Core banking extract (demo) — accounts held at this bank only',
+      dataSource: 'Core banking extract — accounts held at this bank only',
       lastUpdated: ago(0, 7),
       branchId,
     });
@@ -1943,7 +1946,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       evidence: [
         {
           id: 'ev-1',
-          sourceName: 'Core banking extract (demo)',
+          sourceName: 'Core banking extract',
           sourceType: 'transaction_record',
           reference: 'T-5007 → T-5008 → T-5009',
           collectedAt: ago(19, 12),
@@ -2153,7 +2156,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       evidence: [
         {
           id: 'ev-10',
-          sourceName: 'Core banking extract (demo)',
+          sourceName: 'Core banking extract',
           sourceType: 'transaction_record',
           reference: 'T-5017, T-5018, T-5019',
           collectedAt: ago(6, 12),
@@ -2220,9 +2223,10 @@ export function createDemoDb(now: Date = new Date()): Db {
     generatedAt: now.toISOString(),
     bankName: BANK_NAME,
     branches: [
-      { id: 'br-shirur', name: 'Shirur Branch' },
-      { id: 'br-junnar', name: 'Junnar Branch' },
-      { id: 'br-baramati', name: 'Baramati Branch' },
+      { id: 'br-shirur', name: 'Mumbai Branch' },
+      { id: 'br-junnar', name: 'Delhi Branch' },
+      { id: 'br-baramati', name: 'Pune Branch' },
+      { id: 'br-kolkata', name: 'Kolkata Branch' },
     ],
     borrowers,
     applications: apps,

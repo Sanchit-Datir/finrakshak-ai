@@ -21,7 +21,7 @@ import { Card, CardHeader } from '../components/ui/Card.js';
 import { Dialog } from '../components/ui/Dialog.js';
 import { Checkbox, TextArea } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
-import { DemoBadge, EmptyState, Notice } from '../components/ui/States.js';
+import { EmptyState, Notice } from '../components/ui/States.js';
 import { AppStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import {
@@ -151,7 +151,6 @@ export function ApplicationDetailPage(): React.JSX.Element {
           <>
             <AppStatusBadge status={app.status} />
             <PriorityBadge priority={priority} />
-            <DemoBadge />
           </>
         }
         subtitle={

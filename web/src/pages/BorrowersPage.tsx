@@ -6,7 +6,7 @@ import { FilterSelect } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
-import { DemoBadge, EmptyState } from '../components/ui/States.js';
+import { EmptyState } from '../components/ui/States.js';
 import { PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { APP_STATUS_LABEL, BORROWER_TYPE_LABEL } from '../domain/labels.js';
@@ -18,6 +18,7 @@ import {
   type Priority,
 } from '../domain/schemas.js';
 import { allAlerts, isOpen } from '../lib/alerts.js';
+import { findingsSortValue } from '../lib/borrower-sort.js';
 import { reviewPriority, runChecks } from '../lib/checks.js';
 import { inRange, resolvePeriod, type PeriodKind } from '../lib/period.js';
 import { matchesQuery } from '../lib/text.js';
@@ -108,7 +109,6 @@ export function BorrowersPage(): React.JSX.Element {
       <PageHeader
         docTitle="Borrowers"
         title="Borrowers"
-        badge={<DemoBadge />}
         subtitle="Search by name, borrower ID or loan / application ID. Identifiers are masked by default."
       />
       <Card>
@@ -189,7 +189,7 @@ export function BorrowersPage(): React.JSX.Element {
           caption="Borrowers"
           rows={rows}
           rowKey={(s) => s.b.id}
-          initialSort={{ key: 'activity', dir: 'desc' }}
+          initialSort={{ key: 'findings', dir: 'desc' }}
           empty={
             <EmptyState icon={Users} title="No borrowers match these filters">
               Try a different name or clear filters.
@@ -247,7 +247,7 @@ export function BorrowersPage(): React.JSX.Element {
             {
               key: 'findings',
               header: 'Open findings',
-              sortValue: (s) => s.openFindings,
+              sortValue: findingsSortValue,
               render: (s) => (
                 <div className="flex items-center gap-2">
                   <span className="tabular font-semibold">{s.openFindings}</span>

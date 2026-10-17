@@ -104,8 +104,8 @@ export function ExtractedFieldsPanel({
                   </section>
                 )}
                 <p className="text-muted text-xs">
-                  Simulated demo output. The original text is preserved; transliteration and
-                  translation are shown separately and never overwrite it.
+                  Simulated output. The original text is preserved; transliteration and translation
+                  are shown separately and never overwrite it.
                 </p>
               </div>
             ))}

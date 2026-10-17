@@ -80,25 +80,9 @@ export function PageSkeleton(): React.JSX.Element {
   );
 }
 
-/** Marks synthetic data. Required wherever demo records are shown (spec §1.4). */
-export function DemoBadge({ className }: { className?: string }): React.JSX.Element {
-  return (
-    <span
-      title="All records in this prototype are fictional demonstration data."
-      className={cn(
-        'bg-violet-soft text-violet inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold tracking-wide uppercase',
-        className,
-      )}
-    >
-      <FlaskConical className="size-3" aria-hidden />
-      Demo data
-    </span>
-  );
-}
-
 /** Marks output that no real OCR / AI service produced. */
 export function SimulatedBadge({
-  label = 'Simulated demo output',
+  label = 'Simulated output',
 }: {
   label?: string;
 }): React.JSX.Element {

@@ -8,7 +8,7 @@ import { FilterSelect, SelectField, TextArea, TextField } from '../components/ui
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
-import { DemoBadge, EmptyState } from '../components/ui/States.js';
+import { EmptyState } from '../components/ui/States.js';
 import { CaseStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { CASE_STATUS_LABEL, PRIORITY_LABEL } from '../domain/labels.js';
@@ -77,7 +77,6 @@ export function InvestigationsPage(): React.JSX.Element {
       <PageHeader
         docTitle="Investigations"
         title="Investigations"
-        badge={<DemoBadge />}
         subtitle="Cases bring together evidence, related entities and transactions. A case does not imply anyone is guilty."
         actions={
           <Button

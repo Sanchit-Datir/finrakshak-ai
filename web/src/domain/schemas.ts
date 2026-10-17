@@ -68,6 +68,8 @@ export const LoanProductSchema = z.enum([
   'msme_working_capital',
   'msme_term',
   'personal',
+  'business',
+  'education',
 ]);
 export type LoanProduct = z.infer<typeof LoanProductSchema>;
 

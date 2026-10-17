@@ -5,10 +5,10 @@ import { DbSchema, type Db } from '../domain/schemas.js';
 /**
  * Prototype data store. Persists to this browser's localStorage only — there is
  * no backend database yet. Everything read back is validated with zod; invalid
- * or outdated data is replaced with a fresh demo dataset (and the user is told).
+ * or outdated data is replaced with a fresh set of sample records (and the user is told).
  */
 
-const KEY = 'fundtrace.demo.v1';
+const KEY = 'fundtrace.demo.v2';
 
 export interface StoreStatus {
   /** Set when stored data could not be read and was reset. */
@@ -37,7 +37,7 @@ function readStored(): { db: Db; issue: string | null } {
   return {
     db: createDemoDb(),
     issue:
-      'Saved demo data was unreadable or from an older version, so a fresh demo dataset was loaded.',
+      'Saved data was unreadable or from an older version, so the sample records were reloaded.',
   };
 }
 

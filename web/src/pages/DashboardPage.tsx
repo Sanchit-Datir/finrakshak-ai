@@ -5,7 +5,6 @@ import {
   CircleDashed,
   FileClock,
   FilePlus2,
-  ListFilter,
   Plus,
   ScanLine,
   SearchCheck,
@@ -18,14 +17,13 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { ApplicationsTable } from '../components/applications/ApplicationsTable.js';
 import { DonutChart } from '../components/charts/DonutChart.js';
-import { StackedBarChart } from '../components/charts/StackedBarChart.js';
 import { Button, LinkButton } from '../components/ui/Button.js';
 import { PublicRecordsLoansCard } from '../components/monitoring/PublicRecordsLoansCard.js';
 import { Card, CardHeader } from '../components/ui/Card.js';
 import { FilterSelect } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
-import { DemoBadge, EmptyState } from '../components/ui/States.js';
+import { EmptyState } from '../components/ui/States.js';
 import { AlertStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { cn } from '../components/ui/cn.js';
 import { PRIORITY_HELP } from '../domain/labels.js';
@@ -33,12 +31,13 @@ import type { Application, Db } from '../domain/schemas.js';
 import { allAlerts, isOpen } from '../lib/alerts.js';
 import { reviewPriority } from '../lib/checks.js';
 import { greeting } from '../lib/format.js';
-import { buckets, defaultPeriod, inRange, resolvePeriod, type PeriodValue } from '../lib/period.js';
+import { defaultPeriod, inRange, resolvePeriod, type PeriodValue } from '../lib/period.js';
 import { useFormat } from '../state/hooks.js';
 import { useSession } from '../state/session.js';
 import { resetToDemo, useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 
+const RECENT_LIMIT = 20;
 const AWAITING = new Set(['documents_needed', 'processing', 'needs_review', 'ready_for_decision']);
 
 function Kpi({
@@ -61,12 +60,9 @@ function Kpi({
       to={to}
       className="card group hover:border-primary/50 flex flex-col gap-3 p-4 transition-colors sm:p-5"
     >
-      <div className="flex items-center justify-between">
-        <span className={cn('flex size-10 items-center justify-center rounded-xl', tone)}>
-          <Icon className="size-5" aria-hidden />
-        </span>
-        <DemoBadge />
-      </div>
+      <span className={cn('flex size-10 items-center justify-center rounded-xl', tone)}>
+        <Icon className="size-5" aria-hidden />
+      </span>
       <div>
         <p className="tabular text-3xl font-bold tracking-tight">{value}</p>
         <p className="mt-0.5 text-sm font-medium">{label}</p>
@@ -77,6 +73,37 @@ function Kpi({
       </span>
     </Link>
   );
+}
+
+function MiniLink({
+  icon: Icon,
+  value,
+  label,
+  to,
+}: {
+  icon: LucideIcon;
+  value: number;
+  label: string;
+  to: string;
+}): React.JSX.Element {
+  return (
+    <li>
+      <Link
+        to={to}
+        className="border-line bg-surface hover:border-primary/50 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm"
+      >
+        <Icon className="text-muted size-4" aria-hidden />
+        <span className="tabular font-semibold">{value}</span>
+        <span className="text-muted">{label}</span>
+        <span className="text-primary text-xs font-semibold">View →</span>
+      </Link>
+    </li>
+  );
+}
+
+/** Small fixed-height list that scrolls; its rows hold links, so keyboard focus scrolls it too. */
+function ScrollArea({ children }: { children: React.ReactNode }): React.JSX.Element {
+  return <div className="max-h-80 overflow-y-auto">{children}</div>;
 }
 
 function canSeeAllBranches(role: string | undefined): boolean {
@@ -132,17 +159,17 @@ export function DashboardPage(): React.JSX.Element {
                     resetToDemo();
                     toast.push({
                       tone: 'success',
-                      title: 'Demo dataset loaded',
-                      detail: 'Synthetic applications, loans and cases are now available.',
+                      title: 'Sample records loaded',
+                      detail: 'Sample applications, loans and cases are now available.',
                     });
                   }}
                 >
-                  Load demo dataset
+                  Load sample records
                 </Button>
               </>
             }
           >
-            Start a new application or load the demo dataset.
+            Start a new application or load the sample records.
           </EmptyState>
         </Card>
       </>
@@ -169,14 +196,11 @@ export function DashboardPage(): React.JSX.Element {
               />
             )}
             <PeriodPicker value={period} onChange={setPeriod} />
-            <LinkButton to="/applications/new" variant="primary" icon={Plus} className="self-end">
-              New Application
-            </LinkButton>
           </>
         }
       />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Kpi
           icon={FileClock}
           tone="bg-info-soft text-info"
@@ -193,54 +217,35 @@ export function DashboardPage(): React.JSX.Element {
           hint="Open alerts at Needs attention or Urgent review"
           to="/alerts?view=open"
         />
-        <Kpi
+      </div>
+      <ul aria-label="More counts" className="mt-3 flex flex-wrap gap-2">
+        <MiniLink
           icon={Activity}
-          tone="bg-ok-soft text-ok"
           value={scoped.loans.length}
           label="Active loans monitored"
-          hint={`${scoped.loans.filter((l) => !l.dataSource.startsWith('No ')).length} with transaction data loaded`}
           to="/monitoring"
         />
-        <Kpi
+        <MiniLink
           icon={SearchCheck}
-          tone="bg-violet-soft text-violet"
           value={openCases.length}
           label="Open investigations"
-          hint="Cases not yet resolved or closed"
           to="/investigations?status=open"
         />
-      </div>
+      </ul>
 
       <div className="mt-6">
         <PublicRecordsLoansCard watches={db.publicWatches} />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-5">
-        <Card className="lg:col-span-3">
-          <CardHeader
-            title="Portfolio activity"
-            subtitle={`Applications by submission date · ${range.label}`}
-          />
-          <div className="px-4 pb-4 sm:px-5">
-            {appsInPeriod.length === 0 ? (
-              <EmptyState icon={ListFilter} title="No applications in this period">
-                Try a wider date range.
-              </EmptyState>
-            ) : (
-              <ActivityChart apps={appsInPeriod} range={range} />
-            )}
-          </div>
-        </Card>
-        <Card className="lg:col-span-2">
-          <CardHeader
-            title="Risk overview"
-            subtitle="Applications in progress by review priority (current)"
-          />
-          <div className="px-4 pb-5 sm:px-5">
-            <RiskDonut apps={awaiting} db={db} />
-          </div>
-        </Card>
-      </div>
+      <Card className="mt-6">
+        <CardHeader
+          title="Risk overview"
+          subtitle="Applications in progress by review priority (current)"
+        />
+        <div className="px-4 pb-5 sm:px-5">
+          <RiskDonut apps={awaiting} db={db} />
+        </div>
+      </Card>
 
       <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
         <Card className="xl:col-span-2">
@@ -253,20 +258,22 @@ export function DashboardPage(): React.JSX.Element {
               </LinkButton>
             }
           />
-          <ApplicationsTable
-            apps={[...appsInPeriod]
-              .sort((a, b) =>
-                (b.submittedAt ?? b.createdAt).localeCompare(a.submittedAt ?? a.createdAt),
-              )
-              .slice(0, 6)}
-            db={db}
-            caption="Recent applications"
-            empty={
-              <EmptyState icon={FilePlus2} title="No applications in this period">
-                Try a wider date range or start a new application.
-              </EmptyState>
-            }
-          />
+          <ScrollArea>
+            <ApplicationsTable
+              apps={[...appsInPeriod]
+                .sort((a, b) =>
+                  (b.submittedAt ?? b.createdAt).localeCompare(a.submittedAt ?? a.createdAt),
+                )
+                .slice(0, RECENT_LIMIT)}
+              db={db}
+              caption="Recent applications"
+              empty={
+                <EmptyState icon={FilePlus2} title="No applications in this period">
+                  Try a wider date range or start a new application.
+                </EmptyState>
+              }
+            />
+          </ScrollArea>
         </Card>
         <Card>
           <CardHeader
@@ -283,26 +290,28 @@ export function DashboardPage(): React.JSX.Element {
               Try a wider date range.
             </EmptyState>
           ) : (
-            <ul className="divide-line divide-y">
-              {alertsInPeriod.slice(0, 6).map((a) => (
-                <li key={a.id} className="px-4 py-3 sm:px-5">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <PriorityBadge priority={a.priority} />
-                    <AlertStatusBadge status={a.status} />
-                  </div>
-                  <p className="mt-1.5 text-sm font-medium">{a.title}</p>
-                  <p className="text-muted text-xs">
-                    {a.linkedLabel} · <span className="tabular">{f.dateTime(a.at)}</span>
-                  </p>
-                  <Link
-                    to={`/alerts?alert=${encodeURIComponent(a.id)}`}
-                    className="text-primary mt-1 inline-block text-xs font-semibold hover:underline"
-                  >
-                    View evidence
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <ScrollArea>
+              <ul className="divide-line divide-y">
+                {alertsInPeriod.slice(0, RECENT_LIMIT).map((a) => (
+                  <li key={a.id} className="px-4 py-2.5 sm:px-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <PriorityBadge priority={a.priority} />
+                      <AlertStatusBadge status={a.status} />
+                    </div>
+                    <p className="mt-1.5 text-sm font-medium">{a.title}</p>
+                    <p className="text-muted text-xs">
+                      {a.linkedLabel} · <span className="tabular">{f.dateTime(a.at)}</span>
+                    </p>
+                    <Link
+                      to={`/alerts?alert=${encodeURIComponent(a.id)}`}
+                      className="text-primary mt-1 inline-block text-xs font-semibold hover:underline"
+                    >
+                      View evidence
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </ScrollArea>
           )}
         </Card>
       </div>
@@ -329,36 +338,6 @@ export function DashboardPage(): React.JSX.Element {
       </div>
     </>
   );
-}
-
-function ActivityChart({
-  apps,
-  range,
-}: {
-  apps: Application[];
-  range: ReturnType<typeof resolvePeriod>;
-}): React.JSX.Element {
-  const defs = buckets(range);
-  const series = [
-    { key: 'review', label: 'In review', color: 'var(--color-primary)' },
-    { key: 'decided', label: 'Decided (demo state)', color: 'var(--color-teal)' },
-    { key: 'draft', label: 'Draft', color: 'var(--color-muted)' },
-  ];
-  const data = defs.map((b) => {
-    const inB = apps.filter((a) => {
-      const t = new Date(a.submittedAt ?? a.createdAt).getTime();
-      return t >= b.start && t <= b.end;
-    });
-    return {
-      label: b.label,
-      values: {
-        review: inB.filter((a) => AWAITING.has(a.status)).length,
-        decided: inB.filter((a) => a.status === 'approved' || a.status === 'declined').length,
-        draft: inB.filter((a) => a.status === 'draft').length,
-      },
-    };
-  });
-  return <StackedBarChart title="Applications by submission date" buckets={data} series={series} />;
 }
 
 function RiskDonut({ apps, db }: { apps: Application[]; db: Db }): React.JSX.Element {

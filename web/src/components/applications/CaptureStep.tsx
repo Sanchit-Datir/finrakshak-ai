@@ -3,7 +3,7 @@ import {
   ArrowUp,
   Camera,
   Eye,
-  FlaskConical,
+  FileText,
   Plus,
   RefreshCw,
   Replace,
@@ -15,11 +15,9 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { LANGUAGE_LABEL } from '../../domain/labels.js';
 import { LanguageSchema, type Application, type FtDocument } from '../../domain/schemas.js';
-import { ATTACHABLE_SAMPLES, getSample } from '../../demo/samples.js';
 import { formatBytes } from '../../lib/format.js';
 import { ACCEPT_ATTR, intakeFiles, processDocumentFile } from '../../lib/processing.js';
 import {
-  attachSample,
   moveDocument,
   removeDocument,
   replaceDocumentFile,
@@ -33,7 +31,6 @@ import { useToast } from '../../state/toast.js';
 import { Button, IconButton } from '../ui/Button.js';
 import { ConfirmDialog, Dialog } from '../ui/Dialog.js';
 import { FilterSelect } from '../ui/Field.js';
-import { Popover } from '../ui/Popover.js';
 import { EmptyState, Notice } from '../ui/States.js';
 import { ProcessingBadge } from '../ui/StatusBadges.js';
 import { cn } from '../ui/cn.js';
@@ -47,11 +44,13 @@ export function CaptureStep({
   docs,
   actor,
   ensureApp,
+  onFillForm,
 }: {
   app: Application | null;
   docs: FtDocument[];
   actor: string;
   ensureApp: () => string;
+  onFillForm: () => void;
 }): React.JSX.Element {
   const toast = useToast();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -102,18 +101,20 @@ export function CaptureStep({
     };
   }, []);
 
-  const addSample = (sampleId: string): void => {
-    const appId = ensureApp();
-    attachSample(appId, sampleId, actor);
-    toast.push({
-      tone: 'info',
-      title: 'Demo sample attached',
-      detail: 'Its extracted fields are simulated demo output and still need review.',
-    });
-  };
-
   return (
     <div className="space-y-5">
+      <div className="card flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+        <div>
+          <h3 className="font-semibold">Fill the application form</h3>
+          <p className="text-muted text-sm">
+            Enter the applicant and loan details directly. Uploading documents is optional.
+          </p>
+        </div>
+        <Button variant="primary" icon={FileText} onClick={onFillForm} className="h-12 px-5">
+          Fill the application form
+        </Button>
+      </div>
+      <p className="text-muted text-center text-sm font-medium">or upload documents</p>
       <div
         ref={dropRef}
         className={cn(
@@ -142,42 +143,6 @@ export function CaptureStep({
           <Button icon={Upload} onClick={() => inputRef.current?.click()} className="h-12 px-5">
             Upload files
           </Button>
-          <Popover
-            align="left"
-            panelClassName="w-72"
-            trigger={({ open, toggle, id }) => (
-              <Button
-                icon={FlaskConical}
-                onClick={toggle}
-                aria-expanded={open}
-                aria-controls={id}
-                className="h-12 px-5"
-              >
-                Add demo sample
-              </Button>
-            )}
-          >
-            {(close) => (
-              <div className="py-1">
-                <p className="text-muted px-3 py-2 text-xs">
-                  Synthetic documents with simulated extraction output.
-                </p>
-                {ATTACHABLE_SAMPLES.map((sid) => (
-                  <button
-                    key={sid}
-                    type="button"
-                    className="hover:bg-surface-2 block w-full px-3 py-2 text-left text-sm"
-                    onClick={() => {
-                      addSample(sid);
-                      close();
-                    }}
-                  >
-                    {getSample(sid)?.title ?? sid}
-                  </button>
-                ))}
-              </div>
-            )}
-          </Popover>
         </div>
         <input
           ref={inputRef}
@@ -209,8 +174,8 @@ export function CaptureStep({
         {docs.length === 0 ? (
           <div className="card">
             <EmptyState icon={Upload} title="No documents yet">
-              Scan or upload the applicant’s documents. You can classify them now or later — exact
-              classification isn’t required before upload.
+              Documents are optional. Scan or upload them to extract and verify their details, or
+              fill the application form directly.
             </EmptyState>
           </div>
         ) : (
@@ -323,7 +288,7 @@ function DocRow({
             <p className="truncate font-medium">{doc.filename}</p>
             <ProcessingBadge state={doc.processing} />
             {doc.sampleId !== null && (
-              <span className="text-violet text-xs font-semibold">Demo sample</span>
+              <span className="text-violet text-xs font-semibold">Sample document</span>
             )}
           </div>
           <p className="text-muted tabular mt-0.5 text-xs">
