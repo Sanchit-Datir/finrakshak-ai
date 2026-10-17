@@ -46,6 +46,8 @@ owner decided. Only the borrowers are real; the loan values are made up.
 
 ## Open decisions and next ideas
 
+- **Budget alert (parked):** not created on purpose. When ready, rerun
+  `BILLING_ACCOUNT=… BUDGET_USD=… scripts/setup-ingest-gcp.sh fund-tracer` (plan D7, B-15).
 - **Urgent threshold:** confirm `URGENT_RECEIVABLE_SHARE_PERCENT = 20`
   (`web/src/lib/public-records-findings.ts`).
 - **Alert levels:** confirm every insolvency, liquidation or ED record after disbursement is

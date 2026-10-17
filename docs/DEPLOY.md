@@ -151,7 +151,7 @@ Design: [`docs/plans/GCP_INGESTION_AGENT_PLAN.md`](plans/GCP_INGESTION_AGENT_PLA
 
 ```bash
 SEED=1 scripts/setup-ingest-gcp.sh fund-tracer            # buckets, datasets, accounts, scheduler, alerts
-# optional budget: BILLING_ACCOUNT=XXXXXX-XXXXXX-XXXXXX BUDGET_USD=25 scripts/setup-ingest-gcp.sh fund-tracer
+# budget alert: PARKED (owner decision). Later: BILLING_ACCOUNT=XXXXXX-XXXXXX-XXXXXX BUDGET_USD=<figure> scripts/setup-ingest-gcp.sh fund-tracer
 ```
 
 `SEED=1` copies the five MCA master parts and `data/registry/sources.json` into the state bucket.
