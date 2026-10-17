@@ -26,12 +26,12 @@ The steps run in four phases. A phase ends with something you can see working.
 
 ### Phase A: foundations (local, no cloud)
 
-| #   | Step                                                                                                                          | Needs from the owner                         | Status              |
-| --- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------- |
-| 1   | R0 Characterisation tests for the monitoring rules and record kinds                                                           |                                              | [x] done, `0775b52` |
-| 2   | R1 Move rule detection and record kinds into `packages/shared`                                                                |                                              | [x] done, `72727d6` |
-| 3   | S1 Synthetic schemas (web-shaped), seeded random generator, calendar, ledger, guards (`f596fe0`, built by the forked session) |                                              | [x] done            |
-| 4   | M0 Seed verification sheet for the 23 cases                                                                                   | **Start verifying; runs alongside the rest** | [ ]                 |
+| #   | Step                                                                                                                          | Needs from the owner                | Status              |
+| --- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ------------------- |
+| 1   | R0 Characterisation tests for the monitoring rules and record kinds                                                           |                                     | [x] done, `0775b52` |
+| 2   | R1 Move rule detection and record kinds into `packages/shared`                                                                |                                     | [x] done, `72727d6` |
+| 3   | S1 Synthetic schemas (web-shaped), seeded random generator, calendar, ledger, guards (`f596fe0`, built by the forked session) |                                     | [x] done            |
+| 4   | M0 Seed verification sheet for the 23 cases (`c96df4f`; `npm run miner`, see `data/verification/README.md`)                   | **Built. Now you review the cases** | [x] done            |
 
 ### Phase B: first end-to-end result (local, no cloud)
 

@@ -52,7 +52,7 @@ owner decided. Only the borrowers are real; the loan values are made up.
 
 - **Risk scoring programme (planned 17 Oct 2026):** synthetic transaction data, a daily risk-scoring
   job, a pattern miner agent and an optional explainer agent. **Start at `docs/plans/README.md`**: it has
-  the plan index, the 17-step build order with a status per step (steps 1–2 done), the decisions taken and
+  the plan index, the 17-step build order with a status per step (steps 1–4 done), the decisions taken and
   the checkpoints that need the owner. Work is on the local branch `plan/synthetic-transactions` (not
   pushed, no PR). Update the status in that README when a step finishes.
 - **Budget alert (parked):** not created on purpose. When ready, rerun
