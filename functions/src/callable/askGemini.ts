@@ -4,7 +4,8 @@ import { z } from 'zod';
 import { getEnv } from '../config/env.js';
 import { geminiApiKey } from '../config/secrets.js';
 import { GEMINI_LIMITS, GeminiError, generateText } from '../services/gemini.js';
-import { firestoreAccessStore, type AccessStore } from '../services/access.js';
+import { defaultProfileStore } from '../services/profiles.js';
+import { accessFromProfiles, type AccessStore } from '../services/access.js';
 import {
   consumeDailyQuota,
   firestoreUsageStore,
@@ -31,7 +32,10 @@ export interface AskGeminiDeps {
 /** Exported separately so it can be unit-tested without the Functions runtime. */
 export async function askGeminiHandler(
   request: CallableRequest<unknown>,
-  deps: AskGeminiDeps = { usage: firestoreUsageStore(), access: firestoreAccessStore() },
+  deps: AskGeminiDeps = {
+    usage: firestoreUsageStore(),
+    access: accessFromProfiles(defaultProfileStore()),
+  },
 ): Promise<AskGeminiResult> {
   if (request.auth === undefined) {
     throw new HttpsError('unauthenticated', 'Sign in required');

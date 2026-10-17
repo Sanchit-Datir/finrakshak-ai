@@ -3,9 +3,13 @@ import { z } from 'zod';
 import { RoleSchema, type Role } from '../domain/schemas.js';
 
 /**
- * DEMO SESSION ONLY. Real authentication is not implemented. A demo session
- * stores the chosen display name and role in browser storage; no credential is
- * checked or stored. Do not treat this as access control.
+ * Two kinds of session:
+ *  - a DEMO session: the chosen display name and role in browser storage; no credential is checked.
+ *    It is not access control and never reaches the cloud features.
+ *  - a CLOUD session: a Firebase sign-in plus the person's profile from the server (name, role,
+ *    branch, AI on/off). It lives in memory only; Firebase itself restores the sign-in on reload.
+ * A cloud session wins when both exist. Anything that must really be protected is enforced on the
+ * server, not by what this module says.
  */
 
 const KEY = 'fundtrace.session.v1';
@@ -19,9 +23,25 @@ const SessionSchema = z.object({
   remember: z.boolean(),
   demo: z.literal(true),
 });
-export type Session = z.infer<typeof SessionSchema>;
+export type DemoSession = z.infer<typeof SessionSchema>;
 
-function read(): Session | null {
+export interface CloudSession {
+  name: string;
+  employeeId: string;
+  role: Role;
+  branchId: string;
+  signedInAt: string;
+  remember: boolean;
+  demo: false;
+  /** Firebase user ID, the key of this person's profile and what the owner enables. */
+  uid: string;
+  email: string | null;
+  aiEnabled: boolean;
+}
+
+export type Session = DemoSession | CloudSession;
+
+function read(): DemoSession | null {
   for (const store of [safe(() => window.sessionStorage), safe(() => window.localStorage)]) {
     const raw = store === null ? null : safe(() => store.getItem(KEY));
     if (raw === null) continue;
@@ -43,8 +63,28 @@ function safe<T>(fn: () => T): T | null {
   }
 }
 
-let current: Session | null = read();
+let demoCurrent: DemoSession | null = read();
+let cloudCurrent: CloudSession | null = null;
+let current: Session | null = demoCurrent;
 const listeners = new Set<() => void>();
+
+function recompute(): void {
+  current = cloudCurrent ?? demoCurrent;
+  for (const l of listeners) l();
+}
+
+/** Set (or clear, with null) the cloud session. Called by the cloud sign-in module. */
+export function setCloudSession(next: CloudSession | null): void {
+  cloudCurrent = next;
+  recompute();
+}
+
+let signOutHook: (() => void) | null = null;
+
+/** The cloud module registers how to sign out of Firebase, so ending a session ends both. */
+export function registerSignOutHook(hook: () => void): void {
+  signOutHook = hook;
+}
 
 export function startDemoSession(input: {
   name: string;
@@ -53,23 +93,26 @@ export function startDemoSession(input: {
   branchId: string;
   remember: boolean;
 }): void {
-  current = { ...input, signedInAt: new Date().toISOString(), demo: true };
+  demoCurrent = { ...input, signedInAt: new Date().toISOString(), demo: true };
   const target = input.remember
     ? safe(() => window.localStorage)
     : safe(() => window.sessionStorage);
-  safe(() => target?.setItem(KEY, JSON.stringify(current)));
-  for (const l of listeners) l();
+  const value = JSON.stringify(demoCurrent);
+  safe(() => target?.setItem(KEY, value));
+  recompute();
 }
 
 export function endSession(): void {
-  current = null;
+  demoCurrent = null;
+  cloudCurrent = null;
+  signOutHook?.();
   safe(() => {
     window.localStorage.removeItem(KEY);
   });
   safe(() => {
     window.sessionStorage.removeItem(KEY);
   });
-  for (const l of listeners) l();
+  recompute();
 }
 
 export function useSession(): Session | null {
@@ -94,14 +137,15 @@ export function canConfigureRules(role: Role | undefined): boolean {
 export function updateDemoSession(
   patch: Partial<Pick<Session, 'name' | 'employeeId' | 'branchId'>>,
 ): void {
-  if (current === null) return;
-  current = { ...current, ...patch };
-  const target = current.remember
+  // Only a demo session is editable in the browser; a cloud profile is managed by the administrator.
+  if (demoCurrent === null) return;
+  demoCurrent = { ...demoCurrent, ...patch };
+  const target = demoCurrent.remember
     ? safe(() => window.localStorage)
     : safe(() => window.sessionStorage);
-  const value = JSON.stringify(current);
+  const value = JSON.stringify(demoCurrent);
   safe(() => {
     target?.setItem(KEY, value);
   });
-  for (const l of listeners) l();
+  recompute();
 }
