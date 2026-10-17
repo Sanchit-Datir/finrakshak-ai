@@ -11,3 +11,4 @@ data/
 # Playwright output (e2e)
 playwright-report
 test-results
+blob-report

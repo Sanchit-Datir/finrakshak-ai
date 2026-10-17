@@ -25,7 +25,8 @@
     "ingest": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/cli.js",
     "e2e": "npm run test:e2e -w e2e --",
     "audit:prod": "npm audit --omit=dev --audit-level=low",
-    "audit:all": "npm audit --audit-level=critical"
+    "audit:all": "npm audit --audit-level=critical",
+    "test:e2e": "npm run test:e2e -w web"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
