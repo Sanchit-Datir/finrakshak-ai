@@ -46,42 +46,67 @@ changed; add it to `RUNTIME_SAS` in `scripts/setup-gcp.sh` and re-run the script
 
 ## Connecting the web app (sign-in, App Check, `askGemini`)
 
-The web app stays in demo mode (no cloud calls, no AI) until it is built with the Firebase web
-config. Steps that only a project owner can do:
+Until these are done the live site shows **Cloud & AI → "Not connected"** (demo mode, no AI calls). Do
+them in this order; menu names are the current Firebase console ones (Security → Authentication, Security
+→ App Check). Console: <https://console.firebase.google.com/project/fund-tracer>.
 
-1. **Enable sign-in:** Firebase console → Authentication → Sign-in method → Email/Password. Anyone who
-   has the public web config can usually register an account themselves, so signing in proves nothing
-   by itself. That is safe, because billed AI is limited to the **allow-list** in step 6: a stranger's
-   account signs in but gets "not enabled" and costs nothing. If your console offers Authentication →
-   Settings → User actions → "Enable create (sign-up)", turning it off is a good extra layer.
-2. **App Check:** create a reCAPTCHA v3 site key at <https://www.google.com/recaptcha/admin>
-   (domains: `fund-tracer.web.app`, `fund-tracer.firebaseapp.com`), then Firebase console → App Check →
-   Apps → register the web app with reCAPTCHA v3 and paste the **secret** key there. Keep the secret
-   key out of the repo.
-3. **GitHub repo variables** (Settings → Secrets and variables → Actions → Variables; all public
-   values): `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_APP_ID`,
-   `VITE_RECAPTCHA_SITE_KEY` (from Firebase console → Project settings → Your apps).
-4. **Let browsers reach the function:** a callable must be publicly invokable at the network level;
-   sign-in, App Check and the daily limit are what actually protect it. Grant once, deliberately:
+**A. Firebase console**
 
-   ```bash
-   gcloud run services add-iam-policy-binding askgemini --region asia-south1 \
-     --project fund-tracer --member allUsers --role roles/run.invoker
-   ```
+1. **Register the web app** (this is where the config values come from). Project settings (gear) →
+   General → Your apps → Add app → Web (`</>`) → nickname `Fund Tracer Web` → leave "Also set up Hosting"
+   off → Register app. Note `apiKey`, `authDomain` (`fund-tracer.firebaseapp.com`) and `appId` (starts
+   `1:`). Later: Project settings → Your apps → SDK setup and configuration. CLI alternative:
+   `firebase apps:create WEB "Fund Tracer Web" --project fund-tracer` then
+   `firebase apps:sdkconfig WEB --project fund-tracer`. These values are public, not secrets.
+2. **Start sign-in:** Security → Authentication → **Get started** → Sign-in method → **Email/Password** →
+   enable (leave "Email link" off) → Save. Then the **Users** tab → Add user (email + password) for each
+   person. Anyone with the public config can usually register themselves too, which is safe because billed
+   AI is limited to the allow-list in step D.
+3. **App Check key:** open <https://www.google.com/recaptcha/admin/create>, choose **reCAPTCHA v3** (score
+   based), add domains `fund-tracer.web.app` and `fund-tracer.firebaseapp.com`, and copy the **Site key**
+   (public) and **Secret key** (private). Firebase now recommends reCAPTCHA Enterprise for new projects; v3
+   still works with this code. If that page only offers Enterprise, the code needs a small switch to
+   `ReCaptchaEnterpriseProvider` (and check its pricing first).
+4. Security → **App Check** → **Apps** tab → your web app → reCAPTCHA → paste the **Secret key** → Save.
+   Never put the secret key in the repo or in a GitHub variable.
 
-5. Open **Settings → Cloud & AI** and sign in. The page shows your **Account ID**.
-6. **Enable people for AI (the allow-list).** Firebase console → Firestore Database → Data → Start
-   collection `allowedUsers` (first time only). Add a document whose **Document ID is the person's Account
-   ID**: copy it from the Cloud & AI tab, or from Authentication → Users → "User UID". Optional field
-   `email` (string) is just a label for you. To switch someone off set `enabled` (boolean) to `false`, or
-   delete the document. Do **not** key it by email: nothing checks that a person owns the email they
-   register with, but nobody can choose their own Account ID.
-7. Ask a question. When the live model is on, allowed accounts get a reply and everyone else gets "not
-   enabled" (the free mock used locally and in tests is not gated). Each billed call costs one Firestore
-   read for this check, well inside the free quota.
+**B. GitHub** (repo → Settings → Secrets and variables → Actions → **Variables** tab → New repository
+variable; they must be Variables, not Secrets, because the browser needs them):
 
-Locally, `npm run serve -w functions` plus `VITE_USE_EMULATORS=true npm run dev -w web` use the Auth
-and Functions emulators and the free mock, so nothing is billed. The security headers in
+| Name                        | Value                                |
+| --------------------------- | ------------------------------------ |
+| `VITE_FIREBASE_API_KEY`     | `apiKey` from step 1                 |
+| `VITE_FIREBASE_AUTH_DOMAIN` | `fund-tracer.firebaseapp.com`        |
+| `VITE_FIREBASE_APP_ID`      | `appId` from step 1                  |
+| `VITE_RECAPTCHA_SITE_KEY`   | the reCAPTCHA **Site key** (step A3) |
+
+The project ID is added by the workflow itself.
+
+**C. Rebuild the site.** Variables are baked in at build time, so the live site changes only after a new
+deploy: Actions → **Deploy** → Run workflow → branch `main` (or re-run the latest run on `main`).
+
+**D. First use and the allow-list**
+
+1. Open <https://fund-tracer.web.app>, use the demo sign-in, then Settings → **Cloud & AI** and sign in with
+   a user from step A2. The page shows your **Account ID**; copy it.
+2. Firebase console → **Firestore Database** → Data → Start collection `allowedUsers` (first time only).
+   Add a document whose **Document ID is the Account ID**; optional field `email` (string) is only a
+   label. To switch someone off set `enabled` (boolean) to `false`, or delete the document. Do **not** key
+   it by email: nothing checks that a person owns the email they register with, but nobody can choose their
+   own Account ID.
+3. Ask a question. Allowed accounts get a live reply; everyone else gets "not enabled". The reply is billed
+   to the Gemini key and counted against the daily limit (30 per Indian day by default). The key is a
+   free-tier key, so use made-up data only.
+
+`askgemini` is already publicly invokable at the network level (the Firebase CLI set this when the
+function was first deployed; `health` is private). That is normal for a callable, because the function
+itself rejects requests without sign-in and an App Check token. What actually protects it: sign-in, App
+Check, the allow-list and the daily limit. Check any time with
+`gcloud run services get-iam-policy askgemini --region asia-south1 --project fund-tracer`, and look for
+unexpected traffic under Cloud Run → askgemini → Logs.
+
+Locally, `npm run serve -w functions` plus `VITE_USE_EMULATORS=true npm run dev -w web` use the Auth and
+Functions emulators and the free mock, so nothing is billed. The security headers in
 `web/security-headers.ts` and `firebase.json` allow only the Google hosts these features need.
 
 ## When a deploy fails
