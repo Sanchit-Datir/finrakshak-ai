@@ -1,4 +1,5 @@
 import type { ListingItem, SourceId } from '@fund-tracker/shared';
+import type { ListingPlan } from '../delta/policy.js';
 import type { PoliteFetcher } from '../http/fetcher.js';
 import type { RawStore } from '../store/rawStore.js';
 
@@ -9,6 +10,8 @@ export interface SourceContext {
   readonly runAt: string;
   /** Stop listing after this many items (e.g. a small SEBI sample); undefined = everything. */
   readonly maxItems?: number;
+  /** Full or incremental listing, and the items already held (see `delta/policy.ts`). */
+  readonly listing: ListingPlan;
 }
 
 /**

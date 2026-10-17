@@ -1,4 +1,5 @@
 import type { ListingItem } from '@fund-tracker/shared';
+import { assertFirstPageHasRows, shouldStopPaging } from '../delta/policy.js';
 import { log } from '../log.js';
 import { parseDate } from '../util/dates.js';
 import { parseTable, type TableRow } from '../util/htmlTable.js';
@@ -6,6 +7,7 @@ import { stableId } from '../util/ids.js';
 import type { SourceAdapter, SourceContext } from './types.js';
 
 const LIST = 'https://ibbi.gov.in/public-announcement';
+const COLLECTION = 'ibbi.public_announcements';
 
 function lastPage(html: string): number {
   const pages = [...html.matchAll(/public-announcement\?page=(\d+)/g)].map((m) => Number(m[1]));
@@ -21,7 +23,7 @@ function rowToItem(row: TableRow, runAt: string): ListingItem | null {
   return {
     item_id: stableId('ibbi', docs[0] ?? `${debtor}|${c['date_of_announcement'] ?? ''}|${type}`),
     source_id: 'ibbi',
-    collection: 'ibbi.public_announcements',
+    collection: COLLECTION,
     title: `${type}: ${debtor}`,
     detail_url: null,
     document_urls: docs,
@@ -50,11 +52,18 @@ export const ibbiAdapter: SourceAdapter = {
       const html = res.body.toString('utf8');
       if (page === 1) last = lastPage(html);
       const rows = parseTable(html, res.finalUrl);
+      if (page === 1) assertFirstPageHasRows(ctx.listing, COLLECTION, rows.length, LIST);
       if (rows.length === 0) log.warn('empty IBBI page', { page, status: res.status });
-      for (const row of rows) {
-        const item = rowToItem(row, ctx.runAt);
-        if (item) items.push(item);
-      }
+      const pageItems = rows.flatMap((row) => rowToItem(row, ctx.runAt) ?? []);
+      items.push(...pageItems);
+      // Newest announcements come first: a page we already hold entirely ends an incremental run.
+      if (
+        shouldStopPaging(
+          ctx.listing,
+          pageItems.map((i) => i.item_id),
+        )
+      )
+        break;
     }
     return items;
   },

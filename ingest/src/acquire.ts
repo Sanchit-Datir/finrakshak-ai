@@ -1,6 +1,10 @@
 import { ListingItemSchema, type ListingItem, type SourceId } from '@fund-tracker/shared';
 import { z } from 'zod';
 import { dataPath, getConfig } from './config.js';
+import { diffListings, mergeListing, type ListingDelta } from './delta/diff.js';
+import { chooseMode, FULL_PLAN, makePlan } from './delta/policy.js';
+import { makeReport, writeReport, type DeltaReport } from './delta/report.js';
+import { readState, writeState } from './delta/state.js';
 import { PoliteFetcher } from './http/fetcher.js';
 import { errorMessage, log } from './log.js';
 import { selectForDownload } from './select/relevance.js';
@@ -25,21 +29,69 @@ export async function makeContext(sourceId: SourceId, maxItems?: number): Promis
     fetcher: new PoliteFetcher(getConfig()),
     store: await RawStore.open(sourceId),
     runAt: new Date().toISOString(),
+    listing: FULL_PLAN,
   };
   return maxItems === undefined ? base : { ...base, maxItems };
 }
 
-/** Step 1: list everything the source publishes (metadata only). */
+/**
+ * Step 1: list what the source publishes (metadata only), diff it against what we hold and merge it
+ * into the stored listing. Nothing is written if the adapter throws or the listing looks broken.
+ */
 export async function runListing(
   adapter: SourceAdapter,
   ctx: SourceContext,
-): Promise<ListingItem[]> {
-  const items = validListing(adapter.id, await adapter.list(ctx));
-  await writeJsonl(listingFile(adapter.id), items);
-  const day = ctx.runAt.slice(0, 10);
-  await writeJsonl(dataPath('interim', 'listings', 'history', adapter.id, `${day}.jsonl`), items);
-  log.info('listing saved', { source: adapter.id, items: items.length });
-  return items;
+  forceFull = false,
+): Promise<DeltaReport> {
+  const file = listingFile(adapter.id);
+  const previous = await readJsonl(file, ListingItemSchema);
+  const state = await readState(adapter.id);
+  const mode = chooseMode(adapter.id, state, ctx.runAt, forceFull);
+  const items = validListing(
+    adapter.id,
+    await adapter.list({ ...ctx, listing: makePlan(mode, previous) }),
+  );
+  if (mode === 'full' && items.length === 0 && previous.length > 0)
+    throw new Error(`${adapter.id} returned no items but ${previous.length} were listed before`);
+
+  const alreadyMissing = new Set(state?.missing_ids ?? []);
+  const delta = diffListings(previous, items, { evaluateRemoved: mode === 'full', alreadyMissing });
+  const merged = mergeListing(previous, items);
+  await writeJsonl(file, merged);
+  await writeJsonl(
+    dataPath('interim', 'listings', 'history', adapter.id, `${ctx.runAt.slice(0, 10)}.jsonl`),
+    items,
+  );
+  const report = makeReport(adapter.id, ctx.runAt, mode, items.length, merged.length, delta);
+  await writeReport(report);
+  await writeState({
+    source_id: adapter.id,
+    last_success_at: ctx.runAt,
+    last_full_listing_at: mode === 'full' ? ctx.runAt : (state?.last_full_listing_at ?? null),
+    item_count: merged.length,
+    missing_ids: nextMissing(merged, items, delta, alreadyMissing),
+  });
+  log.info('listing saved', {
+    source: adapter.id,
+    mode,
+    fetched: items.length,
+    total: merged.length,
+  });
+  return report;
+}
+
+/** Items flagged as missing: kept while still absent from a full relist, cleared when they return. */
+function nextMissing(
+  merged: readonly ListingItem[],
+  fetched: readonly ListingItem[],
+  delta: ListingDelta,
+  alreadyMissing: ReadonlySet<string>,
+): string[] {
+  const returned = new Set(fetched.map((i) => i.item_id));
+  const exists = new Set(merged.map((i) => i.item_id));
+  const missing = new Set([...alreadyMissing, ...delta.removed]);
+  for (const id of missing) if (returned.has(id) || !exists.has(id)) missing.delete(id);
+  return [...missing].sort();
 }
 
 const MAX_TITLE = 2_000;
