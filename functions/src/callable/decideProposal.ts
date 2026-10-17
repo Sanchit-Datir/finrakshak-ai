@@ -23,6 +23,7 @@ const StoredSchema = z.object({
     'resolved',
   ]),
   action: z.string(),
+  expires_at: z.string().datetime(),
 });
 
 type AssertTrue<T extends true> = T;
@@ -68,11 +69,16 @@ export async function decideProposalHandler(
     if (!snap.exists) throw new HttpsError('not-found', 'Proposal not found');
     const stored = StoredSchema.safeParse(snap.data());
     if (!stored.success) throw new HttpsError('failed-precondition', 'Proposal is malformed');
-    const next = nextStatus(stored.data.status, stored.data.action, decision);
+    const { status: current, action, expires_at } = stored.data;
+    // Past its deadline, a proposal may still be rejected or resolved, but not approved: the
+    // agent proposes it again if it is still needed (the next run marks it expired, B-49).
+    if (decision === 'approve' && Date.parse(expires_at) <= Date.now())
+      throw new HttpsError('failed-precondition', 'This proposal has expired');
+    const next = nextStatus(current, action, decision);
     if (next === null)
       throw new HttpsError(
         'failed-precondition',
-        `Cannot ${decision} a ${stored.data.status} proposal`,
+        `Cannot ${decision} a proposal that is ${current.replace('_', ' ')}`,
       );
     tx.update(ref, { status: next, decided_at: new Date().toISOString(), decided_by: uid });
     return next;

@@ -45,19 +45,11 @@ const EnvSchema = z.object({
   GEMINI_DAILY_LIMIT: z.coerce.number().int().min(1).max(10_000).default(30),
   /** Injected from Secret Manager at runtime (see `geminiApiKey` in config/secrets.ts). */
   GEMINI_API_KEY: z.string().min(1).optional(),
-  /** Bucket the cloud ingestion publishes to (default `<project>-ingest-publish`). */
-  PUBLIC_DATA_BUCKET: z.string().min(3).optional(),
-  /** `live` for the app; `dry-run` only to inspect the dry run. */
-  PUBLIC_DATA_CHANNEL: z.enum(['live', 'dry-run']).default('live'),
 });
 
-export type Env = Omit<
-  z.infer<typeof EnvSchema>,
-  'GEMINI_PROVIDER' | 'PROFILE_SOURCE' | 'PUBLIC_DATA_BUCKET'
-> & {
+export type Env = Omit<z.infer<typeof EnvSchema>, 'GEMINI_PROVIDER' | 'PROFILE_SOURCE'> & {
   GEMINI_PROVIDER: GeminiProvider;
   PROFILE_SOURCE: ProfileSource;
-  PUBLIC_DATA_BUCKET: string;
 };
 
 let cached: Env | undefined;
@@ -74,7 +66,6 @@ export function getEnv(): Env {
     ...raw,
     GEMINI_PROVIDER: provider,
     PROFILE_SOURCE: raw.PROFILE_SOURCE ?? defaultProfileSource(process.env),
-    PUBLIC_DATA_BUCKET: raw.PUBLIC_DATA_BUCKET ?? `${raw.GCLOUD_PROJECT}-ingest-publish`,
   };
   return cached;
 }
@@ -86,6 +77,34 @@ export function getEnv(): Env {
 export function getProfileSource(): ProfileSource {
   const parsed = z.enum(PROFILE_SOURCES).safeParse(process.env['PROFILE_SOURCE']);
   return parsed.success ? parsed.data : defaultProfileSource(process.env);
+}
+
+const PublicDataEnvSchema = z.object({
+  GCLOUD_PROJECT: z.string().min(1),
+  /** Bucket the cloud ingestion publishes to (default `<project>-ingest-publish`). */
+  PUBLIC_DATA_BUCKET: z.string().min(3).optional(),
+  /** `live` for the app; `dry-run` only to inspect the dry run. */
+  PUBLIC_DATA_CHANNEL: z.enum(['live', 'dry-run']).default('live'),
+});
+
+export interface PublicDataConfig {
+  readonly bucket: string;
+  readonly channel: 'live' | 'dry-run';
+  /** App Check is verified everywhere except the local emulator, which cannot verify it. */
+  readonly requireAppCheck: boolean;
+}
+
+/**
+ * Settings of the `publicData` function on their own: it does not use Gemini, so it must not fail
+ * when the Gemini key is absent (the same reason as getProfileSource).
+ */
+export function getPublicDataConfig(source: NodeJS.ProcessEnv = process.env): PublicDataConfig {
+  const env = PublicDataEnvSchema.parse(source);
+  return {
+    bucket: env.PUBLIC_DATA_BUCKET ?? `${env.GCLOUD_PROJECT}-ingest-publish`,
+    channel: env.PUBLIC_DATA_CHANNEL,
+    requireAppCheck: source['FUNCTIONS_EMULATOR'] !== 'true',
+  };
 }
 
 /** Test helper: drop the cached value so a test can change process.env. */

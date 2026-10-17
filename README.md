@@ -23,6 +23,7 @@ CLAUDE.md         Coding standards & instructions (read first)
 nvm use            # Node 22
 npm install
 npm run check      # format + lint + typecheck + tests
+npm run test:emulators  # Firestore rules + Firestore code against the emulator (needs Java 21)
 npm run build
 ```
 

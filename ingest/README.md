@@ -88,8 +88,8 @@ changed document becomes a new manifest line (new version), never an overwrite.
   is replaced with a warning.
 - **Reports**: each run writes `data/interim/delta/<source>/<UTC timestamp>.json` and a run summary
   `data/interim/delta/runs/<UTC timestamp>.json` (mode, counts, failed step and error per source). All sources
-  in one run share the timestamp. Timestamps are UTC; which timezone defines "a day" for the scheduler is
-  still open (B-27).
+  in one run share the timestamp. Timestamps are UTC instants; "a day" (history files, BigQuery `run_date`) is
+  an IST calendar day (B-27).
 - **History** (`interim/listings/history/<source>/<date>.jsonl`) holds the items fetched in that run, which
   is a partial snapshot for incremental runs.
 

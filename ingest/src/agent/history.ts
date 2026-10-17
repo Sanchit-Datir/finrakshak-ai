@@ -43,7 +43,7 @@ export class BigQueryHistory implements HistorySource {
       // Parameterised and partition-bounded; no SELECT *.
       query: `SELECT run_id, CAST(run_at AS STRING) AS run_at, status, mode, added, changed, removed, duration_ms
               FROM \`${this.dataset}.ingest_runs\`
-              WHERE source_id = @source AND run_date >= DATE_SUB(CURRENT_DATE(), INTERVAL @days DAY)
+              WHERE source_id = @source AND run_date >= DATE_SUB(CURRENT_DATE('Asia/Kolkata'), INTERVAL @days DAY)
               ORDER BY run_at DESC LIMIT 200`,
       params: { source, days },
       location: this.location,

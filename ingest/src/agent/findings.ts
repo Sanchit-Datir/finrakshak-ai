@@ -1,4 +1,10 @@
-import type { Finding, IngestRun, SourceId, SourceRunRecord } from '@fund-tracker/shared';
+import {
+  istDate,
+  type Finding,
+  type IngestRun,
+  type SourceId,
+  type SourceRunRecord,
+} from '@fund-tracker/shared';
 import { FULL_RELIST_EVERY_DAYS } from '../delta/policy.js';
 import type { HistoryRow } from './history.js';
 import type { ProposalDraft } from './proposals.js';
@@ -190,7 +196,7 @@ function okSource(s: SourceRunRecord, b: Baseline, runAt: string): Assessment {
         s.source_id,
         'warn',
         'full_relist_overdue',
-        `Last full relist ${lastFull.slice(0, 10)}; due every ${every} days.`,
+        `Last full relist ${istDate(lastFull)} (IST); due every ${every} days.`,
       ),
     );
   return { findings, drafts };

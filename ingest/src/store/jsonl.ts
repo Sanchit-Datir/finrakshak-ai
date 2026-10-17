@@ -66,7 +66,13 @@ export async function writeJsonl(
 export const sameAs = (generation: Generation | null): WriteCondition =>
   generation === null ? ABSENT : ifGeneration(generation);
 
-const APPEND_ATTEMPTS = 5;
+const APPEND_ATTEMPTS = 10;
+
+/** Jittered exponential backoff between append retries (10 ms, 20 ms, … up to ~1 s). */
+const backoff = (attempt: number): Promise<void> =>
+  new Promise((resolve) =>
+    setTimeout(resolve, Math.min(1_000, 10 * 2 ** attempt) * (0.5 + Math.random())),
+  );
 
 /**
  * Appends lines with read-modify-write under a generation precondition, retrying when another
@@ -87,6 +93,7 @@ export async function appendLines(key: string, lines: readonly string[]): Promis
       return;
     } catch (e) {
       if (!(e instanceof PreconditionFailedError) || attempt >= APPEND_ATTEMPTS) throw e;
+      await backoff(attempt);
     }
   }
 }

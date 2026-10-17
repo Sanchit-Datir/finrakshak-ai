@@ -26,8 +26,13 @@ RUNNER_SA="ingest-runner@${PROJECT_ID}.iam.gserviceaccount.com"
 ORCH_SA="ingest-orchestrator@${PROJECT_ID}.iam.gserviceaccount.com"
 AGENT_SA="ingest-agent@${PROJECT_ID}.iam.gserviceaccount.com"
 EXTRACTOR_SA="ingest-extractor@${PROJECT_ID}.iam.gserviceaccount.com"
-# Gen2 functions run as the App Engine default account (see docs/DEPLOY.md); publicData reads bundles.
-FUNCTIONS_SA="${PROJECT_ID}@appspot.gserviceaccount.com"
+# Gen2 functions run as one of these default accounts, depending on the firebase-tools version
+# (the same list as scripts/setup-gcp.sh); publicData reads the published bundles.
+PROJECT_NUMBER="$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')"
+FUNCTIONS_SAS=(
+  "${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
+  "${PROJECT_ID}@appspot.gserviceaccount.com"
+)
 DEPLOY_SA="github-deployer@${PROJECT_ID}.iam.gserviceaccount.com"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -114,7 +119,7 @@ for b in "$RAW_BUCKET" "$STATE_BUCKET" "$PUBLISH_BUCKET"; do grant_bucket "$b" "
 grant_bucket "$RAW_BUCKET" "$EXTRACTOR_SA" roles/storage.objectViewer
 grant_bucket "$STATE_BUCKET" "$EXTRACTOR_SA" roles/storage.objectViewer roles/storage.objectCreator
 # The app's publicData function only reads the published bundles.
-grant_bucket "$PUBLISH_BUCKET" "$FUNCTIONS_SA" roles/storage.objectViewer
+for sa in "${FUNCTIONS_SAS[@]}"; do grant_bucket "$PUBLISH_BUCKET" "$sa" roles/storage.objectViewer; done
 
 echo "› BigQuery datasets ($DATASET and the dry-run copy)"
 ensure_dataset "$DATASET"

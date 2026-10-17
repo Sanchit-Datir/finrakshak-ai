@@ -23,16 +23,19 @@ export const GRAPH_LAB_BASE = '/graph-lab/';
 export const PUBLIC_DATA_BASE = '/data/public-records/';
 
 /**
- * Sources tried in order: the cloud-published dataset first, then the local copy that
- * `graphCli --web` writes (development, or until sign-in exists: the cloud path needs it).
+ * Sources tried in order: the cloud-published dataset first (it needs a signed-in user), then the
+ * local copy that `graphCli --web` writes (development and the demo build).
  */
 const INDEX_BASES = [PUBLIC_DATA_BASE, GRAPH_LAB_BASE] as const;
 
-/** Supplies a Firebase ID token once the app has real sign-in; none in the demo build. */
-type TokenProvider = () => Promise<string | null>;
-let tokenProvider: TokenProvider = () => Promise.resolve(null);
-export function setDataTokenProvider(provider: TokenProvider): void {
-  tokenProvider = provider;
+/** Request headers proving who is asking (Firebase ID token + App Check), set while signed in. */
+export type DataHeadersProvider = () => Promise<Readonly<Record<string, string>>>;
+const NO_HEADERS: DataHeadersProvider = () => Promise.resolve({});
+let dataHeaders: DataHeadersProvider = NO_HEADERS;
+
+/** Installs (or with null, removes) the headers sent with cloud-data requests. */
+export function setDataHeadersProvider(provider: DataHeadersProvider | null): void {
+  dataHeaders = provider ?? NO_HEADERS;
 }
 
 export const EDGE_LABEL: Record<GraphEdgeType, string> = {
@@ -115,11 +118,9 @@ function parseBundle(text: string): GraphLabBundle {
 }
 
 async function fetchOk(url: string): Promise<Response> {
-  const token = url.startsWith(PUBLIC_DATA_BASE) ? await tokenProvider() : null;
-  const res = await fetch(url, {
-    signal: AbortSignal.timeout(60_000),
-    ...(token === null ? {} : { headers: { Authorization: `Bearer ${token}` } }),
-  });
+  // Credentials go only to our own cloud-data path, never to other URLs.
+  const headers = url.startsWith(PUBLIC_DATA_BASE) ? await dataHeaders() : {};
+  const res = await fetch(url, { signal: AbortSignal.timeout(60_000), headers });
   if (!res.ok) throw new GraphLabLoadError(`Could not load ${url} (HTTP ${res.status}).`);
   return res;
 }
@@ -150,9 +151,11 @@ export async function fetchIndex(): Promise<GraphLabIndexEntry[]> {
 
 /** `file` is a path from `fetchIndex` (absolute, same origin) or a name under `/graph-lab/`. */
 export async function loadBundleFromUrl(file: string): Promise<GraphLabBundle> {
-  const isIndexed = INDEX_BASES.some((base) => file.startsWith(base));
-  if (!isIndexed && !SAFE_FILE.test(file)) throw new GraphLabLoadError('Invalid bundle path.');
-  const res = await fetchOk(isIndexed ? file : `${GRAPH_LAB_BASE}${file}`);
+  const base = INDEX_BASES.find((b) => file.startsWith(b));
+  // The part after the base is checked too, so `..` can never reach the credentialed path.
+  const rest = base === undefined ? file : file.slice(base.length);
+  if (!SAFE_FILE.test(rest)) throw new GraphLabLoadError('Invalid bundle path.');
+  const res = await fetchOk(base === undefined ? `${GRAPH_LAB_BASE}${file}` : file);
   return parseBundle(await bytesToText(await res.arrayBuffer()));
 }
 

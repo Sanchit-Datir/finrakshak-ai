@@ -20,14 +20,22 @@ Rules:
 
 const DELIMITERS = /<<<DOCUMENT|DOCUMENT>>>/g;
 
+/** Repeats until none is left: one pass would rebuild a marker from "DOCU<<<DOCUMENTMENT>>>". */
+function stripDelimiters(text: string): string {
+  let out = text;
+  for (let prev = ''; prev !== out;) {
+    prev = out;
+    out = out.replace(DELIMITERS, '');
+  }
+  return out;
+}
+
 /** The user turn: the document as delimited data, with page markers (delimiters stripped from it). */
 export function renderDocument(
   meta: { source: string; title: string },
   pages: readonly string[],
 ): string {
-  const body = pages
-    .map((p, i) => `--- page ${i + 1} ---\n${p.replace(DELIMITERS, '')}`)
-    .join('\n');
-  const title = meta.title.replace(DELIMITERS, '');
+  const body = pages.map((p, i) => `--- page ${i + 1} ---\n${stripDelimiters(p)}`).join('\n');
+  const title = stripDelimiters(meta.title);
   return `Source: ${meta.source}\nListing title: ${title}\n<<<DOCUMENT\n${body}\nDOCUMENT>>>`;
 }

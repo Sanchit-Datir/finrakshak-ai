@@ -9,6 +9,7 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",
+    "test:emulator": "vitest run --config vitest.emulator.config.ts",
     "cli": "node dist/cli.js"
   },
   "dependencies": {

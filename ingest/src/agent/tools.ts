@@ -39,6 +39,13 @@ export interface AgentTool {
   run(args: unknown, ctx: ToolContext): Promise<ToolOutcome>;
 }
 
+/** Runs a synchronous handler so a validation error rejects the promise instead of throwing. */
+function settle(fn: () => ToolOutcome): Promise<ToolOutcome> {
+  return new Promise((resolve) => {
+    resolve(fn());
+  });
+}
+
 const SOURCE_ENUM = SourceIdSchema.options;
 const TITLE_CHARS = 200;
 
@@ -214,17 +221,14 @@ const proposeAction: AgentTool = {
       required: ['source_id', 'action', 'reason'],
     },
   },
-  run: (args) => {
-    const p = ProposeArgs.parse(args);
-    if ((p.action === 'rollback_publish') !== (p.source_id === null))
-      throw new Error('rollback_publish takes source_id null; every other action needs a source');
-    // A model proposal always waits for the owner, even rerun_source (B-49).
-    return Promise.resolve({
-      kind: 'proposal',
-      draft: { ...p, auto: false },
-      response: { accepted: true },
-    });
-  },
+  run: (args) =>
+    settle(() => {
+      const p = ProposeArgs.parse(args);
+      if ((p.action === 'rollback_publish') !== (p.source_id === null))
+        throw new Error('rollback_publish takes source_id null; every other action needs a source');
+      // A model proposal always waits for the owner, even rerun_source (B-49).
+      return { kind: 'proposal', draft: { ...p, auto: false }, response: { accepted: true } };
+    }),
 };
 
 const SubmitArgs = z.object({ summary: z.string().trim().min(20).max(800) });
@@ -241,11 +245,11 @@ const submitReview: AgentTool = {
     },
   },
   run: (args) =>
-    Promise.resolve({
+    settle(() => ({
       kind: 'review',
       summary: SubmitArgs.parse(args).summary,
       response: { accepted: true },
-    }),
+    })),
 };
 
 /** The complete tool list. Nothing here fetches URLs or writes pipeline data (B-49). */

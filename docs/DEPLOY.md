@@ -158,18 +158,32 @@ SEED=1 scripts/setup-ingest-gcp.sh fund-tracer            # buckets, datasets, a
 Then set the repo variable **`INGEST_ENABLED=true`**: the next merge to `main` builds the image
 (tag = commit), pushes it to Artifact Registry `ingest` and runs `scripts/deploy-ingest.sh`.
 
+The same merge deploys two new functions, `publicData` (Hosting serves `/data/**` through it) and
+`decideProposal` (callable). Both must be invokable at the network level, like `askgemini`; they
+check sign-in and App Check themselves. `github-deployer` has no right to change IAM policies, so if
+the first deploy reports that it could not set the invoker, run once as the Owner:
+
+```bash
+for fn in publicdata decideproposal; do
+  gcloud run services add-iam-policy-binding "$fn" --region asia-south1 --project fund-tracer \
+    --member allUsers --role roles/run.invoker
+done
+```
+
 ### Dry run, then publish
 
 New deployments run as a **dry run** (`FUNDTRACE_PUBLISH_ENABLED=false`): bundles go to
 `gs://fund-tracer-ingest-publish/dry-run/`, BigQuery to `fundtrace_public_dryrun`. After a clean
 week (see the plan's MVP 1 exit criteria), set **`INGEST_PUBLISH_ENABLED=true`** and redeploy.
 
-| Resource  | Name                                                                                     |
-| --------- | ---------------------------------------------------------------------------------------- |
-| Buckets   | `fund-tracer-ingest-raw` (create-only evidence), `-state` (versioned), `-publish`        |
-| BigQuery  | `fundtrace_public` (+ `_dryrun`): 11 snapshot tables, `delta_events`, `ingest_runs`      |
-| Firestore | `ingestRuns/{runId}` (per-run record), `ingestLocks/{name}` (leases, TTL on `expiresAt`) |
-| Accounts  | `ingest-runner` (jobs), `ingest-orchestrator` (Scheduler + Workflows)                    |
+| Resource  | Name                                                                                                 |
+| --------- | ---------------------------------------------------------------------------------------------------- |
+| Buckets   | `fund-tracer-ingest-raw` (create-only evidence), `-state` (versioned), `-publish`                    |
+| BigQuery  | `fundtrace_public` (+ `_dryrun`): 11 snapshot tables, `delta_events`, `ingest_runs`                  |
+| Firestore | `ingestRuns/{runId}` (per-run record), `ingestLocks/{name}` (leases, TTL on `expiresAt`),            |
+|           | `ingestReviews/{runId}`, `agentProposals/{id}` (admin read only; tested in `npm run test:emulators`) |
+| Accounts  | `ingest-runner` (jobs), `ingest-orchestrator` (Scheduler + Workflows), `ingest-agent`                |
+|           | (read-only reviewer), `ingest-extractor` (create-only shadow claims)                                 |
 
 ### Operating it
 
@@ -200,17 +214,18 @@ summary and may propose actions from a fixed list. Healthy days never call the m
 | `rollback_publish`              | Next build repoints `current.json` to the previous version | Owner                                                                   |
 | `adapter_fix_needed`            | Nothing automatic: a developer changes the adapter         | Owner / developer                                                       |
 
-Approve or reject: call `decideProposal` (needs the custom claim `admin: true`; set it once with the
-Admin SDK), or, until the app has sign-in, edit `agentProposals/<id>.status` to `approved` /
-`rejected` / `resolved` in the Firestore console. Kill switch: repo variable
+Approve or reject: call `decideProposal` signed in as a user with the custom claim `admin: true`
+(set it once with the Admin SDK), or, until the app has an admin page, edit
+`agentProposals/<id>.status` to `approved` / `rejected` / `resolved` in the Firestore console. Kill switch: repo variable
 `INGEST_AGENT_ENABLED=false` and redeploy (reviews become templated text, no model calls).
 
 ### The app reads the published data
 
 `/data/**` on Hosting is rewritten to the `publicData` function, which serves the current version
 from the publish bucket (same origin, so the CSP stays strict). It needs a signed-in Firebase user
-(registered addresses are in the bundle, B-38); until the app has real sign-in, the web loader
-falls back to the local `/graph-lab/` copy.
+and a valid App Check token (registered addresses are in the bundle, B-38): once a person is signed
+in with a usable profile, the web loader sends their ID token and App Check token; signed out, in
+the demo, or before the first publish it falls back to the local `/graph-lab/` copy.
 
 - **Permissions:** the runner can add and read raw evidence but never delete or overwrite it;
   only `github-deployer` (main branch) can change the jobs and the workflow.

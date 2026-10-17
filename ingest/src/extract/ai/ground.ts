@@ -79,6 +79,7 @@ function organisations(
 function amounts(
   out: ModelExtraction,
   text: string,
+  printed: ReadonlySet<number>,
   make: RowFactory,
   dropped: Dropped,
 ): AiClaimRow[] {
@@ -88,6 +89,8 @@ function amounts(
     const money = findAmounts(a.amount_text)[0]?.money ?? null;
     if (!text.includes(norm(a.amount_text))) dropped.ungrounded++;
     else if (money === null) dropped.unparsed_amount++;
+    // A cut-off quote ("Rs. 62.70" of "Rs. 62.70 crore") is in the text but not an amount it prints.
+    else if (!printed.has(money.minor)) dropped.ungrounded++;
     else
       rows.push(
         make('amount', `${a.amount_text}|${String(a.page)}`, {
@@ -108,11 +111,12 @@ export function ground(out: ModelExtraction, input: GroundingInput): AiExtractio
   const full = input.pages.join('\n');
   const text = norm(full);
   const cins = new Set(findCins(full).map((c) => c.cin));
+  const printed = new Set(findAmounts(full).map((m) => m.money.minor));
   const make = rowFactory(input);
   const dropped: Dropped = { ungrounded: 0, not_organisation: 0, unparsed_amount: 0 };
   const rows = [
     ...organisations(out, text, cins, make, dropped),
-    ...amounts(out, text, make, dropped),
+    ...amounts(out, text, printed, make, dropped),
     ...out.dates.map((d) =>
       make('date', `${d.date}|${d.what}`, { date: d.date, about: d.what, page: d.page }),
     ),

@@ -249,6 +249,11 @@ export function lookupCompany(ix: LabIndex, name: string, cin: string): PrSubjec
 
 let cached: Promise<LabIndex> | null = null;
 
+/** Forgets the loaded graph, e.g. after sign-in so the cloud-published version is used. */
+export function resetPublicRecords(): void {
+  cached = null;
+}
+
 /** Loads the published real-data graph once per page (B-41: ~5 MB gzip). */
 export function loadPublicRecords(): Promise<LabIndex> {
   cached ??= (async (): Promise<LabIndex> => {

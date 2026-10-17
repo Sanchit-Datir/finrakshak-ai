@@ -22,6 +22,7 @@
     "test": "npm run test -w @fund-tracker/shared && npm run test -w functions && npm run test -w ingest && npm run test -w web",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test",
     "emulators": "firebase emulators:start",
+    "test:emulators": "npm run build -w @fund-tracker/shared && firebase emulators:exec --only firestore --project demo-fundtrace \"npm run test:emulator -w functions && npm run test:emulator -w ingest\"",
     "ingest": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/cli.js",
     "e2e": "npm run test:e2e -w e2e --",
     "audit:prod": "npm audit --omit=dev --audit-level=low",

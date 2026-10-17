@@ -1,8 +1,11 @@
 import type { UserProfile } from '@fund-tracker/shared';
 import { useSyncExternalStore } from 'react';
+import { cloudDataHeaders } from '../lib/cloud/data-access.js';
 import { explainCloudError } from '../lib/cloud/errors.js';
 import { cloudConfig, connectCloud, type Cloud } from '../lib/cloud/firebase.js';
 import { fetchProfile, profileToSession } from '../lib/cloud/profile.js';
+import { setDataHeadersProvider } from '../lib/graph-lab.js';
+import { resetPublicRecords } from '../lib/public-records.js';
 import { registerSignOutHook, setCloudSession } from './session.js';
 import { mutate } from './store.js';
 
@@ -29,6 +32,9 @@ let rememberNext = true;
 let generation = 0;
 
 function set(next: CloudAuthState): void {
+  // Cloud-published public records need a signed-in, set-up user; otherwise the local copy is used.
+  if ((next.status === 'ready') !== (state.status === 'ready')) resetPublicRecords();
+  setDataHeadersProvider(next.status === 'ready' ? () => cloudDataHeaders(next.cloud) : null);
   state = next;
   for (const l of listeners) l();
 }

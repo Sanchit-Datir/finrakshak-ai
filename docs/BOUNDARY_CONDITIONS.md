@@ -43,7 +43,7 @@ Claude (and humans) must flag any of these to the project owner when touched. Fo
 
 - **B-25 Empty / whitespace / max-length strings** → trim, enforce min/max in the shared schema.
 - **B-26 Unicode & injection** → normalise where comparing names; escape on render.
-- **B-27 Dates & timezones** → store UTC; beware DST and month-end when computing periods; ask the owner which timezone defines "a day/month".
+- **B-27 Dates & timezones** → store UTC instants; **"a day" is an Indian calendar day (IST, UTC+05:30, no DST)** by the owner's decision (17 Oct 2026). `istDate()` in `packages/shared/src/time.ts` is the one helper: the daily schedule (03:05 IST), listing history files, BigQuery `run_date` partitions and baselines, and per-user AI limits all use it; dates printed by sources are kept as published. Beware month-end when computing periods.
 - **B-28 Duplicate creation** → decide uniqueness rules (e.g. fund name per owner) and enforce server-side.
 - **B-29 Deletion** → soft-delete financial records; define cascade behaviour before implementing.
 

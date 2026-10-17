@@ -29,6 +29,11 @@ export interface AgentStore {
 export const REVIEW_COLLECTION = 'ingestReviews';
 export const PROPOSAL_COLLECTION = 'agentProposals';
 
+/** gRPC ALREADY_EXISTS: the document was created earlier (by this run, before a retry). */
+const ALREADY_EXISTS = 6;
+const isAlreadyExists = (e: unknown): boolean =>
+  e instanceof Error && 'code' in e && e.code === ALREADY_EXISTS;
+
 export class FirestoreAgentStore implements AgentStore {
   constructor(private readonly db: Firestore) {}
 
@@ -53,11 +58,15 @@ export class FirestoreAgentStore implements AgentStore {
   }
 
   async createProposal(proposal: AgentProposal): Promise<void> {
-    // `create` fails if the id exists, so a retried run never duplicates a proposal.
-    await this.db
-      .collection(PROPOSAL_COLLECTION)
-      .doc(proposal.id)
-      .create(AgentProposalSchema.parse(proposal));
+    // `create` fails if the id exists, so a retried run never duplicates (or resets) a proposal.
+    try {
+      await this.db
+        .collection(PROPOSAL_COLLECTION)
+        .doc(proposal.id)
+        .create(AgentProposalSchema.parse(proposal));
+    } catch (e) {
+      if (!isAlreadyExists(e)) throw e;
+    }
   }
 
   async updateProposal(proposal: AgentProposal): Promise<void> {

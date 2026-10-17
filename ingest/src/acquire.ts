@@ -1,4 +1,4 @@
-import { ListingItemSchema, type ListingItem, type SourceId } from '@fund-tracker/shared';
+import { istDate, ListingItemSchema, type ListingItem, type SourceId } from '@fund-tracker/shared';
 import { z } from 'zod';
 import { dataKey, getConfig, SOURCE_MIN_DELAY_MS } from './config.js';
 import { diffListings, mergeListing, type ListingDelta } from './delta/diff.js';
@@ -124,7 +124,7 @@ interface ListingWrite {
 async function saveListing(w: ListingWrite, readAt: Generation | null): Promise<void> {
   await writeJsonl(listingKey(w.source), w.merged, sameAs(readAt));
   await writeJsonl(
-    dataKey('interim', 'listings', 'history', w.source, `${w.runAt.slice(0, 10)}.jsonl`),
+    dataKey('interim', 'listings', 'history', w.source, `${istDate(w.runAt)}.jsonl`),
     w.fetched,
   );
   await writeReport(w.report);

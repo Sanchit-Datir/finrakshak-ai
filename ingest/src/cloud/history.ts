@@ -1,4 +1,5 @@
 import {
+  istDate,
   SourceIdSchema,
   type BuildRecord,
   type IngestRun,
@@ -12,7 +13,7 @@ import { blobs } from '../storage/index.js';
 import { readJson, writeJsonl } from '../store/jsonl.js';
 import type { BigQueryLoader } from './bigquery.js';
 
-/** One row per listed item that changed in a run (`delta_events`, partitioned by `run_date`). */
+/** One row per listed item that changed in a run (`delta_events`, partitioned by the IST `run_date`, B-27). */
 export const DeltaEventRowSchema = z.object({
   run_id: z.string(),
   run_date: z.string().date(),
@@ -50,7 +51,7 @@ async function deltaRows(
   if (!report) return [];
   const base = {
     run_id: runId,
-    run_date: report.run_at.slice(0, 10),
+    run_date: istDate(report.run_at),
     run_at: report.run_at,
     source_id: report.source_id,
     mode: report.mode,
@@ -65,7 +66,7 @@ async function deltaRows(
 function runRows(run: IngestRun, build: BuildRecord | null): z.infer<typeof IngestRunRowSchema>[] {
   return Object.values(run.sources).map((s) => ({
     run_id: run.run_id,
-    run_date: s.run_at.slice(0, 10),
+    run_date: istDate(s.run_at),
     run_at: s.run_at,
     source_id: s.source_id,
     status: s.status,

@@ -1,7 +1,7 @@
 import type { PublishedVersion } from '@fund-tracker/shared';
 import { getStorage } from 'firebase-admin/storage';
 import { z } from 'zod';
-import { getEnv } from '../config/env.js';
+import { getPublicDataConfig } from '../config/env.js';
 
 /**
  * Reads what the cloud ingestion published (`<channel>/current.json` and the immutable version
@@ -33,14 +33,19 @@ const SAFE_VERSION = /^[0-9TZ-]{10,40}$/;
 const POINTER_TTL_MS = 60_000;
 let cache: { pointer: Pointer; at: number } | undefined;
 
+/** Test helper: forget the cached pointer. */
+export function resetPointerCache(): void {
+  cache = undefined;
+}
+
 function bucket(): ReturnType<ReturnType<typeof getStorage>['bucket']> {
-  return getStorage().bucket(getEnv().PUBLIC_DATA_BUCKET);
+  return getStorage().bucket(getPublicDataConfig().bucket);
 }
 
 /** The currently published version, cached briefly so most requests cost no Storage read. */
 export async function currentPointer(): Promise<Pointer | null> {
   if (cache && Date.now() - cache.at < POINTER_TTL_MS) return cache.pointer;
-  const file = bucket().file(`${getEnv().PUBLIC_DATA_CHANNEL}/current.json`);
+  const file = bucket().file(`${getPublicDataConfig().channel}/current.json`);
   const [exists] = await file.exists();
   if (!exists) return null;
   const [data] = await file.download();
@@ -64,7 +69,7 @@ export interface VersionFile {
 /** Opens `versions/<version>/<file>`; null when the path is not a published bundle file. */
 export async function openVersionFile(version: string, file: string): Promise<VersionFile | null> {
   if (!SAFE_VERSION.test(version) || !SAFE_FILE.test(file)) return null;
-  const object = bucket().file(`${getEnv().PUBLIC_DATA_CHANNEL}/versions/${version}/${file}`);
+  const object = bucket().file(`${getPublicDataConfig().channel}/versions/${version}/${file}`);
   const [exists] = await object.exists();
   if (!exists) return null;
   const [meta] = await object.getMetadata();

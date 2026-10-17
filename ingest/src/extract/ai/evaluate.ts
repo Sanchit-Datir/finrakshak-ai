@@ -135,14 +135,16 @@ function judge(m: {
 
 export async function readGolden(file: string): Promise<GoldenDoc[]> {
   const text = await readFile(file, 'utf8');
+  // Numbered before blank and comment lines are skipped, so errors name the line in the file.
   return text
     .split('\n')
-    .filter((l) => l.trim().length > 0 && !l.trim().startsWith('//'))
-    .map((l, i) => {
+    .map((l, i) => ({ l, lineNo: i + 1 }))
+    .filter(({ l }) => l.trim().length > 0 && !l.trim().startsWith('//'))
+    .map(({ l, lineNo }) => {
       try {
         return GoldenDocSchema.parse(JSON.parse(l));
       } catch (e) {
-        throw new Error(`Invalid golden line ${i + 1} in ${file}`, { cause: e });
+        throw new Error(`Invalid golden line ${lineNo} in ${file}`, { cause: e });
       }
     });
 }
