@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { getEnv } from '../config/env.js';
 import { geminiApiKey } from '../config/secrets.js';
 import { GEMINI_LIMITS, GeminiError, generateText } from '../services/gemini.js';
+import { firestoreAccessStore, type AccessStore } from '../services/access.js';
 import {
   consumeDailyQuota,
   firestoreUsageStore,
@@ -22,10 +23,15 @@ export interface AskGeminiResult {
   remainingToday: number | null;
 }
 
+export interface AskGeminiDeps {
+  usage: UsageStore;
+  access: AccessStore;
+}
+
 /** Exported separately so it can be unit-tested without the Functions runtime. */
 export async function askGeminiHandler(
   request: CallableRequest<unknown>,
-  usage: UsageStore = firestoreUsageStore(),
+  deps: AskGeminiDeps = { usage: firestoreUsageStore(), access: firestoreAccessStore() },
 ): Promise<AskGeminiResult> {
   if (request.auth === undefined) {
     throw new HttpsError('unauthenticated', 'Sign in required');
@@ -35,12 +41,19 @@ export async function askGeminiHandler(
     throw new HttpsError('invalid-argument', 'A prompt of 1 to 8000 characters is required');
   }
 
-  // Only billed providers count against the daily limit; the mock is free and needs no Firestore.
+  // Only billed providers are gated: the mock is free and needs no Firestore. Order matters: the
+  // allow-list runs first so unlisted accounts never create usage records or reach the model.
   const env = getEnv();
   const mock = env.GEMINI_PROVIDER === 'mock';
   let remainingToday: number | null = null;
   if (!mock) {
-    const quota = await consumeDailyQuota(usage, request.auth.uid, env.GEMINI_DAILY_LIMIT);
+    if (!(await deps.access.isAllowed(request.auth.uid))) {
+      throw new HttpsError(
+        'permission-denied',
+        'This account is not enabled for AI features. Ask an administrator.',
+      );
+    }
+    const quota = await consumeDailyQuota(deps.usage, request.auth.uid, env.GEMINI_DAILY_LIMIT);
     if (!quota.allowed) {
       throw new HttpsError('resource-exhausted', 'Daily AI limit reached. Try again tomorrow.');
     }

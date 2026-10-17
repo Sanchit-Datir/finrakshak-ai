@@ -49,12 +49,11 @@ changed; add it to `RUNTIME_SAS` in `scripts/setup-gcp.sh` and re-run the script
 The web app stays in demo mode (no cloud calls, no AI) until it is built with the Firebase web
 config. Steps that only a project owner can do:
 
-1. **Enable sign-in:** Firebase console → Authentication → Sign-in method → Email/Password, and add
-   users under Authentication → Users. **Caution:** with this provider on, anyone who has the public web
-   config can usually register an account themselves. If your console offers Authentication → Settings →
-   User actions → "Enable create (sign-up)", turn it **off**. Otherwise treat every account as untrusted:
-   App Check and the per-user daily limit bound the damage (about 30 calls × accounts), but the real fix
-   is an allow-list of permitted emails checked inside `askGemini`. Do that before sharing the URL.
+1. **Enable sign-in:** Firebase console → Authentication → Sign-in method → Email/Password. Anyone who
+   has the public web config can usually register an account themselves, so signing in proves nothing
+   by itself. That is safe, because billed AI is limited to the **allow-list** in step 6: a stranger's
+   account signs in but gets "not enabled" and costs nothing. If your console offers Authentication →
+   Settings → User actions → "Enable create (sign-up)", turning it off is a good extra layer.
 2. **App Check:** create a reCAPTCHA v3 site key at <https://www.google.com/recaptcha/admin>
    (domains: `fund-tracer.web.app`, `fund-tracer.firebaseapp.com`), then Firebase console → App Check →
    Apps → register the web app with reCAPTCHA v3 and paste the **secret** key there. Keep the secret
@@ -70,7 +69,16 @@ config. Steps that only a project owner can do:
      --project fund-tracer --member allUsers --role roles/run.invoker
    ```
 
-5. Open **Settings → Cloud & AI**, sign in, and ask a question.
+5. Open **Settings → Cloud & AI** and sign in. The page shows your **Account ID**.
+6. **Enable people for AI (the allow-list).** Firebase console → Firestore Database → Data → Start
+   collection `allowedUsers` (first time only). Add a document whose **Document ID is the person's Account
+   ID**: copy it from the Cloud & AI tab, or from Authentication → Users → "User UID". Optional field
+   `email` (string) is just a label for you. To switch someone off set `enabled` (boolean) to `false`, or
+   delete the document. Do **not** key it by email: nothing checks that a person owns the email they
+   register with, but nobody can choose their own Account ID.
+7. Ask a question. When the live model is on, allowed accounts get a reply and everyone else gets "not
+   enabled" (the free mock used locally and in tests is not gated). Each billed call costs one Firestore
+   read for this check, well inside the free quota.
 
 Locally, `npm run serve -w functions` plus `VITE_USE_EMULATORS=true npm run dev -w web` use the Auth
 and Functions emulators and the free mock, so nothing is billed. The security headers in

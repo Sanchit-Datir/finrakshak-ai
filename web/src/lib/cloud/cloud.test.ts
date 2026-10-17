@@ -47,6 +47,7 @@ describe('explainCloudError', () => {
   it('maps known codes to plain sentences', () => {
     expect(explainCloudError({ code: 'auth/invalid-credential' })).toMatch(/not correct/);
     expect(explainCloudError({ code: 'functions/resource-exhausted' })).toMatch(/allowance/);
+    expect(explainCloudError({ code: 'functions/permission-denied' })).toMatch(/not enabled/);
   });
 
   it('never leaks raw error text for unknown errors', () => {

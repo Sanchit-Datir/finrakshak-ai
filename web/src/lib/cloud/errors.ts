@@ -19,6 +19,8 @@ export function explainCloudError(error: unknown): string {
       return 'Could not reach the service. Check your connection and try again.';
     case 'functions/unauthenticated':
       return 'Your sign-in or app check was not accepted. Sign in again; if it persists, the site is not fully set up for this address.';
+    case 'functions/permission-denied':
+      return 'This account is not enabled for AI features yet. Send your account ID (shown above) to an administrator.';
     case 'functions/resource-exhausted':
       return 'You have used today’s AI allowance. It resets at midnight India time.';
     case 'functions/invalid-argument':

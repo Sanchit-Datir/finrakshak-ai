@@ -20,7 +20,14 @@ const CONFIG = cloudConfig();
 type Link =
   | { state: 'connecting' }
   | { state: 'failed' }
-  | { state: 'ready'; cloud: CloudConnection; user: string | null };
+  | { state: 'ready'; cloud: CloudConnection; user: CloudUser | null };
+
+interface CloudUser {
+  /** What to show as the signed-in name. */
+  label: string;
+  /** Firebase user ID. The owner adds this to the AI allow-list; unlike an email it cannot be chosen. */
+  uid: string;
+}
 
 export function CloudAiTab(): React.JSX.Element {
   if (CONFIG === null) return <NotConnected />;
@@ -60,7 +67,11 @@ function ConnectedPanel(): React.JSX.Element {
         const { onAuthStateChanged } = await import('firebase/auth');
         if (cancelled) return;
         unsubscribe = onAuthStateChanged(cloud.auth, (user) => {
-          setLink({ state: 'ready', cloud, user: user === null ? null : (user.email ?? user.uid) });
+          setLink({
+            state: 'ready',
+            cloud,
+            user: user === null ? null : { label: user.email ?? user.uid, uid: user.uid },
+          });
         });
       })
       .catch(() => {
@@ -162,11 +173,18 @@ function SignInForm({ cloud }: { cloud: CloudConnection }): React.JSX.Element {
   );
 }
 
-function SignedIn({ cloud, user }: { cloud: CloudConnection; user: string }): React.JSX.Element {
+function SignedIn({ cloud, user }: { cloud: CloudConnection; user: CloudUser }): React.JSX.Element {
   return (
     <div className="space-y-3">
       <p className="text-sm">
-        Signed in as <strong>{user}</strong>.
+        Signed in as <strong>{user.label}</strong>.
+      </p>
+      <p className="text-sm">
+        Account ID: <code className="select-all break-all">{user.uid}</code>
+        <span className="block text-xs">
+          AI features are limited to enabled accounts. If you see “not enabled”, send this ID to an
+          administrator.
+        </span>
       </p>
       {!cloud.appCheckActive && (
         <Notice tone="warn" title="App Check is not set up">
