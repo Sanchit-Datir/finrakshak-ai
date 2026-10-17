@@ -96,9 +96,12 @@ Money is compared in integer paise only (B-01, B-03).
   hash does not match is **refused**: the run continues with the pattern layer at 0, marked
   `no_patterns`, and a `library_refused` finding. An invalid pattern or an unknown template is skipped
   and counted as an `invalid_pattern` or `unknown_template` finding. Only `approved` patterns are used.
-- The matcher is **injected**. The real `matchPattern` is built by the miner side (step 7); until then
-  the command line injects `noMatcher`, which matches nothing, so only transaction typologies can match
-  in a replay. Tests use a fake matcher and the shared fixture library.
+- The matcher is **injected**. The score command injects the real `matchPattern`
+  (`packages/shared/src/risk/patterns/match.ts`, built on the miner side in step 7). The scorer builds
+  its inputs: a `SubjectTimeline` per borrower from the borrower's own public records through
+  `timelineFromEvents` (replay-safe: nothing after `as_of`), and the flagged neighbours from the
+  documented links (`flaggedNeighbours`). Tests that need to control the result use a fake matcher and the
+  shared fixture library.
 - A `transaction_typology` pattern matches when its monitoring rule fired on the loan (strength 1), from
   `detectMonitoring` in `packages/shared/src/risk/rules`. A match result that is malformed, or names
   another pattern, is skipped as an `invalid_match_result` finding.
@@ -154,7 +157,7 @@ when no patterns were available ("its 0 is not low risk").
 `no_patterns`, `invalid_pattern`, `unknown_template`, `library_refused`, `invalid_match_result`,
 `no_seed_review`, `stale_public_data` and `missing_input`. None of them stops the run.
 
-## First replay on the synthetic data (seed 20261017)
+## Replay on the synthetic data (full set, seed 20261017, real matcher)
 
 This checks plumbing, not accuracy (B-55): the generator wrote both the data and the labels.
 
@@ -163,18 +166,34 @@ This checks plumbing, not accuracy (B-55): the generator wrote both the data and
 | `control`            |    45 |       0 |                                – |           100% |
 | `slow_burn`          |    20 |       0 |                                0 |          33.6% |
 | `sudden_enforcement` |    15 |      15 |                               15 |           100% |
+| `round_trip`         |    15 |       6 |                                6 |             0% |
 | `fund_diversion`     |    15 |       0 |                                0 |             0% |
+| `contagion`          |    15 |       0 |                                0 |          78.8% |
+| `shared_address`     |    15 |      15 |                                2 |          62.3% |
+| `cash_split`         |    10 |       8 |                                8 |             0% |
+| `dormant_burst`      |    10 |       0 |                                0 |           100% |
+| `seasonal`           |    15 |       0 |                                – |           100% |
+| `big_prepayment`     |    15 |       0 |                                – |           100% |
+| `near_threshold`     |    10 |       0 |                                – |           100% |
 
-15 alerts in 1,723 loan-months (8.7 per 1,000 loan-months, against a provisional budget of about 3% of
-loans a month). The expected monitoring rules fired for all 30 expected cases, with none unexpected.
+46 alerts in 3,690 loan-months (12.5 per 1,000 loan-months, against a provisional budget of about 3% of
+loans a month). The expected monitoring rules fired for all 70 expected cases, with none unexpected.
+Controls and look-alikes: 0 alerts. The held-out `dormant_burst` loans match no pattern. The only run
+finding is `no_seed_review`.
 
-The slow-burn and fund-diversion loans do not alert, as agreed with the owner (scorer brief, question 1).
-Under the agreed weights they cannot:
+**What the real matcher changed.** Compared with injecting a matcher that matches nothing, the same replay
+differs in 120 of 3,690 loan-month scores, all `sudden_enforcement`: a lone enforcement record is a half
+match (strength 0.5) of the two-step sequence "enforcement record, then insolvency", which scores
+`round(30 × 0.5 × 0.6)` = 9 pattern points. No band, alert or archetype row changed, because those loans are
+already Urgent review through the override. Every other public-record pattern needs two records, and each
+synthetic borrower has at most one.
+
+The slow-burn, fund-diversion and contagion loans do not alert. Under the agreed weights they cannot:
 
 - Behaviour drift tops out at 10 points, but the truth labels expect Needs attention (30) from late EMIs
   alone.
 - Fund diversion scores 18: the two typology patterns at 0.6 support take the largest, not the sum. The
-  linked party has no record, so the graph layer adds nothing.
+  linked party has no record, so the graph layer adds nothing. The same holds for contagion.
 
 This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step and the cut-offs).
 
@@ -197,7 +216,6 @@ This is the main input for checkpoint 2 (tune the 3% budget, the 15-point step a
 
 - BigQuery tables, the Firestore writer, the `score` Cloud Run task and its lease (step 11).
 - The Firestore pattern source (step 15).
-- The real matcher (step 7, miner side).
 - The app view (step 13).
 
 ## Proposed contract changes (for the PR description, not made)

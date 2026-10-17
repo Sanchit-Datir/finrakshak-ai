@@ -64,7 +64,7 @@ owner decided. Only the borrowers are real; the loan values are made up.
   3% budget from the replay. Owner's answers to the scorer brief: EMIs inferred from repayments (grace 5
   days, partial below 90%); monitoring rules feed the pattern layer only; direct layer 10 for 2+
   proceedings, 15 for 3+ sources, counterparties left out, status weights 100% in v1; a missing seed
-  review means support 0.6 everywhere; `noMatcher` until step 7; months scored on their last IST day.
+  review means support 0.6 everywhere; months scored on their last IST day.
 - **Budget alert (parked):** not created on purpose. When ready, rerun
   `BILLING_ACCOUNT=… BUDGET_USD=… scripts/setup-ingest-gcp.sh fund-tracer` (plan D7, B-15).
 - **Urgent threshold:** confirm `URGENT_RECEIVABLE_SHARE_PERCENT = 20`
