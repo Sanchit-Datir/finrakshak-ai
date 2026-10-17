@@ -5,7 +5,7 @@ only from the repo docs: `docs/plans/AGENTS_PLAN.md`, `docs/plans/PATTERN_MINER_
 `docs/plans/RISK_EXPLAINER_PLAN.md`, `docs/plans/PATTERN_CONTRACT.md`. This file is updated at every
 checkpoint commit; delete it once everything below is done.
 
-_Last checkpoint: 2 (pattern miner agent, decidePattern, rules). Next: the risk explainer._
+_Last checkpoint: 3 (explainer ingest side). Next: explanations in getRiskScores and the web view, then infra and docs._
 
 ## Done so far
 
@@ -33,17 +33,15 @@ _Last checkpoint: 2 (pattern miner agent, decidePattern, rules). Next: the risk 
 - [x] Firestore rules + emulator tests: `agentRuns`, `patternProposals`, `riskPatternLibrary` (admin read
       only), `synthRiskExplanations` (no client access).
 
+- [x] Risk explainer (ingest): `ingest/src/explain/` (placeholders, digest, output checks, prompt
+      `explain.v1`, one-tool model step with one retry, store) and task `explain` (role `explainer`,
+      `cloud/explainTask.ts`); tests for every check, the mock, the cap and idempotence, and the
+      Firestore store against the emulator.
+
 ## Remaining
 
 ### Risk explainer (step 17, E2)
 
-- [ ] `ingest/src/explain/`: `digest.ts` (structured reasons only, no titles), `placeholders.ts`
-      (`{BORROWER}`, `{PARTY_n}`; restore after), `checks.ts` (≤ 400 chars, ≤ 2 sentences, numbers and
-      dates from the input only, known placeholders only, top reason mentioned, allegation never worded as
-      a finding, `violatesWording`), `prompts/explain.ts` (`explain.v1`), store for
-      `synthRiskExplanations/{alertId}` (create only, never touches the alert: B-57), each with tests.
-- [ ] `cloud/explainTask.ts` (task `explain`, role `explainer`): alerts of this run, at most 30, skip
-      alerts that already have an explanation, mock or kill switch stores nothing; `agentRuns` envelope.
 - [ ] `functions/src/services/riskScores.ts`: attach explanations (`explanations` array in the result).
 - [ ] Web: parse `explanations` in `web/src/lib/cloud/risk-scores.ts`; show the sentence labelled
       `AI_EXPLANATION_LABEL` with the reasons list under it (load the `fundtrace-ui` skill first).
