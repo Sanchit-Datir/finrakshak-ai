@@ -73,8 +73,11 @@ main:
                 assign:
                   - stepFailures: ['build']
     - collect:
-        assign:
-          - failed: ${list.concat(failed, stepFailures)}
+        call: append_all
+        args:
+          base: ${failed}
+          extra: ${stepFailures}
+        result: failed
     - reruns:
         call: read_run
         args:
@@ -118,8 +121,11 @@ main:
                     pass: '2'
                   result: secondFailures
               - collectSecond:
-                  assign:
-                    - failed: ${list.concat(failed, secondFailures)}
+                  call: append_all
+                  args:
+                    base: ${failed}
+                    extra: ${secondFailures}
+                  result: failed
               - rereadRun:
                   call: read_run
                   args:
@@ -189,6 +195,25 @@ build_and_review:
                   - failures: ${list.concat(failures, "agent")}
     - done:
         return: ${failures}
+
+# list.concat(a, b) adds b as ONE element, so concatenating two lists nests the second and breaks
+# the `"agent" in failed` test in `finish`. This appends the items one by one instead.
+append_all:
+  params: [base, extra]
+  steps:
+    - init:
+        assign:
+          - out: ${base}
+    - each:
+        for:
+          value: item
+          in: ${extra}
+          steps:
+            - add:
+                assign:
+                  - out: ${list.concat(out, item)}
+    - done:
+        return: ${out}
 
 # Reads the run record the jobs wrote: the agent's status and the sources it asked to re-run.
 read_run:
