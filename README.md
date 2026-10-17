@@ -59,7 +59,19 @@ npm run build -w @fund-tracker/shared && npm run build -w ingest
 node ingest/dist/cli.js build      # rebuild data/processed from data/raw (+ MCA join), ~30 s
 ```
 
-- How to run, sources, caps, BigQuery load: [`ingest/README.md`](ingest/README.md)
+**Daily updates (delta):** `acquire` fetches only what changed since the last run. IBBI, NFRA, SFIO and
+RBI are listed incrementally (newest pages until known items) with a weekly or monthly full relist
+(`--full` forces one). Each run diffs the listing against the stored one, merges it (records that vanish
+from a source are flagged, never deleted), downloads documents only for new or changed items, and writes
+a change report to `data/interim/delta/`. Empty, broken or sharply shrunken listings never overwrite stored
+data, and a lock allows one run at a time.
+
+```bash
+node ingest/dist/cli.js acquire all          # daily run: incremental where possible
+node ingest/dist/cli.js acquire all --full   # force a full relist
+```
+
+- How to run, sources, caps, daily delta, BigQuery load: [`ingest/README.md`](ingest/README.md)
 - What is stored where (git vs Cloud Storage), file layouts, MCA coverage: [`data/README.md`](data/README.md)
 - Source terms and access audit: [`data/registry/sources.json`](data/registry/sources.json)
 

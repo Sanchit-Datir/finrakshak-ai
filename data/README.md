@@ -30,7 +30,7 @@ data/
 | `registry/`, `processed/` | yes | ~75 MB | Small, reviewable, needed by the app and BigQuery |
 | `raw/mca_ogd/` (5 parts) | yes | 219 MB | Manually downloaded, cannot be re-fetched automatically; each part < 100 MB |
 | `raw/<source>/` downloads | **no** → Cloud Storage | ~810 MB | Large binaries; ED/SFIO forbid reproduction without permission (B-35); re-downloadable |
-| `interim/` | no | ~76 MB | Fully rebuildable from `raw/` with `acquire --list-only` + `extract` |
+| `interim/` | no | ~76 MB | Rebuildable from `raw/` with `acquire --list-only --full` + `extract`; `state/` and `delta/` are run bookkeeping (watermarks, change reports) and `acquire.lock` exists only while `acquire` runs |
 
 `.gitignore` enforces this split (`data/raw/*` ignored except the MCA parts; `data/interim/` ignored).
 

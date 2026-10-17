@@ -1,11 +1,13 @@
 import type { ListingItem } from '@fund-tracker/shared';
 import * as cheerio from 'cheerio';
+import { assertFirstPageHasRows } from '../delta/policy.js';
 import { log } from '../log.js';
 import { parseDate } from '../util/dates.js';
 import { absoluteUrl, cleanText, stableId } from '../util/ids.js';
 import type { SourceAdapter, SourceContext } from './types.js';
 
 const LIST = 'https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx';
+const COLLECTION = 'rbi.press_releases';
 export const RBI_FIRST_YEAR = 2015;
 
 /** Parses the press-release table: date header rows followed by item rows. */
@@ -29,7 +31,7 @@ export function parseRbiRows(html: string, runAt: string): ListingItem[] {
     items.push({
       item_id: stableId('rbi', detail),
       source_id: 'rbi',
-      collection: 'rbi.press_releases',
+      collection: COLLECTION,
       title,
       detail_url: detail,
       document_urls: pdf ? [pdf] : [],
@@ -57,8 +59,10 @@ export const rbiAdapter: SourceAdapter = {
     'rbi.org.in press release. Public regulatory communication; attribute RBI. A penalty or licence cancellation is a regulatory action, not a fraud finding.',
   async list(ctx: SourceContext): Promise<ListingItem[]> {
     const items: ListingItem[] = [];
-    const thisYear = new Date().getUTCFullYear();
-    for (let year = thisYear; year >= RBI_FIRST_YEAR; year--) {
+    const thisYear = new Date(ctx.runAt).getUTCFullYear();
+    // Incremental: the current and previous year (a release can be indexed late in January).
+    const oldest = ctx.listing.mode === 'full' ? RBI_FIRST_YEAR : thisYear - 1;
+    for (let year = thisYear; year >= Math.max(oldest, RBI_FIRST_YEAR); year--) {
       // ASP.NET year filter: reload the page for fresh form state, then post the year.
       const page = await ctx.fetcher.fetch(LIST);
       const res = await ctx.fetcher.fetch(LIST, {
@@ -69,6 +73,7 @@ export const rbiAdapter: SourceAdapter = {
       log.info('rbi year listed', { year, rows: rows.length });
       items.push(...rows);
     }
+    assertFirstPageHasRows(ctx.listing, COLLECTION, items.length, LIST);
     return dedupe(items);
   },
   resolveDocuments(item: ListingItem): Promise<string[]> {
