@@ -97,6 +97,10 @@ owner decided. Only the borrowers are real; the loan values are made up.
   (`Sanchit-Datir/fund-tracer#3`). Expect conflicts in `package.json`, the lockfile,
   `.gitignore` and `.prettierignore` when merging.
 
+- **Hosting bridge (B-46):** `deploy.yml` runs `graphCli --web` before the web build so `/graph-lab/` ships
+  with Hosting (fixes "dataset could not be loaded" on the live app). Public, no sign-in. Remove it once the
+  cloud `/data/**` feed is live.
+
 ## Quick start in a new session
 
 ```bash
