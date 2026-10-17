@@ -8,6 +8,8 @@ export const RATE_LIMITS = {
   askGeminiPerMinute: 5,
   /** Loading a profile happens at sign-in and on page loads; generous, but not unbounded. */
   getProfilePerMinute: 20,
+  /** Opening the synthetic risk scores page, or one loan's score. */
+  getRiskScoresPerMinute: 20,
 } as const;
 
 export const RATE_WINDOW_MS = 60_000;

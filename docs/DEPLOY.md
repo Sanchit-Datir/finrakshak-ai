@@ -265,3 +265,35 @@ the demo, or before the first publish it falls back to the local `/graph-lab/` c
 - **Layout changes**: when a source page stops parsing, the page is saved to
   `interim/diagnostics/<run>/<source>.html`; the agent reads its structure and adds a diagnosis to
   the `adapter_fix_needed` proposal.
+
+### Synthetic risk scores (`ingest-score`, off by default)
+
+The daily scoring job (`docs/plans/REMAINING_WORK.md`, W2) scores **synthetic test loans only** (B-54)
+with plain code; it never calls a model (B-15). It runs after `build` and before the agent review, is
+retried once by the workflow, and is a no-op until `INGEST_SCORE_ENABLED=true`.
+
+1. **Setup** (once, Owner): re-run `scripts/setup-ingest-gcp.sh <project>`. It creates the
+   `ingest-scorer` account, the `fundtrace_synth` dataset (only the scorer may write it), and a
+   create-only grant on `gs://<project>-ingest-state/interim/risk-load/` for BigQuery load files (Q1).
+   The next deploy then creates the `ingest-score` job (it is skipped while the account is missing).
+2. **Load the synthetic data** (from Cloud Shell, after `npm ci && npm run synth`):
+   ```bash
+   FUNDTRACE_STORAGE=gcs FUNDTRACE_PROJECT_ID=<project> FUNDTRACE_RAW_BUCKET=<project>-ingest-raw \
+   FUNDTRACE_STATE_BUCKET=<project>-ingest-state FUNDTRACE_PUBLISH_BUCKET=<project>-ingest-publish \
+     node ingest/dist/risk/synthLoadCli.js --dataset fundtrace_synth
+   ```
+   The loader refuses any dataset whose name does not end in `_synth`; `truth.jsonl` is never loaded.
+3. **Dry run (W2g)**: run the job once by hand with scoring switched on for that execution only:
+   ```bash
+   gcloud run jobs execute ingest-score --region asia-south1 --project <project> --wait \
+     --update-env-vars FUNDTRACE_SCORE_ENABLED=true
+   ```
+   Check `risk_scores` has one row per loan for today's IST date
+   (`SELECT as_of, COUNT(*) FROM fundtrace_synth.risk_scores GROUP BY as_of`), `synthRiskLatest` has one
+   document per loan, and a second execution adds no rows (same job ids, B-24, B-57).
+4. **Switch on**: set the repository variable `INGEST_SCORE_ENABLED=true`; the next deploy turns the
+   daily step on. The app's **Risk scores (synthetic)** page then reads the job's output through the
+   `getRiskScores` function; without a cloud sign-in it shows the bundled sample.
+
+Until a public build is published, every score is marked `stale_inputs` (B-50, B-56); the scorer reads the
+`dry-run` channel's build date while `INGEST_PUBLISH_ENABLED=false` (Q2).

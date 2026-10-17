@@ -49,23 +49,23 @@ End of phase B: month-by-month scores and "risk rose because..." on synthetic da
 
 ### Phase C: cloud
 
-| #   | Step                                                                                                                                                         | Needs from the owner                                            | Status |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- | ------ |
-| 10  | S4 Replay and optional load into the `fundtrace_synth` dataset                                                                                               | Create the dataset                                              | [ ]    |
-| 11  | R3 Tables, `score` task, workflow step (off), Firestore collections and rules, service account                                                               | **Checkpoint 3: GCP setup run; create the budget alert (B-15)** | [ ]    |
-| 12  | M2 Proposal schema, `decidePattern` callable, `agentRuns` envelope schema with rules and TTL, rules and emulator tests; verify service-account write scoping |                                                                 | [ ]    |
+| #   | Step                                                                                                                                                         | Needs from the owner                                            | Status                                                     |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- | ---------------------------------------------------------- |
+| 10  | S4 Replay and optional load into the `fundtrace_synth` dataset                                                                                               | Create the dataset                                              | [x] code done (W2a); load is the owner's step              |
+| 11  | R3 Tables, `score` task, workflow step (off), Firestore collections and rules, service account                                                               | **Checkpoint 3: GCP setup run; create the budget alert (B-15)** | [x] code done (W2b–W2f); dry run W2g waits on checkpoint 3 |
+| 12  | M2 Proposal schema, `decidePattern` callable, `agentRuns` envelope schema with rules and TTL, rules and emulator tests; verify service-account write scoping |                                                                 | [ ]                                                        |
 
 End of phase C: a staging dry run writes `risk_scores`, and the rules emulator tests pass.
 
 ### Phase D: app and agents
 
-| #   | Step                                                                                                                                                                                                                                                                     | Needs from the owner                         | Status |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- | ------ |
-| 13  | R5 `getRiskScores` callable and the app view, e2e on the synthetic sample                                                                                                                                                                                                |                                              | [ ]    |
-| 14  | M3 Miner agent in three commits: 14a edge-case tests for the ingestion agent's loop, 14b extract `runToolLoop` (old tests unchanged) and have the ingestion agent write its `agentRuns` envelope, 14c the miner. 14a and 14b are skipped if checkpoint 1 drops the miner | **Checkpoint 4: approve any Vertex dry run** | [ ]    |
-| 15  | M4 Approval view in the admin page; scoring reads approved patterns from Firestore, replacing the in-code patterns of step 9; the `proposals_waiting` finding in the daily review                                                                                        |                                              | [ ]    |
-| 16  | S5 Docs: README for the synthetic data, session notes                                                                                                                                                                                                                    |                                              | [ ]    |
-| 17  | E1–E3 Optional explainer agent                                                                                                                                                                                                                                           | Decide after step 13                         | [ ]    |
+| #   | Step                                                                                                                                                                                                                                                                     | Needs from the owner                         | Status                                            |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- | ------------------------------------------------- |
+| 13  | R5 `getRiskScores` callable and the app view, e2e on the synthetic sample                                                                                                                                                                                                |                                              | [x] done (W3a–W3e); live integration waits on W2g |
+| 14  | M3 Miner agent in three commits: 14a edge-case tests for the ingestion agent's loop, 14b extract `runToolLoop` (old tests unchanged) and have the ingestion agent write its `agentRuns` envelope, 14c the miner. 14a and 14b are skipped if checkpoint 1 drops the miner | **Checkpoint 4: approve any Vertex dry run** | [ ]                                               |
+| 15  | M4 Approval view in the admin page; scoring reads approved patterns from Firestore, replacing the in-code patterns of step 9; the `proposals_waiting` finding in the daily review                                                                                        |                                              | [ ]                                               |
+| 16  | S5 Docs: README for the synthetic data, session notes                                                                                                                                                                                                                    |                                              | [ ]                                               |
+| 17  | E1–E3 Optional explainer agent                                                                                                                                                                                                                                           | Decide after step 13                         | [ ]                                               |
 
 ### Checkpoints
 
@@ -95,6 +95,10 @@ Work stops at these for the owner's decision.
   "new since last check / unchanged / score change" block from step 8; the explainer is built only if
   multi-reason alerts read badly and the budget alert exists (`RISK_EXPLAINER_PLAN.md`).
 - Pattern contract (`PATTERN_CONTRACT.md`): patterns carry no weights; verified support is computed at score time; the live library is ONE Firestore document `riskPatternLibrary/current` with immutable `v<n>` copies; the pattern layer takes the largest single matched pattern's points (capped at 30), not the sum. Step C0 builds the contract; the scorer side and the miner side then work in parallel.
+- Synthetic risk scores (17 Oct 2026): a separate app page; the scorer may create load files only under
+  `interim/risk-load/`; it reads the `dry-run` build date while publishing is off; it keeps the project-wide
+  Firestore role (a test lists the collections it writes); everyone with a usable profile sees every
+  branch's scores for now (branch scoping to be decided later).
 - Autonomy: the only automatic action is a code-triggered retry of an idempotent failed step, at most once
   per run (the source re-run, and the scoring job). Scores, bands, alerts, patterns, thresholds and settings
   change only through a person. Pending proposals are surfaced by a code-computed `proposals_waiting`

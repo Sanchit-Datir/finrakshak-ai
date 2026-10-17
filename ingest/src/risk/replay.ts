@@ -1,7 +1,4 @@
 import {
-  changeBlock,
-  decideAlert,
-  formatChangeBlock,
   monthEnd,
   scoreRun,
   verifiedCaseIds,
@@ -11,10 +8,10 @@ import {
   type MonitoringRuleId,
   type PatternMatcher,
   type RunFinding,
-  type ScoreSnapshot,
   type ScoringSettings,
 } from '@fund-tracker/shared';
 import type { ScoringData } from './inputs.js';
+import { stepLoan, type LoanMemory } from './step.js';
 import type { UsableLibrary } from './patternSources.js';
 
 /**
@@ -45,38 +42,14 @@ export interface ReplayOptions {
   readonly matcher: PatternMatcher;
 }
 
-interface LoanMemory {
-  state: AlertState;
-  snapshot: ScoreSnapshot;
-  alerted: Set<string>;
-}
-
-function stepLoan(
+function stepAndRemember(
   memory: Map<string, LoanMemory>,
   score: LoanScore,
   settings: ScoringSettings,
 ): Omit<ReplayRow, 'month' | 'fired_rules'> {
-  const prev = memory.get(score.loan_id);
-  const alerted = prev?.alerted ?? new Set<string>();
-  const d = decideAlert(prev?.state ?? null, score, settings, alerted);
-  for (const k of d.alert_reason_keys) alerted.add(k);
-  const snapshot: ScoreSnapshot = {
-    score: score.score,
-    band: d.next.held_band,
-    reasons: score.reasons,
-  };
-  const change_text = formatChangeBlock(changeBlock(prev?.snapshot ?? null, snapshot), {
-    staleSince: score.stale_inputs ? score.data_built_on : null,
-    noPatterns: score.no_patterns,
-  });
-  memory.set(score.loan_id, { state: d.next, snapshot, alerted });
-  const { kind, delta, new_reason_keys, alert_reason_keys } = d;
-  return {
-    score,
-    held_band: d.next.held_band,
-    alert: { kind, delta, new_reason_keys, alert_reason_keys },
-    change_text,
-  };
+  const { next, ...step } = stepLoan(memory.get(score.loan_id) ?? null, score, settings);
+  memory.set(score.loan_id, next);
+  return { score, ...step };
 }
 
 export function replay(data: ScoringData, opts: ReplayOptions): ReplayResult {
@@ -117,7 +90,7 @@ export function replay(data: ScoringData, opts: ReplayOptions): ReplayResult {
       rows.push({
         month,
         fired_rules: out.firedRules.get(score.loan_id) ?? [],
-        ...stepLoan(memory, score, opts.settings),
+        ...stepAndRemember(memory, score, opts.settings),
       });
     }
   }

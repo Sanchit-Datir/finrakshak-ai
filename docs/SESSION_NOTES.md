@@ -48,6 +48,15 @@ _Last updated: 17 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` 
 The TEST loans for scenarios 2 and 3 were added permanently to `web/src/demo/seed.ts`, as the
 owner decided. Only the borrowers are real; the loan values are made up.
 
+## Remaining-work session (17 Oct 2026, branch `remaining-work-changes`)
+
+Built the rest of `docs/plans/REMAINING_WORK.md` that needs no GCP: the cloud scoring job (W2a–W2f, off
+by default) and the app side (W3a–W3e). See the status table at the top of that page. The owner confirmed
+Q1–Q4 and Q6 and the flags-from-`fundtrace_synth` choice. **Score visibility (owner, 17 Oct 2026):** for now
+everyone signed in with a usable profile sees every branch's synthetic scores (`RISK_SCORES_SCOPE`);
+branch scoping is kept in the service and will be decided later. Open for the owner: the W2g dry run
+(`docs/DEPLOY.md` → Synthetic risk scores). The branch was pushed at the user's request; no PR.
+
 ## Open decisions and next ideas
 
 - **Risk scoring programme (planned 17 Oct 2026):** synthetic transaction data, a daily risk-scoring

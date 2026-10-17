@@ -4,6 +4,7 @@ import { runAcquireTask } from './acquireTask.js';
 import { runBuildTask } from './buildTask.js';
 import { runExtractTask } from './extractTask.js';
 import { runAgentTask } from './agentTask.js';
+import { runScoreTask } from './scoreTask.js';
 import { makeDeps, type CloudDeps, type TaskRole } from './context.js';
 import { readCloudEnv, type CloudEnv } from './env.js';
 
@@ -17,6 +18,7 @@ const TASKS: Readonly<Record<string, Task>> = {
   acquire: { role: 'runner', run: runAcquireTask },
   'extract-ai': { role: 'extractor', run: runExtractTask },
   build: { role: 'runner', run: runBuildTask },
+  score: { role: 'scorer', run: (env, deps) => runScoreTask(env, deps) },
   agent: { role: 'agent', run: runAgentTask },
 };
 

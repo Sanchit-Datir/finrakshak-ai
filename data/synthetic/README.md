@@ -53,6 +53,12 @@ A run builds all 200. If a scenario ever has no builder, the run says which one 
   into the app's own types and rules, so the generator and the web model cannot drift apart.
   Rebuild the sample after a change with `node ingest/dist/synthCli.js --sample`.
 
+## Load into BigQuery (cloud scoring)
+
+`node ingest/dist/risk/synthLoadCli.js --dataset fundtrace_synth` loads every file except `truth.jsonl`
+(B-55) into the synthetic dataset; it refuses a dataset whose name does not end in `_synth` (B-54). The
+daily `ingest-score` job reads it from there (`docs/DEPLOY.md` → Synthetic risk scores).
+
 ## What it proves, and what it does not (B-55)
 
 It proves the pipeline works: rules fire, labels agree, scores and alerts can be tested month by month. It

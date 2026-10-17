@@ -28,6 +28,7 @@ const BorrowerProfilePage = named(
   'BorrowerProfilePage',
 );
 const MonitoringPage = named(() => import('./pages/MonitoringPage.js'), 'MonitoringPage');
+const RiskScoresPage = named(() => import('./pages/RiskScoresPage.js'), 'RiskScoresPage');
 const PublicRecordsWatchPage = named(
   () => import('./pages/PublicRecordsWatchPage.js'),
   'PublicRecordsWatchPage',
@@ -62,6 +63,7 @@ export function App(): React.JSX.Element {
             <Route path="/borrowers/:borrowerId" element={<BorrowerProfilePage />} />
             <Route path="/monitoring" element={<MonitoringPage />} />
             <Route path="/monitoring/public-records" element={<PublicRecordsWatchPage />} />
+            <Route path="/monitoring/risk-scores" element={<RiskScoresPage />} />
             <Route path="/investigations" element={<InvestigationsPage />} />
             <Route path="/investigations/:caseId" element={<CaseDetailPage />} />
             <Route path="/reports" element={<ReportsPage />} />

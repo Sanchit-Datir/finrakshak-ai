@@ -1,3 +1,9 @@
+import {
+  RISK_BAND_LABELS,
+  reasonText,
+  type RaisedAlertKind,
+  type RiskAlertDoc,
+} from '@fund-tracker/shared';
 import type { AlertState, AlertStatus, Db, Priority } from '../domain/schemas.js';
 import { CATEGORY_LABEL, runChecks, type Finding } from './checks.js';
 import { RULES, runMonitoring, type MonitoringAlert } from './monitoring.js';
@@ -6,7 +12,7 @@ import { watchFinding } from './public-watch.js';
 /** One list of alerts from both workspaces (spec §14). */
 export interface UnifiedAlert {
   id: string;
-  source: 'monitoring' | 'pre_disbursement' | 'public_records';
+  source: 'monitoring' | 'pre_disbursement' | 'public_records' | 'risk_score';
   title: string;
   reason: string;
   category: string;
@@ -30,6 +36,7 @@ export const SOURCE_LABEL: Record<UnifiedAlert['source'], string> = {
   monitoring: 'Transaction monitoring',
   pre_disbursement: 'Pre-disbursement checks',
   public_records: 'Public-records watch',
+  risk_score: 'Risk score (synthetic)',
 };
 
 const ACTIVE_APP = new Set(['documents_needed', 'processing', 'needs_review', 'ready_for_decision']);
@@ -144,6 +151,46 @@ function watchAlerts(db: Db): UnifiedAlert[] {
       };
     }),
   );
+}
+
+const RISK_ALERT_TITLE: Record<RaisedAlertKind, string> = {
+  band_up: 'Risk band went up',
+  rise_with_new_reason: 'Risk score rose with a new reason',
+  override: 'Public record after disbursement',
+  initial: 'First risk score above Routine review',
+};
+
+/**
+ * Alerts of the synthetic risk-scoring job (REMAINING_WORK.md, W3d). They are SYNTH loans, not the demo
+ * loan book, so they link to the risk scores page; status changes are kept locally like other alerts.
+ */
+export function riskScoreAlerts(db: Db, alerts: readonly RiskAlertDoc[]): UnifiedAlert[] {
+  return alerts.map((a): UnifiedAlert => {
+    const id = `risk:${a.alert_id}`;
+    const state = db.alertStates[id];
+    const [first] = a.reasons;
+    return {
+      id,
+      source: 'risk_score',
+      title: `${RISK_ALERT_TITLE[a.kind]}: ${RISK_BAND_LABELS[a.band]} (SYNTH)`,
+      reason: first === undefined ? `Score ${a.score}` : reasonText(first),
+      category: 'Synthetic risk score',
+      priority: a.band,
+      status: state?.status ?? 'new',
+      assignee: state?.assignee ?? null,
+      at: a.created_at,
+      branchId: a.branch_id,
+      borrowerId: null,
+      loanId: null,
+      applicationId: null,
+      linkedLabel: `${a.loan_id} · SYNTH test loan`,
+      linkedHref: `/monitoring/risk-scores?loan=${encodeURIComponent(a.loan_id)}`,
+      nextAction: 'Review the reasons and the evidence behind them',
+      state,
+      monitoring: null,
+      finding: null,
+    };
+  });
 }
 
 export function isOpen(status: AlertStatus): boolean {

@@ -64,3 +64,17 @@ describe('sourcesForTask', () => {
     expect(sourcesForTask(['ibbi'], 0, 1)).toEqual(['ibbi']);
   });
 });
+
+describe('score step settings (W2d)', () => {
+  it('is off by default and reads the synthetic dataset, never a dry-run suffix', () => {
+    const env = readCloudEnv({ FUNDTRACE_BIGQUERY_DATASET: 'fundtrace_public' });
+    expect(env.score).toEqual({ enabled: false, dataset: 'fundtrace_synth', settings: 'v2' });
+    expect(env.bigquery?.dataset).toBe('fundtrace_public_dryrun');
+  });
+
+  it('refuses a dataset that is not synthetic and a malformed settings version (B-54)', () => {
+    expect(() => readCloudEnv({ FUNDTRACE_SYNTH_DATASET: 'fundtrace_public' })).toThrow();
+    expect(() => readCloudEnv({ FUNDTRACE_SCORE_SETTINGS: 'latest' })).toThrow();
+    expect(readCloudEnv({ FUNDTRACE_SCORE_ENABLED: 'true' }).score.enabled).toBe(true);
+  });
+});

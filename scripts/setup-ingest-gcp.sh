@@ -26,6 +26,9 @@ RUNNER_SA="ingest-runner@${PROJECT_ID}.iam.gserviceaccount.com"
 ORCH_SA="ingest-orchestrator@${PROJECT_ID}.iam.gserviceaccount.com"
 AGENT_SA="ingest-agent@${PROJECT_ID}.iam.gserviceaccount.com"
 EXTRACTOR_SA="ingest-extractor@${PROJECT_ID}.iam.gserviceaccount.com"
+SCORER_SA="ingest-scorer@${PROJECT_ID}.iam.gserviceaccount.com"
+# Synthetic test data only (B-54): never the public dataset.
+SYNTH_DATASET="fundtrace_synth"
 # Gen2 functions run as one of these default accounts, depending on the firebase-tools version
 # (the same list as scripts/setup-gcp.sh); publicData reads the published bundles.
 PROJECT_NUMBER="$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')"
@@ -68,12 +71,10 @@ ensure_bucket() { # <bucket>
     gcloud storage buckets create "gs://$1" --project "$PROJECT_ID" --location "$REGION" \
       --uniform-bucket-level-access --public-access-prevention
 }
-ensure_dataset() { # <dataset>
+ensure_dataset() { # <dataset> [description]
   bq --project_id "$PROJECT_ID" show --dataset "$PROJECT_ID:$1" >/dev/null 2>&1 ||
     bq --project_id "$PROJECT_ID" --location "$REGION" mk --dataset \
-      --description "FundTrace public-records dataset (loaded by ingest-build)" "$PROJECT_ID:$1"
-  grant_dataset "$1" "$RUNNER_SA" WRITER
-  grant_dataset "$1" "$AGENT_SA" READER
+      --description "${2:-FundTrace public-records dataset (loaded by ingest-build)}" "$PROJECT_ID:$1"
 }
 grant_dataset() { # <dataset> <service-account> <READER|WRITER>
   # `bq add-iam-policy-binding --dataset` needs allowlisting, so edit the dataset ACL instead.
@@ -116,6 +117,7 @@ ensure_sa "$RUNNER_SA" "Ingest jobs: acquire and build"
 ensure_sa "$ORCH_SA" "Ingest orchestration: Scheduler and Workflows"
 ensure_sa "$AGENT_SA" "Ingest agent: read-only reviewer (B-49)"
 ensure_sa "$EXTRACTOR_SA" "Ingest AI extraction: create-only shadow claims (B-52)"
+ensure_sa "$SCORER_SA" "Ingest scoring: synthetic risk scores, no model (B-15, B-54)"
 
 echo "› Cloud Storage (private, uniform access, $REGION)"
 for b in "$RAW_BUCKET" "$STATE_BUCKET" "$PUBLISH_BUCKET"; do ensure_bucket "$b"; done
@@ -133,12 +135,25 @@ for b in "$RAW_BUCKET" "$STATE_BUCKET" "$PUBLISH_BUCKET"; do grant_bucket "$b" "
 # objectCreator cannot overwrite or delete, so it can never change existing pipeline state.
 grant_bucket "$RAW_BUCKET" "$EXTRACTOR_SA" roles/storage.objectViewer
 grant_bucket "$STATE_BUCKET" "$EXTRACTOR_SA" roles/storage.objectViewer roles/storage.objectCreator
+# The scorer reads the published build's date (B-50) and the seed review, and may only ADD load files
+# for BigQuery under interim/risk-load/ (question Q1): create-only, limited to that prefix.
+grant_bucket "$PUBLISH_BUCKET" "$SCORER_SA" roles/storage.objectViewer
+grant_bucket "$STATE_BUCKET" "$SCORER_SA" roles/storage.objectViewer
+gcloud storage buckets add-iam-policy-binding "gs://$STATE_BUCKET" --project "$PROJECT_ID" \
+  --member "serviceAccount:$SCORER_SA" --role roles/storage.objectCreator \
+  --condition "title=risk-load-only,expression=resource.name.startsWith('projects/_/buckets/$STATE_BUCKET/objects/interim/risk-load/')" >/dev/null
 # The app's publicData function only reads the published bundles.
 for sa in "${FUNCTIONS_SAS[@]}"; do grant_bucket "$PUBLISH_BUCKET" "$sa" roles/storage.objectViewer; done
 
-echo "› BigQuery datasets ($DATASET and the dry-run copy)"
-ensure_dataset "$DATASET"
-ensure_dataset "${DATASET}_dryrun"
+echo "› BigQuery datasets ($DATASET and the dry-run copy, $SYNTH_DATASET)"
+for d in "$DATASET" "${DATASET}_dryrun"; do
+  ensure_dataset "$d"
+  grant_dataset "$d" "$RUNNER_SA" WRITER
+  grant_dataset "$d" "$AGENT_SA" READER
+done
+# Synthetic loans, transactions and their risk scores: only the scorer writes here (B-54).
+ensure_dataset "$SYNTH_DATASET" "FundTrace SYNTHETIC test data and its risk scores (never real, B-54)"
+grant_dataset "$SYNTH_DATASET" "$SCORER_SA" WRITER
 
 echo "› Project roles"
 grant_project "$RUNNER_SA" roles/bigquery.jobUser roles/datastore.user roles/logging.logWriter \
@@ -151,6 +166,9 @@ grant_project "$ORCH_SA" roles/workflows.invoker roles/logging.logWriter roles/d
 grant_project "$AGENT_SA" roles/datastore.user roles/bigquery.jobUser roles/aiplatform.user \
   roles/logging.logWriter
 grant_project "$EXTRACTOR_SA" roles/datastore.user roles/aiplatform.user roles/logging.logWriter
+# Scorer: BigQuery jobs and Firestore for the synthRisk* collections (question Q6: the role is
+# project-wide, so its code is limited to those collections and a test lists them). No model role.
+grant_project "$SCORER_SA" roles/bigquery.jobUser roles/datastore.user roles/logging.logWriter
 grant_project "$ORCH_SA" roles/run.jobsExecutorWithOverrides ||
   { echo "  falling back to roles/run.developer for $ORCH_SA" && grant_project "$ORCH_SA" roles/run.developer; }
 
@@ -165,7 +183,7 @@ echo "› Deploy account (main branch only) may ship the jobs and the workflow"
 gcloud artifacts repositories add-iam-policy-binding "$AR_REPO" --location "$REGION" \
   --project "$PROJECT_ID" --member "serviceAccount:$DEPLOY_SA" --role roles/artifactregistry.writer >/dev/null
 grant_project "$DEPLOY_SA" roles/run.developer roles/workflows.editor
-for sa in "$RUNNER_SA" "$ORCH_SA" "$AGENT_SA" "$EXTRACTOR_SA"; do
+for sa in "$RUNNER_SA" "$ORCH_SA" "$AGENT_SA" "$EXTRACTOR_SA" "$SCORER_SA"; do
   gcloud iam service-accounts add-iam-policy-binding "$sa" --project "$PROJECT_ID" \
     --member "serviceAccount:$DEPLOY_SA" --role roles/iam.serviceAccountUser >/dev/null
 done
@@ -218,5 +236,8 @@ Done. Next:
      the next merge to main builds the image and deploys the jobs and the workflow.
   2. Watch the first runs (dry run: bundles go to gs://$PUBLISH_BUCKET/dry-run, BigQuery to ${DATASET}_dryrun).
   3. After a clean week, set INGEST_PUBLISH_ENABLED=true and redeploy to publish for the app.
+  4. Synthetic scoring (off): load the test data with
+       npm run synth && FUNDTRACE_STORAGE=gcs ... node ingest/dist/risk/synthLoadCli.js
+     then dry-run the ingest-score job by hand (docs/DEPLOY.md) before setting SCORE_ENABLED=true.
 Manual run:  gcloud workflows run ingest-daily --location $REGION --project $PROJECT_ID --data '{}'
 OUT

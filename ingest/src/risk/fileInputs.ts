@@ -39,7 +39,7 @@ export class ScoringInputError extends Error {
   }
 }
 
-function readJsonl<T>(file: string, schema: z.ZodType<T, z.ZodTypeDef, unknown>): T[] {
+export function readJsonl<T>(file: string, schema: z.ZodType<T, z.ZodTypeDef, unknown>): T[] {
   const lines = readFileSync(file, 'utf8').split('\n');
   const out: T[] = [];
   lines.forEach((line, i) => {

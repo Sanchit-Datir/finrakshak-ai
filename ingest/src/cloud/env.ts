@@ -72,6 +72,18 @@ const CloudEnvSchema = z.object({
   FUNDTRACE_BIGQUERY_LOCATION: z.string().default('asia-south1'),
   /** 1 = first review of a run; 2 = after the automatic re-run (no further automatic re-runs). */
   FUNDTRACE_AGENT_PASS: z.coerce.number().int().min(1).max(2).default(1),
+  /** The synthetic risk-scoring step (REMAINING_WORK.md, W2d); off by default. */
+  FUNDTRACE_SCORE_ENABLED: boolString,
+  /** Synthetic dataset the scorer reads; must end in `_synth` (B-54). Never suffixed `_dryrun`. */
+  FUNDTRACE_SYNTH_DATASET: z
+    .string()
+    .regex(/^\w{1,1000}_synth$/, 'must end in _synth (B-54)')
+    .default('fundtrace_synth'),
+  /** A published scoring settings version. */
+  FUNDTRACE_SCORE_SETTINGS: z
+    .string()
+    .regex(/^v\d+$/)
+    .default('v2'),
 });
 
 export interface CloudEnv {
@@ -89,6 +101,11 @@ export interface CloudEnv {
   readonly gateMaxDrop: number;
   readonly bigquery: { readonly dataset: string; readonly location: string } | null;
   readonly agentPass: 1 | 2;
+  readonly score: {
+    readonly enabled: boolean;
+    readonly dataset: string;
+    readonly settings: string;
+  };
 }
 
 /** Parses the job environment once; fails fast with the field that is wrong. */
@@ -118,6 +135,11 @@ export function readCloudEnv(source: NodeJS.ProcessEnv = process.env): CloudEnv 
             location: env.FUNDTRACE_BIGQUERY_LOCATION,
           },
     agentPass: env.FUNDTRACE_AGENT_PASS === 2 ? 2 : 1,
+    score: {
+      enabled: env.FUNDTRACE_SCORE_ENABLED,
+      dataset: env.FUNDTRACE_SYNTH_DATASET,
+      settings: env.FUNDTRACE_SCORE_SETTINGS,
+    },
   };
 }
 

@@ -11,3 +11,4 @@ export * from './run.js';
 export * from './score.js';
 export * from './settings.js';
 export * from './types.js';
+export * from './store.js';

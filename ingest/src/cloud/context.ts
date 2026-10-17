@@ -27,8 +27,10 @@ export interface CloudDeps {
  * - `runner` (acquire, build): may write run records to Firestore and to the state bucket.
  * - `agent`: its service account can only read the buckets, so it records to Firestore only.
  * - `extractor`: may only create new objects in the state bucket, so it records to Firestore only.
+ * - `scorer`: may only create load files under `interim/risk-load/` (question Q1), so it records to
+ *   Firestore only.
  */
-export type TaskRole = 'runner' | 'agent' | 'extractor';
+export type TaskRole = 'runner' | 'agent' | 'extractor' | 'scorer';
 
 function historyFor(env: CloudEnv): HistorySource {
   const storage = getConfig().storage;

@@ -23,6 +23,16 @@ service cloud.firestore {
     }
     // ingestLocks/{name}: leases between pipeline tasks; no client access (default deny).
 
+    // Synthetic risk scores (docs/plans/REMAINING_WORK.md, W2e): written only by the ingest-score job
+    // (Admin SDK) and read only through the getRiskScores callable, which checks the caller's branch.
+    // SYNTH data only (B-54); history is never rewritten from a client (B-57).
+    match /synthRiskLatest/{loanId} {
+      allow read, write: if false;
+    }
+    match /synthRiskAlerts/{alertId} {
+      allow read, write: if false;
+    }
+
     // Per-user daily AI call counters. Written only by Cloud Functions (Admin SDK bypasses rules);
     // clients get no access at all.
     match /usage/{usageId} {

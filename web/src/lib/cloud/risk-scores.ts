@@ -1,0 +1,54 @@
+import {
+  GetRiskScoresResultSchema,
+  RiskAlertDocSchema,
+  RiskScoreViewSchema,
+  type RiskAlertDoc,
+  type RiskScoreView,
+} from '@fund-tracker/shared';
+import type { Cloud } from './firebase.js';
+
+/** Synthetic risk scores as the app uses them, after every item has been parsed (B-54). */
+export interface RiskScores {
+  readonly scores: RiskScoreView[];
+  readonly alerts: RiskAlertDoc[];
+  readonly truncated: boolean;
+  /** Items dropped because they did not match the shared schema (never shown, never trusted). */
+  readonly dropped: number;
+  /** Where the data came from: the bundled sample, or the getRiskScores function. */
+  readonly origin: 'sample' | 'cloud';
+}
+
+/** Parse, don't cast: the envelope must be valid; a malformed item is dropped and counted. */
+export function parseRiskScores(raw: unknown, origin: RiskScores['origin']): RiskScores {
+  const envelope = GetRiskScoresResultSchema.parse(raw);
+  let dropped = 0;
+  const keep = <T>(items: readonly unknown[], parse: (x: unknown) => T | null): T[] =>
+    items.flatMap((x) => {
+      const v = parse(x);
+      if (v === null) dropped++;
+      return v === null ? [] : [v];
+    });
+  const scores = keep(envelope.scores, (x) => {
+    const p = RiskScoreViewSchema.safeParse(x);
+    return p.success ? p.data : null;
+  });
+  const alerts = keep(envelope.alerts, (x) => {
+    const p = RiskAlertDocSchema.safeParse(x);
+    return p.success ? p.data : null;
+  });
+  return { scores, alerts, truncated: envelope.truncated, dropped, origin };
+}
+
+/** Calls the `getRiskScores` function; it checks sign-in, App Check and the caller's branch. */
+export async function fetchRiskScores(cloud: Cloud): Promise<RiskScores> {
+  const { httpsCallable } = await import('@firebase/functions');
+  const call = httpsCallable(cloud.functions, 'getRiskScores');
+  const response = await call({});
+  return parseRiskScores(response.data, 'cloud');
+}
+
+/** The bundled sample (output of the scoring core over a few SYNTH loans), loaded on demand. */
+export async function loadSampleRiskScores(): Promise<RiskScores> {
+  const sample: unknown = (await import('../../demo/synth-risk-sample.json')).default;
+  return parseRiskScores(sample, 'sample');
+}

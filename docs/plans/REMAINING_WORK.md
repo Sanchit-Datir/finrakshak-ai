@@ -16,6 +16,25 @@ Plain words: a **job** is plain code that runs on a schedule (no model). An **ag
 model (Gemini on Vertex AI) and whose output a person or the code checks. This programme has one agent
 running today, one parked, and one deferred.
 
+## Status update (17 Oct 2026, branch `remaining-work-changes`)
+
+| Section | State                                                                                                                                                                                              |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| W1      | Done on `main` (PR #34): matcher wired in, contract changes, settings v2                                                                                                                           |
+| W2a–W2f | Code and tests done: `ingest/src/risk/{synthTables,synthLoadCli,bigQueryInputs,daily,step,scoreWriter,scoreStore}.ts`, `ingest/src/cloud/scoreTask.ts`, rules, setup/deploy scripts, workflow step |
+| W2g     | **Owner:** setup run, data load and dry run (`docs/DEPLOY.md` → Synthetic risk scores)                                                                                                             |
+| W3a–W3e | Done: shared schemas (`packages/shared/src/risk/scoring/store.ts`), `getRiskScores` callable, page `/monitoring/risk-scores`, alerts source `risk_score`, e2e `e2e/tests/risk-scores.spec.ts`      |
+| W4      | Owner tasks, unchanged                                                                                                                                                                             |
+| W5      | Status rows, session notes and B-57 updated                                                                                                                                                        |
+
+**Owner's answers (17 Oct 2026):** Q1, Q2, Q3, Q4 and Q6 confirmed as suggested (section 8). The cloud
+scorer reads public-record flags from `fundtrace_synth`, not from the public dataset, because the synthetic
+flags name SYNTH companies that real records never match (B-54); from the public pipeline it reads only the
+published build's date (B-43, B-50). Accepted. **Who sees the scores:** for now everyone signed in with a
+usable profile sees every branch's synthetic scores (`RISK_SCORES_SCOPE` in
+`functions/src/services/riskScores.ts`); branch scoping stays supported in the service and will be decided
+later.
+
 ## 1. Where things stand
 
 Done and on `main`: build steps 1–9 and the pattern contract. `npm run check` and `npm run build` pass.
@@ -238,14 +257,14 @@ B-38, and a separate mode of the scoring job; synthetic and real data never mix 
 
 ## 8. Open questions
 
-| #   | Question                                                                                                                                                                           | Affects  | Suggested answer                                                                                   |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| Q1  | The BigQuery loader reads a `gs://` file. May the scorer's service account create objects in a staging location? The plan said "no bucket write", which conflicts with the loader. | W2c, W2f | Yes, create-only on a dedicated prefix or bucket, like the extractor's account                     |
-| Q2  | While the public pipeline is still a dry run, the scorer should read `fundtrace_public_dryrun`. Is that the dataset it reads until publishing is switched on?                      | W2b      | Yes, set by an environment variable; switch it when publishing starts                              |
-| Q3  | Are the Firestore document shapes `synthRiskLatest/{loanId}` (the latest `LoanScore` plus `loan_id`) and `synthRiskAlerts/{alertId}` right?                                        | W2e, W3  | Yes; the first thing W2 and W3 agree                                                               |
-| Q4  | Should the app show synthetic scores on a separate page or merge them into the demo loan book?                                                                                     | W3c      | Separate page: the synthetic loans are not the demo loans                                          |
-| Q5  | Who has access to the GCP project and can run the setup script?                                                                                                                    | W4, W2g  | To confirm                                                                                         |
-| Q6  | Service accounts hold project-wide Firestore access today (`roles/datastore.user`), so a job's write limits rely on its code. Is that acceptable for the scorer?                   | W2f      | Yes for now, with a test that lists the collections the task writes; revisit with `AGENTS_PLAN.md` |
+| #   | Question                                                                                                                                                                           | Affects  | Suggested answer                                                                              |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------- |
+| Q1  | The BigQuery loader reads a `gs://` file. May the scorer's service account create objects in a staging location? The plan said "no bucket write", which conflicts with the loader. | W2c, W2f | **Decided: yes**, create-only, limited to `interim/risk-load/` by an IAM condition            |
+| Q2  | While the public pipeline is still a dry run, the scorer should read `fundtrace_public_dryrun`. Is that the dataset it reads until publishing is switched on?                      | W2b      | **Decided: yes**; it reads the `dry-run` channel's build date until publishing is switched on |
+| Q3  | Are the Firestore document shapes `synthRiskLatest/{loanId}` (the latest `LoanScore` plus `loan_id`) and `synthRiskAlerts/{alertId}` right?                                        | W2e, W3  | **Decided: yes**; shapes in `packages/shared/src/risk/scoring/store.ts`                       |
+| Q4  | Should the app show synthetic scores on a separate page or merge them into the demo loan book?                                                                                     | W3c      | **Decided: separate page** (`/monitoring/risk-scores`)                                        |
+| Q5  | Who has access to the GCP project and can run the setup script?                                                                                                                    | W4, W2g  | To confirm                                                                                    |
+| Q6  | Service accounts hold project-wide Firestore access today (`roles/datastore.user`), so a job's write limits rely on its code. Is that acceptable for the scorer?                   | W2f      | **Decided: yes for now**; `scoreStore.emulator.test.ts` lists the collections it writes       |
 
 ## 9. Boundary conditions to call out
 
