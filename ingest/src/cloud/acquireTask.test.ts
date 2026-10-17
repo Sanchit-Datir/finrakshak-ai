@@ -30,6 +30,7 @@ import { freshFsStore, useTempDataDir } from '../test/tempData.js';
 import { runAcquireTask } from './acquireTask.js';
 import type { CloudDeps } from './context.js';
 import { readCloudEnv, type CloudEnv } from './env.js';
+import { MemoryAgentRunStore } from '../ai/agentRuns.js';
 
 // The listing/download pipeline and text extraction are replaced; failure/listingResult stay real.
 vi.mock('../pipeline/acquireSource.js', async (importOriginal) => ({
@@ -73,6 +74,7 @@ const depsOf = (leases: LeaseManager = new FakeLeases()): CloudDeps => ({
   runs: new BlobRunLog(),
   agent: new BlobAgentStore(),
   history: new BlobHistory(),
+  agentRuns: new MemoryAgentRunStore(),
 });
 
 function okOutcome(id: SourceId, added: readonly string[] = ['n1']): AcquireOutcome {

@@ -33,6 +33,18 @@ const AiEnvSchema = z.object({
   FUNDTRACE_AI_EXTRACT_MAX_DOCS: z.coerce.number().int().min(1).max(1_000).default(50),
   FUNDTRACE_AI_EXTRACT_MAX_PAGES: z.coerce.number().int().min(1).max(100).default(10),
   FUNDTRACE_AI_EXTRACT_MAX_CHARS: z.coerce.number().int().min(1_000).max(200_000).default(30_000),
+  /** Pattern miner (on demand, PATTERN_MINER_PLAN.md): off unless switched on; one capped session. */
+  FUNDTRACE_MINER_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  FUNDTRACE_MINER_MAX_TOOL_CALLS: z.coerce.number().int().min(1).max(20).default(12),
+  /** Risk explainer (after scoring, RISK_EXPLAINER_PLAN.md): off unless switched on; alerts capped. */
+  FUNDTRACE_EXPLAIN_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  FUNDTRACE_EXPLAIN_MAX_ALERTS: z.coerce.number().int().min(1).max(100).default(30),
 });
 
 export interface AiConfig {
@@ -53,6 +65,8 @@ export interface AiConfig {
     readonly maxPages: number;
     readonly maxChars: number;
   };
+  readonly miner: { readonly enabled: boolean; readonly maxToolCalls: number };
+  readonly explainer: { readonly enabled: boolean; readonly maxAlerts: number };
 }
 
 export function readAiConfig(source: NodeJS.ProcessEnv = process.env): AiConfig {
@@ -76,6 +90,14 @@ export function readAiConfig(source: NodeJS.ProcessEnv = process.env): AiConfig 
       maxDocs: env.FUNDTRACE_AI_EXTRACT_MAX_DOCS,
       maxPages: env.FUNDTRACE_AI_EXTRACT_MAX_PAGES,
       maxChars: env.FUNDTRACE_AI_EXTRACT_MAX_CHARS,
+    },
+    miner: {
+      enabled: env.FUNDTRACE_MINER_ENABLED,
+      maxToolCalls: env.FUNDTRACE_MINER_MAX_TOOL_CALLS,
+    },
+    explainer: {
+      enabled: env.FUNDTRACE_EXPLAIN_ENABLED,
+      maxAlerts: env.FUNDTRACE_EXPLAIN_MAX_ALERTS,
     },
   };
 }

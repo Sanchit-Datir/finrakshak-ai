@@ -1,9 +1,9 @@
 import { createHash } from 'node:crypto';
 import type { AgentProposal, IngestRun, RunReview, SourceId } from '@fund-tracker/shared';
+import { envelope, NO_USAGE } from '../ai/agentRuns.js';
 import { readAiConfig, type AiConfig } from '../ai/config.js';
-import { GeminiToolModel } from '../ai/geminiModel.js';
-import { MockToolModel } from '../ai/mockModel.js';
-import type { ToolModel } from '../ai/toolModel.js';
+import { modelFor } from '../ai/models.js';
+import type { Usage } from '../ai/toolModel.js';
 import { assess, baseline, statusOf, type Assessment, type Baseline } from '../agent/findings.js';
 import type { HistorySource } from '../agent/history.js';
 import { RUN_REVIEW_PROMPT_VERSION } from '../agent/prompts/runReview.js';
@@ -28,15 +28,6 @@ async function baselines(run: IngestRun, history: HistorySource): Promise<Map<So
   return out;
 }
 
-function modelFor(cfg: AiConfig, scripted: () => string): ToolModel {
-  if (cfg.provider === 'mock')
-    // The mock "submits" the code's own summary, so the full loop runs without a billed call.
-    return new MockToolModel(() => [
-      { id: 'mock-1', name: 'submit_review', args: { summary: scripted() } },
-    ]);
-  return new GeminiToolModel(cfg);
-}
-
 const sameDraft = (a: ProposalDraft, b: ProposalDraft): boolean =>
   a.source_id === b.source_id && a.action === b.action;
 
@@ -59,7 +50,11 @@ interface Narrative {
   readonly summary: string;
   readonly model: string | null;
   readonly toolCalls: number;
+  readonly usage: Usage;
   readonly modelDrafts: ProposalDraft[];
+  /** True when a billed model's summary passed the checks and was used. */
+  readonly modelWritten: boolean;
+  readonly note: string | null;
 }
 
 async function narrate(
@@ -71,8 +66,19 @@ async function narrate(
   const fallback = templatedSummary(run, assessment.findings);
   // Healthy days and the kill switch never call the model (cost guard).
   if (statusOf(assessment.findings) === 'healthy' || !cfg.enabled)
-    return { summary: fallback, model: null, toolCalls: 0, modelDrafts: [] };
-  const model = modelFor(cfg, () => fallback);
+    return {
+      summary: fallback,
+      model: null,
+      toolCalls: 0,
+      usage: NO_USAGE,
+      modelDrafts: [],
+      modelWritten: false,
+      note: cfg.enabled ? 'healthy run: templated review' : 'agent switched off',
+    };
+  // The mock "submits" the code's own summary, so the full loop runs without a billed call.
+  const model = modelFor(cfg, () => [
+    { id: 'mock-1', name: 'submit_review', args: { summary: fallback } },
+  ]);
   const result = await supervise(
     model,
     { run, assessment, history: deps.history },
@@ -88,7 +94,10 @@ async function narrate(
     summary: summary.slice(0, 800),
     model: model.id,
     toolCalls: result.toolCalls,
+    usage: result.usage,
     modelDrafts: result.drafts,
+    modelWritten: model.id !== null && result.summary !== null,
+    note: result.note,
   };
 }
 
@@ -100,6 +109,7 @@ async function narrate(
 export async function runAgentTask(env: CloudEnv, deps: CloudDeps): Promise<boolean> {
   const cfg = readAiConfig();
   const now = new Date();
+  const startedAt = now;
   const run = (await deps.runs.get(env.runId)) ?? emptyRun(env.runId);
   const assessment = assess(run, await baselines(run, deps.history), env.runAt);
   const status = statusOf(assessment.findings);
@@ -127,6 +137,24 @@ export async function runAgentTask(env: CloudEnv, deps: CloudDeps): Promise<bool
   };
   await deps.agent.saveReview(review);
   await deps.runs.recordReview(env.runId, { status, rerunSources });
+  await deps.agentRuns.save(
+    envelope({
+      agent: 'ingestion',
+      runId: env.runId,
+      trigger: 'daily',
+      startedAt,
+      finishedAt: new Date(),
+      status: story.modelWritten ? 'done' : 'templated',
+      model: story.model,
+      promptVersion: RUN_REVIEW_PROMPT_VERSION,
+      inputHash: review.input_hash,
+      toolCalls: story.toolCalls,
+      usage: story.usage,
+      outputs: 1 + created.length,
+      outputRef: `ingestReviews/${env.runId}`,
+      note: story.note,
+    }),
+  );
   log.info('agent review recorded', {
     run: env.runId,
     status,

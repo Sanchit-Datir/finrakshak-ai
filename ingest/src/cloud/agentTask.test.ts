@@ -16,6 +16,7 @@ import { freshFsStore, useTempDataDir } from '../test/tempData.js';
 import { runAgentTask } from './agentTask.js';
 import type { CloudDeps } from './context.js';
 import { readCloudEnv, type CloudEnv } from './env.js';
+import { MemoryAgentRunStore } from '../ai/agentRuns.js';
 
 interface GeminiScript {
   starts: number;
@@ -77,12 +78,16 @@ class FirestoreLikeAgentStore implements AgentStore {
 
 const noHistory: HistorySource = { recent: () => Promise.resolve([]) };
 
-function depsOf(agent: FirestoreLikeAgentStore): CloudDeps {
+function depsOf(
+  agent: FirestoreLikeAgentStore,
+  agentRuns: MemoryAgentRunStore = new MemoryAgentRunStore(),
+): CloudDeps {
   return {
     leases: { withLease: () => Promise.reject(new Error('the agent takes no lease')) },
     runs: new BlobRunLog(),
     agent,
     history: noHistory,
+    agentRuns,
   };
 }
 
@@ -238,6 +243,40 @@ describe('runAgentTask: healthy and failing runs', () => {
     expect(gemini.starts).toBe(0);
     expect(agent.reviews.get(RUN_ID)).toMatchObject({ model: null, tool_calls: 0 });
     expect(await reviewMark()).toEqual({ status: 'failed', reruns: ['ibbi'] });
+  });
+});
+
+describe('runAgentTask: agentRuns envelope (AGENTS_PLAN.md)', () => {
+  it('records one templated envelope per run, without prompt or summary text', async () => {
+    await failing();
+    const runs = new MemoryAgentRunStore();
+    await runAgentTask(envOf(1), depsOf(new FirestoreLikeAgentStore(), runs));
+    await runAgentTask(envOf(1), depsOf(new FirestoreLikeAgentStore(), runs));
+    expect([...runs.runs.keys()]).toEqual([`ingestion_${RUN_ID}`]);
+    const env = runs.runs.get(`ingestion_${RUN_ID}`);
+    // The mock wrote nothing billed: the review is the code's own text.
+    expect(env).toMatchObject({
+      agent: 'ingestion',
+      trigger: 'daily',
+      status: 'templated',
+      model: null,
+      prompt_version: RUN_REVIEW_PROMPT_VERSION,
+      tool_calls: 1,
+      output_ref: `ingestReviews/${RUN_ID}`,
+    });
+    expect(env?.note ?? '').not.toContain('ibbi +');
+  });
+
+  it('marks a healthy day as templated with a note', async () => {
+    await healthy();
+    const runs = new MemoryAgentRunStore();
+    await runAgentTask(envOf(1), depsOf(new FirestoreLikeAgentStore(), runs));
+    expect(runs.runs.get(`ingestion_${RUN_ID}`)).toMatchObject({
+      status: 'templated',
+      tool_calls: 0,
+      outputs: 1,
+      note: 'healthy run: templated review',
+    });
   });
 });
 

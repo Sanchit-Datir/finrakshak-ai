@@ -135,6 +135,8 @@ export type RiskScoreView = z.infer<typeof RiskScoreViewSchema>;
 export const GetRiskScoresResultSchema = z.object({
   scores: z.array(z.unknown()),
   alerts: z.array(z.unknown()),
+  /** AI-written sentences for some of the alerts (RISK_EXPLAINER_PLAN.md); absent from older servers. */
+  explanations: z.array(z.unknown()).default([]),
   /** True when more documents existed than one call returns. */
   truncated: z.boolean(),
 });

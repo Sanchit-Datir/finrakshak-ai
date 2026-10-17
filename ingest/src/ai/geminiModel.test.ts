@@ -45,6 +45,8 @@ const CFG: AiConfig = {
   timeoutMs: 5_000,
   maxInputChars: 60_000,
   extraction: { enabled: false, maxDocs: 1, maxPages: 1, maxChars: 1_000 },
+  miner: { enabled: false, maxToolCalls: 12 },
+  explainer: { enabled: false, maxAlerts: 30 },
 };
 const TOOLS: readonly ToolSpec[] = [
   { name: 'get_run_summary', description: 'Run summary.', parameters: { type: 'object' } },

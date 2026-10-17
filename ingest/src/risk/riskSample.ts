@@ -55,7 +55,8 @@ function sampleData(): ScoringData {
   };
 }
 
-export async function buildRiskSample(): Promise<GetRiskScoresResult> {
+/** The sample never carries AI explanations: no model writes it (CLAUDE.md, simulated output). */
+export async function buildRiskSample(): Promise<Omit<GetRiskScoresResult, 'explanations'>> {
   const data = sampleData();
   const library = await loadLibrary(codePatterns());
   let previous = new Map<string, RiskLatestDoc>();

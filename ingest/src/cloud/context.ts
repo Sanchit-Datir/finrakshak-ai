@@ -1,4 +1,5 @@
 import { BigQueryHistory, BlobHistory, type HistorySource } from '../agent/history.js';
+import { BlobAgentRunStore, FirestoreAgentRunStore, type AgentRunStore } from '../ai/agentRuns.js';
 import { BlobAgentStore, FirestoreAgentStore, type AgentStore } from '../agent/store.js';
 import { getConfig } from '../config.js';
 import { FileLeaseManager } from '../coordination/fileLease.js';
@@ -21,6 +22,8 @@ export interface CloudDeps {
   readonly agent: AgentStore;
   /** Baselines for the agent: BigQuery `ingest_runs` when configured, else run records. */
   readonly history: HistorySource;
+  /** One envelope per agent execution (`agentRuns`, AGENTS_PLAN.md). */
+  readonly agentRuns: AgentRunStore;
 }
 
 /**
@@ -29,8 +32,10 @@ export interface CloudDeps {
  * - `extractor`: may only create new objects in the state bucket, so it records to Firestore only.
  * - `scorer`: may only create load files under `interim/risk-load/` (question Q1), so it records to
  *   Firestore only.
+ * - `miner`: reads the published tables and writes only its proposals and run record (B-61).
+ * - `explainer`: reads alerts and writes only explanations and its run record (B-62).
  */
-export type TaskRole = 'runner' | 'agent' | 'extractor' | 'scorer';
+export type TaskRole = 'runner' | 'agent' | 'extractor' | 'scorer' | 'miner' | 'explainer';
 
 function historyFor(env: CloudEnv): HistorySource {
   const storage = getConfig().storage;
@@ -50,6 +55,7 @@ export function makeDeps(env: CloudEnv, role: TaskRole): CloudDeps {
       runs: new BlobRunLog(),
       agent: new BlobAgentStore(),
       history,
+      agentRuns: new BlobAgentRunStore(),
     };
   const db = firestore();
   const firestoreRuns = new FirestoreRunLog(db);
@@ -59,5 +65,6 @@ export function makeDeps(env: CloudEnv, role: TaskRole): CloudDeps {
       role === 'runner' ? new CompositeRunLog([firestoreRuns, new BlobRunLog()]) : firestoreRuns,
     agent: new FirestoreAgentStore(db),
     history,
+    agentRuns: new FirestoreAgentRunStore(db),
   };
 }

@@ -27,6 +27,7 @@ import type { CloudDeps } from './context.js';
 import { readCloudEnv, type CloudEnv } from './env.js';
 import { mcaChanged } from './mcaState.js';
 import { readCurrent } from './publish.js';
+import { MemoryAgentRunStore } from '../ai/agentRuns.js';
 
 // The dataset and graph builders read data/processed; they are replaced by canned outputs.
 vi.mock('../dataset/build.js', async (importOriginal) => ({
@@ -82,6 +83,7 @@ const depsOf = (leases: LeaseManager = new FileLeaseManager()): CloudDeps => ({
   runs: new BlobRunLog(),
   agent: new BlobAgentStore(),
   history: new BlobHistory(),
+  agentRuns: new MemoryAgentRunStore(),
 });
 
 async function runWith(

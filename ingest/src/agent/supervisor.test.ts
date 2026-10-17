@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { ToolCall, ToolModel, ToolResult } from '../ai/toolModel.js';
 import { ModelError } from '../ai/toolModel.js';
+import { log } from '../log.js';
 import { RUN_AT, runOf, sourceRecord } from '../test/fixtures.js';
 import { assess } from './findings.js';
 import type { HistorySource } from './history.js';
@@ -126,6 +127,58 @@ describe('supervise (agent tool loop, B-49)', () => {
     expect(seen[1]?.[0]?.response).toEqual({
       error: 'input budget used up: call submit_review now',
     });
+  });
+});
+
+/** Edge cases of the loop (AGENTS_PLAN.md step 14a), kept when the loop moved to ai/toolLoop.ts. */
+describe('supervise edge cases (step 14a)', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('runs only the calls that fit the budget when one reply holds more', async () => {
+    const { model, seen } = scripted([
+      Array.from({ length: 5 }, (_, i) => call('get_run_summary', {}, `c${i}`)),
+      [call('submit_review', { summary: SUMMARY })],
+    ]);
+    const out = await supervise(model, ctx, { ...limits, maxToolCalls: 3 });
+    expect(out).toMatchObject({ summary: null, toolCalls: 3 });
+    // The budget ran out inside the first reply, so the model was not asked again.
+    expect(seen).toHaveLength(1);
+  });
+
+  it('accepts a valid submit_review after a rejected one', async () => {
+    const { model, seen } = scripted([
+      [call('submit_review', { summary: 'The borrower is a criminal and must be blocked.' })],
+      [call('submit_review', { summary: SUMMARY })],
+    ]);
+    const out = await supervise(model, ctx, limits);
+    expect(seen[1]?.[0]?.response).toHaveProperty('error');
+    expect(out).toMatchObject({ summary: SUMMARY, toolCalls: 2, note: null });
+  });
+
+  it('still accepts submit_review once the input budget is used up', async () => {
+    const { model, seen } = scripted([
+      [call('get_run_summary', {})],
+      [call('submit_review', { summary: SUMMARY })],
+    ]);
+    const out = await supervise(model, ctx, { ...limits, maxInputChars: 10 });
+    expect(seen[1]?.[0]?.response).toEqual({
+      error: 'input budget used up: call submit_review now',
+    });
+    expect(out.summary).toBe(SUMMARY);
+  });
+
+  it('logs the call count and token usage, never the prompt or the summary', async () => {
+    const info = vi.spyOn(log, 'info');
+    await supervise(scripted([[call('submit_review', { summary: SUMMARY })]]).model, ctx, limits);
+    expect(info).toHaveBeenCalledWith('agent loop done', {
+      calls: 1,
+      inputTokens: 0,
+      outputTokens: 0,
+      submitted: true,
+    });
+    expect(JSON.stringify(info.mock.calls)).not.toContain(SUMMARY);
   });
 });
 

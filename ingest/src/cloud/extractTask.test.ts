@@ -15,6 +15,7 @@ import { freshFsStore, useTempDataDir } from '../test/tempData.js';
 import type { CloudDeps } from './context.js';
 import { readCloudEnv } from './env.js';
 import { runExtractTask } from './extractTask.js';
+import { MemoryAgentRunStore } from '../ai/agentRuns.js';
 
 interface ModelScript {
   created: number;
@@ -106,6 +107,7 @@ const deps: CloudDeps = {
   runs: new BlobRunLog(),
   agent: new BlobAgentStore(),
   history: new BlobHistory(),
+  agentRuns: new MemoryAgentRunStore(),
 };
 const env = readCloudEnv({ FUNDTRACE_RUN_ID: RUN_ID, FUNDTRACE_RUN_AT: RUN_AT });
 
