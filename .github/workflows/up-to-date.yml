@@ -1,0 +1,29 @@
+# Every open PR must contain the latest main before it is merged.
+# Fails when main has commits the PR branch lacks; fix it by merging main into the branch
+# (Update branch button, or `git merge origin/main`). Make this check required, together with
+# "Require branches to be up to date before merging", in the branch protection rule for main.
+name: Up to date with main
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  up-to-date:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fail if main has commits this branch lacks
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch origin "$BASE"
+          behind=$(git rev-list --count "$HEAD_SHA..origin/$BASE")
+          if [ "$behind" -gt 0 ]; then
+            echo "::error::This branch is $behind commit(s) behind $BASE. Merge $BASE into it, then re-run."
+            exit 1
+          fi
+          echo "Branch contains the latest $BASE."

@@ -94,4 +94,7 @@ Do not silently pick a behaviour for ambiguous edge cases — ask.
 ## Git workflow
 
 - Branch per change; small focused commits in imperative mood. Don't commit to `main` directly once CI is set up; open a PR.
+- Every open PR must be updated with `main` (merge `main` into the branch) before it is merged; the
+  `Up to date with main` check fails a PR that is behind. Re-run `npm run check && npm run build`
+  after the merge if it brought in changes.
 - Never commit secrets, service-account JSON, or `.env` files.

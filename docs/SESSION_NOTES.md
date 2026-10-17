@@ -16,6 +16,10 @@ _Last updated: 17 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` 
 - **Cloud and AI:** the owner approved the cloud ingestion plan (`docs/plans/GCP_INGESTION_AGENT_PLAN.md`)
   on 17 Oct 2026: MVPs are built on branch `ingestion-agent`, one commit per MVP. Creating GCP
   resources (`scripts/setup-ingest-gcp.sh`) and enabling publishing stay the owner's steps.
+- **PRs and main:** every open PR must be updated with `main` before it is merged (CI check
+  `Up to date with main`). To enforce it at merge time the owner turns on branch protection for
+  `main`: require status checks, mark `Up to date with main` required, and tick "Require branches
+  to be up to date before merging".
 - **Definition of done:** `npm run check && npm run build` (CLAUDE.md), plus `npm run e2e` for UI
   scenarios.
 - **Wording:** leads, never verdicts ("Urgent review / Needs attention / Routine review"; never
