@@ -15,7 +15,13 @@ import { applicationDocs, reviewPriority, runChecks } from '../checks.js';
 import { docTypeLabel } from '../doc-catalog.js';
 import { formatDate, formatMoney } from '../format.js';
 import { navCounts } from '../nav-counts.js';
-import { addFinding, addTransaction, packBuilder, type ContextPack, type PackBuilder } from './pack.js';
+import {
+  addFinding,
+  addTransaction,
+  packBuilder,
+  type ContextPack,
+  type PackBuilder,
+} from './pack.js';
 
 export type { ContextPack } from './pack.js';
 
@@ -128,7 +134,8 @@ function alertPack(db: Db, a: UnifiedAlert): ContextPack {
     );
     for (const t of db.transactions.filter((x) => m.transactionIds.includes(x.id)))
       addTransaction(b, db, t, href);
-    for (const benign of m.benign.slice(0, 2)) b.add('F', 'finding', 'Possible harmless reason', benign, href);
+    for (const benign of m.benign.slice(0, 2))
+      b.add('F', 'finding', 'Possible harmless reason', benign, href);
     for (const step of m.steps.slice(0, 3)) b.add('K', 'step', 'Check to do', step, href);
   }
   if (a.finding !== null) addFinding(b, a.finding, a.linkedHref);
@@ -225,7 +232,12 @@ function portfolioPack(db: Db, me: string, scope: string): ContextPack {
 }
 
 /** Builds the facts for a target, or null when the record no longer exists. */
-export function buildContext(db: Db, target: CopilotTarget, me: string, scope: string): ContextPack | null {
+export function buildContext(
+  db: Db,
+  target: CopilotTarget,
+  me: string,
+  scope: string,
+): ContextPack | null {
   switch (target.kind) {
     case 'portfolio':
       return portfolioPack(db, me, scope);

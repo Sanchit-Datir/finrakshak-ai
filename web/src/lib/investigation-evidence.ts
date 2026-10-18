@@ -29,20 +29,32 @@ function describe(input: InvestigateApplicationInput, c: Citation): Investigatio
   switch (c.type) {
     case 'field': {
       const f = sections.find((x) => x.path === c.path);
-      return f === undefined ? null : { label: f.label, detail: f.value === '' ? '(not given)' : f.value };
+      return f === undefined
+        ? null
+        : { label: f.label, detail: f.value === '' ? '(not given)' : f.value };
     }
     case 'ratio': {
       const r = input.ratios.find((x) => x.name === c.name);
-      return r === undefined ? null : { label: `${r.label} (computed by code)`, detail: `${r.value} — ${r.basis}` };
+      return r === undefined
+        ? null
+        : { label: `${r.label} (computed by code)`, detail: `${r.value} — ${r.basis}` };
     }
     case 'record': {
       for (const cand of input.parties.flatMap((p) => p.candidates)) {
         const cin = `CIN ${cand.cin ?? 'not recorded'}`;
         if (cand.candidateId === c.id)
-          return { label: `Public records: ${cand.name}`, detail: [cin, cand.status, `name similarity ${String(cand.nameScore)}/100`].filter(Boolean).join(' · ') };
+          return {
+            label: `Public records: ${cand.name}`,
+            detail: [cin, cand.status, `name similarity ${String(cand.nameScore)}/100`]
+              .filter(Boolean)
+              .join(' · '),
+          };
         const rec = cand.records.find((r) => r.recordId === c.id);
         if (rec !== undefined)
-          return { label: `Public record of ${cand.name}`, detail: `${rec.title} (${rec.kind}${rec.date === null ? '' : `, ${rec.date}`})` };
+          return {
+            label: `Public record of ${cand.name}`,
+            detail: `${rec.title} (${rec.kind}${rec.date === null ? '' : `, ${rec.date}`})`,
+          };
       }
       return null;
     }
@@ -70,6 +82,9 @@ export function evidenceIndex(
 }
 
 /** Finding states are keyed per run, so a dismissal never carries over to a new investigation. */
-export function aiFindingStateId(investigatedAt: string, f: Pick<InvestigationFinding, 'id'>): string {
+export function aiFindingStateId(
+  investigatedAt: string,
+  f: Pick<InvestigationFinding, 'id'>,
+): string {
   return `ai:${investigatedAt}:${f.id}`;
 }

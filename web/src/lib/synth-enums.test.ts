@@ -25,10 +25,22 @@ describe('synthetic data enums match the web app', () => {
     expect([...shared].sort()).toEqual([...web].sort());
   };
 
-  it('entity kinds', () => same(SYNTH_ENTITY_KINDS, EntityKindSchema.options));
-  it('relationship types', () => same(SYNTH_RELATIONSHIP_TYPES, RelationshipTypeSchema.options));
-  it('link statuses', () => same(SYNTH_LINK_STATUSES, LinkStatusSchema.options));
-  it('loan products', () => same(SYNTH_LOAN_PRODUCTS, LoanProductSchema.options));
-  it('transaction types', () => same(SYNTH_TRANSACTION_TYPES, TransactionTypeSchema.options));
-  it('bands are the app priorities', () => same(SYNTH_BANDS, PrioritySchema.options));
+  it('entity kinds', () => {
+    same(SYNTH_ENTITY_KINDS, EntityKindSchema.options);
+  });
+  it('relationship types', () => {
+    same(SYNTH_RELATIONSHIP_TYPES, RelationshipTypeSchema.options);
+  });
+  it('link statuses', () => {
+    same(SYNTH_LINK_STATUSES, LinkStatusSchema.options);
+  });
+  it('loan products', () => {
+    same(SYNTH_LOAN_PRODUCTS, LoanProductSchema.options);
+  });
+  it('transaction types', () => {
+    same(SYNTH_TRANSACTION_TYPES, TransactionTypeSchema.options);
+  });
+  it('bands are the app priorities', () => {
+    same(SYNTH_BANDS, PrioritySchema.options);
+  });
 });

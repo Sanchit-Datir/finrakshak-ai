@@ -10,12 +10,17 @@ const header = (key: string): string | undefined => hosting.find((h) => h.key ==
 
 describe('security headers', () => {
   it('every Hosting site has the same headers, rewrites and files as the first one', () => {
-    const [first, ...others] = firebase.hosting.map(({ target, ...config }) => ({ target, config }));
+    const [first, ...others] = firebase.hosting.map(({ target, ...config }) => ({
+      target,
+      config,
+    }));
     expect(firebase.hosting.map((site) => site.target)).toEqual(['fund-tracer', 'finrakshak-ai']);
     for (const site of others) expect(site.config, site.target).toEqual(first?.config);
   });
   it('production CSP matches the app CSP (plus upgrade-insecure-requests)', () => {
-    expect(header('Content-Security-Policy')).toBe(`${CONTENT_SECURITY_POLICY}; upgrade-insecure-requests`);
+    expect(header('Content-Security-Policy')).toBe(
+      `${CONTENT_SECURITY_POLICY}; upgrade-insecure-requests`,
+    );
   });
   it('production sends every header the preview server sends', () => {
     for (const [key, value] of Object.entries(BUILD_SECURITY_HEADERS))
@@ -32,7 +37,9 @@ describe('security headers', () => {
       CONTENT_SECURITY_POLICY.split('; ').find((d) => d.startsWith(`${name} `)) ?? '';
     expect(CONTENT_SECURITY_POLICY).not.toMatch(/\*|https:(?!\/\/)|http:/);
     expect(directive('script-src')).not.toContain('unsafe-inline');
-    expect(directive('connect-src')).toContain('https://asia-south1-fund-tracer.cloudfunctions.net');
+    expect(directive('connect-src')).toContain(
+      'https://asia-south1-fund-tracer.cloudfunctions.net',
+    );
     expect(directive('frame-src')).toBe(
       'frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/',
     );
@@ -50,9 +57,9 @@ describe('security headers allow what the Firebase libraries really contact', ()
     CONTENT_SECURITY_POLICY.split('; ').find((d) => d.startsWith('connect-src ')) ?? '';
 
   it('lets the browser reach every App Check API host the library calls', () => {
-    const hosts = [...source.matchAll(/https:\/\/[a-z0-9-]*firebaseappcheck\.googleapis\.com/g)].map(
-      (m) => m[0],
-    );
+    const hosts = [
+      ...source.matchAll(/https:\/\/[a-z0-9-]*firebaseappcheck\.googleapis\.com/g),
+    ].map((m) => m[0]);
     expect(hosts.length).toBeGreaterThan(0);
     for (const host of new Set(hosts)) expect(connectSrc, host).toContain(host);
   });

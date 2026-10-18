@@ -14,7 +14,13 @@ export interface QualityReport {
 
 const SAMPLE = 320;
 
-export function assessPixels(gray: Float32Array, w: number, h: number, srcW: number, srcH: number): QualityReport {
+export function assessPixels(
+  gray: Float32Array,
+  w: number,
+  h: number,
+  srcW: number,
+  srcH: number,
+): QualityReport {
   let sum = 0;
   for (const v of gray) sum += v;
   const brightness = gray.length === 0 ? 0 : sum / gray.length / 255;
@@ -24,7 +30,12 @@ export function assessPixels(gray: Float32Array, w: number, h: number, srcW: num
   for (let y = 1; y < h - 1; y++) {
     for (let x = 1; x < w - 1; x++) {
       const i = y * w + x;
-      const lap = 4 * (gray[i] ?? 0) - (gray[i - 1] ?? 0) - (gray[i + 1] ?? 0) - (gray[i - w] ?? 0) - (gray[i + w] ?? 0);
+      const lap =
+        4 * (gray[i] ?? 0) -
+        (gray[i - 1] ?? 0) -
+        (gray[i + 1] ?? 0) -
+        (gray[i - w] ?? 0) -
+        (gray[i + w] ?? 0);
       lapSum += lap;
       lapSq += lap * lap;
       n += 1;
@@ -33,10 +44,17 @@ export function assessPixels(gray: Float32Array, w: number, h: number, srcW: num
   const mean = n === 0 ? 0 : lapSum / n;
   const sharpness = n === 0 ? 0 : lapSq / n - mean * mean;
   const warnings: string[] = [];
-  if (Math.min(srcW, srcH) < 900) warnings.push(`Low resolution (${srcW}×${srcH}px). Small text may be unreadable; scan at a higher resolution if possible.`);
-  if (brightness < 0.28) warnings.push(`Image appears dark (average brightness ${Math.round(brightness * 100)}%). Retake in better light.`);
+  if (Math.min(srcW, srcH) < 900)
+    warnings.push(
+      `Low resolution (${srcW}×${srcH}px). Small text may be unreadable; scan at a higher resolution if possible.`,
+    );
+  if (brightness < 0.28)
+    warnings.push(
+      `Image appears dark (average brightness ${Math.round(brightness * 100)}%). Retake in better light.`,
+    );
   if (brightness > 0.97) warnings.push('Image appears washed out or mostly blank.');
-  if (sharpness < 60) warnings.push('Image may be blurry. Hold the camera steady and retake if text is unclear.');
+  if (sharpness < 60)
+    warnings.push('Image may be blurry. Hold the camera steady and retake if text is unclear.');
   return { width: srcW, height: srcH, brightness, sharpness, warnings };
 }
 
@@ -54,7 +72,8 @@ export async function assessImage(file: Blob): Promise<QualityReport> {
   const { data } = ctx.getImageData(0, 0, w, h);
   const gray = new Float32Array(w * h);
   for (let i = 0; i < gray.length; i++) {
-    gray[i] = 0.299 * (data[i * 4] ?? 0) + 0.587 * (data[i * 4 + 1] ?? 0) + 0.114 * (data[i * 4 + 2] ?? 0);
+    gray[i] =
+      0.299 * (data[i * 4] ?? 0) + 0.587 * (data[i * 4 + 1] ?? 0) + 0.114 * (data[i * 4 + 2] ?? 0);
   }
   const report = assessPixels(gray, w, h, bitmap.width, bitmap.height);
   bitmap.close();

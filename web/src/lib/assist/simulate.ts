@@ -23,7 +23,10 @@ export const TASK_HEADLINE: Record<AssistTask, string> = {
 };
 
 const sentences = (s: string): string[] =>
-  s.split(/(?<=[.!?])\s+(?=[A-Z₹"'(])/).map((x) => x.trim()).filter(Boolean);
+  s
+    .split(/(?<=[.!?])\s+(?=[A-Z₹"'(])/)
+    .map((x) => x.trim())
+    .filter(Boolean);
 const firstSentence = (s: string): string => sentences(s)[0] ?? s.trim();
 /** Findings and alerts start with their priority ("Urgent review. …"); lead with the detail. */
 function lead(f: AssistFact): string {
@@ -112,7 +115,20 @@ function moneyTrail(facts: AssistFact[]): RawAssistReply['statements'] {
   return out;
 }
 
-const STOP = new Set(['what', 'which', 'when', 'where', 'there', 'this', 'that', 'with', 'from', 'have', 'does', 'about']);
+const STOP = new Set([
+  'what',
+  'which',
+  'when',
+  'where',
+  'there',
+  'this',
+  'that',
+  'with',
+  'from',
+  'have',
+  'does',
+  'about',
+]);
 
 function answer(input: AssistInput): RawAssistReply['statements'] {
   const words = input.question
@@ -129,7 +145,10 @@ function answer(input: AssistInput): RawAssistReply['statements'] {
     .slice(0, 3);
   if (scored.length === 0)
     return [
-      say('The record does not contain information that answers this question.', subjectRef(input.facts)),
+      say(
+        'The record does not contain information that answers this question.',
+        subjectRef(input.facts),
+      ),
     ];
   return scored.map(({ f }) => say(`${f.label}: ${firstSentence(f.text)}`, f.ref));
 }
@@ -138,7 +157,10 @@ const FOLLOW_UPS: Record<AssistInput['subject']['kind'], string[]> = {
   portfolio: ['Which loans need attention first?', 'What changed this week?'],
   application: ['What documents are still missing?', 'Is the declared income supported?'],
   borrower: ['Does this borrower have open alerts?', 'How are their loans performing?'],
-  loan: ['Who received the money after disbursement?', 'Are there public records after disbursement?'],
+  loan: [
+    'Who received the money after disbursement?',
+    'Are there public records after disbursement?',
+  ],
   alert: ['What could explain this harmlessly?', 'Which transactions triggered this?'],
   case: ['What evidence is still unverified?', 'What should go in the case note?'],
 };
@@ -170,5 +192,11 @@ export function simulateAssist(input: AssistInput, now: Date = new Date()): Assi
     },
     TASK_HEADLINE[input.task],
   );
-  return { ...grounded, mock: true, model: null, generatedAt: now.toISOString(), remainingToday: null };
+  return {
+    ...grounded,
+    mock: true,
+    model: null,
+    generatedAt: now.toISOString(),
+    remainingToday: null,
+  };
 }

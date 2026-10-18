@@ -74,7 +74,9 @@ function compute(db: Db, me: string, scope: string): NavCounts {
     applications: count(awaiting.map((a) => reviewPriority(a, db))),
     loans: count([...flaggedLoans.values()]),
     publicNew: count(
-      open.filter((a) => a.source === 'public_records' && a.status === 'new').map((a) => a.priority),
+      open
+        .filter((a) => a.source === 'public_records' && a.status === 'new')
+        .map((a) => a.priority),
     ),
     cases: count(cases.filter(isOpenCase).map((c) => c.priority)),
     pulse: loanPulse(db, scope, open),

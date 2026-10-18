@@ -82,8 +82,12 @@ export type NameVerdict = 'match' | 'variation' | 'mismatch';
 
 /** Order-insensitive token comparison that tolerates initials and minor spelling variants. */
 export function compareNames(a: string, b: string): NameVerdict {
-  const ta = normalizeName(a).split(' ').filter((t) => t !== '');
-  const tb = normalizeName(b).split(' ').filter((t) => t !== '');
+  const ta = normalizeName(a)
+    .split(' ')
+    .filter((t) => t !== '');
+  const tb = normalizeName(b)
+    .split(' ')
+    .filter((t) => t !== '');
   if (ta.length === 0 || tb.length === 0) return 'mismatch';
   const [short, long] = ta.length <= tb.length ? [ta, tb] : [tb, ta];
   let exact = true;
@@ -138,7 +142,9 @@ interface DocField {
 
 function fieldsOf(docs: FtDocument[], key: string): DocField[] {
   return docs.flatMap((doc) =>
-    doc.fields.filter((f) => f.key === key && f.value.trim() !== '').map((field) => ({ doc, field })),
+    doc.fields
+      .filter((f) => f.key === key && f.value.trim() !== '')
+      .map((field) => ({ doc, field })),
   );
 }
 
@@ -158,17 +164,28 @@ function formRef(appId: string, label: string, value: string): EvidenceRef {
 
 function certaintyFor(dfs: DocField[]): string {
   const unreviewed = dfs.some((d) => d.field.state === 'unreviewed');
-  const handwritten = dfs.some((d) => d.field.quality === 'handwritten' || d.field.quality === 'low');
+  const handwritten = dfs.some(
+    (d) => d.field.quality === 'handwritten' || d.field.quality === 'low',
+  );
   const simulated = dfs.some((d) => d.field.origin === 'simulated');
   const parts = [
-    unreviewed ? 'Uses machine-extracted values not yet confirmed by a reviewer.' : 'Uses values confirmed or entered by a reviewer.',
+    unreviewed
+      ? 'Uses machine-extracted values not yet confirmed by a reviewer.'
+      : 'Uses values confirmed or entered by a reviewer.',
   ];
   if (handwritten) parts.push('Includes handwritten text, which is read with lower confidence.');
   if (simulated) parts.push('Extracted values are simulated output.');
   return parts.join(' ');
 }
 
-const PERSON_DOCS = new Set(['aadhaar', 'pan', 'voter_id', 'passport', 'satbara', 'application_form']);
+const PERSON_DOCS = new Set([
+  'aadhaar',
+  'pan',
+  'voter_id',
+  'passport',
+  'satbara',
+  'application_form',
+]);
 const COMPANY_ONLY_DOCS: Record<string, string[]> = {
   board_resolution: ['private_limited'],
   company_registration: ['private_limited'],
@@ -177,7 +194,11 @@ const COMPANY_ONLY_DOCS: Record<string, string[]> = {
 
 // ---------- individual checks ----------
 
-type Ctx = { app: Application; docs: FtDocument[]; db: Db };
+interface Ctx {
+  app: Application;
+  docs: FtDocument[];
+  db: Db;
+}
 type Check = (ctx: Ctx) => Finding[];
 
 const requiredFields: Check = ({ app }) => {
@@ -208,7 +229,7 @@ const requiredFields: Check = ({ app }) => {
 };
 
 const missingDocuments: Check = ({ app, docs, db }) => {
-  const required = db.settings.checklists[app.data.loan.product] ?? [];
+  const required = db.settings.checklists[app.data.loan.product];
   const present = new Set(docs.filter((d) => d.processing !== 'failed').map((d) => d.docType));
   const missing = required.filter((t) => {
     const only = COMPANY_ONLY_DOCS[t];
@@ -224,17 +245,36 @@ const missingDocuments: Check = ({ app, docs, db }) => {
       title: `${missing.length} required document(s) not on file`,
       category: 'missing_document',
       priority: 'needs_attention',
-      certainty: 'Certain for the configured checklist; depends on documents being classified correctly.',
+      certainty:
+        'Certain for the configured checklist; depends on documents being classified correctly.',
       observed: `Not found among linked documents: ${labels.join('; ')}.`,
       whyItMatters: 'The product checklist requires these documents before a decision.',
       evidence: [
-        { label: 'Checklist for product', value: required.map(docTypeLabel).join('; '), docId: null, fieldId: null, appId: app.id },
-        { label: 'Linked documents (excluding failed)', value: docs.map((d) => docTypeLabel(d.docType)).join('; ') || 'None', docId: null, fieldId: null, appId: app.id },
+        {
+          label: 'Checklist for product',
+          value: required.map(docTypeLabel).join('; '),
+          docId: null,
+          fieldId: null,
+          appId: app.id,
+        },
+        {
+          label: 'Linked documents (excluding failed)',
+          value: docs.map((d) => docTypeLabel(d.docType)).join('; ') || 'None',
+          docId: null,
+          fieldId: null,
+          appId: app.id,
+        },
       ],
       known: ['Which document types are linked to this application.'],
       unknown: ['Whether a document was uploaded but classified under a different type.'],
-      benign: ['The borrower may bring the document on a later visit.', 'A document may be filed under "Other supporting document".'],
-      steps: ['Request the missing documents from the applicant.', 'Check unclassified uploads and set their document type.'],
+      benign: [
+        'The borrower may bring the document on a later visit.',
+        'A document may be filed under "Other supporting document".',
+      ],
+      steps: [
+        'Request the missing documents from the applicant.',
+        'Check unclassified uploads and set their document type.',
+      ],
     },
   ];
 };
@@ -257,12 +297,16 @@ const nameConsistency: Check = ({ app, docs }) => {
       priority: 'needs_attention',
       certainty: `${certaintyFor(conflicts)} Name similarity is a heuristic and is not proof of identity either way.`,
       observed: `Form name "${formName}" does not match ${conflicts.map((c) => `"${c.field.value}"`).join(', ')}.`,
-      whyItMatters: 'Documents may belong to a different person, or the name may be recorded inconsistently.',
+      whyItMatters:
+        'Documents may belong to a different person, or the name may be recorded inconsistently.',
       evidence: [formRef(app.id, 'Applicant name', formName), ...conflicts.map(ref)],
       known: ['The extracted/entered names differ beyond initials or minor spelling variation.'],
       unknown: ['Whether the documents belong to the same person.'],
       benign: ['Marriage, transliteration or nicknames can change how a name is written.'],
-      steps: ['Compare the original documents in person.', 'Record the reason for any legitimate variation.'],
+      steps: [
+        'Compare the original documents in person.',
+        'Record the reason for any legitimate variation.',
+      ],
     },
   ];
 };
@@ -271,7 +315,9 @@ const dobConflict: Check = ({ app, docs }) => {
   const formDob = normalizeDate(app.data.applicant.dob);
   const dobs = fieldsOf(docs, 'dob');
   const all = [
-    ...(formDob === null ? [] : [{ value: formDob, ref: formRef(app.id, 'Date of birth', app.data.applicant.dob) }]),
+    ...(formDob === null
+      ? []
+      : [{ value: formDob, ref: formRef(app.id, 'Date of birth', app.data.applicant.dob) }]),
     ...dobs.flatMap((d) => {
       const v = normalizeDate(d.field.value);
       return v === null ? [] : [{ value: v, ref: ref(d) }];
@@ -291,8 +337,14 @@ const dobConflict: Check = ({ app, docs }) => {
       evidence: all.map((x) => x.ref),
       known: ['The recorded dates are not identical after normalising digits and format.'],
       unknown: ['Which date is correct.'],
-      benign: ['Handwritten digits (e.g. ६ and ८) are easily misread.', 'Day and month may be swapped.'],
-      steps: ['Check the original documents.', 'Correct the field and record which source was used.'],
+      benign: [
+        'Handwritten digits (e.g. ६ and ८) are easily misread.',
+        'Day and month may be swapped.',
+      ],
+      steps: [
+        'Check the original documents.',
+        'Correct the field and record which source was used.',
+      ],
     },
   ];
 };
@@ -318,11 +370,20 @@ const landArea: Check = ({ app, docs, db }) => {
       certainty: `${certaintyFor(conflicts)} Unit conversion: 1 hectare = 100 are; the 7/12 "हे-आर" notation is read as hectares and ares.`,
       observed: `Form: ${c.landArea} ${c.landUnit} (${formHa?.toFixed(2) ?? '?'} ha). 7/12: ${conflicts.map((d) => `${d.field.value} (${parseAreaToHectares(d.field.value, 'hectare')?.toFixed(2) ?? '?'} ha)`).join(', ')}.`,
       whyItMatters: 'Loan eligibility and collateral value depend on the land actually held.',
-      evidence: [formRef(app.id, 'Land area', `${c.landArea} ${c.landUnit}`), ...conflicts.map(ref)],
+      evidence: [
+        formRef(app.id, 'Land area', `${c.landArea} ${c.landUnit}`),
+        ...conflicts.map(ref),
+      ],
       known: ['The two values differ by more than the configured tolerance.'],
       unknown: ['Whether the applicant cultivates additional leased or family land.'],
-      benign: ['The applicant may hold land under more than one survey number.', 'Units may have been written differently (acre vs hectare).'],
-      steps: ['Ask for 7/12 extracts for all land declared.', 'Correct the form value if it was misread.'],
+      benign: [
+        'The applicant may hold land under more than one survey number.',
+        'Units may have been written differently (acre vs hectare).',
+      ],
+      steps: [
+        'Ask for 7/12 extracts for all land declared.',
+        'Correct the form value if it was misread.',
+      ],
     },
   ];
 };
@@ -351,21 +412,43 @@ const encumbrance: Check = ({ app, docs }) => {
 
 function duplicateCheck(
   ctx: Ctx,
-  opts: { ruleId: string; formValue: string; fieldKey: string; appValue: (a: Application) => string; label: string; urgentAcrossBorrowers: boolean },
+  opts: {
+    ruleId: string;
+    formValue: string;
+    fieldKey: string;
+    appValue: (a: Application) => string;
+    label: string;
+    urgentAcrossBorrowers: boolean;
+  },
 ): Finding[] {
   const { app, db } = ctx;
   const target = normalizeIdentifier(opts.formValue);
   if (target === '') return [];
-  const others = db.applications.filter((a) => a.id !== app.id && normalizeIdentifier(opts.appValue(a)) === target);
-  const otherDocs = db.documents.filter(
-    (d) => d.applicationId !== app.id && d.fields.some((f) => f.key === opts.fieldKey && normalizeIdentifier(f.value) === target),
+  const others = db.applications.filter(
+    (a) => a.id !== app.id && normalizeIdentifier(opts.appValue(a)) === target,
   );
-  const otherAppIds = [...new Set([...others.map((a) => a.id), ...otherDocs.flatMap((d) => (d.applicationId === null ? [] : [d.applicationId]))])];
+  const otherDocs = db.documents.filter(
+    (d) =>
+      d.applicationId !== app.id &&
+      d.fields.some((f) => f.key === opts.fieldKey && normalizeIdentifier(f.value) === target),
+  );
+  const otherAppIds = [
+    ...new Set([
+      ...others.map((a) => a.id),
+      ...otherDocs.flatMap((d) => (d.applicationId === null ? [] : [d.applicationId])),
+    ]),
+  ];
   if (otherAppIds.length === 0) return [];
   const otherApps = otherAppIds.flatMap((id) => db.applications.filter((a) => a.id === id));
-  const sameBorrower = otherApps.every((a) => a.borrowerId !== null && a.borrowerId === app.borrowerId);
+  const sameBorrower = otherApps.every(
+    (a) => a.borrowerId !== null && a.borrowerId === app.borrowerId,
+  );
   const live = otherApps.some((a) => a.status !== 'declined');
-  const priority: Priority = sameBorrower ? 'routine' : live && opts.urgentAcrossBorrowers ? 'urgent' : 'needs_attention';
+  const priority: Priority = sameBorrower
+    ? 'routine'
+    : live && opts.urgentAcrossBorrowers
+      ? 'urgent'
+      : 'needs_attention';
   return [
     {
       id: `${app.id}:${opts.ruleId}`,
@@ -382,17 +465,39 @@ function duplicateCheck(
         : 'The same collateral pledged by different parties may indicate double financing or a data-entry error.',
       evidence: [
         formRef(app.id, opts.label, opts.formValue),
-        ...otherApps.map((a) => ({ label: `Application ${a.id} · ${opts.label}`, value: opts.appValue(a) || opts.formValue, docId: null, fieldId: null, appId: a.id })),
-        ...otherDocs.map((d) => ({ label: `${docTypeLabel(d.docType)} · ${d.filename}`, value: opts.formValue, docId: d.id, fieldId: d.fields.find((f) => f.key === opts.fieldKey)?.id ?? null, appId: d.applicationId })),
+        ...otherApps.map((a) => ({
+          label: `Application ${a.id} · ${opts.label}`,
+          value: opts.appValue(a) || opts.formValue,
+          docId: null,
+          fieldId: null,
+          appId: a.id,
+        })),
+        ...otherDocs.map((d) => ({
+          label: `${docTypeLabel(d.docType)} · ${d.filename}`,
+          value: opts.formValue,
+          docId: d.id,
+          fieldId: d.fields.find((f) => f.key === opts.fieldKey)?.id ?? null,
+          appId: d.applicationId,
+        })),
       ],
       known: ['The identifier string matches exactly.'],
-      unknown: ['Whether the earlier pledge has been released.', 'Whether the documents are genuine — reading text does not establish authenticity.'],
+      unknown: [
+        'Whether the earlier pledge has been released.',
+        'Whether the documents are genuine — reading text does not establish authenticity.',
+      ],
       benign: sameBorrower
         ? ['Renewals and re-applications reuse the same collateral.']
-        : ['A previous pledge may have been released and the receipt re-issued.', 'A typing error may have produced the same number.'],
+        : [
+            'A previous pledge may have been released and the receipt re-issued.',
+            'A typing error may have produced the same number.',
+          ],
       steps: sameBorrower
         ? ['Confirm the earlier application is closed or declined.']
-        : ['Confirm the receipt / land record status with the issuing authority.', 'Check lien marking on the earlier loan.', 'Hold the application until confirmed.'],
+        : [
+            'Confirm the receipt / land record status with the issuing authority.',
+            'Check lien marking on the earlier loan.',
+            'Hold the application until confirmed.',
+          ],
     },
   ];
 }
@@ -439,17 +544,24 @@ const incomeMismatch: Check = ({ app, docs, db }) => {
       observed: `Declared ${formatMoney(declared)} per year; statement credits suggest about ${formatMoney(observedAnnual)} (${ratio.toFixed(1)}×).`,
       whyItMatters: 'Repayment capacity is assessed on declared income.',
       evidence: [formRef(app.id, 'Declared annual income', formatMoney(declared)), ref(first)],
-      known: [`The ratio exceeds the configured threshold of ${db.settings.monitoring.incomeMismatchRatio}×.`],
+      known: [
+        `The ratio exceeds the configured threshold of ${db.settings.monitoring.incomeMismatchRatio}×.`,
+      ],
       unknown: ['Income received in cash or into other accounts.'],
       benign: ['Agricultural and trading income is often received in cash or seasonally.'],
-      steps: ['Request statements for other accounts or ITR.', 'Record the basis of the income assessment.'],
+      steps: [
+        'Request statements for other accounts or ITR.',
+        'Record the basis of the income assessment.',
+      ],
     },
   ];
 };
 
 const reviewState: Check = ({ app, docs }) => {
   const out: Finding[] = [];
-  const unreviewed = docs.flatMap((doc) => doc.fields.filter((f) => f.state === 'unreviewed').map((field) => ({ doc, field })));
+  const unreviewed = docs.flatMap((doc) =>
+    doc.fields.filter((f) => f.state === 'unreviewed').map((field) => ({ doc, field })),
+  );
   if (unreviewed.length > 0) {
     out.push({
       id: `${app.id}:unreviewed_fields`,
@@ -459,7 +571,8 @@ const reviewState: Check = ({ app, docs }) => {
       priority: 'needs_attention',
       certainty: 'Certain — review state is recorded per field.',
       observed: `Unreviewed fields in ${new Set(unreviewed.map((u) => u.doc.filename)).size} document(s).`,
-      whyItMatters: 'Machine-extracted values must be confirmed by a person before they are relied on.',
+      whyItMatters:
+        'Machine-extracted values must be confirmed by a person before they are relied on.',
       evidence: unreviewed.slice(0, 8).map(ref),
       known: ['These values have not been confirmed, corrected or marked unclear.'],
       unknown: ['Whether the extracted values are correct.'],
@@ -467,7 +580,9 @@ const reviewState: Check = ({ app, docs }) => {
       steps: ['Open Step 2 (Extract & verify) and review each field against the original.'],
     });
   }
-  const unclear = docs.flatMap((doc) => doc.fields.filter((f) => f.state === 'unclear').map((field) => ({ doc, field })));
+  const unclear = docs.flatMap((doc) =>
+    doc.fields.filter((f) => f.state === 'unclear').map((field) => ({ doc, field })),
+  );
   if (unclear.length > 0) {
     out.push({
       id: `${app.id}:unclear_fields`,
@@ -494,9 +609,17 @@ const reviewState: Check = ({ app, docs }) => {
       category: 'evidence_incomplete',
       priority: 'needs_attention',
       certainty: 'Certain.',
-      observed: failed.map((d) => `${d.filename}: ${d.failureReason ?? 'unknown reason'}`).join('; '),
+      observed: failed
+        .map((d) => `${d.filename}: ${d.failureReason ?? 'unknown reason'}`)
+        .join('; '),
       whyItMatters: 'Information in these documents has not been captured.',
-      evidence: failed.map((d) => ({ label: `${docTypeLabel(d.docType)} · ${d.filename}`, value: d.failureReason ?? '', docId: d.id, fieldId: null, appId: app.id })),
+      evidence: failed.map((d) => ({
+        label: `${docTypeLabel(d.docType)} · ${d.filename}`,
+        value: d.failureReason ?? '',
+        docId: d.id,
+        fieldId: null,
+        appId: app.id,
+      })),
       known: ['Processing failed for the listed files.'],
       unknown: ['The content of these documents.'],
       benign: [],
@@ -546,7 +669,8 @@ const relationshipReview: Check = ({ app, db }) => {
   const openCases = db.cases.filter((c) => !['resolved', 'closed'].includes(c.status));
   const caseEntities = new Map(openCases.flatMap((c) => c.entityIds.map((e) => [e, c] as const)));
   const rels = db.relationships.filter(
-    (r) => r.type !== 'borrower_for' && (r.from === borrower.entityId || r.to === borrower.entityId),
+    (r) =>
+      r.type !== 'borrower_for' && (r.from === borrower.entityId || r.to === borrower.entityId),
   );
   const hits = rels.flatMap((r) => {
     const other = r.from === borrower.entityId ? r.to : r.from;
@@ -565,13 +689,30 @@ const relationshipReview: Check = ({ app, db }) => {
       category: 'entity_relationship',
       priority: 'needs_attention',
       certainty: `Based on recorded relationships (${[...new Set(hits.map((h) => h.r.status.replace(/_/g, ' ')))].join(', ')}). A relationship does not establish wrongdoing.`,
-      observed: hits.map((h) => `${names.get(h.other) ?? h.other} — ${h.r.type.replace(/_/g, ' ')} (${h.r.status.replace(/_/g, ' ')}), in ${h.c.id}`).join('; '),
+      observed: hits
+        .map(
+          (h) =>
+            `${names.get(h.other) ?? h.other} — ${h.r.type.replace(/_/g, ' ')} (${h.r.status.replace(/_/g, ' ')}), in ${h.c.id}`,
+        )
+        .join('; '),
       whyItMatters: 'Reviewers should be aware of related exposure when assessing the application.',
-      evidence: hits.map((h) => ({ label: `Relationship · ${h.r.source}`, value: h.r.evidence, docId: null, fieldId: null, appId: null })),
+      evidence: hits.map((h) => ({
+        label: `Relationship · ${h.r.source}`,
+        value: h.r.evidence,
+        docId: null,
+        fieldId: null,
+        appId: null,
+      })),
       known: ['The recorded relationships and the open case.'],
       unknown: ['Whether the applicant has any involvement in the matters under investigation.'],
-      benign: ['Family members commonly share an address.', 'Business associates may act as guarantors without other involvement.'],
-      steps: ['Note the relationship in the appraisal.', 'Consult the case owner before a decision.'],
+      benign: [
+        'Family members commonly share an address.',
+        'Business associates may act as guarantors without other involvement.',
+      ],
+      steps: [
+        'Note the relationship in the appraisal.',
+        'Consult the case owner before a decision.',
+      ],
     },
   ];
 };
@@ -623,7 +764,9 @@ export function runChecks(app: Application, db: Db): Finding[] {
   const hit = perDb.get(app.id);
   if (hit !== undefined) return hit;
   const ctx = { app, docs: applicationDocs(app, db), db };
-  const out = CHECKS.flatMap((c) => c(ctx)).sort((a, b) => PRIORITY_RANK[b.priority] - PRIORITY_RANK[a.priority]);
+  const out = CHECKS.flatMap((c) => c(ctx)).sort(
+    (a, b) => PRIORITY_RANK[b.priority] - PRIORITY_RANK[a.priority],
+  );
   perDb.set(app.id, out);
   return out;
 }
@@ -646,36 +789,86 @@ export function crossChecks(app: Application, db: Db): CrossCheck[] {
   const d = app.data;
   for (const df of fieldsOf(docs, 'applicant_name_latin')) {
     const v = compareNames(d.applicant.fullName, df.field.value);
-    rows.push({ label: 'Name', formValue: d.applicant.fullName || '—', docValue: df.field.value, docId: df.doc.id, fieldId: df.field.id,
-      verdict: v === 'mismatch' ? 'conflict' : v, note: v === 'variation' ? 'Initial or minor spelling variant' : '' });
+    rows.push({
+      label: 'Name',
+      formValue: d.applicant.fullName || '—',
+      docValue: df.field.value,
+      docId: df.doc.id,
+      fieldId: df.field.id,
+      verdict: v === 'mismatch' ? 'conflict' : v,
+      note: v === 'variation' ? 'Initial or minor spelling variant' : '',
+    });
   }
   for (const df of fieldsOf(docs, 'dob')) {
     const a = normalizeDate(d.applicant.dob);
     const b = normalizeDate(df.field.value);
-    rows.push({ label: 'Date of birth', formValue: d.applicant.dob || '—', docValue: df.field.value, docId: df.doc.id, fieldId: df.field.id,
-      verdict: a === null || b === null ? 'not_available' : a === b ? 'match' : 'conflict', note: b !== df.field.value && b !== null ? `Read as ${b}` : '' });
+    rows.push({
+      label: 'Date of birth',
+      formValue: d.applicant.dob || '—',
+      docValue: df.field.value,
+      docId: df.doc.id,
+      fieldId: df.field.id,
+      verdict: a === null || b === null ? 'not_available' : a === b ? 'match' : 'conflict',
+      note: b !== df.field.value && b !== null ? `Read as ${b}` : '',
+    });
   }
   for (const df of fieldsOf(docs, 'survey_number')) {
-    const same = normalizeIdentifier(d.collateral.surveyNumber) === normalizeIdentifier(df.field.value);
-    rows.push({ label: 'Survey / Gat number', formValue: d.collateral.surveyNumber || '—', docValue: df.field.value, docId: df.doc.id, fieldId: df.field.id,
-      verdict: d.collateral.surveyNumber === '' ? 'not_available' : same ? 'match' : 'conflict', note: same && d.collateral.surveyNumber !== df.field.value ? 'Same after normalising Marathi digits' : '' });
+    const same =
+      normalizeIdentifier(d.collateral.surveyNumber) === normalizeIdentifier(df.field.value);
+    rows.push({
+      label: 'Survey / Gat number',
+      formValue: d.collateral.surveyNumber || '—',
+      docValue: df.field.value,
+      docId: df.doc.id,
+      fieldId: df.field.id,
+      verdict: d.collateral.surveyNumber === '' ? 'not_available' : same ? 'match' : 'conflict',
+      note:
+        same && d.collateral.surveyNumber !== df.field.value
+          ? 'Same after normalising Marathi digits'
+          : '',
+    });
   }
   for (const df of fieldsOf(docs, 'land_area')) {
     const a = parseAreaToHectares(d.collateral.landArea, d.collateral.landUnit);
     const b = parseAreaToHectares(df.field.value, 'hectare');
     const tol = db.settings.monitoring.landAreaTolerancePercent / 100;
-    rows.push({ label: 'Land area', formValue: d.collateral.landArea === '' ? '—' : `${d.collateral.landArea} ${d.collateral.landUnit}`, docValue: df.field.value, docId: df.doc.id, fieldId: df.field.id,
-      verdict: a === null || b === null ? 'not_available' : Math.abs(a - b) <= Math.max(a, b) * tol ? 'match' : 'conflict', note: b === null ? 'Could not parse unit — confirm manually' : `${b.toFixed(2)} ha` });
+    rows.push({
+      label: 'Land area',
+      formValue:
+        d.collateral.landArea === '' ? '—' : `${d.collateral.landArea} ${d.collateral.landUnit}`,
+      docValue: df.field.value,
+      docId: df.doc.id,
+      fieldId: df.field.id,
+      verdict:
+        a === null || b === null
+          ? 'not_available'
+          : Math.abs(a - b) <= Math.max(a, b) * tol
+            ? 'match'
+            : 'conflict',
+      note: b === null ? 'Could not parse unit — confirm manually' : `${b.toFixed(2)} ha`,
+    });
   }
   for (const df of fieldsOf(docs, 'receipt_number')) {
-    const same = normalizeIdentifier(d.collateral.warehouseReceiptNo) === normalizeIdentifier(df.field.value);
-    rows.push({ label: 'Warehouse receipt', formValue: d.collateral.warehouseReceiptNo || '—', docValue: df.field.value, docId: df.doc.id, fieldId: df.field.id, verdict: same ? 'match' : 'conflict', note: '' });
+    const same =
+      normalizeIdentifier(d.collateral.warehouseReceiptNo) === normalizeIdentifier(df.field.value);
+    rows.push({
+      label: 'Warehouse receipt',
+      formValue: d.collateral.warehouseReceiptNo || '—',
+      docValue: df.field.value,
+      docId: df.doc.id,
+      fieldId: df.field.id,
+      verdict: same ? 'match' : 'conflict',
+      note: '',
+    });
   }
   return rows;
 }
 
 /** Monitoring alerts for loans that originated from this application. */
-export function loanAlertsForApplication(app: Application, db: Db): ReturnType<typeof runMonitoring> {
+export function loanAlertsForApplication(
+  app: Application,
+  db: Db,
+): ReturnType<typeof runMonitoring> {
   const loanIds = new Set(db.loans.filter((l) => l.applicationId === app.id).map((l) => l.id));
   return runMonitoring(db).filter((a) => loanIds.has(a.loanId));
 }

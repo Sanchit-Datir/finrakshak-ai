@@ -25,7 +25,8 @@ import { publicRecordsInputsKey } from './public-records-findings.js';
  */
 
 /** MCA statuses that mean the company is not a going concern. */
-export const NOT_GOING_CONCERN = /^(Under CIRP|Under Liquidation|Strike Off|Dissolved.*|Under process of striking off)$/;
+export const NOT_GOING_CONCERN =
+  /^(Under CIRP|Under Liquidation|Strike Off|Dissolved.*|Under process of striking off)$/;
 /** How far the chain of unpaid dues is followed from a customer. */
 export const CHAIN_MAX_DEPTH = 4;
 const CIN_PATTERN = /^([LUF]\d{5}[A-Z]{2}\d{4}[A-Z]{3}\d{6}|[A-Z]{3}-\d{4})$/;
@@ -44,7 +45,8 @@ export function normalizeCompanyName(s: string): string {
 }
 
 const detailParts = (n: GraphNode): string[] => (n.detail ?? '').split(' · ').filter(Boolean);
-export const cinOf = (n: GraphNode): string | null => detailParts(n).find((p) => CIN_PATTERN.test(p)) ?? null;
+export const cinOf = (n: GraphNode): string | null =>
+  detailParts(n).find((p) => CIN_PATTERN.test(p)) ?? null;
 export const mcaStatusOf = (n: GraphNode): string | null =>
   detailParts(n).find((p) => !CIN_PATTERN.test(p)) ?? null;
 const caseTypeOf = (event: GraphNode): string => detailParts(event)[2] ?? '';
@@ -73,7 +75,8 @@ export function namedRecords(ix: LabIndex, id: string): { eventId: string; recor
   const out: { eventId: string; record: PrRecord }[] = [];
   for (const e of ix.all.out.get(id) ?? []) {
     const event = ix.nodes.get(e.to);
-    if (e.type !== 'named_in' || e.from !== id || event === undefined || seen.has(event.id)) continue;
+    if (e.type !== 'named_in' || e.from !== id || event === undefined || seen.has(event.id))
+      continue;
     const kind = recordKindOf(caseTypeOf(event));
     if (kind === undefined) continue;
     seen.add(event.id);
@@ -130,7 +133,15 @@ function resolveSubject(
   if (candidates.length === 1 && only !== undefined)
     return subjectFromNode(ix, only, { ...base, match: 'exact_name' });
   const match = candidates.length > 1 ? 'ambiguous' : 'none';
-  return { ...base, match, nodeId: null, matchedName: null, cin: null, mcaStatus: null, records: [] };
+  return {
+    ...base,
+    match,
+    nodeId: null,
+    matchedName: null,
+    cin: null,
+    mcaStatus: null,
+    records: [],
+  };
 }
 
 /** In insolvency, liquidation, not a going concern, or named in enforcement records. */
@@ -189,7 +200,11 @@ function cascade(ix: LabIndex, startId: string): PrLink[] {
   return chain;
 }
 
-function exposures(ix: LabIndex, applicant: PrSubject, customers: readonly PrSubject[]): PrExposure[] {
+function exposures(
+  ix: LabIndex,
+  applicant: PrSubject,
+  customers: readonly PrSubject[],
+): PrExposure[] {
   const filings = applicant.nodeId === null ? [] : filedAgainst(ix, applicant.nodeId);
   const linkTo = (id: string): PrLink | null => {
     const e = filings.find((f) => f.to === id);
@@ -198,21 +213,39 @@ function exposures(ix: LabIndex, applicant: PrSubject, customers: readonly PrSub
   const declared = customers.flatMap((c) =>
     c.nodeId === null || !isDistressed(c)
       ? []
-      : [{ customer: c, declared: true, applicantLink: linkTo(c.nodeId), chain: cascade(ix, c.nodeId) }],
+      : [
+          {
+            customer: c,
+            declared: true,
+            applicantLink: linkTo(c.nodeId),
+            chain: cascade(ix, c.nodeId),
+          },
+        ],
   );
   const known = new Set(customers.map((c) => c.nodeId));
   const undeclared = filings.flatMap((e) => {
     const node = ix.nodes.get(e.to);
     if (node === undefined || known.has(node.id)) return [];
-    const base = { role: 'customer', inputName: '', inputCin: '', match: 'via_applicant_record' } as const;
+    const base = {
+      role: 'customer',
+      inputName: '',
+      inputCin: '',
+      match: 'via_applicant_record',
+    } as const;
     const customer = subjectFromNode(ix, node, base);
-    return [{ customer, declared: false, applicantLink: toLink(ix, e), chain: cascade(ix, node.id) }];
+    return [
+      { customer, declared: false, applicantLink: toLink(ix, e), chain: cascade(ix, node.id) },
+    ];
   });
   return [...declared, ...undeclared];
 }
 
 /** Runs the check over a loaded index; the result is saved on the application. */
-export function checkPublicRecords(ix: LabIndex, data: ApplicationData, ranAt: string): PublicRecordsSnapshot {
+export function checkPublicRecords(
+  ix: LabIndex,
+  data: ApplicationData,
+  ranAt: string,
+): PublicRecordsSnapshot {
   const r = resolver(ix);
   const { businessName, registrationNo } = data.business;
   const applicant = resolveSubject(ix, r, 'applicant', businessName, registrationNo);

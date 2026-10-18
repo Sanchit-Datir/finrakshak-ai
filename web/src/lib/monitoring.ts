@@ -7,7 +7,14 @@ import {
   type RapidOnwardDetection,
   type RepeatedCounterpartyDetection,
 } from '@fund-tracker/shared';
-import type { Db, Entity, Loan, MonitoringConfig, Priority, Relationship } from '../domain/schemas.js';
+import type {
+  Db,
+  Entity,
+  Loan,
+  MonitoringConfig,
+  Priority,
+  Relationship,
+} from '../domain/schemas.js';
 import { formatMoney } from './format.js';
 
 export { linkedEntities, loanOutflows } from '@fund-tracker/shared';
@@ -20,11 +27,7 @@ export { linkedEntities, loanOutflows } from '@fund-tracker/shared';
  */
 
 export type MonitoringRuleId =
-  | 'rapid_onward'
-  | 'linked_counterparty'
-  | 'repeated_counterparty'
-  | 'circular'
-  | 'cash_split';
+  'rapid_onward' | 'linked_counterparty' | 'repeated_counterparty' | 'circular' | 'cash_split';
 
 export interface RuleInfo {
   id: MonitoringRuleId;
@@ -39,7 +42,13 @@ export const RULES: Record<MonitoringRuleId, RuleInfo> = {
     name: 'Rapid onward transfer after disbursement',
     description:
       'Outflows from the credited account within the configured window reach the configured share of the disbursed amount.',
-    fieldsUsed: ['loan.amount', 'loan.disbursedAt', 'transaction.at', 'transaction.amount', 'transaction.from'],
+    fieldsUsed: [
+      'loan.amount',
+      'loan.disbursedAt',
+      'transaction.at',
+      'transaction.amount',
+      'transaction.from',
+    ],
   },
   linked_counterparty: {
     id: 'linked_counterparty',
@@ -112,7 +121,8 @@ function rapidAlert(loan: Loan, d: RapidOnwardDetection, cfg: MonitoringConfig):
     transactionIds: d.transactions.map((t) => t.id),
     entityIds: [...new Set(d.transactions.map((t) => t.toId))],
     totalMinor: d.totalMinor,
-    totalBasis: 'Sum of outgoing transfers from the credited account inside the window (repayments excluded).',
+    totalBasis:
+      'Sum of outgoing transfers from the credited account inside the window (repayments excluded).',
     benign: [
       'Payment to a supplier or dealer for the stated purpose (e.g. equipment purchase) is often immediate.',
       'Pre-arranged vendor payments may be made as soon as funds arrive.',
@@ -206,7 +216,8 @@ function circularAlert(loan: Loan, d: CircularDetection, cfg: MonitoringConfig):
       transactionIds: d.transactions.map((t) => t.id),
       entityIds: [...new Set(d.transactions.flatMap((t) => [t.fromId, t.toId]))],
       totalMinor: d.firstMinor,
-      totalBasis: 'Amount of the first outgoing transfer in the observed sequence; the return leg is shown separately.',
+      totalBasis:
+        'Amount of the first outgoing transfer in the observed sequence; the return leg is shown separately.',
       benign: [
         'A supplier refund or cancelled order could return funds.',
         "An owner's capital introduction may coincidentally follow a supplier payment.",

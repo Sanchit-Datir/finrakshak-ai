@@ -34,7 +34,13 @@ const clip = (s: string, max: number): string => s.replace(/\s+/g, ' ').trim().s
 
 export interface PackBuilder {
   /** Adds a fact and returns its ref, or null once the pack is full. */
-  add: (prefix: string, kind: AssistFactKind, label: string, text: string, href?: string) => string | null;
+  add: (
+    prefix: string,
+    kind: AssistFactKind,
+    label: string,
+    text: string,
+    href?: string,
+  ) => string | null;
   done: (subject: AssistInput['subject']) => ContextPack;
 }
 

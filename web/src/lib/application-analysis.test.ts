@@ -11,10 +11,11 @@ if (app === undefined) throw new Error('demo data has no application with docume
 const docs = applicationDocs(app, db);
 const findings = runChecks(app, db);
 
-const withFields = (doc: FtDocument, fields: Partial<ExtractedField>[]): FtDocument => ({
-  ...doc,
-  fields: fields.map((f, i) => ({ ...(doc.fields[0] as ExtractedField), id: `T${String(i)}`, ...f })),
-});
+const withFields = (doc: FtDocument, fields: Partial<ExtractedField>[]): FtDocument => {
+  const base = doc.fields[0];
+  if (base === undefined) throw new Error(`document ${doc.id} has no fields to copy`);
+  return { ...doc, fields: fields.map((f, i) => ({ ...base, id: `T${String(i)}`, ...f })) };
+};
 
 describe('buildAnalysisRequest', () => {
   it('builds input the server schema accepts', () => {

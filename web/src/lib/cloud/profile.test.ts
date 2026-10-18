@@ -45,9 +45,9 @@ describe('roles stay in sync', () => {
 
 describe('GetProfileResultSchema', () => {
   it('accepts a signed-in person with no profile (account not set up)', () => {
-    expect(
-      GetProfileResultSchema.safeParse({ uid: 'u', email: null, profile: null }).success,
-    ).toBe(true);
+    expect(GetProfileResultSchema.safeParse({ uid: 'u', email: null, profile: null }).success).toBe(
+      true,
+    );
   });
 
   it('accepts a full profile', () => {

@@ -79,7 +79,8 @@ describe('buildInvestigationBundle', () => {
 
   it('masks identifiers and leaves out date of birth, mobile and street address (B-16)', () => {
     const text = JSON.stringify(bundle);
-    for (const secret of ['ABCDE1234F', '1980-01-01', '9876543210', 'House 4']) expect(text).not.toContain(secret);
+    for (const secret of ['ABCDE1234F', '1980-01-01', '9876543210', 'House 4'])
+      expect(text).not.toContain(secret);
     expect(bundle.sections.business.find((f) => f.path === 'business.pan')?.value).toMatch(/^XXXX/);
   });
 
@@ -88,7 +89,12 @@ describe('buildInvestigationBundle', () => {
   });
 
   it('has a party for the applicant, the business and each named customer', () => {
-    expect(bundle.parties.map((p) => p.partyId)).toEqual(['applicant', 'business', 'customer:0', 'customer:1']);
+    expect(bundle.parties.map((p) => p.partyId)).toEqual([
+      'applicant',
+      'business',
+      'customer:0',
+      'customer:1',
+    ]);
     expect(bundle.parties.every((p) => p.candidates.length === 0)).toBe(true);
   });
 });
@@ -96,7 +102,10 @@ describe('buildInvestigationBundle', () => {
 describe('investigationInputsKey', () => {
   it('is stable for the same data and changes when the data changes', () => {
     expect(investigationInputsKey(app, [])).toBe(investigationInputsKey({ ...app }, []));
-    const changed = { ...app, data: { ...app.data, loan: { ...app.data.loan, purpose: 'Dal mill' } } };
+    const changed = {
+      ...app,
+      data: { ...app.data, loan: { ...app.data.loan, purpose: 'Dal mill' } },
+    };
     expect(investigationInputsKey(changed, [])).not.toBe(investigationInputsKey(app, []));
   });
 
@@ -120,7 +129,9 @@ describe('evidenceIndex', () => {
           citations: [{ type: 'ratio', name: 'loan_to_collateral' }],
         },
       ],
-      questions: [{ id: 'q:1', question: 'What is the loan for?', gap: 'loan.purpose', citations: [] }],
+      questions: [
+        { id: 'q:1', question: 'What is the loan for?', gap: 'loan.purpose', citations: [] },
+      ],
     } as unknown as InvestigateApplicationResult;
     const ev = evidenceIndex(bundle, result);
     expect(ev['ratio:loan_to_collateral']?.detail).toMatch(/^50\.0%/);
