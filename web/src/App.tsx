@@ -40,6 +40,7 @@ const InvestigationsPage = named(
 const CaseDetailPage = named(() => import('./pages/CaseDetailPage.js'), 'CaseDetailPage');
 const ReportsPage = named(() => import('./pages/ReportsPage.js'), 'ReportsPage');
 const AlertsPage = named(() => import('./pages/AlertsPage.js'), 'AlertsPage');
+const QueuePage = named(() => import('./pages/QueuePage.js'), 'QueuePage');
 const SettingsPage = named(() => import('./pages/SettingsPage.js'), 'SettingsPage');
 const HelpPage = named(() => import('./pages/HelpPage.js'), 'HelpPage');
 const GraphLabPage = named(() => import('./pages/GraphLabPage.js'), 'GraphLabPage');
@@ -54,6 +55,7 @@ export function App(): React.JSX.Element {
           <Route element={<AppShell />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/queue" element={<QueuePage />} />
             <Route path="/applications" element={<ApplicationsPage />} />
             <Route path="/applications/new" element={<NewApplicationPage />} />
             <Route path="/applications/:applicationId" element={<ApplicationDetailPage />} />

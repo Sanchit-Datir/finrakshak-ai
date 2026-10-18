@@ -25,6 +25,7 @@ import { matchesQuery } from '../lib/text.js';
 import { useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useUrlState } from '../state/url.js';
+import { useBranchScope } from '../state/scope.js';
 
 export interface BorrowerSummary {
   b: Borrower;
@@ -83,7 +84,8 @@ export function BorrowersPage(): React.JSX.Element {
   const f = useFormat();
   const [q, setQ] = useUrlState('q', '');
   const [type, setType] = useUrlState('type', 'all');
-  const [branch, setBranch] = useUrlState('branch', 'all');
+  const { scope } = useBranchScope();
+  const [branch, setBranch] = useUrlState('branch', scope);
   const [loan, setLoan] = useUrlState('loan', 'all');
   const [status, setStatus] = useUrlState('status', 'all');
   const [period, setPeriod] = useUrlState('period', 'all');

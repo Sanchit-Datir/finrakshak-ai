@@ -42,6 +42,18 @@
   --color-neutral: #475569;
   --color-neutral-soft: #eef2f6;
 
+  /* Sidebar "mission rail": dark navy in both themes, one accent per journey stage. */
+  --color-rail: #0b253b;
+  --color-rail-top: #11334d;
+  --color-rail-bottom: #071a2b;
+  --color-rail-ink: #eef4fa;
+  --color-rail-muted: #a3b5c7;
+  --color-rail-pre: #60a5fa;
+  --color-rail-post: #2dd4bf;
+  --color-rail-investigate: #a78bfa;
+  --color-rail-attention: #fbbf24;
+  --color-rail-urgent: #f87171;
+
   --radius-card: 14px;
   --shadow-card: 0 1px 2px rgb(15 35 55 / 0.05), 0 1px 3px rgb(15 35 55 / 0.04);
   --shadow-pop: 0 10px 30px rgb(15 35 55 / 0.16);
@@ -69,6 +81,9 @@
   --color-violet-soft: #2a2050;
   --color-neutral: #cbd5e1;
   --color-neutral-soft: #1e3043;
+  --color-rail: #08192a;
+  --color-rail-top: #0c2439;
+  --color-rail-bottom: #050f1a;
   color-scheme: dark;
 }
 
@@ -96,6 +111,7 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
   }
@@ -107,6 +123,8 @@
 
 @utility card {
   @apply bg-surface border-line rounded-card border;
+  /* Cards are often grid/flex items: let wide tables scroll inside them instead of widening the page. */
+  min-width: 0;
   box-shadow: var(--shadow-card);
 }
 
@@ -117,4 +135,119 @@
   body {
     background: #fff;
   }
+}
+
+/* Motion: short, subtle, and disabled by the reduced-motion rule above. */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes palette-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@utility page-enter {
+  animation: page-enter 220ms ease-out both;
+}
+
+@utility palette-pop {
+  animation: palette-pop 160ms ease-out both;
+}
+
+@utility grow-x {
+  transform-origin: left;
+  animation: grow-x 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Interactive card: lifts slightly on hover/focus. */
+@utility card-hover {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+  &:hover,
+  &:focus-within {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-pop);
+    border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-line));
+  }
+}
+
+/* Sidebar surface: a soft teal glow over a navy gradient. */
+@utility rail-surface {
+  background:
+    radial-gradient(130% 45% at 0% 0%, rgb(45 212 191 / 0.12), transparent 60%),
+    radial-gradient(120% 40% at 100% 100%, rgb(96 165 250 / 0.1), transparent 60%),
+    linear-gradient(
+      180deg,
+      var(--color-rail-top) 0%,
+      var(--color-rail) 45%,
+      var(--color-rail-bottom) 100%
+    );
+  color: var(--color-rail-ink);
+  color-scheme: dark;
+}
+
+/* Thin, quiet scrollbar for the sidebar's nav. */
+@utility rail-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.15) transparent;
+}
+
+/* Inside the dark sidebar, focus rings must stay visible on navy. */
+.rail-surface :focus-visible {
+  outline-color: var(--color-rail-post);
+}
+
+@keyframes count-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+@utility count-pop {
+  animation: count-pop 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(248 113 113 / 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgb(248 113 113 / 0);
+  }
+}
+@utility soft-pulse {
+  animation: soft-pulse 2.2s ease-in-out infinite;
+}
+
+/* Filter controls placed on the dark dashboard banner. */
+.hero-controls label {
+  color: rgb(255 255 255 / 0.85);
 }

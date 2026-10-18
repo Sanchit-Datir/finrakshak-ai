@@ -8,6 +8,13 @@ import { useAutoWatch } from '../../state/useAutoWatch.js';
 import { dismissLoadIssue, useStoreStatus } from '../../state/store.js';
 import { cn } from '../ui/cn.js';
 import { Notice, PageSkeleton } from '../ui/States.js';
+import { useGlobalHotkeys } from '../../state/useHotkeys.js';
+import { CommandPalette } from '../command/CommandPalette.js';
+import { CopilotPanel } from '../copilot/CopilotPanel.js';
+import { openCopilot } from '../../state/copilot.js';
+import { ShortcutsDialog } from '../command/ShortcutsDialog.js';
+import { Breadcrumbs } from './Breadcrumbs.js';
+import { MobileTabBar } from './MobileTabBar.js';
 import { RouteErrorBoundary } from './RouteErrorBoundary.js';
 import { Sidebar } from './Sidebar.js';
 import { Topbar } from './Topbar.js';
@@ -29,7 +36,18 @@ export function AppShell(): React.JSX.Element {
   const status = useStoreStatus();
   const [collapsed, setCollapsed] = useState(readCollapsed);
   const [drawer, setDrawer] = useState(false);
+  const [palette, setPalette] = useState(false);
+  const [shortcuts, setShortcuts] = useState(false);
   useThemeEffect();
+  useGlobalHotkeys({
+    palette: () => {
+      setPalette(true);
+    },
+    shortcuts: () => {
+      setShortcuts(true);
+    },
+    copilot: openCopilot,
+  });
   useAutoWatch(session?.name ?? null);
 
   // Close the mobile drawer whenever the route changes (derived during render, not in an effect).
@@ -73,8 +91,8 @@ export function AppShell(): React.JSX.Element {
       </a>
       <aside
         className={cn(
-          'no-print border-line bg-surface fixed inset-y-0 left-0 z-40 hidden border-r lg:block',
-          collapsed ? 'w-[76px]' : 'w-[244px]',
+          'no-print fixed inset-y-0 left-0 z-40 hidden border-r border-white/5 lg:block',
+          collapsed ? 'w-[76px]' : 'w-[264px]',
         )}
       >
         <Sidebar collapsed={collapsed} onToggleCollapse={toggle} />
@@ -94,14 +112,14 @@ export function AppShell(): React.JSX.Element {
               setDrawer(false);
             }}
           />
-          <div className="bg-surface absolute inset-y-0 left-0 w-[280px] max-w-[85vw]">
+          <div className="absolute inset-y-0 left-0 w-[284px] max-w-[85vw]">
             <button
               type="button"
               aria-label="Close navigation"
               onClick={() => {
                 setDrawer(false);
               }}
-              className="text-muted hover:text-ink absolute top-4 right-3 z-10 rounded-lg p-1.5"
+              className="text-rail-muted absolute top-4 right-3 z-10 rounded-lg p-1.5 hover:bg-white/10 hover:text-white"
             >
               <X className="size-5" aria-hidden />
             </button>
@@ -115,16 +133,19 @@ export function AppShell(): React.JSX.Element {
           </div>
         </div>
       )}
-      <div className={cn('flex min-h-dvh flex-col', collapsed ? 'lg:pl-[76px]' : 'lg:pl-[244px]')}>
+      <div className={cn('flex min-h-dvh flex-col', collapsed ? 'lg:pl-[76px]' : 'lg:pl-[264px]')}>
         <Topbar
           onOpenMenu={() => {
             setDrawer(true);
+          }}
+          onOpenPalette={() => {
+            setPalette(true);
           }}
         />
         <main
           id="main"
           tabIndex={-1}
-          className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-6 outline-none sm:px-6 lg:px-8"
+          className="mx-auto w-full max-w-[1440px] flex-1 px-4 pt-6 pb-24 outline-none sm:px-6 lg:px-8 lg:pb-6"
         >
           {status.loadIssue !== null && (
             <div className="mb-4 flex items-start gap-2">
@@ -145,13 +166,37 @@ export function AppShell(): React.JSX.Element {
               {status.saveError}
             </Notice>
           )}
+          <Breadcrumbs />
           <RouteErrorBoundary key={location.pathname}>
             <Suspense fallback={<PageSkeleton />}>
-              <Outlet />
+              <div key={location.pathname} className="page-enter">
+                <Outlet />
+              </div>
             </Suspense>
           </RouteErrorBoundary>
         </main>
       </div>
+      <MobileTabBar
+        onMore={() => {
+          setDrawer(true);
+        }}
+      />
+      <CommandPalette
+        open={palette}
+        onClose={() => {
+          setPalette(false);
+        }}
+        onShortcuts={() => {
+          setShortcuts(true);
+        }}
+      />
+      <CopilotPanel />
+      <ShortcutsDialog
+        open={shortcuts}
+        onClose={() => {
+          setShortcuts(false);
+        }}
+      />
     </div>
   );
 }
