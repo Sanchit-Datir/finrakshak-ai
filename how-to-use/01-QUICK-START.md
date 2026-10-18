@@ -4,8 +4,9 @@
 
 ## Run it locally (about 3 minutes)
 
-You need **Node.js 22** and npm 10. No Google Cloud account, API key or billing is needed: the demo
-workspace runs in the browser, and every AI path falls back to a labelled mock or a _Not connected_ state.
+You need **Node.js 22** and npm 10. The workspace, checks, monitoring and public-records features run in
+the browser. The Gen AI features call Gemini on Vertex AI through Cloud Functions and need a deployed
+copy (see [Using the live AI](#using-the-live-ai)).
 
 ```bash
 git clone https://github.com/Sanchit-Datir/finrakshak-ai.git
@@ -22,9 +23,6 @@ npm run dev -w web                                         # http://localhost:51
 Open <http://localhost:5173>, pick a role under **Quick sign-in** and click **Continue with quick sign-in**.
 
 ![Login page](screenshots/01-login.jpg)
-
-> The **Employee ID / password** form is shown on purpose but is not connected in the prototype. It
-> validates the fields and then explains that secure sign-in is not connected. Use **Quick sign-in**.
 
 ## Demo roles
 
@@ -53,7 +51,7 @@ The left sidebar ("mission rail") follows the life of a loan, with live counts:
 | Alerts                  | Every lead from checks, monitoring and the watch                                          | `/alerts`                                                                             |
 | Insights                | Reports                                                                                   | `/reports`                                                                            |
 | Top bar                 | Search (Ctrl/⌘ K), **Ask AI** (Ctrl/⌘ J), New application, dark mode, help, notifications | —                                                                                     |
-| Footer of the sidebar   | Public-records freshness and AI status (_demo session, no model called_)                  | —                                                                                     |
+| Footer of the sidebar   | Public-records freshness and AI status                                                    | —                                                                                     |
 
 ## Keyboard shortcuts
 
@@ -71,11 +69,11 @@ The left sidebar ("mission rail") follows the life of a loan, with live counts:
 | `npm run test:emulators`              | Firestore rules and Firestore code against the Firebase emulator (needs Java 21)     |
 | `npm run e2e`                         | Playwright browser scenarios with real public records and TEST loans                 |
 | `npm run synth && npm run score`      | Generates synthetic loans and replays 24 months of risk scoring                      |
-| `npm run miner -- propose`            | Runs the pattern miner agent on the mock model and prints its proposals              |
+| `npm run miner -- propose`            | Runs the pattern miner agent and prints its proposals (writes nothing)               |
 | `node ingest/dist/cli.js acquire all` | Daily delta fetch of the public sources (polite, robots.txt-aware)                   |
-| `npm run emulators`                   | Auth, Functions and Firestore emulators (AI uses the mock provider)                  |
+| `npm run emulators`                   | Auth, Functions and Firestore emulators                                              |
 
-## Using the live AI (optional)
+## Using the live AI
 
 The deployed copy uses Firebase Auth. A signed-in user with a usable profile and AI access calls
 Gemini on Vertex AI through the callables (see [04-AI-AGENTS.md](04-AI-AGENTS.md)). To deploy your
@@ -91,7 +89,6 @@ The screenshots were taken with Playwright (already a dev dependency) against `n
    for the risk step and dark mode, Branch officer for mobile).
 2. Visit each route in the table above at 1440 × 900, plus a 360 × 780 mobile viewport and
    `colorScheme: 'dark'` for dark mode.
-3. On `/applications/A-1013/edit`, click **Risk analysis** and then **Re-run checks**. On
-   `/monitoring?loan=L-2026-0110`, press Ctrl+J and click **Why was this flagged?**.
+3. On `/applications/A-1013/edit`, click **Risk analysis** and then **Re-run checks**.
 
 [Next: User flows →](02-USER-FLOWS.md)

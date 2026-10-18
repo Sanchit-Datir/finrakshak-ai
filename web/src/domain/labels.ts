@@ -127,10 +127,10 @@ export const PROCESSING_LABEL: Record<ProcessingState, string> = {
 };
 
 export const LANGUAGE_LABEL: Record<Language, string> = {
-  mr: 'Marathi',
+  mr: 'Regional (Devanagari)',
   en: 'English',
   hi: 'Hindi',
-  mixed: 'Mixed (Marathi + English)',
+  mixed: 'Mixed (regional + English)',
   other: 'Other',
 };
 

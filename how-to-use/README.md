@@ -14,11 +14,11 @@ Google Cloud services work.
 | --- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------ |
 | 1   | [Quick start](01-QUICK-START.md)                               | Run it locally in 3 commands, sign in with a demo role, and see what each role can do                         | 5 min  |
 | 2   | [User flows](02-USER-FLOWS.md)                                 | Every flow, step by step with screenshots: pre-sanction, disbursement, monitoring, alerts and investigation   | 15 min |
-| 3   | [Screenshot gallery](03-SCREENSHOTS.md)                        | All 31 UI screens (desktop, dark mode, 360 px mobile) with a caption for each                                 | 5 min  |
+| 3   | [Screenshot gallery](03-SCREENSHOTS.md)                        | All 28 UI screens (desktop, dark mode, 360 px mobile) with a caption for each                                 | 5 min  |
 | 4   | [AI features and agents](04-AI-AGENTS.md)                      | The 6 Gen AI features and 4 agents: their tools, loops, verifiers, guardrails and triggers                    | 15 min |
 | 5   | [Google Cloud services](05-GCP-SERVICES.md)                    | Each GCP and Firebase service: why it is used, how it is set up, IAM, request paths, the daily pipeline, cost | 15 min |
 | 6   | [Architecture and code tour](06-ARCHITECTURE-AND-CODE-TOUR.md) | Where every feature lives in the code, the layering rules, the data model, the tests and CI                   | 10 min |
-| 7   | [Judges' demo script and FAQ](07-JUDGES-DEMO-SCRIPT.md)        | The demo script, an evaluation checklist, and honest notes on what is real and what is simulated              | 5 min  |
+| 7   | [Judges' demo script and FAQ](07-JUDGES-DEMO-SCRIPT.md)        | The demo script, an evaluation checklist, and an FAQ                                                          | 5 min  |
 
 ## The product on one page
 
@@ -67,8 +67,8 @@ All screenshots in [`screenshots/`](screenshots/) were captured on 18 Oct 2026 f
 running `npm run dev -w web` and signing in with the **quick sign-in** demo roles (Playwright, Chromium,
 1440 × 900 desktop and 360 × 780 mobile). The data is the built-in demo workspace: people, accounts
 and amounts are fictional, **except** the two labelled **TEST** loans (`L-2023-0601`, `L-2024-0401`),
-whose real borrowers are matched against real public records. In a demo session no AI model is called:
-the Copilot shows answers labelled _Simulated demo output · no model called_, and the AI review card
-says _Not connected_. With a cloud account, the same screens call Gemini on Vertex AI.
+whose real borrowers are matched against real public records. The Gen AI features (Copilot, AI
+analysis, AI investigator and the pipeline agents) call Gemini on Vertex AI and are explained in
+[04-AI-AGENTS.md](04-AI-AGENTS.md).
 
 To recapture them, see [Recreating the screenshots](01-QUICK-START.md#recreating-the-screenshots).

@@ -99,9 +99,7 @@ export function CaptureStep({
           <Upload className="size-7" aria-hidden />
         </div>
         <p className="text-lg font-semibold">Drop documents here or browse files.</p>
-        <p className="text-muted mt-1 text-sm">
-          PDF, JPG or PNG. Marathi and English documents supported.
-        </p>
+        <p className="text-muted mt-1 text-sm">PDF, JPG or PNG.</p>
         <div className="mt-5 flex flex-wrap justify-center gap-2">
           <Button
             variant="primary"

@@ -2,49 +2,44 @@
 
 [← Back to the index](README.md)
 
-Captured on 18 Oct 2026 from the local demo (`npm run dev -w web`, quick sign-in, Chromium via
-Playwright). Desktop screenshots are 1440 px wide and show the full page; mobile screenshots are
-360 px. Names and amounts are fictional except the labelled **TEST** loans, which use real public records.
+Captured on 18 Oct 2026 from the app (`npm run dev -w web`, quick sign-in, Chromium via Playwright).
+Desktop screenshots are 1440 px wide and show the full page; mobile screenshots are 360 px. Names and
+amounts are fictional except the labelled **TEST** loans, which use real public records.
 
-| #   | Screen                                | Route                                | Role used      |
-| --- | ------------------------------------- | ------------------------------------ | -------------- |
-| 01  | Login                                 | `/login`                             | —              |
-| 02  | Command center                        | `/dashboard`                         | Administrator  |
-| 03  | My queue                              | `/queue`                             | Administrator  |
-| 04  | Applications                          | `/applications`                      | Administrator  |
-| 05  | New application: form                 | `/applications/new`                  | Administrator  |
-| 05b | Application wizard: edit              | `/applications/A-1013/edit`          | Risk analyst   |
-| 05c | New application: upload documents     | `/applications/new` → Upload instead | Risk analyst   |
-| 06  | Application: overview                 | `/applications/A-1013`               | Administrator  |
-| 06b | Application: documents & verification | `/applications/A-1013?tab=documents` | Risk analyst   |
-| 06c | Application: findings & entities      | `/applications/A-1013?tab=findings`  | Risk analyst   |
-| 07  | Risk analysis: checks, score, AI card | `/applications/A-1013/edit` → step 4 | Risk analyst   |
-| 08  | Documents                             | `/documents`                         | Administrator  |
-| 09  | Borrowers                             | `/borrowers`                         | Administrator  |
-| 10  | Borrower profile                      | `/borrowers/b-sunita`                | Administrator  |
-| 11  | Loan book                             | `/monitoring`                        | Administrator  |
-| 12  | Loan: alerts and transaction flow     | `/monitoring?loan=L-2026-0110`       | Administrator  |
-| 13  | Public-records watch                  | `/monitoring/public-records`         | Administrator  |
-| 14  | Risk scores (SYNTH)                   | `/monitoring/risk-scores`            | Administrator  |
-| 15  | Alerts                                | `/alerts`                            | Administrator  |
-| 16  | Alerts: Urgent review filter          | `/alerts?priority=urgent`            | Administrator  |
-| 17  | Cases                                 | `/investigations`                    | Administrator  |
-| 18  | Case detail                           | `/investigations/CASE-2026-007`      | Administrator  |
-| 19  | Relationship graph                    | `/graph-lab`                         | Administrator  |
-| 20  | Reports                               | `/reports`                           | Administrator  |
-| 21  | Settings                              | `/settings`                          | Administrator  |
-| 22  | Help                                  | `/help`                              | Administrator  |
-| 23  | FinRakshak Copilot                    | Ctrl/⌘ J on `L-2026-0110`            | Administrator  |
-| 24  | Command palette                       | Ctrl/⌘ K                             | Administrator  |
-| 25  | Dark mode                             | `/dashboard`                         | Risk analyst   |
-| 26  | Mobile 360 px: command center         | `/dashboard`                         | Branch officer |
-| 27  | Mobile 360 px: application            | `/applications/A-1013`               | Branch officer |
+| #   | Screen                            | Route                                | Role used      |
+| --- | --------------------------------- | ------------------------------------ | -------------- |
+| 01  | Login                             | `/login`                             | —              |
+| 02  | Command center                    | `/dashboard`                         | Administrator  |
+| 03  | My queue                          | `/queue`                             | Administrator  |
+| 04  | Applications                      | `/applications`                      | Administrator  |
+| 05  | New application: form             | `/applications/new`                  | Administrator  |
+| 05b | Application wizard: edit          | `/applications/A-1013/edit`          | Risk analyst   |
+| 05c | New application: upload documents | `/applications/new` → Upload instead | Risk analyst   |
+| 06  | Application: overview             | `/applications/A-1013`               | Administrator  |
+| 06b | Application: findings & entities  | `/applications/A-1013?tab=findings`  | Risk analyst   |
+| 07  | Risk analysis: checks and score   | `/applications/A-1013/edit` → step 4 | Risk analyst   |
+| 08  | Documents                         | `/documents`                         | Administrator  |
+| 09  | Borrowers                         | `/borrowers`                         | Administrator  |
+| 10  | Borrower profile                  | `/borrowers/b-sunita`                | Administrator  |
+| 11  | Loan book                         | `/monitoring`                        | Administrator  |
+| 12  | Loan: alerts and transaction flow | `/monitoring?loan=L-2026-0110`       | Administrator  |
+| 13  | Public-records watch              | `/monitoring/public-records`         | Administrator  |
+| 14  | Risk scores (SYNTH)               | `/monitoring/risk-scores`            | Administrator  |
+| 15  | Alerts                            | `/alerts`                            | Administrator  |
+| 16  | Alerts: Urgent review filter      | `/alerts?priority=urgent`            | Administrator  |
+| 17  | Cases                             | `/investigations`                    | Administrator  |
+| 18  | Case detail                       | `/investigations/CASE-2026-007`      | Administrator  |
+| 19  | Relationship graph                | `/graph-lab`                         | Administrator  |
+| 20  | Reports                           | `/reports`                           | Administrator  |
+| 21  | Settings                          | `/settings`                          | Administrator  |
+| 22  | Command palette                   | Ctrl/⌘ K                             | Administrator  |
+| 23  | Dark mode                         | `/dashboard`                         | Risk analyst   |
+| 24  | Mobile 360 px: command center     | `/dashboard`                         | Branch officer |
+| 25  | Mobile 360 px: application        | `/applications/A-1013`               | Branch officer |
 
 ---
 
 ### 01 · Login
-
-Quick sign-in with a demo role. The employee-ID form validates its fields but is not connected in the prototype, and says so.
 
 ![01](screenshots/01-login.jpg)
 
@@ -91,19 +86,14 @@ Summary strip, document checklist, findings requiring attention, recent actions,
 
 ![06](screenshots/06-application-detail.jpg)
 
-### 06b · Documents & verification tab
+### 06b · Findings & entities tab
 
-![06b](screenshots/06b-application-documents-tab.jpg)
-
-### 06c · Findings & entities tab
-
-![06c](screenshots/06c-application-findings-tab.jpg)
+![06b](screenshots/06b-application-findings-tab.jpg)
 
 ### 07 · Risk analysis
 
-Twelve configured checks, the **attention score (48 / 100, Needs attention)** with its drivers, the
-public-records check, the review priority and the findings table. The **AI review** card is honest
-in a demo session: _Not connected — no AI review ran_.
+Twelve configured checks, the **attention score (48 / 100, Needs attention)** with its drivers
+(computed by code), the public-records check, the review priority and the findings table.
 
 ![07](screenshots/07-risk-analysis-checks.jpg)
 
@@ -141,7 +131,8 @@ Every disbursed loan re-checked daily. The TEST loans `L-2023-0601` (Advantage O
 
 ### 14 · Risk scores (SYNTH)
 
-Monthly behaviour + pattern scores on the labelled synthetic loan book.
+The scoring code's output over the labelled synthetic test loan book: bands, movement and the latest
+score per loan.
 
 ![14](screenshots/14-risk-scores.jpg)
 
@@ -180,32 +171,20 @@ Explore, Networks, Path finder and Identity review.
 
 ![21](screenshots/21-settings.jpg)
 
-### 22 · Help
+### 22 · Command palette (Ctrl/⌘ K)
 
-![22](screenshots/22-help.jpg)
+![22](screenshots/22-command-palette.jpg)
 
-### 23 · FinRakshak Copilot
+### 23 · Dark mode
 
-"Why was this flagged?" on loan `L-2026-0110`: four statements, each citing facts (`A1`–`A4`), and
-_Grounding check: 4 of 4 statements kept_. It is labelled _Simulated demo output · no model called_
-in a demo session.
+![23](screenshots/23-dark-mode-command-center.jpg)
 
-![23](screenshots/23-copilot.jpg)
+### 24 · Mobile 360 px: command center
 
-### 24 · Command palette (Ctrl/⌘ K)
+![24](screenshots/24-mobile-360-command-center.jpg)
 
-![24](screenshots/24-command-palette.jpg)
+### 25 · Mobile 360 px: application
 
-### 25 · Dark mode
-
-![25](screenshots/25-dark-mode-command-center.jpg)
-
-### 26 · Mobile 360 px: command center
-
-![26](screenshots/26-mobile-360-command-center.jpg)
-
-### 27 · Mobile 360 px: application
-
-![27](screenshots/27-mobile-360-application.jpg)
+![25](screenshots/25-mobile-360-application.jpg)
 
 [Next: AI features and agents →](04-AI-AGENTS.md)

@@ -22,7 +22,7 @@ delimited blocks. Every number it writes must already exist in the evidence it w
 - [Feature 6: AI analysis of an application](#feature-6-ai-analysis-of-an-application-analyseapplication)
 - [Shared agent runtime: the tool loop](#shared-agent-runtime-the-tool-loop)
 - [Approval flow for agent proposals](#approval-flow-for-agent-proposals)
-- [The mock provider, and how this is tested](#the-mock-provider-and-how-this-is-tested)
+- [How the AI code is tested](#how-the-ai-code-is-tested)
 - [Where to read the code](#where-to-read-the-code)
 
 ---
@@ -83,7 +83,6 @@ flowchart LR
 | Logs                         | Counts only (facts, tool calls, claims kept / rejected): no names, values, prompts or model text                   | `services/log.ts`                                                                                             |
 | Timeouts                     | 30 s per model call; 100 s deadline for an investigator run; capped output tokens                                  | `config/`                                                                                                     |
 | Kill switches                | Per-job `*_ENABLED` flags; the one-click **emergency stop** disables the Vertex AI API                             | `docs/EMERGENCY_STOP.md`                                                                                      |
-| Honest labels                | Demo sessions show _Simulated demo output · no model called_ or _Not connected_                                    | UI                                                                                                            |
 
 ---
 
@@ -223,7 +222,7 @@ over time with a person always in the loop.
   (`ingest/src/ai/outputChecks.ts`) rejects unknown numbers.
 - Proposals go to Firestore; an administrator approves each one with `decidePattern` (B-61), and an
   approved pattern enters the versioned library that the scorer reads.
-- Runs on demand: `npm run miner -- propose` prints proposals locally on the mock model.
+- Runs on demand: `npm run miner -- propose` prints proposals and writes nothing.
   Switch: `FINRAKSHAK_AI_MINER_ENABLED=false` by default.
   Plan: [`docs/plans/PATTERN_MINER_PLAN.md`](../docs/plans/PATTERN_MINER_PLAN.md).
 
@@ -238,8 +237,8 @@ over time with a person always in the loop.
 - **Number check:** any sentence with a number that is not in the reasons is rejected.
 - Stored in its own collection `synthRiskExplanations` (one per alert), **never on the alert itself**
   (B-57), and shown labelled in the risk score drawer (B-62). A prompt change applies to new alerts only.
-- If the model fails, code-worded sentences are stored with `model: null`; the mock and the kill
-  switch store nothing. Switch: `FINRAKSHAK_AI_EXPLAIN_ENABLED`.
+- If the model fails, code-worded sentences are stored with `model: null`; the kill switch stores
+  nothing. Switch: `FINRAKSHAK_AI_EXPLAIN_ENABLED`.
   Plan: [`docs/plans/RISK_EXPLAINER_PLAN.md`](../docs/plans/RISK_EXPLAINER_PLAN.md).
 
 ---
@@ -268,9 +267,7 @@ sequenceDiagram
 - The grounding check is shared code (`packages/shared/src/assistGrounding.ts`) with test cases
   (`assist-grounding-cases.json`); functions run a runtime copy of it.
 - **Data the copilot can use** shows the exact facts that were sent.
-- In demo sessions a **simulated** answer is built from the same facts and passes the same check,
-  labelled _Simulated demo output · no model called_ (screenshot 23).
-  Details: [`docs/COPILOT.md`](../docs/COPILOT.md).
+- Details: [`docs/COPILOT.md`](../docs/COPILOT.md).
 
 ---
 
@@ -335,10 +332,9 @@ runs, reviews and proposals to administrators only.
 
 ---
 
-## The mock provider, and how this is tested
+## How the AI code is tested
 
-- **Tests, CI and the emulator never call a billed model.** The default provider is a mock
-  (`functions/src/services/gemini-mock.ts`, `ingest/src/ai/`) that returns deterministic replies,
+- **Tests, CI and the emulator never call a billed model.** They feed the code fixed model replies,
   including tool calls, so the whole loop, the verifier and the limits are exercised.
 - Unit tests cover the verifier rules, the grounding cases, the billed gate, daily limits under
   parallel calls, rate limits, the tool loop's edge cases (budget used, malformed replies, cut-off

@@ -154,7 +154,7 @@ export const aadhaarPawar: Sample = {
   fields: [
     {
       key: 'applicant_name_original',
-      label: 'Name (Marathi)',
+      label: 'Name (Devanagari)',
       value: 'सुनिता विलास पवार',
       region: r(86, 230, 190, 28),
       quality: 'clear',

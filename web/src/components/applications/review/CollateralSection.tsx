@@ -21,7 +21,7 @@ export function CollateralSection({
         <>
           <TextField
             label="Survey / Gat number (as written)"
-            hint="Marathi digits are kept as entered."
+            hint="Devanagari digits are kept as entered."
             lang="mr"
             value={data.collateral.surveyNumber}
             onChange={(e) => {

@@ -25,7 +25,7 @@ and text (never colour alone). Words such as "fraud" are blocked, even in AI out
 - [Flow L: Relationship graph of public records](#flow-l-relationship-graph-of-public-records)
 - [Flow M: FinRakshak Copilot (on any screen)](#flow-m-finrakshak-copilot-on-any-screen)
 - [Flow N: Borrowers and documents](#flow-n-borrowers-and-documents)
-- [Flow O: Reports, settings and help](#flow-o-reports-settings-and-help)
+- [Flow O: Reports and settings](#flow-o-reports-and-settings)
 - [Flow P: Shell features: queue, search, dark mode, mobile](#flow-p-shell-features-queue-search-dark-mode-mobile)
 - [Flow Q: Administrator: approving AI proposals](#flow-q-administrator-approving-ai-proposals)
 - [The real-data scenarios (TEST loans)](#the-real-data-scenarios-test-loans)
@@ -104,11 +104,9 @@ Steps on this path: **Application form → Risk analysis**.
 2. **Upload** PDFs or images (7/12 land extract, Aadhaar, bank statement, warehouse receipt, GST,
    Udyam …). Quality checks run **locally in the browser** (pdf.js + canvas): page count, blur,
    darkness and resolution warnings. Upload size and decompression limits apply.
-3. **Extract & verify:** each extracted field is shown next to the **exact region of the source
-   document**. The officer confirms or corrects each field, in Marathi or English (Marathi digits and
-   names are supported).
-   > OCR is not connected yet. Sample documents show values labelled _Simulated demo output_. The
-   > field-by-field review, the regions and the audit trail are real.
+3. **Extract & verify:** each field is shown next to the **exact region of the source document**.
+   The officer confirms or corrects each field (Devanagari digits and names are kept as written), and
+   every confirmation goes to the audit trail.
 4. **Application form (optional):** continuing fills empty fields from confirmed document fields.
    Nothing is required on this path; the checks report what is missing.
 5. Continue to **Risk analysis** (Flow D).
@@ -166,9 +164,8 @@ Steps on this path: **Application form → Risk analysis**.
 
 **Who:** branch officer / risk analyst · **Where:** Risk analysis → **AI review** card
 
-With a cloud account (Firebase Auth + AI access), the AI review card offers two buttons. Both run on
-**Gemini on Vertex AI** through Cloud Functions; in the local demo the card says _Not connected — no
-AI review ran_ (visible in the screenshot above), so nothing is ever presented as AI that was not.
+For a signed-in user with AI access, the AI review card offers two buttons. Both run on **Gemini on
+Vertex AI** through Cloud Functions.
 
 1. **Analyse with Gemini** (`analyseApplication` callable):
    - Gemini writes a short risk summary (≤ 6 sentences), facts tied to the recorded fields, and one
@@ -211,9 +208,9 @@ Full detail: [04-AI-AGENTS.md](04-AI-AGENTS.md).
 | ------------------------------------------------ | ------------------------------------------------------------ |
 | ![Applications](screenshots/04-applications.jpg) | ![Application detail](screenshots/06-application-detail.jpg) |
 
-| Documents & verification tab                                    | Findings & entities tab                                       |
-| --------------------------------------------------------------- | ------------------------------------------------------------- |
-| ![Documents tab](screenshots/06b-application-documents-tab.jpg) | ![Findings tab](screenshots/06c-application-findings-tab.jpg) |
+**Findings & entities tab**
+
+![Findings tab](screenshots/06b-application-findings-tab.jpg)
 
 ---
 
@@ -353,14 +350,12 @@ Full detail: [04-AI-AGENTS.md](04-AI-AGENTS.md).
    - **Draft risk observations** for the credit appraisal note or case file;
    - **Draft an information request** to the borrower.
 3. Each statement cites facts (`A1`, `A2` …). The **grounding check** keeps only statements that cite
-   facts that were sent, and whose numbers all appear in those facts. The panel reports, for example,
-   _"Grounding check: 4 of 4 statements kept"_.
+   facts that were sent, and whose numbers all appear in those facts. The panel reports how many
+   statements were kept and why any were removed.
 4. **Data the copilot can use** opens the exact facts sent to the model. **Copy** copies the answer.
 
-In a demo session the answer is labelled **Simulated demo output · no model called** (it still passes
-the same grounding check). Signed in with a cloud account, it calls `assistRecord` → Gemini on Vertex AI.
-
-![FinRakshak Copilot](screenshots/23-copilot.jpg)
+Each question calls the `assistRecord` callable → Gemini on Vertex AI. How it works:
+[04-AI-AGENTS.md](04-AI-AGENTS.md#feature-5-finrakshak-copilot-assistrecord).
 
 ---
 
@@ -378,18 +373,18 @@ the same grounding check). Signed in with a cloud account, it calls `assistRecor
 
 ---
 
-## Flow O: Reports, settings and help
+## Flow O: Reports and settings
 
 - **Reports** (`/reports`): period and branch reports (applications, findings, alerts, cases,
   outcomes) with **CSV / TXT export**. Cells are protected against spreadsheet formula injection.
 - **Settings** (`/settings`): your profile and preferences and, for authorised roles, risk
   configuration: monitoring thresholds, alert routing, document checklists per product, and **Data**
   (reset or clear the demo workspace). Other roles see these read-only.
-- **Help** (`/help`): how the prototype works, what is and is not connected, and a guided walkthrough.
+- **Help** (`/help`): a guided walkthrough of the main tasks.
 
-| Reports                                | Settings                                 | Help                             |
-| -------------------------------------- | ---------------------------------------- | -------------------------------- |
-| ![Reports](screenshots/20-reports.jpg) | ![Settings](screenshots/21-settings.jpg) | ![Help](screenshots/22-help.jpg) |
+| Reports                                | Settings                                 |
+| -------------------------------------- | ---------------------------------------- |
+| ![Reports](screenshots/20-reports.jpg) | ![Settings](screenshots/21-settings.jpg) |
 
 ---
 
@@ -405,11 +400,11 @@ the same grounding check). Signed in with a cloud account, it calls `assistRecor
 
 | My queue                                 | Command palette                                        |
 | ---------------------------------------- | ------------------------------------------------------ |
-| ![My queue](screenshots/03-my-queue.jpg) | ![Command palette](screenshots/24-command-palette.jpg) |
+| ![My queue](screenshots/03-my-queue.jpg) | ![Command palette](screenshots/22-command-palette.jpg) |
 
 | Dark mode                                                 | Mobile: command center                                            | Mobile: application                                              |
 | --------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------- |
-| ![Dark mode](screenshots/25-dark-mode-command-center.jpg) | ![Mobile dashboard](screenshots/26-mobile-360-command-center.jpg) | ![Mobile application](screenshots/27-mobile-360-application.jpg) |
+| ![Dark mode](screenshots/23-dark-mode-command-center.jpg) | ![Mobile dashboard](screenshots/24-mobile-360-command-center.jpg) | ![Mobile application](screenshots/25-mobile-360-application.jpg) |
 
 ---
 

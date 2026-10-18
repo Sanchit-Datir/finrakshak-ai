@@ -253,7 +253,7 @@ Full threat table: [`SECURITY.md`](../SECURITY.md).
 | Cheapest Gemini model that passes the checks             | `gemini-3.1-flash-lite` (≈ US$0.002 per Copilot answer) |
 | Per-user daily AI limit (30) + burst limits + allow-list | Abuse cannot run up a bill                              |
 | Ingestion agent skips the model on healthy days          | Most days cost nothing for AI                           |
-| Mock provider in tests, CI and the emulator              | Development never bills                                 |
+| Tests, CI and the emulator never call a billed model     | Development never bills                                 |
 | Delta ingestion, batch BigQuery loads, storage lifecycle | Storage and compute grow slowly                         |
 | Budget alerts ₹450 / month (project), ₹200 / month (AI)  | Early warning                                           |
 

@@ -44,7 +44,7 @@ export function AddFieldForm({
         ))}
       </SelectField>
       <TextField
-        label="Value (type exactly as written; Marathi allowed)"
+        label="Value (type exactly as written; Devanagari allowed)"
         value={value}
         onChange={(e) => {
           setValue(e.target.value);

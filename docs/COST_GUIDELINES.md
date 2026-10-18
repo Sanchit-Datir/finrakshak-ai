@@ -32,7 +32,7 @@ default to the newest or largest model. Prices are USD per 1M tokens (paid tier)
 Rules:
 
 - `GEMINI_MODEL` is configuration, not code. A heavier model for one hard task (e.g. handwritten
-  Marathi extraction) is set for that task only, after the cheap model has been tried and measured.
+  document extraction) is set for that task only, after the cheap model has been tried and measured.
 - Re-check prices and availability before each release; models are retired and prices change.
 - Keep `maxOutputTokens` and prompt size capped (`GEMINI_LIMITS`). Output tokens cost 6x input.
 - Free-tier API keys are for **mock or synthetic data only**: Google may use free-tier inputs to

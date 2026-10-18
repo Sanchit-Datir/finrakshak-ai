@@ -48,7 +48,7 @@ export function crossChecks(app: Application, db: Db): CrossCheck[] {
       verdict: d.collateral.surveyNumber === '' ? 'not_available' : same ? 'match' : 'conflict',
       note:
         same && d.collateral.surveyNumber !== df.field.value
-          ? 'Same after normalising Marathi digits'
+          ? 'Same after normalising Devanagari digits'
           : '',
     });
   }

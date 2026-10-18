@@ -41,15 +41,15 @@ user-facing name changes from "FinRakshak AI" to **FinRakshak AI**.
 
 ## 3. English-only sign-in
 
-The language selector (English / मराठी) and all Marathi sign-in strings were removed from the
+The language selector and all non-English sign-in strings were removed from the
 sign-in page. Validation messages and behaviour are unchanged.
 
 ## 4. "Preferred language" setting removed
 
 Settings → Profile no longer shows "Preferred language". It was saved but never read anywhere, and its
-hint ("Marathi interface text is available on the sign-in page") became false after change 3.
+hint (about regional interface text on the sign-in page) became false after change 3.
 The stored `preferences.language` field stays in the schema so existing saved workspaces still load.
-Marathi **document** support (7/12 extracts, Devanagari text, Marathi digits) is unaffected.
+Document handling (7/12 extracts, Devanagari text and digits) is unaffected.
 
 ## 5. Dashboard: larger count links and Risk overview tiles
 
