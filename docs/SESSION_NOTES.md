@@ -194,6 +194,14 @@ users, an App Check debug token, and how to fit ~100 model calls under the daily
 blocked by App Check). Finding for the owner: the scoring replay grows with loans × transactions
 (`byAccount` in `packages/shared/src/risk/scoring/run.ts`): 200 loans 31 s, 1,000 loans 761 s. Not fixed.
 
+## How-to-use guide (18 Oct 2026, branch `how-to-use` from `main`)
+
+At the owner's request, added `how-to-use/` for judges: index, quick start, every user flow, a gallery of
+31 screenshots (captured with Playwright from `npm run dev -w web`, quick sign-in; desktop, dark mode and
+360 px), the AI features and agents, the GCP services, an architecture and code tour, and a demo script
+with FAQ. The root README links to it. Docs only, no code changed. Screenshots show demo-session states
+(_Simulated demo output_ / _Not connected_); the AI investigator's live result was not captured.
+
 ## Open decisions and next ideas
 
 - **New loan opens the form directly (18 Oct 2026, branch `ui/loan-page-layout`):** the form path is

@@ -11,6 +11,9 @@
 Repository: `finrakshak-ai` · Product: **FinRakshak AI** · Stack:
 TypeScript monorepo on Google Cloud and Firebase.
 
+> **Judges and reviewers:** start with [`how-to-use/`](how-to-use/README.md): every user flow with
+> screenshots, the AI agents, the Google Cloud services and a 5-minute demo script.
+
 ---
 
 ## Contents
