@@ -103,7 +103,7 @@ The Risk step's "AI-assisted document analysis" card now runs `analyseApplicatio
 facts from the recorded fields, a note per finding, a short summary; matched patterns do not apply before
 disbursement. Gemini through the AI Studio key in Secret Manager (owner: not Vertex for this); mock
 locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:** budget limit first
-(B-15), whether names are masked too (B-64). Committed on this branch, not pushed.
+(B-15), whether names are masked too (B-64). Attention score 0–100 added (code-computed, top of the card); open: confirm the weights 60/30/10 and that several small findings may escalate the band.
 
 ## Open decisions and next ideas
 

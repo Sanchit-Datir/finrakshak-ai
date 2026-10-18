@@ -114,7 +114,13 @@ export function RiskStep({
             )}
           </div>
         </Card>
-        <AiAnalysisCard app={app} db={db} actor={actor} findings={ran ? findings : []} />
+        <AiAnalysisCard
+          app={app}
+          db={db}
+          actor={actor}
+          findings={ran ? findings : []}
+          checksRun={ran}
+        />
       </div>
 
       <PublicRecordsCheck app={app} actor={actor} />

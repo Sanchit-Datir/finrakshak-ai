@@ -17,6 +17,7 @@ vi.mock('../services/gemini.js', async (importOriginal) => ({
 
 const INPUT = {
   borrowerType: 'individual',
+  attention: { score: 60, band: 'urgent', driverIds: ['X1'] },
   documents: [
     {
       docId: 'D1',
@@ -72,6 +73,11 @@ describe('analyseApplication', () => {
     expect(await codeOf(analyseApplicationHandler(req(INPUT, false), deps()))).toBe(
       'unauthenticated',
     );
+  });
+
+  it('rejects an attention score above 100', async () => {
+    const bad = { ...INPUT, attention: { score: 101, band: 'urgent', driverIds: [] } };
+    expect(await codeOf(analyseApplicationHandler(req(bad), deps()))).toBe('invalid-argument');
   });
 
   it('rejects malformed input', async () => {

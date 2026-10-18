@@ -4,6 +4,16 @@ _Added 18 Oct 2026 (branch `feat/application-ai-analysis`). Owner's decisions: G
 Gemini Developer API (AI Studio) key held in Secret Manager, not Vertex AI; runs only on a click, with
 the daily limit; real calls only after a budget limit exists (B-15)._
 
+## Attention score (code, not the model)
+
+At the top of the card, once the checks have run: an **attention score from 0 to 100**, its band and the
+three findings that add most. Code computes it (`web/src/lib/attention-score.ts`) from the unresolved
+findings, the same ones Review priority uses: urgent 60, needs attention 30, routine 10, capped at 100.
+Bands use the app's wording: 0–29 Routine review, 30–59 Needs attention, 60–100 Urgent review. One urgent
+finding alone is Urgent review (as Review priority says); several smaller findings can add up to a higher
+band than the worst single one. It shows in demo mode too, since no model is involved. Gemini receives the
+score and its drivers and explains them; a summary or note that states any other score is withheld.
+
 ## What it does
 
 On the application's **Risk** step, **Analyse with Gemini** sends the application's recorded document

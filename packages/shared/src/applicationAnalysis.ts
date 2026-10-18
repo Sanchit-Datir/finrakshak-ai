@@ -46,6 +46,15 @@ export const AnalysisFindingSchema = z.object({
 });
 export type AnalysisFinding = z.infer<typeof AnalysisFindingSchema>;
 
+/** The attention score computed by code in the browser; the model explains it and never changes it. */
+export const AnalysisAttentionSchema = z.object({
+  score: z.number().int().min(0).max(100),
+  band: z.enum(['routine', 'needs_attention', 'urgent']),
+  /** Findings that contribute most, biggest first. */
+  driverIds: z.array(ref).max(3),
+});
+export type AnalysisAttention = z.infer<typeof AnalysisAttentionSchema>;
+
 export const AnalyseApplicationInputSchema = z.object({
   borrowerType: z.enum([
     'individual',
@@ -57,6 +66,8 @@ export const AnalyseApplicationInputSchema = z.object({
   ]),
   documents: z.array(AnalysisDocumentSchema).max(L.maxDocuments),
   findings: z.array(AnalysisFindingSchema).max(L.maxFindings),
+  /** Null when the checks have not run. */
+  attention: AnalysisAttentionSchema.nullable(),
 });
 export type AnalyseApplicationInput = z.infer<typeof AnalyseApplicationInputSchema>;
 

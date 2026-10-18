@@ -4,6 +4,7 @@ import {
   type AnalysisDocument,
 } from '@fund-tracker/shared';
 import type { Application, FtDocument } from '../domain/schemas.js';
+import type { AttentionScore } from './attention-score.js';
 import type { Finding } from './checks.js';
 import { docTypeLabel } from './doc-catalog.js';
 import { maskIdentifier } from './format.js';
@@ -46,9 +47,18 @@ export function buildAnalysisRequest(
   app: Application,
   docs: readonly FtDocument[],
   findings: readonly Finding[],
+  attention: AttentionScore | null = null,
 ): AnalysisRequest {
   const base: AnalyseApplicationInput = {
     borrowerType: app.borrowerType,
+    attention:
+      attention === null
+        ? null
+        : {
+            score: attention.score,
+            band: attention.band,
+            driverIds: attention.drivers.map((d) => d.findingId),
+          },
     documents: [],
     findings: findings.slice(0, L.maxFindings).map((f) => ({
       findingId: f.id,

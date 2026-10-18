@@ -7,10 +7,12 @@ import {
   ground,
   mockAnalysis,
   parseReply,
+  scoreConsistent,
 } from './applicationAnalysis.js';
 
 const INPUT: AnalyseApplicationInput = {
   borrowerType: 'individual',
+  attention: { score: 60, band: 'urgent', driverIds: ['X1'] },
   documents: [
     {
       docId: 'D1',
@@ -112,6 +114,37 @@ describe('ground', () => {
   });
 });
 
+describe('attention score wording', () => {
+  const reply = (
+    summary: string,
+    note = 'Check it.',
+  ): NonNullable<ReturnType<typeof parseReply>> => ({
+    summary,
+    facts: [],
+    findingNotes: [{ findingId: 'X1', note }],
+  });
+
+  it('allows the code’s own score and withholds a different one', () => {
+    expect(
+      ground(INPUT, reply('Attention score 60/100, driven by the income mismatch.')).summary,
+    ).not.toBe('');
+    const other = ground(INPUT, reply('I would put this at 85 out of 100.', 'Score of 90.'));
+    expect(other.summary).toBe('');
+    expect(other.findingNotes).toEqual([]);
+    expect(other.dropped).toBe(2);
+  });
+
+  it('withholds any stated score when the checks have not run', () => {
+    const noScore = { ...INPUT, attention: null };
+    expect(scoreConsistent(noScore, 'The score is 40.')).toBe(false);
+    expect(scoreConsistent(noScore, 'Net pay is 42,000.')).toBe(true);
+  });
+
+  it('asks the model to explain the score, not to set one', () => {
+    expect(buildPrompt(INPUT)).toContain('Never give a different score');
+  });
+});
+
 describe('mockAnalysis', () => {
   it('is labelled and uses reviewed fields only', () => {
     const m = mockAnalysis(INPUT);
@@ -119,7 +152,7 @@ describe('mockAnalysis', () => {
     expect(m.facts).toEqual([{ docId: 'D1', fieldId: 'F1', statement: 'Net pay: 42,000' }]);
   });
   it('handles an empty application', () => {
-    const m = mockAnalysis({ borrowerType: 'other', documents: [], findings: [] });
+    const m = mockAnalysis({ borrowerType: 'other', documents: [], findings: [], attention: null });
     expect(m.facts).toEqual([]);
     expect(m.findingNotes).toEqual([]);
   });
