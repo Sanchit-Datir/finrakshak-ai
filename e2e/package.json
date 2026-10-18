@@ -6,9 +6,14 @@
   "description": "Browser scenarios for the web prototype (Playwright). Not part of npm run check: they need a built app and the published public-records graph.",
   "scripts": {
     "test:e2e": "playwright test",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "demo": "node --experimental-strip-types --disable-warning=ExperimentalWarning demo/launcher/server.ts",
+    "demo:1": "playwright test -c demo/playwright.config.ts scenario-1",
+    "demo:2": "playwright test -c demo/playwright.config.ts scenario-2",
+    "demo:3": "playwright test -c demo/playwright.config.ts scenario-3"
   },
   "devDependencies": {
-    "@playwright/test": "1.56.1"
+    "@playwright/test": "1.56.1",
+    "zod": "^3.25.76"
   }
 }

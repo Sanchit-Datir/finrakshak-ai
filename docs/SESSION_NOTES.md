@@ -3,7 +3,7 @@
 Read this first in a new session. It records what has been built, the rules the owner has set,
 and what is open. Update it at the end of every session.
 
-_Last updated: 17 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
+_Last updated: 18 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
 
 ## Owner's working rules (keep following them)
 
@@ -119,6 +119,19 @@ The owner said: do not commit yet, and stay on this branch.
     Ctrl/⌘ J, I, or **Ask AI**.
 - **Renames:** Dashboard → Command center, Monitoring → Loan book, Graph Lab → Relationship graph.
 - **Next:** the AI hub page (2C), AI in workflows (2B), then the money-trail Sankey and Story mode.
+
+## Demo-video scripts (18 Oct 2026, branch `demo-scripts-playwright` from `main`)
+
+At the owner's request: Playwright scripts that play the three scenarios against the deployed app
+(`https://fund-tracer.web.app`, `DEMO_BASE_URL`) for a screen-recorded demo. `e2e/demo/README.md`.
+`npm run demo` opens a local launcher (one Start button per scenario, live log, Stop);
+`npm run demo:1|2|3` runs one from the terminal. Each starts at sign-in, adds captions, a visible
+cursor and a highlight ring, and reuses the inputs in `e2e/scenarios/<id>/scenario.ts`. Scenario 1
+follows the current form-first flow (product "MSME loan"); scenarios 2 and 3 end with Copilot on the
+open alert (Ctrl+J). All three passed against the deployed app with quick sign-in (headed, Xvfb).
+Account sign-in reached Firebase Auth but App Check (reCAPTCHA) refused the sandbox's automated
+browser; on the owner's machine it may pass, otherwise use an App Check debug token or quick
+sign-in (B-67, new). The password is never committed (`e2e/demo/.env`, git-ignored).
 
 ## Open decisions and next ideas
 

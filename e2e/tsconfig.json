@@ -3,7 +3,8 @@
   "compilerOptions": {
     "noEmit": true,
     "types": ["node"],
-    "lib": ["ES2023", "DOM"]
+    "lib": ["ES2023", "DOM"],
+    "allowImportingTsExtensions": true
   },
-  "include": ["tests", "scenarios", "playwright.config.ts"]
+  "include": ["tests", "scenarios", "demo", "playwright.config.ts"]
 }

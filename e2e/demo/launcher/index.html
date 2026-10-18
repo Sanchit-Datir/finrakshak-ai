@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinRakshak Demo Launcher</title>
+    <style>
+      :root {
+        --bg: #f3f6fa;
+        --surface: #ffffff;
+        --surface-2: #eef3f8;
+        --ink: #0f2133;
+        --muted: #52657a;
+        --line: #d5dfea;
+        --primary: #12324a;
+        --primary-ink: #ffffff;
+        --accent: #0f766e;
+        --accent-soft: #d6f3ef;
+        --violet: #6d28d9;
+        --violet-soft: #ede4fd;
+        --ok: #15803d;
+        --ok-soft: #dcfce7;
+        --warn: #a16207;
+        --warn-soft: #fef3c7;
+        --danger: #b91c1c;
+        --danger-soft: #fee2e2;
+        --log-bg: #0b1724;
+        --log-ink: #d7e3ef;
+        --radius: 14px;
+        --shadow: 0 1px 2px rgb(15 33 51 / 0.06), 0 6px 20px rgb(15 33 51 / 0.06);
+        --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #08131f;
+          --surface: #0f1f30;
+          --surface-2: #142a40;
+          --ink: #e6eef6;
+          --muted: #9db0c3;
+          --line: #23384e;
+          --primary: #5eead4;
+          --primary-ink: #062019;
+          --accent: #5eead4;
+          --accent-soft: #123a37;
+          --violet: #c4b5fd;
+          --violet-soft: #2a2050;
+          --ok: #86efac;
+          --ok-soft: #12351f;
+          --warn: #fcd34d;
+          --warn-soft: #3a2e0b;
+          --danger: #fca5a5;
+          --danger-soft: #401616;
+          --log-bg: #050d16;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 15px/1.5 var(--font);
+      }
+      header {
+        background: linear-gradient(120deg, #0b1f33, #12324a 60%, #0f4c5c);
+        color: #fff;
+        padding: 28px 16px;
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      header .wrap {
+        padding: 0;
+      }
+      h1 {
+        margin: 0;
+        font-size: 26px;
+        letter-spacing: -0.01em;
+      }
+      header p {
+        margin: 6px 0 0;
+        color: #cfe0ee;
+        max-width: 760px;
+      }
+      main {
+        padding: 28px 0 48px;
+      }
+      .layout {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: minmax(0, 1fr);
+      }
+      @media (min-width: 980px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr) 340px;
+        }
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .scenarios {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .scenario {
+        display: flex;
+        flex-direction: column;
+        padding: 18px;
+      }
+      .scenario h2 {
+        margin: 10px 0 0;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+      .scenario p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .scenario ul {
+        margin: 12px 0 0;
+        padding-left: 18px;
+        font-size: 14px;
+      }
+      .scenario li + li {
+        margin-top: 4px;
+      }
+      .scenario footer {
+        margin-top: auto;
+        padding-top: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: fit-content;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .badge.pre {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+      .badge.post {
+        background: var(--violet-soft);
+        color: var(--violet);
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 12px;
+        background: var(--surface-2);
+        padding: 1px 6px;
+        border-radius: 6px;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        padding: 9px 16px;
+        font-weight: 600;
+      }
+      button:focus-visible,
+      input:focus-visible,
+      select:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid #f59e0b;
+        outline-offset: 2px;
+      }
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+      .primary {
+        background: var(--primary);
+        color: var(--primary-ink);
+      }
+      .secondary {
+        background: var(--surface);
+        color: var(--ink);
+        border-color: var(--line);
+      }
+      .danger {
+        background: var(--danger-soft);
+        color: var(--danger);
+        border-color: var(--danger);
+      }
+      .settings {
+        padding: 18px;
+        align-self: start;
+      }
+      .settings h2,
+      .run h2 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .field {
+        margin-top: 14px;
+      }
+      .field label,
+      .field legend {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .field input[type='text'],
+      .field input[type='url'],
+      .field input[type='email'],
+      .field input[type='password'],
+      .field input[type='number'],
+      .field select {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 9px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+      }
+      fieldset {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+        font-size: 14px;
+      }
+      .check input {
+        width: 18px;
+        height: 18px;
+      }
+      details {
+        margin-top: 16px;
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .run {
+        margin-top: 20px;
+        padding: 18px;
+      }
+      .run-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        background: var(--surface-2);
+        color: var(--muted);
+      }
+      .status::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+      .status[data-state='running'] {
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+      .status[data-state='passed'] {
+        background: var(--ok-soft);
+        color: var(--ok);
+      }
+      .status[data-state='failed'] {
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+      .grow {
+        flex: 1;
+      }
+      .message {
+        margin: 12px 0 0;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: var(--danger-soft);
+        color: var(--danger);
+        font-size: 14px;
+      }
+      pre {
+        margin: 14px 0 0;
+        padding: 14px;
+        min-height: 180px;
+        max-height: 420px;
+        overflow: auto;
+        border-radius: 10px;
+        background: var(--log-bg);
+        color: var(--log-ink);
+        font: 12.5px/1.55 var(--mono);
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .tips {
+        margin: 14px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>FinRakshak AI · Demo launcher</h1>
+        <p>
+          Start a scenario and it plays in a new browser window, step by step, with captions. Start
+          your screen recorder first, then leave the mouse and keyboard alone until it finishes.
+        </p>
+      </div>
+    </header>
+    <main class="wrap">
+      <div class="layout">
+        <div>
+          <section aria-labelledby="scenarios-title">
+            <h2 id="scenarios-title" style="margin: 0 0 12px; font-size: 16px">Scenarios</h2>
+            <div class="scenarios" id="scenarios" aria-busy="true">
+              <p class="hint">Loading scenarios…</p>
+            </div>
+          </section>
+
+          <section class="card run" aria-labelledby="run-title">
+            <div class="run-head">
+              <h2 id="run-title">Current run</h2>
+              <span class="status" id="status" data-state="idle" role="status">Idle</span>
+              <span class="hint grow" id="run-label"></span>
+              <button type="button" class="danger" id="stop" disabled>Stop</button>
+            </div>
+            <p class="message" id="message" role="alert" hidden></p>
+            <pre id="log" aria-label="Run output" tabindex="0">Nothing has run yet.</pre>
+            <ul class="tips">
+              <li>
+                Each scenario starts from the sign-in page in a fresh browser (no saved session).
+              </li>
+              <li>
+                Recording in the app itself? Turn on “Save a video too”: the file is saved under
+                <code>e2e/demo/recordings/</code>.
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <form class="card settings" id="settings" aria-labelledby="settings-title">
+          <h2 id="settings-title">Settings</h2>
+          <div class="field">
+            <label for="baseUrl">App URL</label>
+            <input id="baseUrl" name="baseUrl" type="url" required />
+          </div>
+          <fieldset class="field">
+            <legend>Sign in with</legend>
+            <label class="check"
+              ><input type="radio" name="signIn" value="account" /> Email and password</label
+            >
+            <label class="check"
+              ><input type="radio" name="signIn" value="quick" /> Quick sign-in (prototype, no
+              password)</label
+            >
+          </fieldset>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="off" />
+            <p class="hint" id="password-hint" style="margin: 4px 0 0"></p>
+          </div>
+          <div class="field">
+            <label for="pace">Pace</label>
+            <select id="pace" name="pace">
+              <option value="slow">Slow: room for a voice-over</option>
+              <option value="normal">Normal</option>
+              <option value="fast">Fast: a quick dry run</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="viewport">Window</label>
+            <select id="viewport" name="viewport">
+              <option value="auto">Fill the screen (maximised)</option>
+              <option value="1920x1080">1920 × 1080</option>
+              <option value="1600x900">1600 × 900</option>
+              <option value="1440x900">1440 × 900</option>
+              <option value="1280x720">1280 × 720</option>
+            </select>
+          </div>
+          <fieldset class="field">
+            <legend>Show</legend>
+            <label class="check"
+              ><input type="checkbox" name="captions" /> Captions and title cards</label
+            >
+            <label class="check"
+              ><input type="checkbox" name="ai" /> AI steps (Gemini, FinRakshak Copilot)</label
+            >
+            <label class="check"><input type="checkbox" name="record" /> Save a video too</label>
+          </fieldset>
+          <details>
+            <summary>Advanced</summary>
+            <div class="field">
+              <label for="browser">Browser</label>
+              <select id="browser" name="browser">
+                <option value="chromium">Chromium (installed by Playwright)</option>
+                <option value="chrome">Google Chrome</option>
+                <option value="msedge">Microsoft Edge</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="holdSeconds">Hold the last screen (seconds)</label>
+              <input id="holdSeconds" name="holdSeconds" type="number" min="0" max="600" step="1" />
+            </div>
+            <div class="field">
+              <label for="appCheckDebugToken">App Check debug token</label>
+              <input
+                id="appCheckDebugToken"
+                name="appCheckDebugToken"
+                type="password"
+                autocomplete="off"
+              />
+              <p class="hint" id="token-hint" style="margin: 4px 0 0">
+                Only if sign-in says the app check was not accepted. Register it in the Firebase
+                console (App Check → Apps → Manage debug tokens).
+              </p>
+            </div>
+          </details>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      'use strict';
+      const KEY = 'fundtrace-demo-launcher';
+      const SAVED = [
+        'baseUrl',
+        'signIn',
+        'email',
+        'pace',
+        'viewport',
+        'captions',
+        'ai',
+        'record',
+        'browser',
+        'holdSeconds',
+      ];
+      const form = document.getElementById('settings');
+      const logEl = document.getElementById('log');
+      const statusEl = document.getElementById('status');
+      const runLabel = document.getElementById('run-label');
+      const stopBtn = document.getElementById('stop');
+      const messageEl = document.getElementById('message');
+      let scenarios = [];
+      let running = false;
+
+      const STATE_TEXT = {
+        idle: 'Idle',
+        running: 'Running',
+        passed: 'Finished',
+        failed: 'Stopped with an error',
+        stopped: 'Stopped',
+      };
+
+      function field(name) {
+        return form.elements.namedItem(name);
+      }
+
+      function readSaved() {
+        try {
+          const raw = localStorage.getItem(KEY);
+          return raw === null ? {} : JSON.parse(raw);
+        } catch {
+          return {};
+        }
+      }
+
+      function saveSettings() {
+        const data = {};
+        for (const name of SAVED) data[name] = value(name);
+        try {
+          localStorage.setItem(KEY, JSON.stringify(data));
+        } catch {
+          // Private windows can refuse storage; the settings then last for this page only.
+        }
+      }
+
+      function value(name) {
+        const el = field(name);
+        if (el instanceof RadioNodeList) return el.value;
+        if (el.type === 'checkbox') return el.checked;
+        if (el.type === 'number') return Number(el.value);
+        return el.value;
+      }
+
+      function setValue(name, v) {
+        const el = field(name);
+        if (el === null || v === undefined) return;
+        if (el instanceof RadioNodeList) el.value = String(v);
+        else if (el.type === 'checkbox') el.checked = Boolean(v);
+        else el.value = String(v);
+      }
+
+      function showMessage(text) {
+        messageEl.textContent = text;
+        messageEl.hidden = text === '';
+      }
+
+      function renderScenarios() {
+        const box = document.getElementById('scenarios');
+        box.replaceChildren();
+        for (const s of scenarios) {
+          const card = document.createElement('article');
+          card.className = 'card scenario';
+          const badge = document.createElement('span');
+          badge.className = `badge ${s.stage === 'Pre-sanction' ? 'pre' : 'post'}`;
+          badge.textContent = `Scenario ${s.id} · ${s.stage}`;
+          const h = document.createElement('h2');
+          h.textContent = s.title;
+          const p = document.createElement('p');
+          p.textContent = s.summary;
+          const ul = document.createElement('ul');
+          for (const item of s.shows) {
+            const li = document.createElement('li');
+            li.textContent = item;
+            ul.append(li);
+          }
+          const foot = document.createElement('footer');
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'primary start';
+          btn.textContent = `Start scenario ${s.id}`;
+          btn.addEventListener('click', () => start(s.id));
+          const hint = document.createElement('span');
+          hint.className = 'hint';
+          hint.append(`About ${s.minutes} min · or run `);
+          const code = document.createElement('code');
+          code.textContent = `npm run demo:${s.id}`;
+          hint.append(code);
+          foot.append(btn, hint);
+          card.append(badge, h, p, ul, foot);
+          box.append(card);
+        }
+        box.setAttribute('aria-busy', 'false');
+        syncButtons();
+      }
+
+      function syncButtons() {
+        for (const b of document.querySelectorAll('button.start')) b.disabled = running;
+        stopBtn.disabled = !running;
+      }
+
+      function setStatus(s) {
+        running = s.state === 'running';
+        statusEl.dataset.state = s.state;
+        statusEl.textContent = STATE_TEXT[s.state] ?? s.state;
+        const sc = scenarios.find((x) => x.id === s.scenario);
+        runLabel.textContent = sc === undefined ? '' : `Scenario ${sc.id}: ${sc.title}`;
+        syncButtons();
+      }
+
+      function appendLog(lines) {
+        if (lines.length === 0) return;
+        if (logEl.dataset.empty !== 'false') {
+          logEl.textContent = '';
+          logEl.dataset.empty = 'false';
+        }
+        const atBottom = logEl.scrollTop + logEl.clientHeight >= logEl.scrollHeight - 24;
+        logEl.append(lines.join('\n') + '\n');
+        if (atBottom) logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      async function post(path, body) {
+        const res = await fetch(path, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(body ?? {}),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error ?? `Request failed (${res.status})`);
+        return data;
+      }
+
+      async function start(id) {
+        showMessage('');
+        if (!form.reportValidity()) return;
+        saveSettings();
+        const body = { scenario: id };
+        for (const name of [...SAVED, 'password', 'appCheckDebugToken']) body[name] = value(name);
+        try {
+          await post('/api/run', body);
+        } catch (e) {
+          showMessage(e.message);
+        }
+      }
+
+      stopBtn.addEventListener('click', () => {
+        post('/api/stop').catch((e) => showMessage(e.message));
+      });
+      form.addEventListener('change', saveSettings);
+      form.addEventListener('submit', (e) => e.preventDefault());
+
+      function connect() {
+        const events = new EventSource('/api/events');
+        events.addEventListener('status', (e) => setStatus(JSON.parse(e.data)));
+        events.addEventListener('log', (e) => appendLog(JSON.parse(e.data)));
+        events.addEventListener('reset', () => {
+          logEl.textContent = 'Starting…\n';
+          logEl.dataset.empty = 'false';
+        });
+        events.onerror = () => {
+          statusEl.textContent = 'Launcher not reachable: is npm run demo still running?';
+          statusEl.dataset.state = 'failed';
+        };
+      }
+
+      async function init() {
+        try {
+          const res = await fetch('/api/config');
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const cfg = await res.json();
+          scenarios = cfg.scenarios;
+          const saved = readSaved();
+          for (const name of SAVED) setValue(name, saved[name] ?? cfg.defaults[name]);
+          document.getElementById('password-hint').textContent = cfg.defaults.hasPassword
+            ? 'Leave empty to use DEMO_PASSWORD from e2e/demo/.env.'
+            : 'Not saved anywhere: sent only to this launcher for the run.';
+          if (cfg.defaults.hasAppCheckDebugToken)
+            document.getElementById('token-hint').textContent =
+              'Leave empty to use DEMO_APPCHECK_DEBUG_TOKEN from e2e/demo/.env.';
+          renderScenarios();
+          connect();
+        } catch (e) {
+          document.getElementById('scenarios').textContent =
+            'Could not load the scenarios. Is the launcher (npm run demo) running?';
+        }
+      }
+      init();
+    </script>
+  </body>
+</html>

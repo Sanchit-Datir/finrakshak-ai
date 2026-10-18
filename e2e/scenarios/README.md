@@ -14,6 +14,9 @@ There are two kinds of scenario, each with its own runner:
 
 Both runners save screenshots to `screenshots/<id>/`.
 
+To play the three scenarios against the deployed app for a demo video (captions, visible cursor,
+one-click launcher), see [`../demo/README.md`](../demo/README.md) (`npm run demo`).
+
 ## Scenarios
 
 | ID                                                                                       | Kind                    | What it tests                                                                                                                                      | Expected                                     |

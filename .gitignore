@@ -33,6 +33,7 @@ web/public/graph-lab/
 e2e/test-results/
 e2e/playwright-report/
 e2e/screenshots/
+e2e/demo/recordings/
 
 # Playwright
 test-results/

@@ -28,6 +28,10 @@
     "synth": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/synthCli.js",
     "score": "npm run build -w @fund-tracker/shared && npm run build -w ingest && node ingest/dist/risk/scoreCli.js",
     "e2e": "npm run test:e2e -w e2e --",
+    "demo": "npm run demo -w e2e --",
+    "demo:1": "npm run demo:1 -w e2e --",
+    "demo:2": "npm run demo:2 -w e2e --",
+    "demo:3": "npm run demo:3 -w e2e --",
     "audit:prod": "npm audit --omit=dev --audit-level=low",
     "audit:all": "npm audit --audit-level=critical",
     "test:e2e": "npm run test:e2e -w web"
