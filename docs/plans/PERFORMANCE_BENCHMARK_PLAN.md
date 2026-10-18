@@ -217,16 +217,25 @@ environment and are never written to disk; results hold counts and timings only.
 **not** added to CI (CI never calls a billed API, and timings on shared runners are too noisy to gate
 on), but `bench/src/stats.ts` tests run in `npm run check`.
 
-### 6.3 What the live run needs (owner steps)
+### 6.3 What the live run needs
 
-| Need                                                     | Why                                                                                                                                                    |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `roles/aiplatform.user` on the functions runtime account | Vertex AI calls fail without it (open item in `SESSION_NOTES.md`)                                                                                      |
-| Credentials for Claude's session (or run in Cloud Shell) | This container has no Google credentials                                                                                                               |
-| A TEST user with a profile and `aiEnabled: true`         | Billed gate; the user must be on the allow-list                                                                                                        |
-| App Check debug token registered in the Firebase console | Every callable enforces App Check                                                                                                                      |
-| Daily limit plan                                         | `GEMINI_DAILY_LIMIT` is 30 per person and an investigator run can use 10; ~100 model calls need 4 TEST users or several days. **Owner decides** (B-15) |
-| `main` deployed                                          | Measure the code that is described                                                                                                                     |
+**Accounts (owner, 18 Oct 2026).** The live run signs in with an email and password (Firebase Auth),
+read from the environment as `BENCH_EMAIL` and `BENCH_PASSWORD`. The password is never written to the
+repository, to results or to logs. Profiles in Firestore:
+
+| Account             | Role             | Branch      | `aiEnabled` | Password given |
+| ------------------- | ---------------- | ----------- | ----------- | -------------- |
+| `manager@gmail.com` | `branch_manager` | `br-shirur` | true        | yes            |
+| (owner's account)   | `administrator`  | `br-shirur` | true        | no             |
+
+| Need                                                     | Status / why                                                                                                                                                                                                                                                                                    |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roles/aiplatform.user` on the functions runtime account | Vertex AI calls fail without it (open item in `SESSION_NOTES.md`)                                                                                                                                                                                                                               |
+| A user with a profile and `aiEnabled: true`              | **Done**: `manager@gmail.com` (above)                                                                                                                                                                                                                                                           |
+| App Check token                                          | Every callable enforces App Check. Either register a **debug token** in the Firebase console (`BENCH_APPCHECK_DEBUG_TOKEN`), or run the live benchmark through the deployed site in headless Chromium so reCAPTCHA Enterprise issues the token (low bot scores may refuse it)                   |
+| Reaching the live project from Claude's session          | **Checked 18 Oct 2026:** sign-in with `manager@gmail.com` works; `getProfile` then returns `401 Unauthenticated` because no App Check token was sent. So the App Check row above is the only blocker                                                                                            |
+| Daily limit plan                                         | 30 AI calls per person per IST day, and one investigator run can use 10. With one account: **about 30 model calls a day**, so the live AI part runs over 3–4 days, or the owner adds TEST accounts. Using `manager@gmail.com` uses that person's AI calls for the day. **Owner decides** (B-15) |
+| `main` deployed with the log changes (6.1)               | Token counts and server timings come from those log lines                                                                                                                                                                                                                                       |
 
 ## 7. Run steps (these go into `bench/README.md` and README section 13)
 
@@ -237,7 +246,8 @@ node ingest/dist/graphCli.js --web     # public-records bundle for the app
 npm run bench                          # offline benchmark, free, ~10 minutes
 npm run bench:api                      # API, throttling and limits on the emulators (mock model), free
 # optional, costs money (under US$1), needs a deployed project and credentials:
-BENCH_LIVE=1 BENCH_PROJECT=<project-id> BENCH_APPCHECK_DEBUG_TOKEN=... npm run bench:live
+BENCH_LIVE=1 BENCH_PROJECT=<project-id> BENCH_EMAIL=... BENCH_PASSWORD=... \
+  BENCH_APPCHECK_DEBUG_TOKEN=... npm run bench:live
 npm run bench:report                   # writes docs/PERFORMANCE_REPORT.md
 ```
 
