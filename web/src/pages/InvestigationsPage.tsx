@@ -1,10 +1,9 @@
 import { BriefcaseBusiness, Plus } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { Button } from '../components/ui/Button.js';
 import { Card } from '../components/ui/Card.js';
-import { Dialog } from '../components/ui/Dialog.js';
-import { FilterSelect, SelectField, TextArea, TextField } from '../components/ui/Field.js';
+import { FilterSelect } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
@@ -12,14 +11,16 @@ import { EmptyState } from '../components/ui/States.js';
 import { CaseStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { CASE_STATUS_LABEL, PRIORITY_LABEL } from '../domain/labels.js';
-import { CaseStatusSchema, PrioritySchema, type Case, type Priority } from '../domain/schemas.js';
-import { inRange, resolvePeriod, type PeriodKind } from '../lib/period.js';
+import { CaseStatusSchema, PrioritySchema } from '../domain/schemas.js';
+import type { Case } from '../domain/schemas.js';
+import { inRange, resolvePeriod } from '../lib/period.js';
+import type { PeriodKind } from '../lib/period.js';
 import { matchesQuery } from '../lib/text.js';
-import { createCase } from '../state/actions.js';
-import { useActor, useFormat } from '../state/hooks.js';
+import { useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
-import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
+import { useBranchScope } from '../state/scope.js';
+import { NewCaseDialog } from '../components/investigations/NewCaseDialog.js';
 
 const SOURCE: Record<Case['source'], string> = {
   pre_disbursement: 'Pre-disbursement',
@@ -33,7 +34,8 @@ export function InvestigationsPage(): React.JSX.Element {
   const [q, setQ] = useUrlState('q', '');
   const [status, setStatus] = useUrlState('status', 'all');
   const [priority, setPriority] = useUrlState('priority', 'all');
-  const [branch, setBranch] = useUrlState('branch', 'all');
+  const { scope } = useBranchScope();
+  const [branch, setBranch] = useUrlState('branch', scope);
   const [owner, setOwner] = useUrlState('owner', 'all');
   const [source, setSource] = useUrlState('source', 'all');
   const [period, setPeriod] = useUrlState('opened', 'all');
@@ -243,108 +245,5 @@ export function InvestigationsPage(): React.JSX.Element {
         }}
       />
     </>
-  );
-}
-
-function NewCaseDialog({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}): React.JSX.Element {
-  const db = useDb();
-  const actor = useActor();
-  const toast = useToast();
-  const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [summary, setSummary] = useState('');
-  const [priority, setPriority] = useState<Priority>('needs_attention');
-  const [borrowerId, setBorrowerId] = useState('');
-  const [touched, setTouched] = useState(false);
-  const submit = (): void => {
-    setTouched(true);
-    if (title.trim() === '') return;
-    const b = db.borrowers.find((x) => x.id === borrowerId);
-    const id = createCase(actor, {
-      title: title.trim(),
-      summary: summary.trim(),
-      priority,
-      branchId: b?.branchId ?? db.branches[0]?.id ?? '',
-      source: 'referral',
-      borrowerIds: b === undefined ? [] : [b.id],
-      entityIds: b === undefined ? [] : [b.entityId],
-      loanIds: db.loans.filter((l) => l.borrowerId === borrowerId).map((l) => l.id),
-      applicationIds: db.applications.filter((a) => a.borrowerId === borrowerId).map((a) => a.id),
-      alertIds: [],
-    });
-    toast.push({ tone: 'success', title: `${id} opened` });
-    setTitle('');
-    setSummary('');
-    setTouched(false);
-    onClose();
-    void navigate(`/investigations/${id}`);
-  };
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      title="Open a new case"
-      footer={
-        <>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button variant="primary" onClick={submit}>
-            Open case
-          </Button>
-        </>
-      }
-    >
-      <div className="space-y-3">
-        <TextField
-          label="Title"
-          required
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-          error={touched && title.trim() === '' ? 'Enter a short, neutral title.' : null}
-          hint="Describe the concern neutrally — do not label anyone guilty."
-        />
-        <TextArea
-          label="Summary"
-          value={summary}
-          onChange={(e) => {
-            setSummary(e.target.value);
-          }}
-        />
-        <SelectField
-          label="Review priority"
-          value={priority}
-          onChange={(e) => {
-            setPriority(PrioritySchema.parse(e.target.value));
-          }}
-        >
-          {PrioritySchema.options.map((p) => (
-            <option key={p} value={p}>
-              {PRIORITY_LABEL[p]}
-            </option>
-          ))}
-        </SelectField>
-        <SelectField
-          label="Linked borrower (optional)"
-          value={borrowerId}
-          onChange={(e) => {
-            setBorrowerId(e.target.value);
-          }}
-        >
-          <option value="">None</option>
-          {db.borrowers.map((b) => (
-            <option key={b.id} value={b.id}>
-              {b.name}
-            </option>
-          ))}
-        </SelectField>
-      </div>
-    </Dialog>
   );
 }

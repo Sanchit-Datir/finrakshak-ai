@@ -308,12 +308,22 @@ PDFs.
 
 ### Main flow
 
-Four-step progress indicator: 1. **Capture documents** 2. **Extract &
-verify** 3. **Review application** 4. **Risk analysis**
+**New loan** opens the application form directly (no choice screen).
+Uploading documents is the alternative offered on that screen
+(**Upload documents instead**); on the upload path the form is not
+required.
+
+- Form path: 1. **Application form** (applicant name, requested amount
+  and declared purpose required) 2. **Risk analysis**
+- Upload path: 1. **Upload documents** 2. **Extract & verify** 3.
+  **Application form (optional)** 4. **Risk analysis**. Continuing from
+  Extract & verify fills empty application fields from confirmed or
+  corrected document fields only; nothing else is required, and the
+  checks report missing information. The form stays reachable to edit.
 
 Allow users to go back without losing uploaded files or entered values.
 
-### Step 1 --- Capture documents
+### Upload path step 1 --- Upload documents
 
 Offer: 1. **Scan with camera** --- use device camera where supported. 2.
 **Upload files** --- PDF, JPG, JPEG, PNG; TIFF only if supported
@@ -435,6 +445,56 @@ Prefer labels such as Routine review / Needs attention / Urgent review
 over an unexplained numeric score. If a score is added later, explain
 its methodology.
 
+**Attention score (added 18 Oct 2026).** Once the checks have run, the
+top of the AI-assisted document analysis card shows an attention score
+from 0 to 100, its band and the three findings that add most. It is
+computed by code in the browser from the unresolved findings (resolved
+and "not an issue" findings do not count); no AI model sets or changes
+it, so the same data always gives the same score. Methodology:
+
+- Each kind of finding has a weight, the points it adds when it is
+  urgent: applicant in public records 70; relationships to open
+  investigations 50; customer in public records, survey number or
+  warehouse receipt reuse 45; declared income vs bank credits 30; name,
+  date of birth, existing charges on the 7/12, public-records check out
+  of date or not run 25; land area vs 7/12 20; unclear fields, missing
+  documents 8; required fields, loan purpose, failed documents,
+  unreviewed fields or sections 5; any check not listed 30.
+- A milder finding of the same check adds less: Needs attention 60%,
+  Routine 30% of the weight (rounded).
+- Points add up, capped at 100. Bands: 0--29 Routine review, 30--59
+  Needs attention, 60--100 Urgent review.
+- The card states that it is calculated by code, lists the drivers with
+  their points, and says it is a guide to how much attention the case
+  needs, not a probability or a decision.
+- The band can differ from Review priority: lower for an urgent but
+  low-weight finding (missing documents), higher when several findings
+  add up.
+- The AI summary may explain the score but never give another one; a
+  summary or note that states a different score is withheld.
+- The weights are a starting point, not tuned on outcomes. Code:
+  `web/src/lib/attention-score.ts`; details:
+  `docs/APPLICATION_AI_ANALYSIS.md`.
+- Verified AI-investigator findings (below) add points as their own
+  kinds, scaled the same way: possible public-record match 45, link to a
+  related entity of concern 40, numbers that look implausible together
+  25, sections that do not agree 15. Only findings from a real model,
+  still current and not dismissed count; their drivers read "AI finding
+  (evidence verified)".
+
+**AI investigator (added 18 Oct 2026).** A card under the AI-assisted
+analysis card. **Investigate with AI** sends the typed-in application
+(identifiers masked), ratios computed by code, a public-records
+shortlist made by code and related entities; Gemini proposes findings
+and draft questions with cited evidence, and code verifies every
+citation, quoted value and number. The card shows the verified findings
+with their evidence, public-record matches as "Possible match — needs
+verification" (or "CIN or address agrees"), editable draft questions an
+officer approves (recorded as a note, nothing sent), and "AI made N
+claims: V verified, R rejected". It has loading, error (with Try
+again), empty and out-of-date states; the demo session shows "Not
+connected"; the mock is labelled. Details: `docs/AI_INVESTIGATOR.md`.
+
 ## 8. Application detail and risk review
 
 ### Header
@@ -547,6 +607,10 @@ investigations. Counts must reflect the current dataset and filters.
 Searchable loan selector; loan ID; borrower; disbursement date; amount;
 stated purpose; monitoring period; data-source label; last updated
 timestamp. Show **"No transaction data available"** when appropriate.
+
+Order on the page: loan summary, then **Alerts for this loan** directly
+before **Transaction flow** (alerts can be highlighted in the flow), then
+the transaction table.
 
 ### Transaction flow visualisation
 
@@ -728,6 +792,16 @@ security.
 If using Low / Medium / High, explain the meaning. Never call a
 heuristic/model output a calibrated probability unless it has been
 calibrated and validated.
+
+### Attention score
+
+A 0--100 number on the application's Risk step, computed by code from
+weighted findings (methodology in section 7, Step 4). Its bands use the
+three labels above (0--29, 30--59, 60--100). Always show it with its
+band (icon and text), its drivers and the line "not a probability or a
+decision". Drivers from the AI investigator are labelled "AI finding
+(evidence verified)"; the AI never sets the number. It is not the synthetic loan risk score on the Risk scores
+page, which is a separate four-layer score (`docs/RISK_SCORING.md`).
 
 ### Evidence status
 

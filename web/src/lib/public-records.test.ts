@@ -8,7 +8,12 @@ import { publicRecordsFindings } from './public-records-findings.js';
 import { parseCustomerRows, receivablesImpact } from './receivables.js';
 
 // SYNTHETIC test graph: fictional "SYNTH" companies, not real public records.
-const node = (id: string, label: string, detail: string | null, kind: GraphNode['kind'] = 'company'): GraphNode => ({
+const node = (
+  id: string,
+  label: string,
+  detail: string | null,
+  kind: GraphNode['kind'] = 'company',
+): GraphNode => ({
   id,
   kind,
   label,
@@ -55,7 +60,12 @@ const bundle: GraphLabBundle = {
     node('t1', 'SYNTH Twin Co Ltd', null),
     node('t2', 'SYNTH Twin Co Ltd', null),
     node('f', 'SYNTH Other Co Ltd', 'U11111MH2000PTC000002 · Active'),
-    node('evb', 'Liquidation of SYNTH Buyer Alloys', 'IBBI · liquidation · ibbi_liquidation', 'event'),
+    node(
+      'evb',
+      'Liquidation of SYNTH Buyer Alloys',
+      'IBBI · liquidation · ibbi_liquidation',
+      'event',
+    ),
     node('evc', 'CIRP of SYNTH Middle Steel', 'IBBI · cirp initiated · ibbi_cirp', 'event'),
   ],
   edges: [
@@ -85,7 +95,11 @@ const customer = (name: string, rupees: number, cin = ''): TradeCustomer => ({
 });
 function appWith(customers: TradeCustomer[]): Application {
   const app = baseApp();
-  app.data.business = { ...app.data.business, businessName: 'SYNTH Applicant Traders Private Limited', registrationNo: '' };
+  app.data.business = {
+    ...app.data.business,
+    businessName: 'SYNTH Applicant Traders Private Limited',
+    registrationNo: '',
+  };
   app.data.receivables = { customers };
   app.publicRecords = checkPublicRecords(ix, app.data, '2026-10-16T00:00:00Z');
   return app;
@@ -93,7 +107,9 @@ function appWith(customers: TradeCustomer[]): Application {
 
 describe('public-records matching (B-37)', () => {
   it('normalises company suffixes and prefixes', () => {
-    expect(normalizeCompanyName('M/s. Buyer Alloys Pvt. Ltd.')).toBe('BUYER ALLOYS PRIVATE LIMITED');
+    expect(normalizeCompanyName('M/s. Buyer Alloys Pvt. Ltd.')).toBe(
+      'BUYER ALLOYS PRIVATE LIMITED',
+    );
   });
   it('matches by CIN, exact name, flags ambiguity, and never across different CINs', () => {
     const snap = appWith([
@@ -102,16 +118,25 @@ describe('public-records matching (B-37)', () => {
       customer('SYNTH Other Co Ltd', 1, 'U99999MH2000PTC999999'),
       customer('SYNTH Middle Steel Traders Private Limited', 1),
     ]).publicRecords;
-    expect(snap?.customersChecked.map((c) => c.match)).toEqual(['cin', 'ambiguous', 'none', 'exact_name']);
+    expect(snap?.customersChecked.map((c) => c.match)).toEqual([
+      'cin',
+      'ambiguous',
+      'none',
+      'exact_name',
+    ]);
   });
 });
 
 describe('chain of unpaid dues', () => {
   it('follows documented insolvency links from a customer in liquidation', () => {
-    const x = appWith([customer('SYNTH Buyer Alloys Pvt Ltd', 1_800_000)]).publicRecords?.exposures[0];
+    const x = appWith([customer('SYNTH Buyer Alloys Pvt Ltd', 1_800_000)]).publicRecords
+      ?.exposures[0];
     expect(x?.declared).toBe(true);
     expect(x?.applicantLink?.date).toBe('2026-04-25');
-    expect(x?.chain.map((l) => l.debtor)).toEqual(['SYNTH Middle Steel Traders Pvt Ltd', 'SYNTH End Strips Pvt Ltd']);
+    expect(x?.chain.map((l) => l.debtor)).toEqual([
+      'SYNTH Middle Steel Traders Pvt Ltd',
+      'SYNTH End Strips Pvt Ltd',
+    ]);
   });
   it('finds an undeclared customer through the applicant’s own insolvency application', () => {
     const x = appWith([]).publicRecords?.exposures[0];
@@ -124,8 +149,22 @@ describe('findings and priority', () => {
   const priorityOf = (app: Application): string | undefined =>
     publicRecordsFindings(app).find((f) => f.category === 'counterparty_exposure')?.priority;
   it('is urgent when the stuck receivable is a large share, needs attention when small', () => {
-    expect(priorityOf(appWith([customer('SYNTH Buyer Alloys Pvt Ltd', 1_800_000), customer('Clean Buyer', 3_200_000)]))).toBe('urgent');
-    expect(priorityOf(appWith([customer('SYNTH Buyer Alloys Pvt Ltd', 500_000), customer('Clean Buyer', 4_500_000)]))).toBe('needs_attention');
+    expect(
+      priorityOf(
+        appWith([
+          customer('SYNTH Buyer Alloys Pvt Ltd', 1_800_000),
+          customer('Clean Buyer', 3_200_000),
+        ]),
+      ),
+    ).toBe('urgent');
+    expect(
+      priorityOf(
+        appWith([
+          customer('SYNTH Buyer Alloys Pvt Ltd', 500_000),
+          customer('Clean Buyer', 4_500_000),
+        ]),
+      ),
+    ).toBe('needs_attention');
   });
   it('is urgent when the applicant did not declare the customer', () => {
     expect(priorityOf(appWith([customer('Clean Buyer', 100)]))).toBe('urgent');
@@ -147,7 +186,12 @@ describe('receivables input (B-25, B-03)', () => {
     expect(Object.keys(r.errors)).toEqual(['1']);
   });
   it('refuses to total amounts beyond the safe-integer range', () => {
-    const big = { name: 'X', cin: '', outstandingMinor: Number.MAX_SAFE_INTEGER, oldestUnpaidDate: '' };
+    const big = {
+      name: 'X',
+      cin: '',
+      outstandingMinor: Number.MAX_SAFE_INTEGER,
+      oldestUnpaidDate: '',
+    };
     expect(receivablesImpact([big, big], () => false)).toBeNull();
   });
 });

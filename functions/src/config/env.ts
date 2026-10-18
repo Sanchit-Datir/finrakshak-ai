@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-/** Which backend answers AI requests. Only `apikey` and `vertex` cost money. */
+/**
+ * Which backend answers AI requests. Only `apikey` and `vertex` cost money. Deployed functions use
+ * Vertex AI (owner, 18 Oct 2026): billed to the project under its budgets, no API key; `apikey`
+ * (Gemini Developer API / AI Studio) stays available by setting GEMINI_PROVIDER explicitly.
+ */
 export const GEMINI_PROVIDERS = ['mock', 'apikey', 'vertex'] as const;
 export type GeminiProvider = (typeof GEMINI_PROVIDERS)[number];
 
@@ -18,7 +22,7 @@ function isLocal(source: NodeJS.ProcessEnv): boolean {
 }
 
 function defaultProvider(source: NodeJS.ProcessEnv): GeminiProvider {
-  return isLocal(source) ? 'mock' : 'apikey';
+  return isLocal(source) ? 'mock' : 'vertex';
 }
 
 /**
@@ -36,7 +40,8 @@ function defaultProfileSource(source: NodeJS.ProcessEnv): ProfileSource {
 
 const EnvSchema = z.object({
   GCLOUD_PROJECT: z.string().min(1),
-  VERTEX_LOCATION: z.string().default('us-central1'),
+  /** `global` serves the Gemini models the ingest jobs already use (B-17: check before changing). */
+  VERTEX_LOCATION: z.string().default('global'),
   /** Cheapest model that handles text tasks; override per environment, see docs/COST_GUIDELINES.md. */
   GEMINI_MODEL: z.string().default('gemini-3.1-flash-lite'),
   GEMINI_PROVIDER: z.enum(GEMINI_PROVIDERS).optional(),

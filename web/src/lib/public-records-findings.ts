@@ -23,7 +23,8 @@ import { receivablesImpact, type ReceivablesImpact } from './receivables.js';
  */
 export const URGENT_RECEIVABLE_SHARE_PERCENT = 20;
 
-const key = (name: string, cin: string): string => `${name.trim().toUpperCase()}|${cin.trim().toUpperCase()}`;
+const key = (name: string, cin: string): string =>
+  `${name.trim().toUpperCase()}|${cin.trim().toUpperCase()}`;
 
 /** Inputs the check depends on; a different key means the saved result is out of date. */
 export function publicRecordsInputsKey(data: ApplicationData): string {
@@ -65,7 +66,9 @@ export function publicRecordsImpact(
   snap: PublicRecordsSnapshot,
 ): ReceivablesImpact | null {
   const affected = new Set(
-    snap.exposures.filter((x) => x.declared).map((x) => key(x.customer.inputName, x.customer.inputCin)),
+    snap.exposures
+      .filter((x) => x.declared)
+      .map((x) => key(x.customer.inputName, x.customer.inputCin)),
   );
   return receivablesImpact(app.data.receivables.customers, (c) => affected.has(key(c.name, c.cin)));
 }
@@ -88,30 +91,51 @@ function evidenceFor(x: PrExposure, amount: TradeCustomer | undefined): Evidence
   const status = c.mcaStatus ?? SEVERITY_TEXT[severityOf(c)];
   const latest = c.records[0];
   return [
-    ref('Customer status (public records)', `${c.matchedName ?? ''}: ${status}`, latest?.url ?? null),
-    ...(latest === undefined ? [] : [ref(`Latest record · ${latest.date ?? ''}`, latest.title, latest.url)]),
+    ref(
+      'Customer status (public records)',
+      `${c.matchedName ?? ''}: ${status}`,
+      latest?.url ?? null,
+    ),
+    ...(latest === undefined
+      ? []
+      : [ref(`Latest record · ${latest.date ?? ''}`, latest.title, latest.url)]),
     ...(x.applicantLink === null
       ? []
-      : [ref("Applicant's own insolvency application (IBBI)", linkText(x.applicantLink), x.applicantLink.url)]),
-    ...x.chain.map((l, i) => ref(`Chain of unpaid dues · step ${i + 1} (IBBI)`, linkText(l), l.url)),
+      : [
+          ref(
+            "Applicant's own insolvency application (IBBI)",
+            linkText(x.applicantLink),
+            x.applicantLink.url,
+          ),
+        ]),
+    ...x.chain.map((l, i) =>
+      ref(`Chain of unpaid dues · step ${i + 1} (IBBI)`, linkText(l), l.url),
+    ),
     ...(amount === undefined
       ? [ref('Application · trade receivables', 'Not declared by the applicant', null)]
       : [ref('Application · trade receivables', formatMoney(amount.outstandingMinor), null)]),
   ];
 }
 
-function observedText(x: PrExposure, amount: TradeCustomer | undefined, impact: ReceivablesImpact | null): string {
+function observedText(
+  x: PrExposure,
+  amount: TradeCustomer | undefined,
+  impact: ReceivablesImpact | null,
+): string {
   const c = x.customer;
   const parts = [
     `${c.matchedName ?? 'The customer'}${c.cin === null ? '' : ` (CIN ${c.cin})`} is ${SEVERITY_TEXT[severityOf(c)]} according to public records.`,
   ];
   if (x.applicantLink !== null)
-    parts.push(`The applicant itself filed an insolvency application against it (${x.applicantLink.date ?? 'date not stated'}).`);
+    parts.push(
+      `The applicant itself filed an insolvency application against it (${x.applicantLink.date ?? 'date not stated'}).`,
+    );
   if (x.chain.length > 0)
     parts.push(
       `Its own dues are stuck in ${x.chain.length} further insolvency case(s): ${x.chain.map((l) => l.debtor).join(' → ')}.`,
     );
-  if (amount === undefined) parts.push('The applicant did not declare this customer or an amount owed.');
+  if (amount === undefined)
+    parts.push('The applicant did not declare this customer or an amount owed.');
   else if (impact !== null)
     parts.push(
       `Declared outstanding: ${formatMoney(amount.outstandingMinor)} of ${formatMoney(impact.totalMinor)} declared receivables.`,
@@ -119,7 +143,11 @@ function observedText(x: PrExposure, amount: TradeCustomer | undefined, impact: 
   return parts.join(' ');
 }
 
-function priorityOf(x: PrExposure, amount: TradeCustomer | undefined, impact: ReceivablesImpact | null): Finding['priority'] {
+function priorityOf(
+  x: PrExposure,
+  amount: TradeCustomer | undefined,
+  impact: ReceivablesImpact | null,
+): Finding['priority'] {
   if (severityOf(x.customer) !== 'liquidation') return 'needs_attention';
   if (amount === undefined) return 'urgent';
   const total = impact?.totalMinor ?? 0;
@@ -150,7 +178,9 @@ function exposureFinding(app: Application, snap: PublicRecordsSnapshot, x: PrExp
       'How much of the receivable will be recovered in the insolvency or liquidation, if any.',
       'Whether the applicant has already written off or provided for this receivable.',
       'Whether the status changed after the dataset was built.',
-      ...(c.match === 'exact_name' ? ['The customer was matched by exact name, not CIN — confirm it is the same company.'] : []),
+      ...(c.match === 'exact_name'
+        ? ['The customer was matched by exact name, not CIN — confirm it is the same company.']
+        : []),
     ],
     benign: [
       'The amount may be small, disputed, or already settled outside the process.',
@@ -189,8 +219,12 @@ function applicantFinding(snap: PublicRecordsSnapshot): Finding[] {
       certainty: `Public record, matched by ${MATCH_TEXT[a.match]}`,
       observed: `${a.matchedName ?? ''} appears in ${a.records.length} insolvency or enforcement record(s).`,
       whyItMatters: 'The applicant’s own records affect its ability to borrow and repay.',
-      evidence: a.records.slice(0, 5).map((r) => ref(`${r.caseType} · ${r.date ?? ''}`, r.title, r.url)),
-      known: ['Being named in a record does not say whether the company is the accused, a victim or a complainant (B-42).'],
+      evidence: a.records
+        .slice(0, 5)
+        .map((r) => ref(`${r.caseType} · ${r.date ?? ''}`, r.title, r.url)),
+      known: [
+        'Being named in a record does not say whether the company is the accused, a victim or a complainant (B-42).',
+      ],
       unknown: ['The applicant’s role in each record and the current status.'],
       benign: ['The company may be a complainant or victim named in the record.'],
       steps: ['Read each source record and record the applicant’s role before deciding.'],
@@ -213,7 +247,8 @@ function staleFinding(app: Application, snap: PublicRecordsSnapshot | null): Fin
       observed: stale
         ? 'The business details or customers changed after the last public-records check.'
         : 'The applicant and its customers have not been checked against the local public-records dataset.',
-      whyItMatters: 'Customers in insolvency or liquidation reduce the receivables a working-capital limit relies on.',
+      whyItMatters:
+        'Customers in insolvency or liquidation reduce the receivables a working-capital limit relies on.',
       evidence: [],
       known: [],
       unknown: ['Whether any customer is in insolvency or liquidation.'],
@@ -225,7 +260,9 @@ function staleFinding(app: Application, snap: PublicRecordsSnapshot | null): Fin
 
 export function publicRecordsFindings(app: Application): Finding[] {
   const snap = app.publicRecords;
-  const current = snap === null ? [] : [...applicantFinding(snap), ...snap.exposures.map((x) => exposureFinding(app, snap, x))];
+  const current =
+    snap === null
+      ? []
+      : [...applicantFinding(snap), ...snap.exposures.map((x) => exposureFinding(app, snap, x))];
   return [...staleFinding(app, snap), ...current];
 }
-

@@ -17,62 +17,22 @@ import {
   PRIORITY_LABEL,
   PROCESSING_LABEL,
 } from '../domain/labels.js';
-import type { Db, Priority } from '../domain/schemas.js';
+import type { Priority } from '../domain/schemas.js';
 import { allAlerts, isOpen } from '../lib/alerts.js';
-import { CATEGORY_LABEL, reviewPriority, runChecks, type FindingCategory } from '../lib/checks.js';
+import { CATEGORY_LABEL, reviewPriority, runChecks } from '../lib/checks.js';
+import type { FindingCategory } from '../lib/checks.js';
 import { downloadFile, toCsv } from '../lib/export.js';
 import { formatMoney } from '../lib/format.js';
-import {
-  buckets,
-  defaultPeriod,
-  inRange,
-  resolvePeriod,
-  type PeriodValue,
-  type Range,
-} from '../lib/period.js';
+import { buckets, defaultPeriod, resolvePeriod } from '../lib/period.js';
+import type { PeriodValue } from '../lib/period.js';
 import { useFormat } from '../state/hooks.js';
 import { useSession } from '../state/session.js';
 import { useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
+import { computeReportData } from '../lib/report-data.js';
 
 type Tab = 'monthly' | 'pre' | 'post' | 'cases' | 'docs' | 'branch';
-
-interface ReportData {
-  apps: Db['applications'];
-  docs: Db['documents'];
-  fields: Db['documents'][number]['fields'];
-  alerts: ReturnType<typeof allAlerts>;
-  loans: Db['loans'];
-  txns: Db['transactions'];
-  findings: { a: Db['applications'][number]; f: ReturnType<typeof runChecks>[number] }[];
-  cases: Db['cases'];
-}
-
-function compute(db: Db, r: Range, branch: string): ReportData {
-  const inB = (b: string): boolean => branch === 'all' || b === branch;
-  const apps = db.applications.filter(
-    (a) => inB(a.branchId) && inRange(a.submittedAt ?? a.createdAt, r),
-  );
-  const docs = db.documents.filter(
-    (d) =>
-      inRange(d.uploadedAt, r) &&
-      (d.applicationId === null ||
-        apps.some((a) => a.id === d.applicationId) ||
-        inB(db.applications.find((a) => a.id === d.applicationId)?.branchId ?? '')),
-  );
-  const fields = docs.flatMap((d) => d.fields);
-  const alerts = allAlerts(db).filter((a) => inB(a.branchId) && inRange(a.at, r));
-  const loans = db.loans.filter((l) => inB(l.branchId));
-  const txns = db.transactions.filter(
-    (t) => inRange(t.at, r) && loans.some((l) => l.id === t.loanId),
-  );
-  const findings = apps.flatMap((a) =>
-    a.checksRunAt === null ? [] : runChecks(a, db).map((f) => ({ a, f })),
-  );
-  const cases = db.cases.filter((c) => inB(c.branchId));
-  return { apps, docs, fields, alerts, loans, txns, findings, cases };
-}
 
 export function ReportsPage(): React.JSX.Element {
   const db = useDb();
@@ -84,7 +44,7 @@ export function ReportsPage(): React.JSX.Element {
   const [period, setPeriod] = useState<PeriodValue>(() => defaultPeriod('month'));
   const [branch, setBranch] = useState(multi ? 'all' : session.branchId);
   const range = useMemo(() => resolvePeriod(period), [period]);
-  const d = useMemo(() => compute(db, range, branch), [db, range, branch]);
+  const d = useMemo(() => computeReportData(db, range, branch), [db, range, branch]);
   const [generatedAt] = useState(() => new Date().toISOString());
   const scope =
     branch === 'all' ? 'All branches' : (db.branches.find((b) => b.id === branch)?.name ?? branch);
@@ -539,7 +499,7 @@ export function ReportsPage(): React.JSX.Element {
           <Card>
             <DataTable
               caption="Branch summary"
-              rows={db.branches.map((b) => ({ b, x: compute(db, range, b.id) }))}
+              rows={db.branches.map((b) => ({ b, x: computeReportData(db, range, b.id) }))}
               rowKey={(r) => r.b.id}
               columns={[
                 { key: 'b', header: 'Branch', render: (r) => r.b.name },

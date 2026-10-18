@@ -2,8 +2,9 @@
 
 Monorepo: **React + Vite web UI** (`web/`), **Firebase Cloud Functions** backend (`functions/`),
 shared **zod** schemas/types (`packages/shared/`), and the public-source **data pipeline** (`ingest/`,
-outputs in `data/` — read `ingest/README.md` and `data/README.md` before changing either). Data in **Firestore**; AI via **Gemini on
-Vertex AI**; hosted on **Firebase Hosting**. Language: **TypeScript only**.
+outputs in `data/` — read `ingest/README.md` and `data/README.md` before changing either). Data in **Firestore**; AI via **Gemini**: the
+app's callables and the `ingest/` jobs both use **Vertex AI** (owner, 18 Oct 2026; the Gemini API key
+provider stays available but is not the default); hosted on **Firebase Hosting**. Language: **TypeScript only**.
 
 ## Session handoff
 
@@ -44,7 +45,7 @@ CI enforces the same. Never bypass with `--no-verify`, `@ts-ignore`, or `eslint-
 
 ## Architecture rules
 
-- `web` never touches Gemini/Vertex directly. All AI calls go through a callable function. Vertex uses Application Default Credentials — **no API keys in code or in the web bundle**.
+- `web` never touches Gemini/Vertex directly. All AI calls go through a callable function. The Gemini API key lives only in Secret Manager (`defineSecret`) and Vertex uses Application Default Credentials — **no API keys in code or in the web bundle**.
 - Functions layout: `callable/` (thin: auth + validate + delegate) → `services/` (logic, external APIs) → `config/` (env). Handlers hold no business logic.
 - Every callable: (1) check `request.auth`, (2) validate input with zod, (3) authorize ownership of the resource, (4) act, (5) return a zod-typed result. Enable App Check (`enforceAppCheck: true`).
 - Env/config is read only via `functions/src/config/env.ts` (validated once). Secrets use Firebase/Secret Manager (`defineSecret`), never committed. `.env*` is gitignored.
@@ -74,7 +75,7 @@ CI enforces the same. Never bypass with `--no-verify`, `@ts-ignore`, or `eslint-
 
 - Unit tests (vitest) next to source as `*.test.ts`. Every bug fix gets a regression test. Every boundary condition in `docs/BOUNDARY_CONDITIONS.md` that you touch needs a test (empty, max, overflow, malformed, unauthorized).
 - Firestore rules and callables are tested against the Firebase emulator (`npm run emulators`).
-- Mock Gemini in tests; never call real Vertex AI from tests.
+- Mock Gemini in tests; never call a real model (Gemini API or Vertex AI) from tests.
 
 ## Security
 

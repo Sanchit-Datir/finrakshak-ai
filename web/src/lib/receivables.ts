@@ -34,7 +34,8 @@ const isBlank = (r: CustomerRow): boolean =>
 
 function rowError(r: CustomerRow, cin: string): string | null {
   if (r.name.trim() === '') return 'Enter the customer name or clear the row.';
-  if (r.name.trim().length > MAX_CUSTOMER_NAME) return `Use at most ${MAX_CUSTOMER_NAME} characters.`;
+  if (r.name.trim().length > MAX_CUSTOMER_NAME)
+    return `Use at most ${MAX_CUSTOMER_NAME} characters.`;
   if (cin !== '' && !CIN_INPUT.test(cin))
     return 'Enter a 21-character CIN (e.g. U27100MH1995PTC090840) or LLPIN, or leave it blank.';
   if (r.outstanding.trim() !== '' && parseRupeesToMinor(r.outstanding) === null)
@@ -60,7 +61,12 @@ export function parseCustomerRows(rows: readonly CustomerRow[]): {
       return;
     }
     const outstandingMinor = r.outstanding.trim() === '' ? null : parseRupeesToMinor(r.outstanding);
-    customers.push({ name: r.name.trim(), cin, outstandingMinor, oldestUnpaidDate: r.oldestUnpaidDate });
+    customers.push({
+      name: r.name.trim(),
+      cin,
+      outstandingMinor,
+      oldestUnpaidDate: r.oldestUnpaidDate,
+    });
   });
   return { customers, errors };
 }
@@ -87,5 +93,10 @@ export function receivablesImpact(
     if (!Number.isSafeInteger(total) || !Number.isSafeInteger(affected)) return null;
   }
   const affectedPercent = total === 0 ? 0 : Math.round((affected * 100) / total);
-  return { totalMinor: total, affectedMinor: affected, eligibleMinor: total - affected, affectedPercent };
+  return {
+    totalMinor: total,
+    affectedMinor: affected,
+    eligibleMinor: total - affected,
+    affectedPercent,
+  };
 }

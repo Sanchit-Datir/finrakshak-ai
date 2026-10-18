@@ -26,7 +26,7 @@ export function Wordmark({
 }): React.JSX.Element {
   return (
     <div className="flex min-w-0 items-center gap-2.5">
-      <LogoMark />
+      <LogoMark className={inverted ? 'rounded-lg ring-1 ring-white/15' : ''} />
       {!collapsed && (
         <div className="min-w-0 leading-tight">
           <p
@@ -35,9 +35,14 @@ export function Wordmark({
               inverted ? 'text-white' : 'text-ink',
             )}
           >
-            FundTrace <span className={inverted ? 'text-teal-300' : 'text-teal'}>AI</span>
+            FinRakshak <span className={inverted ? 'text-teal-300' : 'text-teal'}>AI</span>
           </p>
-          <p className={cn('text-[11px] font-medium', inverted ? 'text-white/70' : 'text-muted')}>
+          <p
+            className={cn(
+              'text-[11px] font-medium whitespace-nowrap',
+              inverted ? 'text-white/70' : 'text-muted',
+            )}
+          >
             Loan Lifecycle Intelligence
           </p>
         </div>

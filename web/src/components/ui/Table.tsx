@@ -50,7 +50,7 @@ export function DataTable<T>({
   }, [rows, sort, columns]);
   if (rows.length === 0 && empty !== undefined) return <>{empty}</>;
   return (
-    <div className="overflow-x-auto">
+    <div className="relative overflow-x-auto">
       <table className="w-full min-w-[640px] border-collapse text-sm">
         <caption className="sr-only">{caption}</caption>
         <thead>

@@ -30,10 +30,12 @@ export function Notifications(): React.JSX.Element {
           className="text-muted hover:text-ink hover:bg-surface-2 relative inline-flex size-10 items-center justify-center rounded-lg"
         >
           <Bell className="size-5" aria-hidden />
+          {/* A dot, not a number: the sidebar already shows how many alerts are open. */}
           {unread.length > 0 && (
-            <span className="bg-danger tabular absolute top-1.5 right-1.5 min-w-[18px] rounded-full px-1 text-center text-[10px] leading-[18px] font-bold text-white dark:text-navy-deep">
-              {unread.length}
-            </span>
+            <span
+              aria-hidden
+              className="bg-danger ring-surface absolute top-2 right-2 size-2.5 rounded-full ring-2"
+            />
           )}
         </button>
       )}
@@ -41,7 +43,12 @@ export function Notifications(): React.JSX.Element {
       {(close) => (
         <div>
           <div className="border-line flex items-center justify-between border-b px-4 py-3">
-            <p className="text-sm font-semibold">New alerts</p>
+            <p className="text-sm font-semibold">
+              New alerts
+              {unread.length > 0 && (
+                <span className="text-muted font-normal"> · {unread.length} unread</span>
+              )}
+            </p>
             {unread.length > 0 && (
               <button
                 type="button"

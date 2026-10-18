@@ -18,7 +18,7 @@ Then `Grep -n` for the symbol and `Read` with `offset`/`limit` around the hit. D
 
 ## 2. Token rules
 
-- Never read these whole: `demo/seed.ts` (2.1k lines — synthetic data), `demo/samples.ts` (sample docs), `pages/ApplicationDetailPage.tsx`, `pages/CaseDetailPage.tsx`, `pages/MonitoringPage.tsx`, `state/actions.ts`, `lib/checks.ts`. Use the anchors in §4.
+- Never read these whole: `pages/CaseDetailPage.tsx`, `pages/MonitoringPage.tsx`, `pages/ReportsPage.tsx`, `pages/DocumentsPage.tsx`. Use the anchors in §4. Large modules are split into folders (`state/actions/`, `lib/checks/`, `domain/schemas/`, `demo/seed/`, `demo/samples/`); their old file is a barrel, so keep importing from it.
 - Don't re-read a file after a successful Edit. Don't open `node_modules`, `dist/`, lockfiles, or `docs/fundtrace-ai-ui-spec.md` unless the task is about spec wording — then grep it for the heading.
 - Prefer one targeted check over the full suite while iterating:
   - types: `npx tsc -p web/tsconfig.json --noEmit 2>&1 | grep error | head`
@@ -29,36 +29,36 @@ Then `Grep -n` for the symbol and `Read` with `offset`/`limit` around the hit. D
 
 ## 3. Code map (web/src)
 
-| Area                                                 | Where                                                                                 |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Routes + lazy pages                                  | `App.tsx` → `pages/*Page.tsx` (named exports)                                         |
-| Shell: sidebar/topbar/search/bell/user menu          | `components/app-shell/` (nav items in `nav.ts`)                                       |
-| Design tokens, dark mode, utilities `card` `tabular` | `styles.css`                                                                          |
-| Data model (zod) & all types                         | `domain/schemas.ts` (`Db` is the root)                                                |
-| User-visible labels/wording, disclaimers             | `domain/labels.ts`                                                                    |
-| Store (localStorage, zod-validated)                  | `state/store.ts` — `useDb()`, `mutate(draft => …)`                                    |
-| All mutations (write audit entries)                  | `state/actions.ts`                                                                    |
-| Demo session / roles                                 | `state/session.ts` (`canConfigureRules`)                                              |
-| Hooks: `useFormat`, `useActor`, `useDocumentTitle`   | `state/hooks.ts`; URL filters `state/url.ts` `useUrlState`                            |
-| Toasts                                               | `state/toast.tsx` `useToast().push({tone,title,detail})`                              |
-| Pre-disbursement checks                              | `lib/checks.ts` (`CHECKS` array, `runChecks`, `reviewPriority`)                       |
-| Monitoring rules                                     | `lib/monitoring.ts` (`RULES`, `runMonitoring`)                                        |
-| Unified alerts list                                  | `lib/alerts.ts` `allAlerts(db)`                                                       |
-| Money/date/mask formatting                           | `lib/format.ts`; Marathi digits/names `lib/text.ts`; land units `lib/land.ts`         |
-| Doc types + manual-entry field templates             | `lib/doc-catalog.ts`                                                                  |
-| File intake (local only)                             | `lib/processing.ts`, `lib/pdf.ts`, `lib/image-quality.ts`                             |
-| CSV import/export                                    | `lib/csv-import.ts`, `lib/export.ts`                                                  |
-| Entity graph data                                    | `lib/graph.ts`; UI `components/graph/EntityGraph.tsx`                                 |
-| Synthetic data                                       | `demo/seed.ts` (`createDemoDb`), `demo/samples.ts` (SVG sample docs + fields/regions) |
+| Area                                                 | Where                                                                                |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Routes + lazy pages                                  | `App.tsx` → `pages/*Page.tsx` (named exports)                                        |
+| Shell: sidebar/topbar/search/bell/user menu          | `components/app-shell/` (nav items in `nav.ts`)                                      |
+| Design tokens, dark mode, utilities `card` `tabular` | `styles.css`                                                                         |
+| Data model (zod) & all types                         | `domain/schemas/` by aggregate, barrel `domain/schemas.ts` (`Db` in `schemas/db.ts`) |
+| User-visible labels/wording, disclaimers             | `domain/labels.ts`                                                                   |
+| Store (localStorage, zod-validated)                  | `state/store.ts` — `useDb()`, `mutate(draft => …)`                                   |
+| All mutations (write audit entries)                  | `state/actions/` by area, barrel `state/actions.ts`                                  |
+| Demo session / roles                                 | `state/session.ts` (`canConfigureRules`)                                             |
+| Hooks: `useFormat`, `useActor`, `useDocumentTitle`   | `state/hooks.ts`; URL filters `state/url.ts` `useUrlState`                           |
+| Toasts                                               | `state/toast.tsx` `useToast().push({tone,title,detail})`                             |
+| Pre-disbursement checks                              | `lib/checks/` (`CHECKS`, `runChecks`, `reviewPriority` in `run.ts`)                  |
+| Monitoring rules                                     | `lib/monitoring.ts` (`RULES`, `runMonitoring`)                                       |
+| Unified alerts list                                  | `lib/alerts.ts` `allAlerts(db)`                                                      |
+| Money/date/mask formatting                           | `lib/format.ts`; Marathi digits/names `lib/text.ts`; land units `lib/land.ts`        |
+| Doc types + manual-entry field templates             | `lib/doc-catalog.ts`                                                                 |
+| File intake (local only)                             | `lib/processing.ts`, `lib/pdf.ts`, `lib/image-quality.ts`                            |
+| CSV import/export                                    | `lib/csv-import.ts`, `lib/export.ts`                                                 |
+| Entity graph data                                    | `lib/graph.ts`; UI `components/graph/EntityGraph.tsx`                                |
+| Synthetic data                                       | `demo/seed.ts` (`createDemoDb`) + `demo/seed/`, `demo/samples/` (SVG sample docs)    |
 
 ## 4. Anchors in large files (grep these names)
 
-- `state/actions.ts`: `createDraftApplication`, `saveApplication`, `setApplicationStatus`, `submitApplication`, `attachSample`, `addUploadedDocument`, `reviewField`, `addManualField`, `updateAlert`, `createCase`, `setCaseStatus`, `addCaseEvidence`, `importTransactions`.
-- `lib/checks.ts`: each rule is `const <name>: Check =`; registry is `const CHECKS`; display names `CHECK_NAMES` (keep both in the same order).
-- `pages/ApplicationDetailPage.tsx`: tab bodies are `function Overview|ApplicantTab|VerificationTab|Timeline|AuditTab`; dialogs `RequestInfoDialog`, exported `NoteForm`.
-- `pages/CaseDetailPage.tsx`: `Checklist`, `StatusDialog`, `AssignDialog`, `EvidenceDialog`.
-- `pages/MonitoringPage.tsx`: `loanTxns`, `ImportDialog`; flow graph lives in `components/monitoring/TransactionFlow.tsx`, alert drawer in `AlertDrawer.tsx`.
-- `demo/seed.ts`: sections are commented `// ---------- Entities | Borrowers | Documents | Applications | Relationships | Loans & transactions | Alert states | Cases ----------`.
+- `state/actions/` (`applications`, `analysis`, `documents`, `fields`, `monitoring`, `cases`, `public-watch`): `createDraftApplication`, `saveApplication`, `setApplicationStatus`, `submitApplication`, `attachSample`, `addUploadedDocument`, `reviewField`, `addManualField`, `updateAlert`, `createCase`, `setCaseStatus`, `addCaseEvidence`, `importTransactions`.
+- `lib/checks/`: each rule is `const <name>: Check =` in `completeness`, `consistency`, `duplicates` or `relationships`; registry `CHECKS` and display names `CHECK_NAMES` in `run.ts` (keep both in the same order).
+- `pages/ApplicationDetailPage.tsx`: tab bodies and dialogs (`Overview`, `ApplicantTab`, `VerificationTab`, `Timeline`, `AuditTab`, `RequestInfoDialog`, `NoteForm`) are in `components/applications/detail/`. The review form is `ReviewStep.tsx` + `components/applications/review/` (one component per section), validation in `lib/review-form.ts`.
+- `pages/CaseDetailPage.tsx`: dialogs `Checklist`, `StatusDialog`, `AssignDialog`, `EvidenceDialog` are in `components/investigations/`.
+- `pages/MonitoringPage.tsx`: `loanTxns`; `ImportDialog` is in `components/monitoring/`; flow graph lives in `components/monitoring/TransactionFlow.tsx`, alert drawer in `AlertDrawer.tsx`.
+- `demo/seed/`: one module per section (`entities`, `borrowers`, `documents`, `applications/<product>`, `relationships`, `loans`, `test-loans`, `alert-states`, `cases`), run by `createDemoDb` in a fixed order (ids are numbered in call order).
 
 ## 5. Building blocks (import, don't re-implement)
 
@@ -67,10 +67,10 @@ Then `Grep -n` for the symbol and `Read` with `offset`/`limit` around the hit. D
 ## 6. Recipes
 
 - **New page**: create `pages/XPage.tsx` exporting `XPage(): React.JSX.Element` with `<PageHeader docTitle=… title=… />`; register in `App.tsx` via `named(() => import('./pages/XPage.js'), 'XPage')` + `<Route>`; add a nav item in `components/app-shell/nav.ts` if needed.
-- **New field on an entity**: add to the zod schema in `domain/schemas.ts` → set it in `demo/seed.ts` factory (grep the factory, e.g. `const borrower =`) → mutate only via a function in `state/actions.ts`. Old saved data fails validation and auto-resets to demo data (a toast explains it) — acceptable for the prototype.
-- **New status/label**: extend the enum in `schemas.ts`, add text in `domain/labels.ts`, add `[tone, Icon]` in `components/ui/StatusBadges.tsx`. TypeScript will flag every `Record<…>` you missed.
-- **New application check**: write `const myCheck: Check = ({ app, docs, db }) => Finding[]` in `lib/checks.ts`, add it to `CHECKS` and a name to `CHECK_NAMES`. Fill `evidence` (with `docId`/`fieldId` so “Open source” works), `benign`, `steps`. If it should appear on the Alerts page, its category must be in `ALERTABLE` in `lib/alerts.ts`.
-- **New monitoring rule**: add id to `MonitoringRuleId` + `RULES` in `lib/monitoring.ts`, a function returning `MonitoringAlert[]`, call it in `runMonitoring`; thresholds go in `MonitoringConfigSchema` + `defaultSettings()` (seed.ts) + `FIELDS` in `pages/SettingsPage.tsx`.
+- **New field on an entity**: add to the zod schema in `domain/schemas/<aggregate>.ts` → set it in the `demo/seed/` factory (e.g. `borrowerFactory`) → mutate only via a function in `state/actions/`. Old saved data fails validation and auto-resets to demo data (a toast explains it) — acceptable for the prototype.
+- **New status/label**: extend the enum in `domain/schemas/`, add text in `domain/labels.ts`, add `[tone, Icon]` in `components/ui/StatusBadges.tsx`. TypeScript will flag every `Record<…>` you missed.
+- **New application check**: write `const myCheck: Check = ({ app, docs, db }) => Finding[]` in a module of `lib/checks/`, add it to `CHECKS` and a name to `CHECK_NAMES` in `lib/checks/run.ts`. Fill `evidence` (with `docId`/`fieldId` so “Open source” works), `benign`, `steps`. If it should appear on the Alerts page, its category must be in `ALERTABLE` in `lib/alerts.ts`.
+- **New monitoring rule**: add id to `MonitoringRuleId` + `RULES` in `lib/monitoring.ts`, a function returning `MonitoringAlert[]`, call it in `runMonitoring`; thresholds go in `MonitoringConfigSchema` + `defaultSettings()` (`demo/seed/settings.ts`) + `FIELDS` in `components/settings/RiskTab.tsx`.
 - **Filters that survive Back**: `const [v, setV] = useUrlState('key', 'all')`.
 - **Feedback**: success/failure → `useToast().push`; destructive → `ConfirmDialog`; every async view needs loading/empty/error states.
 

@@ -4,14 +4,23 @@ import { runMonitoring } from './monitoring.js';
 
 const db = createDemoDb(new Date('2026-10-15T06:00:00Z'));
 const alerts = runMonitoring(db);
-const byLoan = (loanId: string) => alerts.filter((a) => a.loanId === loanId).map((a) => a.ruleId).sort();
+const byLoan = (loanId: string): string[] =>
+  alerts
+    .filter((a) => a.loanId === loanId)
+    .map((a) => a.ruleId)
+    .sort();
 
 describe('monitoring rules on demo ledger', () => {
   it('flags rapid onward transfer for the tractor loan (benign case seeded)', () => {
     expect(byLoan('L-2026-0108')).toEqual(['rapid_onward']);
   });
   it('flags circular, linked-counterparty, rapid and repeated patterns for L-2026-0110', () => {
-    expect(byLoan('L-2026-0110')).toEqual(['circular', 'linked_counterparty', 'rapid_onward', 'repeated_counterparty']);
+    expect(byLoan('L-2026-0110')).toEqual([
+      'circular',
+      'linked_counterparty',
+      'rapid_onward',
+      'repeated_counterparty',
+    ]);
   });
   it('flags repeated counterparty only for L-2026-0111', () => {
     expect(byLoan('L-2026-0111')).toEqual(['repeated_counterparty']);
@@ -24,7 +33,13 @@ describe('monitoring rules on demo ledger', () => {
     expect(byLoan('L-2026-0109')).toEqual([]);
   });
   it('responds to configuration changes', () => {
-    const strict = { ...db, settings: { ...db.settings, monitoring: { ...db.settings.monitoring, rapidOnwardPercent: 99 } } };
+    const strict = {
+      ...db,
+      settings: {
+        ...db.settings,
+        monitoring: { ...db.settings.monitoring, rapidOnwardPercent: 99 },
+      },
+    };
     expect(runMonitoring(strict).some((a) => a.ruleId === 'rapid_onward')).toBe(false);
   });
   it('circular alert totals and transactions are traceable', () => {

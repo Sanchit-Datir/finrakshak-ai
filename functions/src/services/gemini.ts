@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai';
+import { FinishReason, GoogleGenAI } from '@google/genai';
 import { getEnv } from '../config/env.js';
 import { mockGenerateText } from './gemini-mock.js';
 
@@ -11,7 +11,8 @@ export const GEMINI_LIMITS = {
 
 let client: GoogleGenAI | undefined;
 
-function getClient(): GoogleGenAI {
+/** The shared client for the configured billed provider (never created on the mock). */
+export function getClient(): GoogleGenAI {
   const env = getEnv();
   if (env.GEMINI_PROVIDER === 'vertex') {
     // Vertex AI mode uses Application Default Credentials: no API keys in code.
@@ -35,16 +36,15 @@ export class GeminiError extends Error {
   }
 }
 
-/**
- * Calls Gemini with a bounded prompt and a timeout. Output is UNTRUSTED text:
- * callers must validate/parse it (e.g. with zod) before using it.
- */
-export async function generateText(prompt: string): Promise<string> {
-  if (prompt.trim().length === 0) throw new GeminiError('Empty prompt');
-  if (prompt.length > GEMINI_LIMITS.maxPromptChars) throw new GeminiError('Prompt too long');
-  // Cost guard: the mock provider never creates a client or touches the network.
-  if (getEnv().GEMINI_PROVIDER === 'mock') return mockGenerateText();
+/** Larger prompts are allowed only for structured tasks that ask for one (B-10); never above this. */
+export const GEMINI_MAX_JSON_PROMPT_CHARS = 30_000;
 
+function checkPrompt(prompt: string, maxChars: number): void {
+  if (prompt.trim().length === 0) throw new GeminiError('Empty prompt');
+  if (prompt.length > maxChars) throw new GeminiError('Prompt too long');
+}
+
+async function callModel(prompt: string, json: boolean): Promise<string> {
   const controller = new AbortController();
   const timer = setTimeout(() => {
     controller.abort();
@@ -56,8 +56,13 @@ export async function generateText(prompt: string): Promise<string> {
       config: {
         maxOutputTokens: GEMINI_LIMITS.maxOutputTokens,
         abortSignal: controller.signal,
+        ...(json ? { responseMimeType: 'application/json' } : {}),
       },
     });
+    // B-11: a reply cut off at the token limit is not a complete answer.
+    if (res.candidates?.[0]?.finishReason === FinishReason.MAX_TOKENS) {
+      throw new GeminiError('Model response was cut off');
+    }
     const text = res.text;
     if (text === undefined || text.length === 0) {
       throw new GeminiError('Empty or blocked model response');
@@ -69,4 +74,32 @@ export async function generateText(prompt: string): Promise<string> {
   } finally {
     clearTimeout(timer);
   }
+}
+
+/**
+ * Calls Gemini with a bounded prompt and a timeout. Output is UNTRUSTED text:
+ * callers must validate/parse it (e.g. with zod) before using it.
+ */
+export async function generateText(prompt: string): Promise<string> {
+  checkPrompt(prompt, GEMINI_LIMITS.maxPromptChars);
+  // Cost guard: the mock provider never creates a client or touches the network.
+  if (getEnv().GEMINI_PROVIDER === 'mock') return mockGenerateText();
+  return callModel(prompt, false);
+}
+
+/**
+ * Asks for a JSON reply. The text is still UNTRUSTED: parse it with zod. Never called on the mock
+ * provider (callers build their own mock result), so this throws there instead of spending nothing.
+ */
+export async function generateJson(prompt: string, maxPromptChars: number): Promise<string> {
+  const limit = Math.min(maxPromptChars, GEMINI_MAX_JSON_PROMPT_CHARS);
+  checkPrompt(prompt, limit);
+  if (getEnv().GEMINI_PROVIDER === 'mock')
+    throw new GeminiError('The mock provider has no JSON mode');
+  return callModel(prompt, true);
+}
+
+/** Test helper: drop the cached client so a test can supply its own. */
+export function resetGeminiClient(): void {
+  client = undefined;
 }

@@ -100,10 +100,12 @@ async function gunzipLimited(buf: ArrayBuffer): Promise<string> {
 
 /** Accepts gzip or plain JSON bytes (servers may or may not decompress .gz for us). */
 async function bytesToText(buf: ArrayBuffer): Promise<string> {
-  if (buf.byteLength > MAX_BUNDLE_FILE_BYTES) throw new GraphLabLoadError('The bundle file is too large.');
+  if (buf.byteLength > MAX_BUNDLE_FILE_BYTES)
+    throw new GraphLabLoadError('The bundle file is too large.');
   const head = new Uint8Array(buf.slice(0, 2));
   if (head[0] !== 0x1f || head[1] !== 0x8b) {
-    if (buf.byteLength > MAX_BUNDLE_TEXT_BYTES) throw new GraphLabLoadError('The bundle is too large.');
+    if (buf.byteLength > MAX_BUNDLE_TEXT_BYTES)
+      throw new GraphLabLoadError('The bundle is too large.');
     return new TextDecoder().decode(buf);
   }
   return gunzipLimited(buf);
@@ -188,10 +190,12 @@ export function searchNodes(ix: LabIndex, query: string, limit = 10): GraphNode[
   const q = query.trim().toLowerCase();
   if (q.length < 2) return [];
   const rank = (n: GraphNode): number =>
-    (isOrganisation(n) ? 0 : n.kind === 'event' ? 4 : 2) + (n.label.toLowerCase().startsWith(q) ? 0 : 1);
+    (isOrganisation(n) ? 0 : n.kind === 'event' ? 4 : 2) +
+    (n.label.toLowerCase().startsWith(q) ? 0 : 1);
   const hits: GraphNode[] = [];
   for (const n of ix.bundle.nodes) {
-    if (n.label.toLowerCase().includes(q) || (n.detail ?? '').toLowerCase().includes(q)) hits.push(n);
+    if (n.label.toLowerCase().includes(q) || (n.detail ?? '').toLowerCase().includes(q))
+      hits.push(n);
   }
   return hits.sort((a, b) => rank(a) - rank(b) || b.degree - a.degree).slice(0, limit);
 }
@@ -257,9 +261,20 @@ const byKindThenLabel = (a: GraphNode, b: GraphNode): number =>
   a.kind.localeCompare(b.kind) || a.label.localeCompare(b.label);
 
 /** Radial ego layout: focus in the centre, each hop further out; hubs are not expanded. */
-export function egoLayout(ix: LabIndex, focus: string, hops: number, includeWeak: boolean): LabLayout {
+export function egoLayout(
+  ix: LabIndex,
+  focus: string,
+  hops: number,
+  includeWeak: boolean,
+): LabLayout {
   const adj = includeWeak ? ix.all : ix.strong;
-  const depth = neighbourhood(adj, [focus], hops, LAYOUT_CAP, (id) => ix.nodes.get(id)?.hub ?? false);
+  const depth = neighbourhood(
+    adj,
+    [focus],
+    hops,
+    LAYOUT_CAP,
+    (id) => ix.nodes.get(id)?.hub ?? false,
+  );
   const edges = new Map<string, GraphEdge>();
   for (const id of depth.keys()) {
     for (const e of adj.out.get(id) ?? []) if (depth.has(otherEnd(e, id))) edges.set(e.id, e);
@@ -286,6 +301,11 @@ export function egoLayout(ix: LabIndex, focus: string, hops: number, includeWeak
   return { nodes, edges: [...edges.values()], truncated, busy };
 }
 
-export function pathBetween(ix: LabIndex, a: string, b: string, includeWeak: boolean): PathStep[] | null {
+export function pathBetween(
+  ix: LabIndex,
+  a: string,
+  b: string,
+  includeWeak: boolean,
+): PathStep[] | null {
   return shortestPath(includeWeak ? ix.all : ix.strong, a, b, 8);
 }

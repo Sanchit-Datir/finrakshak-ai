@@ -3,7 +3,7 @@
 Read this first in a new session. It records what has been built, the rules the owner has set,
 and what is open. Update it at the end of every session.
 
-_Last updated: 17 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
+_Last updated: 18 Oct 2026 (cleaning-code session). Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
 
 ## Owner's working rules (keep following them)
 
@@ -97,14 +97,88 @@ proposals with `model: null`; model-rejected candidates are not proposed and onl
   accounts, checkpoint 4 (miner Vertex dry run) and E3 (explainer dry run); step 15 (approval view, scorer
   reading the Firestore library, `proposals_waiting`) is not built.
 
+## AI analysis of an application (18 Oct 2026, branch `feat/application-ai-analysis`)
+
+The Risk step's "AI-assisted document analysis" card now runs `analyseApplication` on a click: grounded
+facts from the recorded fields, a note per finding, a short summary; matched patterns do not apply before
+disbursement. Gemini on Vertex AI (owner switched from the AI Studio key on 18 Oct 2026; runtime account needs
+roles/aiplatform.user); mock
+locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:** budget limit first
+(B-15). Names are not masked (owner, 18 Oct 2026). Attention score 0–100 added (code-computed, top of the card), with a weight per kind of finding scaled by priority (owner, 18 Oct 2026; table in the doc). Not tuned on outcomes.
+
+## AI investigator (18 Oct 2026, branch `claude/ai-investigator-e63431` from `feat/application-ai-analysis`)
+
+"Investigate with AI" on the Risk step (`investigateApplication` callable, Vertex AI, mock locally): the
+browser sends a bundle (typed-in data, identifiers masked; ratios, public-records shortlist and related
+entities all made by code); Gemini reads it through 8 tools and proposes findings and draft questions; code
+verifies every citation, quote and number and counts rejections. Verified findings add to the attention
+score as their own kinds (45/40/25/15, scaled by priority); mock and out-of-date ones do not. See
+`docs/AI_INVESTIGATOR.md` and **B-67** (B-65 and B-66 are the branch scope and the copilot). Checked in the browser against the
+auth + functions emulators with the mock. **Owner decided (18 Oct 2026):** every model call counts
+against the daily limit and the limit is never crossed (the run stops and keeps what was verified); names
+are not masked (applies to B-64 too). **Open for the owner:** grant `roles/aiplatform.user` to the
+functions runtime account `728958349363-compute@developer.gserviceaccount.com` (it does not have it yet;
+the grant was not run from the session). PR opened against `main` at the owner's request.
+
+## Showcase UI and Copilot (18 Oct 2026, branch `remaining-ui-changes-2`, not committed)
+
+The owner approved `docs/plans/UI_SHOWCASE_PLAN.md`, re-ordered for the judging criteria (Gen AI is 65%).
+The owner said: do not commit yet, and stay on this branch.
+
+- **Built:**
+  - the dark "mission rail" sidebar, with the journey pre-sanction → ₹ disbursed → post-disbursement →
+    investigate and live counts (`web/src/lib/nav-counts.ts`);
+  - the branch-scope switcher (B-65), pinned records, `/queue` (My queue) and the mobile tab bar;
+  - **FinRakshak Copilot** (`docs/COPILOT.md`, B-66): the `assistRecord` callable, the grounding check
+    in shared plus its runtime copy in functions, and a simulated answer in demo sessions. Open it with
+    Ctrl/⌘ J, I, or **Ask AI**.
+- **Renames:** Dashboard → Command center, Monitoring → Loan book, Graph Lab → Relationship graph.
+- **Next:** the AI hub page (2C), AI in workflows (2B), then the money-trail Sankey and Story mode.
+
+## Cleaning-code session (18 Oct 2026, branch `cleaning-code` from `main`)
+
+For the judging criteria (technical merit and Gen AI 40%, UX 10%); plan and status in
+`docs/plans/CLEANING_CODE_PLAN.md`. Owner's answers: full plan, **MIT** license, commit and push to
+`cleaning-code` (no PR), credits left as a placeholder. The owner then limited the session to ~20
+minutes, so the remaining component splits, the benchmark script and the screenshots were dropped.
+
+- **Lint gap fixed:** ESLint and Prettier ignored every `lib/` folder (also `web/src/lib`); now only
+  `functions/lib`. 12 hidden lint errors fixed. `web/src/lib/synth-sample.json` is prettier-ignored
+  (byte-compared by `sample.test.ts`).
+- **Split into folders, behaviour unchanged** (old files are barrels, no importer changed):
+  `state/actions/`, `lib/checks/`, `domain/schemas/`, `demo/seed/` (createDemoDb output compared byte
+  for byte), `demo/samples/`, dialogs/tabs into `components/<area>/`, `ReviewStep` into
+  `components/applications/review/` with pure `lib/review-form.ts`; `lib/report-data.ts`. New tests:
+  `review-form.test.ts`, `report-data.test.ts` (1,579 tests total after merging `main` on 18 Oct 2026).
+- **Docs:** README rewritten (all requested sections, Mermaid diagrams, ASCII wireframes, cost,
+  benchmarks), `LICENSE` (MIT), `CONTRIBUTING.md`, `.github/pull_request_template.md`; the
+  fundtrace-ui skill's code map points at the new folders.
+- **Still over ~300 lines:** `pages/MonitoringPage.tsx`, `CaseDetailPage.tsx`, `ReportsPage.tsx`,
+  `DocumentsPage.tsx`, `components/graph/EntityGraph.tsx`, `monitoring/AlertDrawer.tsx`,
+  `BorrowerProfilePage.tsx`, `ApplicationDetailPage.tsx`, `AlertsPage.tsx`, `DashboardPage.tsx`,
+  `LoginPage.tsx`, `lib/graph-lab.ts` (each is one large component; split the JSX next).
+- **Not run:** `npm run test:e2e -w web` fails in the cloud container because `@playwright/test`
+  1.64 wants a Chromium build that is not installed (environment, not code); `npm run e2e` not run.
+
 ## Performance report plan (18 Oct 2026, branch `claude/intelligent-faraday-xbjw3e`)
 
-Plan only, nothing built: `docs/plans/PERFORMANCE_BENCHMARK_PLAN.md`. Owner approved live Gemini calls
-(under $1) and a live run against `fund-tracer`. Open for the owner: credentials, a TEST user, an App
-Check debug token, and how to fit about 50 calls under the daily AI limit of 30 (B-15).
+Plan only, nothing built: `docs/plans/PERFORMANCE_BENCHMARK_PLAN.md` (updated after merging `main`: AI
+callables, billed gate, burst and daily limits, agents). It adds a `bench/` workspace (`npm run bench`,
+`bench:api` on the emulators, `bench:live`, `bench:report`) and small log-only API changes (tokens and
+durations). README section 13 now lists what the benchmark measures and how to run it, with a note that
+the scripts are being added; remove that note once `bench/` exists. Owner approved live Gemini calls
+(under US$1) and a live run. Open for the owner: the `roles/aiplatform.user` grant, credentials, TEST
+users, an App Check debug token, and how to fit ~100 model calls under the daily limit of 30 (B-15).
 
 ## Open decisions and next ideas
 
+- **New loan opens the form directly (18 Oct 2026, branch `ui/loan-page-layout`):** the form path is
+  Application form → Risk analysis (name, amount, purpose required). "Upload documents instead" gives
+  Upload → Extract & verify → Application form (optional) → Risk analysis; nothing is required on that
+  path (owner's answer): continuing fills empty fields from confirmed document fields and the checks
+  report what is missing. On the loan page, "Alerts for this loan" now sits directly before
+  "Transaction flow". Known, not fixed: the flow graph's SVG makes the Monitoring page scroll
+  sideways at 360px (pre-existing).
 - **Risk scoring programme (planned 17 Oct 2026):** synthetic transaction data, a daily risk-scoring
   job, a pattern miner agent and an optional explainer agent. **Start at `docs/plans/README.md`**: it has
   the plan index, the 17-step build order with a status per step (steps 1–4 done), the decisions taken and
@@ -120,8 +194,8 @@ Check debug token, and how to fit about 50 calls under the daily AI limit of 30 
   days, partial below 90%); monitoring rules feed the pattern layer only; direct layer 10 for 2+
   proceedings, 15 for 3+ sources, counterparties left out, status weights 100% in v1; a missing seed
   review means support 0.6 everywhere; months scored on their last IST day.
-- **Budget alert (parked):** not created on purpose. When ready, rerun
-  `BILLING_ACCOUNT=… BUDGET_USD=… scripts/setup-ingest-gcp.sh fund-tracer` (plan D7, B-15).
+- **Budget alert (done, checkpoint 3 / B-15):** **Budget alerts exist** (checked 18 Oct 2026 on billing account `My Billing Account`, project `fund-tracer`): `fund-tracer monthly budget` ₹450/month on all services and `fund-tracer Vertex AI (agents)` ₹200/month on the AI services, each alerting at 50%, 90% and 100%. Budgets warn, they do not cap spend; the
+  per-user daily limits and per-run caps still apply.
 - **Urgent threshold:** confirm `URGENT_RECEIVABLE_SHARE_PERCENT = 20`
   (`web/src/lib/public-records-findings.ts`).
 - **Alert levels:** confirm every insolvency, liquidation or ED record after disbursement is
@@ -189,8 +263,8 @@ npm run dev -w web              # manual testing at http://localhost:5173 (quick
 
 **Gotchas:**
 
-- **ESLint and `lib/`:** ESLint ignores `**/lib/**`, so lint `web/src/lib` files with
-  `npx eslint --no-ignore`.
+- **ESLint and `lib/`:** fixed on `cleaning-code`: ESLint and Prettier now ignore only
+  `functions/lib`, so `web/src/lib` is linted.
 - **Missing public-records data:** if a check says "Could not run the public-records check", run
   `graphCli --web`.
 - **Saved data:** after schema changes the saved data resets on its own, with a toast.

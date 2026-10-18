@@ -45,7 +45,13 @@ const ix = indexBundle({
     notes: [],
   },
   nodes: [
-    { ...event('b', '', ''), kind: 'company', label: 'SYNTH Borrower Pvt Ltd', detail: 'U05121MH2004PTC000001 · Active', date: null },
+    {
+      ...event('b', '', ''),
+      kind: 'company',
+      label: 'SYNTH Borrower Pvt Ltd',
+      detail: 'U05121MH2004PTC000001 · Active',
+      date: null,
+    },
     event('e0', '2022-05-01', 'ed_search_seizure'),
     event('e1', '2023-11-16', 'ibbi_cirp'),
     event('e2', '2024-12-06', 'ibbi_liquidation'),
