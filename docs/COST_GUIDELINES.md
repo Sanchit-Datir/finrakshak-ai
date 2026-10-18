@@ -89,7 +89,7 @@ BigQuery job has a deterministic id, so a retried run never loads (or bills) twi
   strangers: requests without sign-in or App Check are turned away by the platform before our code runs, and
   can only be bounded by `maxInstances`, the free quota and the budget alert. Real protection against that
   would be Cloud Armor in front of a load balancer, which has a fixed monthly cost and is not worth it yet.
-- `askGemini` has a per-user daily limit (`GEMINI_DAILY_LIMIT`, default 30 calls per Indian day,
+- `askGemini` has a per-user daily limit (`GEMINI_DAILY_LIMIT`, default 100 calls per Indian day (raised from 30 on 18 Oct 2026, owner),
   counted in the `usage` collection) that applies only to billed providers. The Firestore counter is
   unit-tested with an in-memory store but has not yet been run against a Firestore emulator.
 - The count is not refunded when the model call fails, so a flaky upstream can use up a user's day.

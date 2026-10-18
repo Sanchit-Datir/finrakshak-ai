@@ -106,6 +106,8 @@ describe('investigateApplication', () => {
   describe('billed provider', () => {
     beforeEach(() => {
       vi.stubEnv('GEMINI_PROVIDER', 'vertex');
+      // Pinned so these tests do not depend on the deployed default.
+      vi.stubEnv('GEMINI_DAILY_LIMIT', '30');
     });
 
     it('returns verified output, counts one use and logs counts only', async () => {
