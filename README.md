@@ -543,7 +543,7 @@ All numbers below were measured on this repository; nothing here comes from a re
 
 | Measure             | Result                                                                                |
 | ------------------- | ------------------------------------------------------------------------------------- |
-| Unit tests (Vitest) | **1,566 tests in 168 files, all passing** (shared, functions, ingest, web)            |
+| Unit tests (Vitest) | **1,579 tests in 169 files, all passing** (shared, functions, ingest, web)            |
 | Emulator tests      | Firestore rules and the pipeline's Firestore code (`npm run test:emulators`)          |
 | Browser tests       | Playwright scenarios for 3 real public-record cases + app flows at desktop and 360 px |
 | Lint                | ESLint strict type-checked + jsx-a11y strict, `--max-warnings 0`                      |

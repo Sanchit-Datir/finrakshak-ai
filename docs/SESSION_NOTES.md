@@ -149,7 +149,7 @@ minutes, so the remaining component splits, the benchmark script and the screens
   `state/actions/`, `lib/checks/`, `domain/schemas/`, `demo/seed/` (createDemoDb output compared byte
   for byte), `demo/samples/`, dialogs/tabs into `components/<area>/`, `ReviewStep` into
   `components/applications/review/` with pure `lib/review-form.ts`; `lib/report-data.ts`. New tests:
-  `review-form.test.ts`, `report-data.test.ts` (1,566 tests total).
+  `review-form.test.ts`, `report-data.test.ts` (1,579 tests total after merging `main` on 18 Oct 2026).
 - **Docs:** README rewritten (all requested sections, Mermaid diagrams, ASCII wireframes, cost,
   benchmarks), `LICENSE` (MIT), `CONTRIBUTING.md`, `.github/pull_request_template.md`; the
   fundtrace-ui skill's code map points at the new folders.

@@ -61,9 +61,7 @@ export function filterRiskScores(
       (f.band === 'all' || s.held_band === f.band) &&
       (!f.changedOnly || changedSinceLastRun(s)) &&
       (!f.staleOnly || s.latest.stale_inputs) &&
-      (q === '' ||
-        s.loan_id.toLowerCase().includes(q) ||
-        s.borrower_id.toLowerCase().includes(q)),
+      (q === '' || s.loan_id.toLowerCase().includes(q) || s.borrower_id.toLowerCase().includes(q)),
   );
 }
 

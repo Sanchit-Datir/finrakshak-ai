@@ -12,7 +12,12 @@ import {
 
 function score(
   loan: string,
-  over: { band?: RiskScoreView['held_band']; delta?: number | null; stale?: boolean; borrower?: string } = {},
+  over: {
+    band?: RiskScoreView['held_band'];
+    delta?: number | null;
+    stale?: boolean;
+    borrower?: string;
+  } = {},
 ): RiskScoreView {
   return {
     loan_id: loan,
@@ -61,7 +66,9 @@ describe('filterRiskScores', () => {
     expect(hasRiskFilters(NO_RISK_FILTERS)).toBe(false);
   });
   it('filters by band', () => {
-    expect(filterRiskScores(rows, { ...NO_RISK_FILTERS, band: 'urgent' }).map((s) => s.loan_id)).toEqual(['L-1']);
+    expect(
+      filterRiskScores(rows, { ...NO_RISK_FILTERS, band: 'urgent' }).map((s) => s.loan_id),
+    ).toEqual(['L-1']);
   });
   it('changed keeps moved and new loans', () => {
     const out = filterRiskScores(rows, { ...NO_RISK_FILTERS, changedOnly: true });
@@ -69,7 +76,9 @@ describe('filterRiskScores', () => {
     expect(changedSinceLastRun(score('x', { delta: 0 }))).toBe(false);
   });
   it('stale keeps only stale public data', () => {
-    expect(filterRiskScores(rows, { ...NO_RISK_FILTERS, staleOnly: true }).map((s) => s.loan_id)).toEqual(['L-2']);
+    expect(
+      filterRiskScores(rows, { ...NO_RISK_FILTERS, staleOnly: true }).map((s) => s.loan_id),
+    ).toEqual(['L-2']);
   });
   it('searches loan id and borrower, ignoring case and spaces', () => {
     expect(filterRiskScores(rows, { ...NO_RISK_FILTERS, query: ' l-2 ' })).toHaveLength(1);
@@ -98,7 +107,11 @@ describe('riskScoresCsv', () => {
 });
 
 describe('summariseTrend', () => {
-  const pt = (as_of: string, score: number, held_band: 'routine' | 'needs_attention' | 'urgent') => ({
+  const pt = (
+    as_of: string,
+    score: number,
+    held_band: 'routine' | 'needs_attention' | 'urgent',
+  ): { as_of: string; score: number; held_band: typeof held_band } => ({
     as_of,
     score,
     held_band,
