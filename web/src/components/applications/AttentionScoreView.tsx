@@ -54,9 +54,10 @@ export function AttentionScoreView({
         </ul>
       )}
       <p className="text-muted mt-2 text-xs">
-        Calculated by code from {counted} unresolved finding(s): urgent 60, needs attention 30,
-        routine 10, up to 100. A guide to how much attention this case needs, not a probability or a
-        decision.
+        Calculated by code from {counted} unresolved finding(s). Each kind of finding has its own
+        weight (an applicant in public records counts far more than a missing document); a milder
+        finding of the same check counts less. Up to 100. A guide to how much attention this case
+        needs, not a probability or a decision.
       </p>
     </section>
   );

@@ -6,15 +6,64 @@ import type { Finding } from './checks.js';
  * findings (the same ones Review priority uses). Same data, same score: no model sets or changes it
  * (AGENTS_PLAN.md). It is a lead for triage, not a probability or a decision (B-58).
  *
- * Points per unresolved finding: urgent 60, needs attention 30, routine 10; capped at 100. So one
- * urgent finding alone lands in Urgent review, matching Review priority; several smaller findings can
- * add up to a higher band than the single worst one.
+ * Each kind of finding has its own weight (the points it adds when urgent); a milder version of the
+ * same check adds less: needs attention 60%, routine 30%. Points add up, capped at 100. Weights are a
+ * starting point set by the owner (18 Oct 2026), not tuned on outcomes.
  */
-export const ATTENTION_POINTS: Readonly<Record<Priority, number>> = {
-  urgent: 60,
-  needs_attention: 30,
-  routine: 10,
+
+/** Full points per check (when the finding is urgent). */
+export const RULE_POINTS: Readonly<Record<string, number>> = {
+  relationship_review: 50,
+  duplicate_survey: 45,
+  duplicate_receipt: 45,
+  income_mismatch: 30,
+  name_mismatch: 25,
+  dob_conflict: 25,
+  encumbrance: 25,
+  land_area: 20,
+  unclear_fields: 8,
+  missing_documents: 8,
+  required_fields: 5,
+  purpose_declaration: 5,
+  failed_documents: 5,
+  unreviewed_fields: 5,
+  unverified_sections: 5,
 };
+
+/** Public-records findings share one rule id; who they are about sets the weight. */
+export const PUBLIC_RECORD_POINTS = {
+  /** The applicant has an insolvency, liquidation or enforcement record. */
+  applicant: 70,
+  /** A declared or found customer has one. */
+  customer: 45,
+  /** The public-records check is out of date or has not run. */
+  checkNotCurrent: 25,
+} as const;
+
+/** A check missing from the tables above (a new rule) still counts, at a middle weight. */
+export const DEFAULT_POINTS = 30;
+
+/** Share of the full points by the finding's priority. */
+export const PRIORITY_SHARE: Readonly<Record<Priority, number>> = {
+  urgent: 100,
+  needs_attention: 60,
+  routine: 30,
+};
+
+function fullPointsOf(f: Finding): number {
+  if (f.ruleId === 'public_records') {
+    if (f.id === 'pr:not-current') return PUBLIC_RECORD_POINTS.checkNotCurrent;
+    return f.id.startsWith('pr:applicant:')
+      ? PUBLIC_RECORD_POINTS.applicant
+      : PUBLIC_RECORD_POINTS.customer;
+  }
+  return RULE_POINTS[f.ruleId] ?? DEFAULT_POINTS;
+}
+
+/** Points one finding adds: its check's weight, scaled by how severe this instance is. */
+export function pointsOf(f: Finding): number {
+  return Math.round((fullPointsOf(f) * PRIORITY_SHARE[f.priority]) / 100);
+}
 
 /** Lower bounds of the bands, in the app's wording (Routine review / Needs attention / Urgent review). */
 export const ATTENTION_BANDS = { needs_attention: 30, urgent: 60 } as const;
@@ -53,7 +102,7 @@ export function attentionScore(app: Application, findings: readonly Finding[]): 
       findingId: f.id,
       title: f.title,
       priority: f.priority,
-      points: ATTENTION_POINTS[f.priority],
+      points: pointsOf(f),
     }))
     .sort((a, b) => b.points - a.points || a.title.localeCompare(b.title));
   const score = Math.min(
