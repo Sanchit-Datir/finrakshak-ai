@@ -1,11 +1,12 @@
-import { ArrowLeft, ArrowRight, FileQuestion, Save } from 'lucide-react';
+import { FileQuestion } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { CaptureStep } from '../components/applications/CaptureStep.js';
 import { ExtractStep } from '../components/applications/ExtractStep.js';
 import { ReviewStep } from '../components/applications/ReviewStep.js';
 import { RiskStep } from '../components/applications/RiskStep.js';
-import { STEPS, Stepper } from '../components/applications/Stepper.js';
+import { StepNav } from '../components/applications/StepNav.js';
+import { pathSteps, Stepper, type CapturePath } from '../components/applications/Stepper.js';
 import { Button, LinkButton } from '../components/ui/Button.js';
 import { Card } from '../components/ui/Card.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
@@ -16,9 +17,12 @@ import {
   saveApplication,
   setStep,
   submitApplication,
+  unsavedApplication,
 } from '../state/actions.js';
 import { useActor } from '../state/hooks.js';
 import { useSession } from '../state/session.js';
+import type { Application } from '../domain/schemas.js';
+import { prefillFromDocuments } from '../lib/prefill.js';
 import { getDb, useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 
@@ -34,6 +38,19 @@ export function NewApplicationPage(): React.JSX.Element {
       ? null
       : (db.applications.find((a) => a.id === applicationId) ?? null);
   const [localStep, setLocalStep] = useState<number | null>(null);
+  const [choice, setChoice] = useState<CapturePath | null>(null);
+  // The draft this page created: its edit URL keeps the form mounted with what was typed.
+  const [createdId, setCreatedId] = useState<string | null>(null);
+  const [seenId, setSeenId] = useState(applicationId);
+  if (seenId !== applicationId) {
+    setSeenId(applicationId);
+    if (applicationId !== createdId) {
+      setCreatedId(null);
+      setLocalStep(null);
+      setChoice(null);
+    }
+  }
+  const defaultBranch = session?.branchId ?? db.branches[0]?.id ?? 'br-shirur';
 
   if (applicationId !== undefined && app === null) {
     return (
@@ -53,27 +70,40 @@ export function NewApplicationPage(): React.JSX.Element {
   const docs =
     app === null ? [] : app.documentIds.flatMap((id) => db.documents.filter((d) => d.id === id));
   const hasDocs = docs.length > 0;
-  const requested = localStep ?? app?.step ?? 1;
-  // "Extract & verify" only applies to uploaded documents.
-  const step = requested === 2 && !hasDocs ? 1 : requested;
+  const path: CapturePath = choice ?? (hasDocs ? 'upload' : 'form');
+  const steps = pathSteps(path);
+  const requested = localStep ?? app?.step ?? (path === 'form' ? 3 : 1);
+  // The form path starts at the form; "Extract & verify" only applies to uploaded documents.
+  const step =
+    path === 'form' ? Math.max(requested, 3) : requested === 2 && !hasDocs ? 1 : requested;
   const furthest = Math.max(step, app?.step ?? 1);
+  // Extract and the optional form need documents on the upload path; risk analysis needs a visit.
+  const reachable = steps
+    .map((s) => s.step)
+    .filter((n) => (n === 4 ? furthest >= 4 : n === 1 || path === 'form' || hasDocs));
+  const formKey = app === null || app.id === createdId ? 'new' : app.id;
 
   /** Creates the draft on first meaningful action, then moves to its edit URL. */
   const ensureApp = (): string => {
     if (app !== null) return app.id;
-    const id = createDraftApplication(
-      actor,
-      session?.branchId ?? db.branches[0]?.id ?? 'br-shirur',
-    );
+    const id = createDraftApplication(actor, defaultBranch);
+    setCreatedId(id);
     void navigate(`/applications/${id}/edit`, { replace: true });
     return id;
   };
 
-  const go = (n: number): void => {
-    const id = ensureApp();
+  const go = (n: number, appId?: string): void => {
+    const id = appId ?? ensureApp();
     const current = getDb().applications.find((a) => a.id === id);
     if (current !== undefined && n > current.step) setStep(id, n);
     setLocalStep(n);
+    window.scrollTo({ top: 0 });
+  };
+
+  /** Switches path without creating a draft; uploaded files and saved values are kept. */
+  const switchTo = (next: CapturePath): void => {
+    setChoice(next);
+    setLocalStep(next === 'form' ? 3 : 1);
     window.scrollTo({ top: 0 });
   };
 
@@ -87,20 +117,43 @@ export function NewApplicationPage(): React.JSX.Element {
     });
   };
 
+  /** Upload path: the application is created from the confirmed document fields. */
+  const continueFromExtract = (current: Application): void => {
+    const { data, changes } = prefillFromDocuments(current.data, docs);
+    if (changes.length > 0) {
+      saveApplication(
+        current.id,
+        actor,
+        { data },
+        `${changes.length} field(s) filled from reviewed document fields`,
+      );
+    }
+    toast.push({
+      tone: changes.length > 0 ? 'success' : 'info',
+      title:
+        changes.length > 0
+          ? `${changes.length} field(s) filled from reviewed documents`
+          : 'No reviewed document fields to fill the application',
+      detail: 'Only confirmed or corrected fields are used. Checks report anything missing.',
+    });
+    go(4, current.id);
+  };
+
   const pending = docs.reduce(
     (n, d) => n + d.fields.filter((f) => f.state === 'unreviewed').length,
     0,
   );
+  const stepLabel = steps.find((s) => s.step === step)?.label ?? '';
 
   return (
     <>
       <PageHeader
-        docTitle={app === null ? 'New application' : `${app.id} · ${STEPS[step - 1] ?? ''}`}
+        docTitle={app === null ? 'New application' : `${app.id} · ${stepLabel}`}
         title={app === null ? 'New loan application' : `Application ${app.id}`}
         badge={app === null ? undefined : <AppStatusBadge status={app.status} />}
-        subtitle="Fill the application form or upload documents, review the application, then run checks."
+        subtitle="Fill the application form, or upload documents instead and create the application from them. Then run checks."
       />
-      <Stepper current={step} furthest={furthest} unavailable={hasDocs ? [] : [2]} onSelect={go} />
+      <Stepper steps={steps} current={step} reachable={reachable} onSelect={go} />
       {app !== null && (app.status === 'approved' || app.status === 'declined') && (
         <Notice tone="warn" className="mb-4">
           This application already has a recorded decision. Changes here are recorded in the audit
@@ -116,15 +169,16 @@ export function NewApplicationPage(): React.JSX.Element {
             actor={actor}
             ensureApp={ensureApp}
             onFillForm={() => {
-              go(3);
+              switchTo('form');
             }}
           />
           <StepNav
             onSave={saveDraft}
             onNext={() => {
-              go(hasDocs ? 2 : 3);
+              go(2);
             }}
-            nextLabel={hasDocs ? 'Continue to extract & verify' : 'Continue to application form'}
+            nextDisabled={!hasDocs}
+            nextLabel="Continue to extract & verify"
           />
         </>
       )}
@@ -137,33 +191,52 @@ export function NewApplicationPage(): React.JSX.Element {
               used to fill the application and will be reported by the checks.
             </Notice>
           )}
+          <Notice className="mt-4">
+            The application form is optional. Continuing fills the application from the fields you
+            confirmed.{' '}
+            <button
+              type="button"
+              className="text-primary font-semibold underline"
+              onClick={() => {
+                go(3);
+              }}
+            >
+              Open the application form
+            </button>
+          </Notice>
           <StepNav
             onBack={() => {
               go(1);
             }}
             onSave={saveDraft}
             onNext={() => {
-              go(3);
+              continueFromExtract(app);
             }}
-            nextLabel="Continue to review application"
+            nextLabel="Continue to risk analysis"
           />
         </>
       )}
-      {step === 3 && app !== null && (
+      {step === 3 && (
         <ReviewStep
-          key={app.id}
-          app={app}
+          key={formKey}
+          app={app ?? unsavedApplication(defaultBranch)}
           docs={docs}
           db={db}
           actor={actor}
-          onBack={() => {
-            go(hasDocs ? 2 : 1);
-          }}
-          onContinue={() => {
-            go(4);
+          ensureApp={ensureApp}
+          requireCoreFields={path === 'form'}
+          {...(path === 'upload'
+            ? {
+                onBack: () => {
+                  go(2);
+                },
+              }
+            : {})}
+          onContinue={(id) => {
+            go(4, id);
           }}
           onAttach={() => {
-            go(1);
+            switchTo('upload');
           }}
         />
       )}
@@ -192,7 +265,7 @@ export function NewApplicationPage(): React.JSX.Element {
           }}
         />
       )}
-      {step > 1 && app === null && (
+      {(step === 2 || step === 4) && app === null && (
         <Card>
           <EmptyState
             icon={FileQuestion}
@@ -200,10 +273,10 @@ export function NewApplicationPage(): React.JSX.Element {
             action={
               <Button
                 onClick={() => {
-                  setLocalStep(1);
+                  switchTo('form');
                 }}
               >
-                Go to step 1
+                Go to the application form
               </Button>
             }
           >
@@ -212,35 +285,5 @@ export function NewApplicationPage(): React.JSX.Element {
         </Card>
       )}
     </>
-  );
-}
-
-function StepNav({
-  onBack,
-  onSave,
-  onNext,
-  nextLabel,
-}: {
-  onBack?: () => void;
-  onSave: () => void;
-  onNext: () => void;
-  nextLabel: string;
-}): React.JSX.Element {
-  return (
-    <div className="border-line bg-surface/95 sticky bottom-0 z-20 -mx-4 mt-6 flex gap-2 border-t px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-xl sm:border">
-      {onBack !== undefined && (
-        <Button icon={ArrowLeft} onClick={onBack}>
-          Previous
-        </Button>
-      )}
-      <Button icon={Save} onClick={onSave} className="ml-auto">
-        Save draft
-      </Button>
-      <Button variant="primary" onClick={onNext}>
-        <span className="hidden sm:inline">{nextLabel}</span>
-        <span className="sm:hidden">Next</span>
-        <ArrowRight className="size-4" aria-hidden />
-      </Button>
-    </div>
   );
 }

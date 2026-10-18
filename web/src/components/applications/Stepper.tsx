@@ -1,45 +1,59 @@
 import { Check } from 'lucide-react';
 import { cn } from '../ui/cn.js';
 
-export const STEPS = [
-  'Form or documents',
-  'Extract & verify',
-  'Review application',
-  'Risk analysis',
-] as const;
+/** How the officer starts a new loan: fill the form, or upload documents instead. */
+export type CapturePath = 'form' | 'upload';
+
+/**
+ * Stored step numbers (1–4) keep one meaning on both paths: 1 upload, 2 extract & verify,
+ * 3 application form, 4 risk analysis. The form path shows only steps 3 and 4.
+ */
+export function pathSteps(path: CapturePath): readonly { step: number; label: string }[] {
+  return path === 'form'
+    ? [
+        { step: 3, label: 'Application form' },
+        { step: 4, label: 'Risk analysis' },
+      ]
+    : [
+        { step: 1, label: 'Upload documents' },
+        { step: 2, label: 'Extract & verify' },
+        { step: 3, label: 'Application form (optional)' },
+        { step: 4, label: 'Risk analysis' },
+      ];
+}
 
 export function Stepper({
+  steps,
   current,
-  furthest,
-  unavailable = [],
+  reachable,
   onSelect,
 }: {
+  steps: readonly { step: number; label: string }[];
   current: number;
-  furthest: number;
-  /** Steps that do not apply right now (e.g. "Extract & verify" with no documents). */
-  unavailable?: readonly number[];
+  /** Stored step numbers the officer may jump to now. */
+  reachable: readonly number[];
   onSelect: (step: number) => void;
 }): React.JSX.Element {
+  const position = steps.findIndex((s) => s.step === current);
   return (
     <nav aria-label="Application progress" className="mb-6">
-      <ol className="grid grid-cols-4 gap-2">
-        {STEPS.map((label, i) => {
-          const step = i + 1;
+      <ol className={cn('grid gap-2', steps.length === 4 ? 'grid-cols-4' : 'grid-cols-2')}>
+        {steps.map(({ step, label }, i) => {
           const done = step < current;
           const active = step === current;
-          const reachable = step <= furthest && !unavailable.includes(step);
+          const canGo = reachable.includes(step);
           return (
             <li key={label}>
               <button
                 type="button"
-                disabled={!reachable}
+                disabled={!canGo}
                 aria-current={active ? 'step' : undefined}
                 onClick={() => {
                   onSelect(step);
                 }}
                 className={cn(
                   'flex w-full flex-col items-start gap-1.5 rounded-lg text-left disabled:cursor-not-allowed',
-                  reachable && !active && 'hover:opacity-80',
+                  canGo && !active && 'hover:opacity-80',
                 )}
               >
                 <span
@@ -59,7 +73,7 @@ export function Stepper({
                           : 'border-line text-muted border-2',
                     )}
                   >
-                    {done ? <Check className="size-3.5" aria-hidden /> : step}
+                    {done ? <Check className="size-3.5" aria-hidden /> : i + 1}
                   </span>
                   <span
                     className={cn(
@@ -75,7 +89,7 @@ export function Stepper({
                     ? '(completed)'
                     : active
                       ? '(current step)'
-                      : reachable
+                      : canGo
                         ? ''
                         : '(not yet available)'}
                 </span>
@@ -85,7 +99,7 @@ export function Stepper({
         })}
       </ol>
       <p className="mt-2 text-sm font-medium sm:hidden">
-        Step {current} of 4: {STEPS[current - 1]}
+        Step {position + 1} of {steps.length}: {steps[position]?.label}
       </p>
     </nav>
   );

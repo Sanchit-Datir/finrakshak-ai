@@ -308,12 +308,22 @@ PDFs.
 
 ### Main flow
 
-Four-step progress indicator: 1. **Capture documents** 2. **Extract &
-verify** 3. **Review application** 4. **Risk analysis**
+**New loan** opens the application form directly (no choice screen).
+Uploading documents is the alternative offered on that screen
+(**Upload documents instead**); on the upload path the form is not
+required.
+
+- Form path: 1. **Application form** (applicant name, requested amount
+  and declared purpose required) 2. **Risk analysis**
+- Upload path: 1. **Upload documents** 2. **Extract & verify** 3.
+  **Application form (optional)** 4. **Risk analysis**. Continuing from
+  Extract & verify fills empty application fields from confirmed or
+  corrected document fields only; nothing else is required, and the
+  checks report missing information. The form stays reachable to edit.
 
 Allow users to go back without losing uploaded files or entered values.
 
-### Step 1 --- Capture documents
+### Upload path step 1 --- Upload documents
 
 Offer: 1. **Scan with camera** --- use device camera where supported. 2.
 **Upload files** --- PDF, JPG, JPEG, PNG; TIFF only if supported
@@ -547,6 +557,10 @@ investigations. Counts must reflect the current dataset and filters.
 Searchable loan selector; loan ID; borrower; disbursement date; amount;
 stated purpose; monitoring period; data-source label; last updated
 timestamp. Show **"No transaction data available"** when appropriate.
+
+Order on the page: loan summary, then **Alerts for this loan** directly
+before **Transaction flow** (alerts can be highlighted in the flow), then
+the transaction table.
 
 ### Transaction flow visualisation
 

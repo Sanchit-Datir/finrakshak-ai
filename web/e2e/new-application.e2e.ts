@@ -6,8 +6,8 @@ const cases = loadApplicationCases();
 
 async function reachReviewStep(page: Page, c: ApplicationCase): Promise<void> {
   await demoSignIn(page, c.role);
+  // The application form opens directly; there is no choice screen first.
   await page.goto('/applications/new');
-  await page.getByRole('button', { name: 'Fill the application form' }).click();
   await expect(byLabel(page, 'Full name (English / transliterated)')).toBeVisible();
 }
 
