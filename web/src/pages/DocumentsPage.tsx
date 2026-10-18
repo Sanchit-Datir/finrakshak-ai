@@ -50,6 +50,16 @@ function verificationOf(d: FtDocument): Exclude<Verification, 'all'> {
   return 'reviewed';
 }
 
+/**
+ * Extraction finishing is not the same as a person having checked the fields, so a completed but
+ * unreviewed document shows "Needs review" rather than "Completed" beside a "not reviewed" note.
+ */
+function shownProcessing(d: FtDocument): FtDocument['processing'] {
+  return d.processing === 'completed' && verificationOf(d) !== 'reviewed'
+    ? 'needs_review'
+    : d.processing;
+}
+
 export function DocumentsPage(): React.JSX.Element {
   const db = useDb();
   const f = useFormat();
@@ -270,10 +280,7 @@ export function DocumentsPage(): React.JSX.Element {
                   <p className="text-muted truncate text-xs">{docTypeLabel(d.docType)}</p>
                 </button>
                 <div className="mt-1.5 flex flex-wrap gap-1">
-                  <ProcessingBadge state={d.processing} />
-                  {verificationOf(d) !== 'reviewed' && (
-                    <span className="text-warn text-xs font-semibold">Not fully reviewed</span>
-                  )}
+                  <ProcessingBadge state={shownProcessing(d)} />
                 </div>
               </li>
             ))}
@@ -355,15 +362,17 @@ export function DocumentsPage(): React.JSX.Element {
               {
                 key: 'status',
                 header: 'Processing',
-                sortValue: (d) => d.processing,
+                sortValue: (d) => shownProcessing(d),
                 render: (d) => (
                   <div>
-                    <ProcessingBadge state={d.processing} />
+                    <ProcessingBadge state={shownProcessing(d)} />
                     {d.processing === 'failed' && (
                       <p className="text-danger mt-1 max-w-[220px] text-xs">{d.failureReason}</p>
                     )}
-                    {verificationOf(d) !== 'reviewed' && d.processing !== 'failed' && (
-                      <p className="text-warn mt-1 text-xs font-medium">Not yet reviewed</p>
+                    {shownProcessing(d) === 'needs_review' && (
+                      <p className="text-muted mt-1 max-w-[220px] text-xs">
+                        Extracted; fields not yet checked by a person
+                      </p>
                     )}
                   </div>
                 ),
