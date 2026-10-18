@@ -146,4 +146,4 @@ Definition of done for every commit: `npm run check && npm run build`.
 | Deploy and emergency stop         | [`docs/DEPLOY.md`](../docs/DEPLOY.md), [`docs/EMERGENCY_STOP.md`](../docs/EMERGENCY_STOP.md)                                                                              |
 | Data sources and terms            | [`data/README.md`](../data/README.md), [`data/registry/sources.json`](../data/registry/sources.json)                                                                      |
 
-[Next: Judges' demo script →](07-JUDGES-DEMO-SCRIPT.md)
+[← Back to the index](README.md)

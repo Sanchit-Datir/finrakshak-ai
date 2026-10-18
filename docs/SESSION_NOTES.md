@@ -198,8 +198,8 @@ blocked by App Check). Finding for the owner: the scoring replay grows with loan
 
 At the owner's request, added `how-to-use/` for judges: index, quick start, every user flow, a gallery of
 31 screenshots (captured with Playwright from `npm run dev -w web`, quick sign-in; desktop, dark mode and
-360 px), the AI features and agents, the GCP services, an architecture and code tour, and a demo script
-with FAQ. The root README links to it.
+360 px), the AI features and agents, the GCP services, and an architecture and code tour (the
+judges' demo script was removed at the owner's request). The root README links to it.
 
 Owner's follow-up (same day): **no mocked, simulated or not-connected state in any screenshot or in the
 guide.** The session had no Google credentials, so no real Gemini call could be captured; the Copilot,

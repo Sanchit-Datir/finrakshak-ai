@@ -4,8 +4,6 @@
 > and gives early warnings backed by evidence.
 > **The AI proposes with cited evidence, code verifies it, and a person decides.**
 
-**Short on time?** Start with the [5-minute demo script](07-JUDGES-DEMO-SCRIPT.md).
-
 This folder is a guided tour of the repository. In about 15 minutes you can see what the product does
 (with real screenshots of every tab), run it yourself, and follow how the Gen AI agents and the
 Google Cloud services work.
@@ -18,7 +16,6 @@ Google Cloud services work.
 | 4   | [AI features and agents](04-AI-AGENTS.md)                      | The 6 Gen AI features and 4 agents: their tools, loops, verifiers, guardrails and triggers                    | 15 min |
 | 5   | [Google Cloud services](05-GCP-SERVICES.md)                    | Each GCP and Firebase service: why it is used, how it is set up, IAM, request paths, the daily pipeline, cost | 15 min |
 | 6   | [Architecture and code tour](06-ARCHITECTURE-AND-CODE-TOUR.md) | Where every feature lives in the code, the layering rules, the data model, the tests and CI                   | 10 min |
-| 7   | [Judges' demo script and FAQ](07-JUDGES-DEMO-SCRIPT.md)        | The demo script, an evaluation checklist, and an FAQ                                                          | 5 min  |
 
 ## The product on one page
 
