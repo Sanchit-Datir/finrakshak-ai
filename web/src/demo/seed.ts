@@ -570,6 +570,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       checksRunAt: o.checks === false ? null : plus(created, 4),
       findingStates: {},
       publicRecords: null,
+      aiAnalysis: null,
     };
     if (submitted !== null)
       a.audit.push(

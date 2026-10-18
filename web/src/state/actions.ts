@@ -18,6 +18,7 @@ import type {
   Priority,
   PrSubject,
   PublicRecordsSnapshot,
+  AiAnalysisSnapshot,
   PublicWatch,
   Transaction,
   WatchEvent,
@@ -73,6 +74,7 @@ export function unsavedApplication(branchId: string): Application {
     checksRunAt: null,
     findingStates: {},
     publicRecords: null,
+    aiAnalysis: null,
   };
 }
 
@@ -155,6 +157,23 @@ export function recordPublicRecordsCheck(
         `Local dataset built ${snapshot.datasetBuiltAt?.slice(0, 10) ?? 'unknown'}; ` +
           `${snapshot.customersChecked.length} customer(s) checked; ` +
           `${found} customer(s) in insolvency or liquidation`,
+      ),
+    );
+  });
+}
+
+/** Stores the AI analysis on the application (one audit entry; counts only, no AI text). */
+export function recordAiAnalysis(appId: string, actor: string, snapshot: AiAnalysisSnapshot): void {
+  mutate((d) => {
+    const a = findApp(d, appId);
+    a.aiAnalysis = snapshot;
+    const r = snapshot.result;
+    a.audit.push(
+      audit(
+        actor,
+        r.mock ? 'AI analysis run (mock, no model called)' : 'AI analysis run',
+        `${r.model ?? 'mock provider'}; ${r.facts.length} fact(s), ${r.findingNotes.length} finding note(s), ` +
+          `${r.dropped} item(s) removed by checks`,
       ),
     );
   });

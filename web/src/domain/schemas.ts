@@ -1,3 +1,7 @@
+import {
+  AnalyseApplicationResultSchema,
+  type AnalyseApplicationResult,
+} from '@fund-tracker/shared';
 import { z } from 'zod';
 
 /**
@@ -282,6 +286,16 @@ export const PublicWatchSchema = z.object({
 });
 export type PublicWatch = z.infer<typeof PublicWatchSchema>;
 
+export const AiAnalysisSnapshotSchema = z.object({
+  inputsKey: z.string(),
+  omittedDocuments: z.number().int().nonnegative(),
+  /** Checked with the shared (zod 3) schema; the web app's zod 4 cannot nest it directly. */
+  result: z.custom<AnalyseApplicationResult>(
+    (v) => AnalyseApplicationResultSchema.safeParse(v).success,
+  ),
+});
+export type AiAnalysisSnapshot = z.infer<typeof AiAnalysisSnapshotSchema>;
+
 export const ApplicationSchema = z.object({
   id,
   borrowerId: id.nullable(),
@@ -301,6 +315,8 @@ export const ApplicationSchema = z.object({
   checksRunAt: isoDate.nullable(),
   findingStates: z.record(z.string(), FindingStateSchema),
   publicRecords: PublicRecordsSnapshotSchema.nullable(),
+  /** The last AI analysis (analyseApplication) and the inputs it was made from; null until run. */
+  aiAnalysis: AiAnalysisSnapshotSchema.nullable().default(null),
 });
 export type Application = z.infer<typeof ApplicationSchema>;
 

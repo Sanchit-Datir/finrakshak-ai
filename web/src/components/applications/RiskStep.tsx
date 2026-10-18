@@ -1,4 +1,4 @@
-import { ArrowLeft, BrainCircuit, CircleCheck, ClipboardCheck, Play, Send } from 'lucide-react';
+import { ArrowLeft, CircleCheck, ClipboardCheck, Play, Send } from 'lucide-react';
 import { useState } from 'react';
 import { DISCLAIMERS, PRIORITY_HELP } from '../../domain/labels.js';
 import type { Application, Db } from '../../domain/schemas.js';
@@ -10,8 +10,8 @@ import { useFormat } from '../../state/hooks.js';
 import { useToast } from '../../state/toast.js';
 import { Button } from '../ui/Button.js';
 import { Card, CardHeader } from '../ui/Card.js';
-import { Notice } from '../ui/States.js';
 import { PriorityBadge } from '../ui/StatusBadges.js';
+import { AiAnalysisCard } from './AiAnalysisCard.js';
 import { FindingsTable } from './Findings.js';
 import { PublicRecordsCheck } from './PublicRecordsCheck.js';
 
@@ -74,7 +74,7 @@ export function RiskStep({
     toast.push({
       tone: 'success',
       title: 'Checks completed',
-      detail: `Findings updated${withRecords ? ', including the public-records check' : ''}. Gemini analysis was not run (not connected).`,
+      detail: `Findings updated${withRecords ? ', including the public-records check' : ''}.`,
     });
   };
   return (
@@ -114,23 +114,7 @@ export function RiskStep({
             )}
           </div>
         </Card>
-        <Card>
-          <CardHeader
-            title={
-              <span className="flex items-center gap-2">
-                <BrainCircuit className="text-muted size-5" aria-hidden /> AI-assisted document
-                analysis
-              </span>
-            }
-            subtitle="Gemini on Vertex AI (server-side)"
-          />
-          <div className="px-5 pb-5">
-            <Notice tone="warn" title="Not connected — no AI analysis ran">
-              The Gemini integration is not configured in this prototype, so no document was sent to
-              an AI model and no AI result is shown anywhere for this application.
-            </Notice>
-          </div>
-        </Card>
+        <AiAnalysisCard app={app} db={db} actor={actor} findings={ran ? findings : []} />
       </div>
 
       <PublicRecordsCheck app={app} actor={actor} />

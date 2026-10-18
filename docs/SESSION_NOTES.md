@@ -97,6 +97,14 @@ proposals with `model: null`; model-rejected candidates are not proposed and onl
   accounts, checkpoint 4 (miner Vertex dry run) and E3 (explainer dry run); step 15 (approval view, scorer
   reading the Firestore library, `proposals_waiting`) is not built.
 
+## AI analysis of an application (18 Oct 2026, branch `feat/application-ai-analysis`)
+
+The Risk step's "AI-assisted document analysis" card now runs `analyseApplication` on a click: grounded
+facts from the recorded fields, a note per finding, a short summary; matched patterns do not apply before
+disbursement. Gemini through the AI Studio key in Secret Manager (owner: not Vertex for this); mock
+locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:** budget limit first
+(B-15), whether names are masked too (B-64). Committed on this branch, not pushed.
+
 ## Open decisions and next ideas
 
 - **New loan opens the form directly (18 Oct 2026, branch `ui/loan-page-layout`):** the form path is

@@ -5,15 +5,11 @@ import { getEnv } from '../config/env.js';
 import { RATE_LIMITS, RATE_WINDOW_MS } from '../config/limits.js';
 import { geminiApiKey } from '../config/secrets.js';
 import { GEMINI_LIMITS, GeminiError, generateText } from '../services/gemini.js';
-import { describeError } from '../services/log.js';
 import { defaultProfileStore } from '../services/profiles.js';
 import { createRateLimiter, type RateLimiter } from '../services/rate-limit.js';
 import { accessFromProfiles, type AccessStore } from '../services/access.js';
-import {
-  consumeDailyQuota,
-  firestoreUsageStore,
-  type UsageStore,
-} from '../services/usage-limit.js';
+import { firestoreUsageStore, type UsageStore } from '../services/usage-limit.js';
+import { gateBilledCall, modelFailure } from '../services/billed-gate.js';
 
 const InputSchema = z.object({
   prompt: z.string().trim().min(1).max(GEMINI_LIMITS.maxPromptChars),
@@ -67,42 +63,12 @@ export async function askGeminiHandler(
     throw new HttpsError('invalid-argument', 'A prompt of 1 to 8000 characters is required');
   }
 
-  // Only billed providers are gated: the mock is free and needs no Firestore. Order matters: the
-  // allow-list runs first so unlisted accounts never create usage records or reach the model.
+  // Only billed providers are gated: the mock is free and needs no Firestore.
   const env = getEnv();
   const mock = env.GEMINI_PROVIDER === 'mock';
-  let remainingToday: number | null = null;
-  if (!mock) {
-    try {
-      if (!(await deps.access.isAllowed(request.auth.uid))) {
-        logger.warn('askGemini: refused, AI not enabled for this account', {
-          uid: request.auth.uid,
-        });
-        throw new HttpsError(
-          'permission-denied',
-          'This account is not enabled for AI features. Ask an administrator.',
-        );
-      }
-      const quota = await consumeDailyQuota(deps.usage, request.auth.uid, env.GEMINI_DAILY_LIMIT);
-      if (!quota.allowed) {
-        logger.warn('askGemini: refused, daily limit reached', { uid: request.auth.uid });
-        throw new HttpsError('resource-exhausted', 'Daily AI limit reached. Try again tomorrow.', {
-          reason: 'daily_limit',
-        });
-      }
-      remainingToday = quota.remaining;
-    } catch (error) {
-      if (error instanceof HttpsError) throw error;
-      // The access or usage lookup itself failed (for example a Firestore permission): fail closed, and say so.
-      logger.error('askGemini: access or usage lookup failed', {
-        uid: request.auth.uid,
-        ...describeError(error),
-      });
-      throw new HttpsError('internal', 'Could not check your access. Try again.', {
-        reason: 'access_lookup_failed',
-      });
-    }
-  }
+  const remainingToday = mock
+    ? null
+    : await gateBilledCall(deps, request.auth.uid, env.GEMINI_DAILY_LIMIT, 'askGemini');
 
   try {
     // Output is untrusted text: callers that need structure must validate it (B-13).
@@ -119,16 +85,7 @@ export async function askGeminiHandler(
     return { text, mock, remainingToday };
   } catch (error) {
     // Never log the prompt (B-16); the upstream status and message are enough to debug.
-    if (error instanceof GeminiError) {
-      const cause = error.cause as { name?: string; status?: number; message?: string } | undefined;
-      logger.error('askGemini: model call failed', {
-        reason: error.message,
-        causeName: cause?.name,
-        causeStatus: cause?.status,
-        causeMessage: cause?.message?.slice(0, 300),
-      });
-      throw new HttpsError('unavailable', 'The AI service could not answer. Try again.');
-    }
+    if (error instanceof GeminiError) throw modelFailure('askGemini', error);
     throw error;
   }
 }

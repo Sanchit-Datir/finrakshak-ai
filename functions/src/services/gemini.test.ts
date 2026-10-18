@@ -1,13 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { resetEnvCache } from '../config/env.js';
-import { generateText, GeminiError } from './gemini.js';
+import { generateJson, generateText, GeminiError, resetGeminiClient } from './gemini.js';
 import { MOCK_GEMINI_REPLY } from './gemini-mock.js';
 
 const clientConstructor = vi.hoisted(() => vi.fn());
-vi.mock('@google/genai', () => ({ GoogleGenAI: clientConstructor }));
+vi.mock('@google/genai', () => ({
+  GoogleGenAI: clientConstructor,
+  FinishReason: { MAX_TOKENS: 'MAX_TOKENS' },
+}));
 
 beforeEach(() => {
   resetEnvCache();
+  resetGeminiClient();
   clientConstructor.mockClear();
   vi.stubEnv('GCLOUD_PROJECT', 'fund-tracer');
 });
@@ -52,5 +56,35 @@ describe('cost guard: tests never reach a billed model', () => {
     expect(generateContent).toHaveBeenCalledWith(
       expect.objectContaining({ model: 'gemini-3.1-flash-lite' }),
     );
+  });
+});
+
+describe('generateJson', () => {
+  it('is never answered by the mock (callers build their own mock result)', async () => {
+    await expect(generateJson('{}', 1_000)).rejects.toBeInstanceOf(GeminiError);
+    expect(clientConstructor).not.toHaveBeenCalled();
+  });
+
+  it('asks for JSON and treats a reply cut off at the token limit as a failure (B-11)', async () => {
+    const generateContent = vi
+      .fn()
+      .mockResolvedValue({ text: '{"a":', candidates: [{ finishReason: 'MAX_TOKENS' }] });
+    clientConstructor.mockImplementation(function () {
+      return { models: { generateContent } };
+    });
+    vi.stubEnv('GEMINI_PROVIDER', 'apikey');
+    vi.stubEnv('GEMINI_API_KEY', 'AIza-not-a-real-key');
+    await expect(generateJson('{}', 1_000)).rejects.toThrow('cut off');
+    expect(generateContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        config: expect.objectContaining({ responseMimeType: 'application/json' }) as unknown,
+      }),
+    );
+  });
+
+  it('never allows more than the JSON prompt ceiling', async () => {
+    vi.stubEnv('GEMINI_PROVIDER', 'apikey');
+    vi.stubEnv('GEMINI_API_KEY', 'AIza-not-a-real-key');
+    await expect(generateJson('a'.repeat(30_001), 99_999)).rejects.toThrow('Prompt too long');
   });
 });
