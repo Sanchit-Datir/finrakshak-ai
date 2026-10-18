@@ -2,7 +2,11 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { RiskAlertDocSchema, RiskScoreViewSchema } from '@fund-tracker/shared';
+import {
+  RiskAlertDocSchema,
+  RiskExplanationViewSchema,
+  RiskScoreViewSchema,
+} from '@fund-tracker/shared';
 import { buildRiskSample, RISK_SAMPLE_PATH } from './riskSample.js';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -21,6 +25,8 @@ describe('the bundled risk score sample', () => {
     s.alerts.forEach((a) => RiskAlertDocSchema.parse(a));
     expect(new Set(scores.map((x) => x.held_band)).size).toBeGreaterThan(1);
     expect(s.alerts.length).toBeGreaterThan(0);
+    expect(s.explanations.length).toBeGreaterThan(0);
+    s.explanations.forEach((e) => RiskExplanationViewSchema.parse(e));
     expect(JSON.stringify(s)).not.toMatch(/fraud/i);
   });
 });

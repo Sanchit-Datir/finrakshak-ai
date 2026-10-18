@@ -11,8 +11,11 @@ describe('parseRiskScores', () => {
     expect(s.scores.every((x) => x.latest.loan_id === x.loan_id)).toBe(true);
     expect(new Set(s.scores.map((x) => x.synthetic))).toEqual(new Set([true]));
     expect(s.alerts.length).toBeGreaterThan(0);
-    // The bundled sample is code output: it never carries AI sentences.
-    expect(s.explanations).toEqual([]);
+    // The sample's sentences are templated by the sample builder, not model output; the page labels
+    // them "Simulated demo output". Each one explains an alert that is in the sample.
+    expect(s.explanations.length).toBeGreaterThan(0);
+    expect(s.explanations.every((e) => s.alerts.some((a) => a.alert_id === e.alert_id))).toBe(true);
+    expect(new Set(s.explanations.map((e) => e.model))).toEqual(new Set(['bundled-sample']));
   });
 
   it('drops and counts malformed items instead of trusting them', () => {
