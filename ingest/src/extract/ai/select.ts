@@ -1,4 +1,4 @@
-import type { ListingItem, SourceId } from '@fund-tracker/shared';
+import type { ListingItem, SourceId } from '@finrakshak-ai/shared';
 import { RawStore } from '../../store/rawStore.js';
 import { documentArtifacts } from '../documentArtifacts.js';
 import { readText } from '../runExtract.js';

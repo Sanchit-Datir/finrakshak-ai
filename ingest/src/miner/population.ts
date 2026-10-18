@@ -7,7 +7,7 @@ import {
   type RawTimelineEvent,
   type Relationship,
   type SubjectTimeline,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { dataKey } from '../config.js';
 import { readJsonl } from '../store/jsonl.js';
 import { weakerStatus } from './seedTimelines.js';

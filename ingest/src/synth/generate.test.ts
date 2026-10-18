@@ -10,7 +10,7 @@ import {
   detectMonitoring,
   type MonitoringDetection,
   type RuleConfig,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { ARCHETYPES } from './archetypes/index.js';
 import { PLAN_ALLOCATION, groupSizes, scaleAllocation } from './allocation.js';

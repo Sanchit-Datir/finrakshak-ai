@@ -1,4 +1,4 @@
-import type { UserProfile } from '@fund-tracker/shared';
+import type { UserProfile } from '@finrakshak-ai/shared';
 import { useSyncExternalStore } from 'react';
 import { cloudDataHeaders } from '../lib/cloud/data-access.js';
 import { diagnosticReference, explainCloudError } from '../lib/cloud/errors.js';

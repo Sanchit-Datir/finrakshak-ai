@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 
 export interface ListingDelta {
   readonly added: readonly string[];

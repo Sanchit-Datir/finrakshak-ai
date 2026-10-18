@@ -4,7 +4,7 @@ import {
   matchPattern,
   settingsForVersion,
   type PublishChannel,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { getConfig } from '../config.js';
 import { firestore } from '../coordination/firestore.js';
 import { log } from '../log.js';
@@ -24,7 +24,7 @@ import { readCurrent } from './publish.js';
 /**
  * Cloud Run task `score` (REMAINING_WORK.md, W2d; job `ingest-score`): scores every synthetic loan for the
  * run's IST day with the same pure core as `npm run score`, then appends the history to BigQuery and
- * updates Firestore. Off by default (`FUNDTRACE_SCORE_ENABLED`). SYNTH data only (B-54); no model is ever
+ * updates Firestore. Off by default (`FINRAKSHAK_AI_SCORE_ENABLED`). SYNTH data only (B-54); no model is ever
  * called (B-15); it reads the date of the published, gated build only (B-50); a lease stops two runs
  * writing at once (B-51); a retry of the same day writes nothing new (B-24, B-57).
  */
@@ -104,7 +104,7 @@ export async function runScoreTask(
   ports: ScorePorts | null = null,
 ): Promise<boolean> {
   if (!env.score.enabled) {
-    log.info('score step is off (FUNDTRACE_SCORE_ENABLED=false)', { run: env.runId });
+    log.info('score step is off (FINRAKSHAK_AI_SCORE_ENABLED=false)', { run: env.runId });
     return true;
   }
   await deps.leases.withLease(SCORE_LEASE, env.leaseTtlMs, () =>

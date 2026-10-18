@@ -9,7 +9,7 @@ import {
   type RiskExplanationView,
   type RiskHistoryPoint,
   type RiskScoreView,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { Cloud } from './firebase.js';
 
 /** Synthetic risk scores as the app uses them, after every item has been parsed (B-54). */

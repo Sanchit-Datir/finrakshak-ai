@@ -1,4 +1,4 @@
-import { AskGeminiResultSchema, type AskGeminiResult } from '@fund-tracker/shared';
+import { AskGeminiResultSchema, type AskGeminiResult } from '@finrakshak-ai/shared';
 import type { Cloud } from './firebase.js';
 
 /**

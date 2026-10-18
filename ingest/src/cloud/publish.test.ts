@@ -1,4 +1,4 @@
-import type { GateResult } from '@fund-tracker/shared';
+import type { GateResult } from '@finrakshak-ai/shared';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { GraphOutputs } from '../pipeline/graph.js';
 import { blobs } from '../storage/index.js';

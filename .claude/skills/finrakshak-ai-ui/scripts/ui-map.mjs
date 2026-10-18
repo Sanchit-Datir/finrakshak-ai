@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * Prints a compact index of the FundTrace web UI so an agent can locate code
+ * Prints a compact index of the FinRakshak AI web UI so an agent can locate code
  * without reading whole files. Usage (from repo root):
- *   node .claude/skills/fundtrace-ui/scripts/ui-map.mjs            # everything
- *   node .claude/skills/fundtrace-ui/scripts/ui-map.mjs monitoring # paths/exports matching "monitoring"
- *   node .claude/skills/fundtrace-ui/scripts/ui-map.mjs --routes   # route table only
+ *   node .claude/skills/finrakshak-ai-ui/scripts/ui-map.mjs            # everything
+ *   node .claude/skills/finrakshak-ai-ui/scripts/ui-map.mjs monitoring # paths/exports matching "monitoring"
+ *   node .claude/skills/finrakshak-ai-ui/scripts/ui-map.mjs --routes   # route table only
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';

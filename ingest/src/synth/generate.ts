@@ -10,7 +10,7 @@ import {
   type SynthRelationship,
   type SynthTransaction,
   type SynthTruth,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { groupSizes } from './allocation.js';
 import { ARCHETYPES } from './archetypes/index.js';
 import type { BuiltLoan, LoanContext } from './archetypes/types.js';

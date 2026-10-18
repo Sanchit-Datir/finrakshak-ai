@@ -1,4 +1,4 @@
-import { SeedVerificationFileSchema, entryKey } from '@fund-tracker/shared';
+import { SeedVerificationFileSchema, entryKey } from '@finrakshak-ai/shared';
 import { dataKey } from '../config.js';
 import { readJson } from '../store/jsonl.js';
 import { mineCandidates } from './candidates.js';

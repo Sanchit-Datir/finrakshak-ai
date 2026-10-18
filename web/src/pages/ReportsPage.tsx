@@ -115,7 +115,7 @@ export function ReportsPage(): React.JSX.Element {
       ),
     ];
     downloadFile(
-      `fundtrace-report-${tab}-${generatedAt.slice(0, 10)}.csv`,
+      `finrakshak-ai-report-${tab}-${generatedAt.slice(0, 10)}.csv`,
       toCsv(['metric', 'value'], [...meta, ...rows]),
       'text/csv',
     );

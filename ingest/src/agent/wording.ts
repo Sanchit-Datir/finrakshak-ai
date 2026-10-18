@@ -3,4 +3,4 @@
  * summary or reason containing one is rejected and replaced by the templated text. The list lives in
  * packages/shared so the pattern schemas use the same one.
  */
-export { violatesWording } from '@fund-tracker/shared';
+export { violatesWording } from '@finrakshak-ai/shared';

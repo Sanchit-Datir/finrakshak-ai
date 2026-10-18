@@ -1,4 +1,4 @@
-import type { RiskAlertDoc } from '@fund-tracker/shared';
+import type { RiskAlertDoc } from '@finrakshak-ai/shared';
 
 /**
  * Names stay out of the prompt (RISK_EXPLAINER_PLAN.md, design 2; B-38): the model sees `{BORROWER}`,

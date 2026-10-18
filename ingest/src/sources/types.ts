@@ -1,4 +1,4 @@
-import type { ListingItem, SourceId } from '@fund-tracker/shared';
+import type { ListingItem, SourceId } from '@finrakshak-ai/shared';
 import type { ListingPlan } from '../delta/policy.js';
 import type { PoliteFetcher } from '../http/fetcher.js';
 import type { RawStore } from '../store/rawStore.js';

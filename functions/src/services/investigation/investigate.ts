@@ -1,7 +1,7 @@
 import type {
   InvestigateApplicationInput,
   InvestigateApplicationResult,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { mockToolModel, type ToolCall, type ToolModel } from '../tool-model.js';
 import { LIMITS, SECTIONS } from './input.js';
 import { runToolLoop, type LoopStats } from './loop.js';

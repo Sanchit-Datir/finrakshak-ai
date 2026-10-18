@@ -35,7 +35,10 @@ vi.mock('../ai/geminiModel.js', () => ({
 
 const ctx = plantedContext();
 const ID = ctx.result.candidates[0]?.pattern_id ?? '';
-const env = readCloudEnv({ FUNDTRACE_RUN_ID: 'mine_1', FUNDTRACE_RUN_AT: '2026-10-17T10:00:00Z' });
+const env = readCloudEnv({
+  FINRAKSHAK_AI_RUN_ID: 'mine_1',
+  FINRAKSHAK_AI_RUN_AT: '2026-10-17T10:00:00Z',
+});
 
 function setup(over: Partial<MinePorts> = {}): {
   ports: MinePorts;
@@ -74,8 +77,8 @@ beforeEach(() => {
   gemini.starts = 0;
   gemini.steps = [];
   gemini.fail = null;
-  vi.stubEnv('FUNDTRACE_MINER_ENABLED', 'true');
-  vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'vertex');
+  vi.stubEnv('FINRAKSHAK_AI_MINER_ENABLED', 'true');
+  vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'vertex');
 });
 
 afterEach(() => {
@@ -84,7 +87,7 @@ afterEach(() => {
 
 describe('runMineTask: switched off or nothing to do', () => {
   it('the kill switch writes no proposal and never calls the model', async () => {
-    vi.stubEnv('FUNDTRACE_MINER_ENABLED', 'false');
+    vi.stubEnv('FINRAKSHAK_AI_MINER_ENABLED', 'false');
     const t = setup();
     expect(await runMineTask(env, t.deps, t.ports)).toBe(true);
     expect(t.store.proposals.size).toBe(0);
@@ -114,7 +117,7 @@ describe('runMineTask: switched off or nothing to do', () => {
 
 describe('runMineTask: proposals', () => {
   it('the mock works the proposals out in full but stores none', async () => {
-    vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'mock');
+    vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'mock');
     const t = setup();
     await runMineTask(env, t.deps, t.ports);
     expect(t.store.proposals.size).toBe(0);

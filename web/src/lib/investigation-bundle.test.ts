@@ -2,7 +2,7 @@ import {
   INVESTIGATION_LIMITS,
   InvestigateApplicationInputSchema,
   type InvestigateApplicationResult,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { createDemoDb, newApplicationData } from '../demo/seed.js';
 import type { Application, ApplicationData } from '../domain/schemas.js';

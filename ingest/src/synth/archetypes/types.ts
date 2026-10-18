@@ -5,7 +5,7 @@ import type {
   SynthLoan,
   SynthRelationship,
   SynthTruth,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { TxnFields } from '../ledger.js';
 import type { NameBook } from '../names.js';
 import type { Rng } from '../rng.js';

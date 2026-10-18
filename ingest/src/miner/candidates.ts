@@ -8,7 +8,7 @@ import {
   type StepMatcher,
   type SubjectTimeline,
   type TimelineEvent,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import {
   gapSpread,
   leadTime,

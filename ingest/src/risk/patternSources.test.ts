@@ -8,7 +8,7 @@ import {
   contentHashOf,
   sealLibrary,
   type PatternSource,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { codePatterns, filePatterns, loadLibrary, sha256Hex } from './patternSources.js';
 
 const SAMPLE = path.resolve(
@@ -16,7 +16,7 @@ const SAMPLE = path.resolve(
   '../../../packages/shared/src/risk/patterns/fixtures/library.sample.json',
 );
 const tempFile = (content: unknown): string => {
-  const file = path.join(mkdtempSync(path.join(tmpdir(), 'fundtrace-lib-')), 'library.json');
+  const file = path.join(mkdtempSync(path.join(tmpdir(), 'finrakshak-ai-lib-')), 'library.json');
   writeFileSync(file, JSON.stringify(content));
   return file;
 };
@@ -52,7 +52,10 @@ describe('pattern sources', () => {
     expect(missing.library).toBeNull();
     expect(missing.findings.map((f) => f.code)).toEqual(['library_refused']);
     expect(missing.findings[0]?.detail).toMatch(/could not be read/);
-    const notJson = path.join(mkdtempSync(path.join(tmpdir(), 'fundtrace-lib-')), 'library.json');
+    const notJson = path.join(
+      mkdtempSync(path.join(tmpdir(), 'finrakshak-ai-lib-')),
+      'library.json',
+    );
     writeFileSync(notJson, '{ not json');
     expect((await loadLibrary(filePatterns(notJson))).findings.map((f) => f.code)).toEqual([
       'library_refused',

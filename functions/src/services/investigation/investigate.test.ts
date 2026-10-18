@@ -1,4 +1,4 @@
-import { InvestigateApplicationResultSchema } from '@fund-tracker/shared';
+import { InvestigateApplicationResultSchema } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { GeminiError } from '../gemini.js';
 import type { ToolModel } from '../tool-model.js';

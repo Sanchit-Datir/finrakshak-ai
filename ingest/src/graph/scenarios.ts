@@ -9,7 +9,7 @@ import type {
   Relationship,
   RelationshipType,
   SourceId,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { GraphInput } from './input.js';
 
 export { SCENARIOS, scenarioNotes } from './scenarioList.js';

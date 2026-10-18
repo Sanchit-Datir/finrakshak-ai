@@ -3,7 +3,7 @@ import type {
   GraphEdgeType,
   Relationship,
   RelationshipType,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 
 /** Transparent hub thresholds: above these, a connector says nothing specific. */
 export const THRESHOLDS = {

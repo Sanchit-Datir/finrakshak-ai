@@ -1,4 +1,4 @@
-import type { ListingItem, SourceId } from '@fund-tracker/shared';
+import type { ListingItem, SourceId } from '@finrakshak-ai/shared';
 import { assertFirstPageHasRows, shouldStopPaging } from '../delta/policy.js';
 import { parseDate } from '../util/dates.js';
 import { parseTable, type TableRow } from '../util/htmlTable.js';

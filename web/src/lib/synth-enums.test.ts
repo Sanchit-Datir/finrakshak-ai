@@ -5,7 +5,7 @@ import {
   SYNTH_LOAN_PRODUCTS,
   SYNTH_RELATIONSHIP_TYPES,
   SYNTH_TRANSACTION_TYPES,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import {
   EntityKindSchema,

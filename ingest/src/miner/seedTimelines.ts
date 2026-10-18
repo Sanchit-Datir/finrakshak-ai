@@ -7,7 +7,7 @@ import {
   type SeedVerificationFile,
   type SubjectTimeline,
   type TimelineEvent,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { MinerSettings } from './settings.js';
 import type { CaseTimeline } from './timelines.js';
 

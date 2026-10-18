@@ -7,7 +7,7 @@ export * from './blobStore.js';
 
 let current: BlobStore | undefined;
 
-/** The configured store: local disk by default, Cloud Storage when `FUNDTRACE_STORAGE=gcs`. */
+/** The configured store: local disk by default, Cloud Storage when `FINRAKSHAK_AI_STORAGE=gcs`. */
 export function blobs(): BlobStore {
   if (current) return current;
   const cfg = getConfig();

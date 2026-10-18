@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createDemoDb } from '../demo/seed.js';
-import type { InvestigateApplicationResult, InvestigationFinding } from '@fund-tracker/shared';
+import type { InvestigateApplicationResult, InvestigationFinding } from '@finrakshak-ai/shared';
 import type { AiInvestigationSnapshot, Application, Priority } from '../domain/schemas.js';
 import {
   AI_FINDING_POINTS,

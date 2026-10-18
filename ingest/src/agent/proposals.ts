@@ -1,4 +1,4 @@
-import type { AgentAction, AgentProposal, SourceId } from '@fund-tracker/shared';
+import type { AgentAction, AgentProposal, SourceId } from '@finrakshak-ai/shared';
 import { createHash } from 'node:crypto';
 import type { SourceFlags } from '../cloud/env.js';
 import type { AgentStore } from './store.js';

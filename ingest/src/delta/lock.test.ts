@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { LOCK_STALE_MS, withLock } from './lock.js';
 
 const lockFile = (): string =>
-  path.join(mkdtempSync(path.join(tmpdir(), 'fundtrace-lock-')), 'interim', 'acquire.lock');
+  path.join(mkdtempSync(path.join(tmpdir(), 'finrakshak-ai-lock-')), 'interim', 'acquire.lock');
 
 describe('withLock', () => {
   it('runs the work and releases the lock, also when the work throws', async () => {

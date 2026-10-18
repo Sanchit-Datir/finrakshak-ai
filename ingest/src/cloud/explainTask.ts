@@ -1,4 +1,4 @@
-import { bandRank, type RiskAlertDoc, type RiskExplanationDoc } from '@fund-tracker/shared';
+import { bandRank, type RiskAlertDoc, type RiskExplanationDoc } from '@finrakshak-ai/shared';
 import { envelope, NO_USAGE } from '../ai/agentRuns.js';
 import { readAiConfig, type AiConfig } from '../ai/config.js';
 import { modelFor } from '../ai/models.js';
@@ -14,7 +14,7 @@ import type { CloudEnv } from './env.js';
 
 /**
  * Cloud Run task `explain` (job `ingest-explain`, RISK_EXPLAINER_PLAN.md E2): after `score`, off by
- * default (`FUNDTRACE_EXPLAIN_ENABLED`). For each new alert of this run (most urgent first, capped), one
+ * default (`FINRAKSHAK_AI_EXPLAIN_ENABLED`). For each new alert of this run (most urgent first, capped), one
  * short model call words the recorded reasons; code checks the sentence and stores it beside the alert
  * (`synthRiskExplanations`). The mock and the kill switch store nothing. SYNTH data only (B-54).
  */
@@ -103,7 +103,7 @@ async function explain(env: CloudEnv, ports: ExplainPorts, cfg: AiConfig): Promi
     note: '',
   };
   if (!cfg.explainer.enabled)
-    return { ...t, note: 'explainer switched off (FUNDTRACE_EXPLAIN_ENABLED=false)' };
+    return { ...t, note: 'explainer switched off (FINRAKSHAK_AI_EXPLAIN_ENABLED=false)' };
   const alerts = (await ports.store.alertsOfRun(env.runId, READ_LIMIT)).sort(mostUrgent);
   if (alerts.length === 0) return { ...t, note: 'no alerts in this run' };
   const picked = alerts.slice(0, cfg.explainer.maxAlerts);

@@ -11,7 +11,7 @@ import {
   type PublicRecord,
   type SynthEntity,
   type SynthFlag,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { z } from 'zod';
 import { normalizeCompanyName } from '../resolve/names.js';
 import type { ScoringData, ScoringInputPort } from './inputs.js';

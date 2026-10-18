@@ -17,7 +17,7 @@ import {
 
 /**
  * Loads `data/synthetic/*.jsonl` (never `truth.jsonl`, B-55) into the synthetic BigQuery dataset
- * (REMAINING_WORK.md, W2a). Run where Application Default Credentials and FUNDTRACE_STORAGE=gcs are set:
+ * (REMAINING_WORK.md, W2a). Run where Application Default Credentials and FINRAKSHAK_AI_STORAGE=gcs are set:
  *   node ingest/dist/risk/synthLoadCli.js [--in data/synthetic] [--dataset fundtrace_synth]
  */
 
@@ -53,12 +53,12 @@ async function main(argv: readonly string[]): Promise<void> {
   const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
   const dir = path.resolve(repoRoot, value(argv, '--in') ?? 'data/synthetic');
   const dataset = assertSynthDataset(
-    value(argv, '--dataset') ?? process.env['FUNDTRACE_SYNTH_DATASET'] ?? 'fundtrace_synth',
+    value(argv, '--dataset') ?? process.env['FINRAKSHAK_AI_SYNTH_DATASET'] ?? 'fundtrace_synth',
   );
   const storage = getConfig().storage;
   if (storage.kind !== 'gcs')
-    throw new Error('Set FUNDTRACE_STORAGE=gcs: BigQuery loads read Cloud Storage');
-  const location = process.env['FUNDTRACE_BIGQUERY_LOCATION'] ?? 'asia-south1';
+    throw new Error('Set FINRAKSHAK_AI_STORAGE=gcs: BigQuery loads read Cloud Storage');
+  const location = process.env['FINRAKSHAK_AI_BIGQUERY_LOCATION'] ?? 'asia-south1';
   const loader = new BigQueryLoader(dataset, location, storage.projectId);
   const jobs = await loadSynthTables(loader, dataset, readTables(dir));
   log.info('synthetic tables loaded', {

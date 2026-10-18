@@ -1,4 +1,4 @@
-import type { SourceId } from '@fund-tracker/shared';
+import type { SourceId } from '@finrakshak-ai/shared';
 
 /** A complete listing that drops below this share of the items still listed looks broken. */
 export const SHRINK_GUARD_MIN_RATIO = 0.5;

@@ -21,7 +21,7 @@ Two people are now working in parallel, on separate branches and separate files:
 Start from `main`. Do not use `plan/synthetic-transactions`; it is already merged.
 
 ```bash
-git fetch origin && git switch -c feat/scoring-quality origin/main && npm ci && npm run build -w @fund-tracker/shared
+git fetch origin && git switch -c feat/scoring-quality origin/main && npm ci && npm run build -w @finrakshak-ai/shared
 ```
 
 If you and Abhishek ever share one folder or machine, use separate worktrees (`git worktree add`), never one
@@ -100,7 +100,7 @@ Each option must be measured with `npm run score`, not estimated. Abhishek picks
 ## 3. The prompt to paste into Claude Code
 
 ```text
-You are working in the fund-tracer repo, on branch feat/scoring-quality (cut from main). Your job is
+You are working in the finrakshak-ai repo, on branch feat/scoring-quality (cut from main). Your job is
 workstream W1, "scoring quality". Do only W1.
 
 READ FIRST, in order: CLAUDE.md, docs/SESSION_NOTES.md, docs/plans/README.md,

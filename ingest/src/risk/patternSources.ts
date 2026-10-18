@@ -10,11 +10,11 @@ import {
   type PatternLibrary,
   type PatternSource,
   type RunFinding,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 
 /**
  * Where the scorer gets its patterns (PATTERN_CONTRACT.md, sections 4 and 7): from code (the hand-written
- * version 1) or from a file (`minerCli export-library`, path in FUNDTRACE_PATTERN_LIBRARY). A Firestore
+ * version 1) or from a file (`minerCli export-library`, path in FINRAKSHAK_AI_PATTERN_LIBRARY). A Firestore
  * source follows in step 15. Every source goes through `readPatternLibrary` with a real sha256, so a
  * library whose content hash does not match is refused, and a bad pattern is skipped and reported. The
  * scorer only ever reads the library; it never writes or edits one.

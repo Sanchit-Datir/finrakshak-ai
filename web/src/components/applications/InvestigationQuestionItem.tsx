@@ -1,4 +1,4 @@
-import type { InvestigationQuestion } from '@fund-tracker/shared';
+import type { InvestigationQuestion } from '@finrakshak-ai/shared';
 import { Check } from 'lucide-react';
 import { useState } from 'react';
 import type { ApprovedQuestion } from '../../domain/schemas.js';

@@ -1,4 +1,4 @@
-import type { PublishChannel } from '@fund-tracker/shared';
+import type { PublishChannel } from '@finrakshak-ai/shared';
 import { envelope, NO_USAGE } from '../ai/agentRuns.js';
 import { readAiConfig, type AiConfig } from '../ai/config.js';
 import { modelFor } from '../ai/models.js';
@@ -23,7 +23,7 @@ import { readCurrent } from './publish.js';
 
 /**
  * Cloud Run task `mine` (job `ingest-miner`, PATTERN_MINER_PLAN.md MVP 3): on demand only, off by default
- * (`FUNDTRACE_MINER_ENABLED`). Code finds the candidates; the model only words or rejects them; the job
+ * (`FINRAKSHAK_AI_MINER_ENABLED`). Code finds the candidates; the model only words or rejects them; the job
  * writes proposals to `patternProposals` and nothing else (B-61). The mock provider and the kill switch
  * store no proposals. Every execution records one `agentRuns` envelope.
  */
@@ -136,7 +136,7 @@ async function propose(
 }
 
 async function mine(env: CloudEnv, ports: MinePorts, cfg: AiConfig): Promise<Outcome> {
-  if (!cfg.miner.enabled) return skipped('miner switched off (FUNDTRACE_MINER_ENABLED=false)');
+  if (!cfg.miner.enabled) return skipped('miner switched off (FINRAKSHAK_AI_MINER_ENABLED=false)');
   if (!(await ports.published())) return skipped('no published build yet (B-50)');
   const now = new Date();
   const all = await ports.load(DEFAULT_MINER_SETTINGS);

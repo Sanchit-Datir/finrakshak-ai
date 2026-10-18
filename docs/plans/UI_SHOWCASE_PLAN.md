@@ -175,7 +175,7 @@ the scope chip must show how many urgent items exist in other branches.
 
 ## 5. Spec impact
 
-`docs/fundtrace-ai-ui-spec.md` needs updating for the new labels, the tabs reduced to 4 on the borrower
+`docs/finrakshak-ai-ui-spec.md` needs updating for the new labels, the tabs reduced to 4 on the borrower
 and case pages, My queue, and the decision room. These updates ship in the same change as each item.
 
 ## 6. Owner decisions (all answered 18 Oct 2026: "go with all your decisions")

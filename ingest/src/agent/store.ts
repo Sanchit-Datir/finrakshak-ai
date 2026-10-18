@@ -3,7 +3,7 @@ import {
   RunReviewSchema,
   type AgentProposal,
   type RunReview,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { Firestore } from '@google-cloud/firestore';
 import { dataKey } from '../config.js';
 import { blobs } from '../storage/index.js';

@@ -100,7 +100,7 @@ the pattern.
 | Place                                                                                                  | Written by                           | Read by                          | When                       |
 | ------------------------------------------------------------------------------------------------------ | ------------------------------------ | -------------------------------- | -------------------------- |
 | `packages/shared/src/risk/patterns/handWritten.ts`                                                     | people, in code, with tests          | the scorer (`codePatterns`)      | From the start (version 1) |
-| A local file, path in `FUNDTRACE_PATTERN_LIBRARY`                                                      | `minerCli export-library`            | the scorer (`filePatterns`)      | Local runs and tests       |
+| A local file, path in `FINRAKSHAK_AI_PATTERN_LIBRARY`                                                  | `minerCli export-library`            | the scorer (`filePatterns`)      | Local runs and tests       |
 | Firestore `riskPatternLibrary/current` (one document) and `riskPatternLibrary/v<n>` (immutable copies) | the `decidePattern` callable only    | the scorer (`firestorePatterns`) | Cloud, after step 12/15    |
 | BigQuery `risk_patterns`                                                                               | the scoring job, a snapshot each run | analysts                         | Cloud                      |
 

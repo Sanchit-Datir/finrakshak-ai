@@ -83,7 +83,7 @@ statements.
 
 ```bash
 npm ci
-npm run build -w @fund-tracker/shared && npm run build -w ingest
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # publishes the public-records graph to the web app
 npm run e2e                          # builds the web app, starts vite preview, runs the scenario
 ```

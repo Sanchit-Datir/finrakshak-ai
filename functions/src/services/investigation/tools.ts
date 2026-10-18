@@ -3,7 +3,7 @@ import type {
   InvestigationFinding,
   InvestigationQuestion,
   RejectionReason,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import type { LoopTool } from './loop.js';
 import { MalformedArgs } from './loop.js';

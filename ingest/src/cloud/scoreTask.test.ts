@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { RiskLatestDocSchema } from '@fund-tracker/shared';
+import { RiskLatestDocSchema } from '@finrakshak-ai/shared';
 import type { RowQuery } from '../risk/bigQueryInputs.js';
 import { MemoryRiskStore } from '../risk/scoreStore.js';
 import { writeSmallDataset } from '../test/synthScoring.js';
@@ -45,9 +45,9 @@ function setup(vars: Record<string, string> = {}): {
     },
   } as unknown as CloudDeps;
   const env = readCloudEnv({
-    FUNDTRACE_RUN_ID: 'run_1',
-    FUNDTRACE_RUN_AT: '2025-12-30T22:00:00.000Z',
-    FUNDTRACE_SCORE_ENABLED: 'true',
+    FINRAKSHAK_AI_RUN_ID: 'run_1',
+    FINRAKSHAK_AI_RUN_AT: '2025-12-30T22:00:00.000Z',
+    FINRAKSHAK_AI_SCORE_ENABLED: 'true',
     ...vars,
   });
   const ports = {
@@ -60,7 +60,7 @@ function setup(vars: Record<string, string> = {}): {
 
 describe('runScoreTask (W2d)', () => {
   it('does nothing while the step is off (the default)', async () => {
-    const t = setup({ FUNDTRACE_SCORE_ENABLED: 'false' });
+    const t = setup({ FINRAKSHAK_AI_SCORE_ENABLED: 'false' });
     expect(await runScoreTask(t.env, t.deps, t.ports)).toBe(true);
     expect(t.leases).toEqual([]);
     expect(t.ports.store.latest.size).toBe(0);
@@ -91,7 +91,7 @@ describe('runScoreTask (W2d)', () => {
     const alerts = t.ports.store.alerts.size;
     const jobs = t.loads.map((l) => l.jobId);
     t.loads.length = 0;
-    const retry = setup({ FUNDTRACE_RUN_ID: 'run_2' });
+    const retry = setup({ FINRAKSHAK_AI_RUN_ID: 'run_2' });
     await runScoreTask(retry.env, t.deps, {
       ...t.ports,
       loader: { load: (s) => Promise.resolve(void t.loads.push(s)) },
@@ -101,6 +101,6 @@ describe('runScoreTask (W2d)', () => {
   });
 
   it('refuses a dataset that is not synthetic before it starts (B-54)', () => {
-    expect(() => setup({ FUNDTRACE_SYNTH_DATASET: 'fundtrace_public' })).toThrow(/_synth/);
+    expect(() => setup({ FINRAKSHAK_AI_SYNTH_DATASET: 'fundtrace_public' })).toThrow(/_synth/);
   });
 });

@@ -2,7 +2,7 @@ import {
   InvestigateApplicationResultSchema,
   type InvestigateApplicationInput,
   type InvestigateApplicationResult,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { explainCloudError } from './errors.js';
 import type { Cloud } from './firebase.js';
 

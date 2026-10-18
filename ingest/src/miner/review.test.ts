@@ -1,4 +1,4 @@
-import { entryKey, type SeedVerificationFile } from '@fund-tracker/shared';
+import { entryKey, type SeedVerificationFile } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { parseCsv } from './csv.js';
 import {

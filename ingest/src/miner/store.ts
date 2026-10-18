@@ -6,7 +6,7 @@ import {
   isRefusedLibrary,
   readPatternLibrary,
   type PatternProposal,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { DocumentReference, Firestore, Timestamp } from '@google-cloud/firestore';
 import { dataKey } from '../config.js';
 import { log } from '../log.js';

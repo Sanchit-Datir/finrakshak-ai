@@ -4,7 +4,7 @@ import {
   type IngestRun,
   type SourceId,
   type SourceRunRecord,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { FULL_RELIST_EVERY_DAYS } from '../delta/policy.js';
 import type { HistoryRow } from './history.js';
 import type { ProposalDraft } from './proposals.js';

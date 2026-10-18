@@ -1,4 +1,4 @@
-import type { AssistCheck, AssistInput, AssistStatement, AssistTask } from '@fund-tracker/shared';
+import type { AssistCheck, AssistInput, AssistStatement, AssistTask } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { GeminiError, generateJson } from './gemini.js';
 

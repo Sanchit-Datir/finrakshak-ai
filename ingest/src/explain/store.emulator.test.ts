@@ -1,4 +1,4 @@
-import { RISK_ALERTS_COLLECTION, RISK_EXPLANATIONS_COLLECTION } from '@fund-tracker/shared';
+import { RISK_ALERTS_COLLECTION, RISK_EXPLANATIONS_COLLECTION } from '@finrakshak-ai/shared';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { clearFirestore, emulatorFirestore } from '../test/emulator.js';
 import { FirestoreExplainStore } from './store.js';

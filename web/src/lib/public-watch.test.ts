@@ -1,4 +1,4 @@
-import type { GraphLabBundle, GraphNode } from '@fund-tracker/shared';
+import type { GraphLabBundle, GraphNode } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import type { PublicWatch } from '../domain/schemas.js';
 import { indexBundle } from './graph-lab.js';

@@ -2,7 +2,7 @@ import {
   APPLICATION_ANALYSIS_LIMITS as L,
   type AnalyseApplicationInput,
   type AnalysisDocument,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { Application, FtDocument } from '../domain/schemas.js';
 import type { AttentionScore } from './attention-score.js';
 import type { Finding } from './checks.js';

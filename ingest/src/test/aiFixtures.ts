@@ -1,4 +1,4 @@
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import type { AiClaimRow, AiExtractionRecord } from '../extract/ai/schema.js';
 import { RUN_AT } from './fixtures.js';
 

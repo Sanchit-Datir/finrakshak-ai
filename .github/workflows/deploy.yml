@@ -52,10 +52,10 @@ jobs:
       # data/processed). Fallback until the cloud /data/** feed is live; it is NOT behind sign-in (B-46).
       - name: Publish public-records bundle for Hosting
         run: |
-          npm run build -w @fund-tracker/shared && npm run build -w ingest
+          npm run build -w @finrakshak-ai/shared && npm run build -w ingest
           node ingest/dist/graphCli.js --web
       # Lint, types and tests already run in ci.yml for every PR; only build here.
-      - run: npm run build -w @fund-tracker/shared && npm run build -w web
+      - run: npm run build -w @finrakshak-ai/shared && npm run build -w web
         env:
           VITE_FIREBASE_PROJECT_ID: ${{ env.FIREBASE_PROJECT_ID }}
       - uses: google-github-actions/auth@v2
@@ -65,8 +65,12 @@ jobs:
       # Both sites serve the same build and config (firebase.json), so one preview is enough.
       - name: Deploy preview channel
         run: |
-          npx firebase hosting:channel:deploy "pr-${{ github.event.number }}" --only fund-tracer \
-            --project "$FIREBASE_PROJECT_ID" --expires 7d --json > channel.json
+          # With --json, Firebase writes its error to channel.json, so print it or the log shows nothing.
+          if ! npx firebase hosting:channel:deploy "pr-${{ github.event.number }}" --only fund-tracer \
+            --project "$FIREBASE_PROJECT_ID" --expires 7d --json > channel.json; then
+            cat channel.json
+            exit 1
+          fi
           url=$(jq -r '.result[]?.url // empty' channel.json | head -1)
           echo "### Preview: ${url:-see deploy log}" >> "$GITHUB_STEP_SUMMARY"
 
@@ -86,7 +90,7 @@ jobs:
       # data/processed). Fallback until the cloud /data/** feed is live; it is NOT behind sign-in (B-46).
       - name: Publish public-records bundle for Hosting
         run: |
-          npm run build -w @fund-tracker/shared && npm run build -w ingest
+          npm run build -w @finrakshak-ai/shared && npm run build -w ingest
           node ingest/dist/graphCli.js --web
       - run: npm run build
         env:

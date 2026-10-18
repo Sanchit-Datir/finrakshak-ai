@@ -1,4 +1,4 @@
-import type { CaseEvent, Entity, GraphEdge, GraphNode, GraphNodeKind } from '@fund-tracker/shared';
+import type { CaseEvent, Entity, GraphEdge, GraphNode, GraphNodeKind } from '@finrakshak-ai/shared';
 import { matchSeeds } from '../select/relevance.js';
 import type { GraphInput } from './input.js';
 

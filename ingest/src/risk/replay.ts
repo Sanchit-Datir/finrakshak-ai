@@ -9,7 +9,7 @@ import {
   type PatternMatcher,
   type RunFinding,
   type ScoringSettings,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { ScoringData } from './inputs.js';
 import { stepLoan, type LoanMemory } from './step.js';
 import type { UsableLibrary } from './patternSources.js';

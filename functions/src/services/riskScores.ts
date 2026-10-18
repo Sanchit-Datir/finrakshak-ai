@@ -1,5 +1,5 @@
 import { getFirestore } from 'firebase-admin/firestore';
-import type { RiskAlertDoc, RiskExplanationDoc, RiskLatestDoc } from '@fund-tracker/shared';
+import type { RiskAlertDoc, RiskExplanationDoc, RiskLatestDoc } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 
 /**

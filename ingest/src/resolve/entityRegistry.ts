@@ -1,4 +1,4 @@
-import type { Entity, EntityType, Person, SourceId } from '@fund-tracker/shared';
+import type { Entity, EntityType, Person, SourceId } from '@finrakshak-ai/shared';
 import { stableId } from '../util/ids.js';
 import {
   guessEntityType,

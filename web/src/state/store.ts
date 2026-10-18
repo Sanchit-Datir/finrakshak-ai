@@ -8,7 +8,7 @@ import { DbSchema, type Db } from '../domain/schemas.js';
  * or outdated data is replaced with a fresh set of sample records (and the user is told).
  */
 
-const KEY = 'fundtrace.demo.v2';
+const KEY = 'finrakshak-ai.demo.v2';
 
 export interface StoreStatus {
   /** Set when stored data could not be read and was reset. */

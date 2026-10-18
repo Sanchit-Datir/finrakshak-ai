@@ -1,4 +1,4 @@
-import type { AssistInput, AssistTask } from '@fund-tracker/shared';
+import type { AssistInput, AssistTask } from '@finrakshak-ai/shared';
 import { buildContext, targetKey } from '../../lib/assist/context.js';
 import { simulateAssist } from '../../lib/assist/simulate.js';
 import { assistRecord, explainAssistError } from '../../lib/cloud/assist.js';

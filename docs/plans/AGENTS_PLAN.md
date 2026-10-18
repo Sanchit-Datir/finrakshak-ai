@@ -48,7 +48,7 @@ These already exist in `ingest/src/ai/` and `ingest/src/agent/` and are reused a
 - `GeminiToolModel` (Vertex or API key) and `MockToolModel` (a scripted stand-in that never touches the
   network).
 - `AiConfig`: provider (`mock` by default everywhere), model id, caps on tool calls, output tokens, input
-  characters and time, and the kill switch `FUNDTRACE_AGENT_ENABLED`.
+  characters and time, and the kill switch `FINRAKSHAK_AI_AGENT_ENABLED`.
 - `violatesWording`: the banned-word check.
 - Deterministic proposal ids and a 7-day expiry, so a retried step never creates a duplicate.
 - Versioned prompts: the version is stored on every output, and no prompt text is stored.
@@ -227,7 +227,7 @@ Then the approval view (step 15) and the optional explainer (step 17). The extra
    text ships with scoring and includes a deterministic "new since last check / unchanged / score change"
    block (step 8). Build the explainer only if multi-reason alerts read badly in that form **and** the budget
    alert exists (B-15). Details and the stop rule are in `RISK_EXPLAINER_PLAN.md`.
-3. **Model choice per agent.** _Decided 17 Oct 2026:_ the cheapest model everywhere (`FUNDTRACE_AI_MODEL`,
+3. **Model choice per agent.** _Decided 17 Oct 2026:_ the cheapest model everywhere (`FINRAKSHAK_AI_AI_MODEL`,
    set per job). For the miner only, run one A/B at checkpoint 4: the same candidates through the cheapest
    model and one tier up, the owner marks each proposal accept or reject, and the cheapest model that
    matches the owner's choices is kept. The model id and prompt version are stored on every output, so

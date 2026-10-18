@@ -1,4 +1,4 @@
-import { AnalyseApplicationInputSchema } from '@fund-tracker/shared';
+import { AnalyseApplicationInputSchema } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { createDemoDb } from '../demo/seed.js';
 import type { ExtractedField, FtDocument } from '../domain/schemas.js';

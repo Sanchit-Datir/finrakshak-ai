@@ -3,7 +3,7 @@ import {
   reasonText,
   type RaisedAlertKind,
   type RiskAlertDoc,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { AlertState, AlertStatus, Db, Priority } from '../domain/schemas.js';
 import { CATEGORY_LABEL, runChecks, type Finding } from './checks.js';
 import { RULES, runMonitoring, type MonitoringAlert } from './monitoring.js';

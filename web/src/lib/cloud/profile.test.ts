@@ -1,4 +1,4 @@
-import { GetProfileResultSchema, PROFILE_ROLES, type UserProfile } from '@fund-tracker/shared';
+import { GetProfileResultSchema, PROFILE_ROLES, type UserProfile } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { RoleSchema } from '../../domain/schemas.js';
 import { demoEnabled } from './config.js';

@@ -9,7 +9,7 @@ import { serialise } from '../synth/output.js';
  * controls, slow burns, sudden enforcements and fund diversions over 24 months.
  */
 export function writeSmallDataset(): string {
-  const dir = mkdtempSync(path.join(tmpdir(), 'fundtrace-score-'));
+  const dir = mkdtempSync(path.join(tmpdir(), 'finrakshak-ai-score-'));
   const data = generate({
     seed: 7,
     months: 24,

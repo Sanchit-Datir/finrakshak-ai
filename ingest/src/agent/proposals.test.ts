@@ -1,4 +1,4 @@
-import type { AgentProposal } from '@fund-tracker/shared';
+import type { AgentProposal } from '@finrakshak-ai/shared';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { freshFsStore } from '../test/tempData.js';
 import {

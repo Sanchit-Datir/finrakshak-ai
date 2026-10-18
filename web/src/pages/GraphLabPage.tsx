@@ -1,4 +1,4 @@
-import type { GraphLabBundle, GraphLabIndexEntry, GraphNode } from '@fund-tracker/shared';
+import type { GraphLabBundle, GraphLabIndexEntry, GraphNode } from '@finrakshak-ai/shared';
 import { FlaskConical, Network } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { BundleSource } from '../components/graph-lab/BundleSource.js';

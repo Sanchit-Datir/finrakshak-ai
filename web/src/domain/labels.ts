@@ -1,4 +1,4 @@
-import type { InvestigationFindingKind, RejectionReason } from '@fund-tracker/shared';
+import type { InvestigationFindingKind, RejectionReason } from '@finrakshak-ai/shared';
 import type {
   AlertStatus,
   ApplicationSection,

@@ -1,4 +1,4 @@
-import { patternIdOf } from '@fund-tracker/shared';
+import { patternIdOf } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { frequentPrecursors, hasPrecursor, mineCandidates } from './candidates.js';
 import { sha256Hex } from './hash.js';

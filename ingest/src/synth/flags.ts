@@ -3,7 +3,7 @@ import {
   type EvidenceStatus,
   type SourceId,
   type SynthFlag,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { LoanBase } from './base.js';
 
 export interface FlagInput {

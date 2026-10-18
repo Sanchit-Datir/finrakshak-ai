@@ -2,7 +2,7 @@ import {
   timelineFromEvents,
   type RawTimelineEvent,
   type SubjectTimeline,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { mineCandidates } from './candidates.js';
 import { firstOutcomeOf, type SeedCase } from './seedTimelines.js';
 import { DEFAULT_MINER_SETTINGS } from './settings.js';

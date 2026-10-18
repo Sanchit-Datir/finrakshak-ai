@@ -3,7 +3,7 @@ import {
   ListingItemSchema,
   SourceIdSchema,
   type IngestRun,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import type { ToolSpec } from '../ai/toolModel.js';
 import { listingKey } from '../acquire.js';

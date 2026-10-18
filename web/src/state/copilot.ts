@@ -1,4 +1,4 @@
-import type { AssistFact, AssistResult, AssistTask } from '@fund-tracker/shared';
+import type { AssistFact, AssistResult, AssistTask } from '@finrakshak-ai/shared';
 import { useEffect, useSyncExternalStore } from 'react';
 import { targetKey, type CopilotTarget } from '../lib/assist/context.js';
 

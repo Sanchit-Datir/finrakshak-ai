@@ -24,9 +24,9 @@ main:
             region: ${region}
             job: ingest-acquire
             env:
-              - name: FUNDTRACE_RUN_ID
+              - name: FINRAKSHAK_AI_RUN_ID
                 value: ${runId}
-              - name: FUNDTRACE_RUN_AT
+              - name: FINRAKSHAK_AI_RUN_AT
                 value: ${runAt}
             timeout: 25200
         except:
@@ -44,9 +44,9 @@ main:
             region: ${region}
             job: ingest-extract
             env:
-              - name: FUNDTRACE_RUN_ID
+              - name: FINRAKSHAK_AI_RUN_ID
                 value: ${runId}
-              - name: FUNDTRACE_RUN_AT
+              - name: FINRAKSHAK_AI_RUN_AT
                 value: ${runAt}
             timeout: 7200
         except:
@@ -94,11 +94,11 @@ main:
                       job: ingest-acquire
                       taskCount: ${runState.rerun_count}
                       env:
-                        - name: FUNDTRACE_RUN_ID
+                        - name: FINRAKSHAK_AI_RUN_ID
                           value: ${runId}
-                        - name: FUNDTRACE_RUN_AT
+                        - name: FINRAKSHAK_AI_RUN_AT
                           value: ${runAt}
-                        - name: FUNDTRACE_SOURCES
+                        - name: FINRAKSHAK_AI_SOURCES
                           value: ${runState.rerun_csv}
                       timeout: 25200
                   except:
@@ -154,11 +154,11 @@ build_and_review:
             region: ${region}
             job: ingest-build
             env:
-              - name: FUNDTRACE_RUN_ID
+              - name: FINRAKSHAK_AI_RUN_ID
                 value: ${runId}
-              - name: FUNDTRACE_RUN_AT
+              - name: FINRAKSHAK_AI_RUN_AT
                 value: ${runAt}
-              - name: FUNDTRACE_FORCE_BUILD
+              - name: FINRAKSHAK_AI_FORCE_BUILD
                 value: ${forceBuild}
             timeout: 7200
         except:
@@ -204,9 +204,9 @@ build_and_review:
             region: ${region}
             job: ingest-explain
             env:
-              - name: FUNDTRACE_RUN_ID
+              - name: FINRAKSHAK_AI_RUN_ID
                 value: ${runId}
-              - name: FUNDTRACE_RUN_AT
+              - name: FINRAKSHAK_AI_RUN_AT
                 value: ${runAt}
             timeout: 1800
         except:
@@ -223,11 +223,11 @@ build_and_review:
             region: ${region}
             job: ingest-agent
             env:
-              - name: FUNDTRACE_RUN_ID
+              - name: FINRAKSHAK_AI_RUN_ID
                 value: ${runId}
-              - name: FUNDTRACE_RUN_AT
+              - name: FINRAKSHAK_AI_RUN_AT
                 value: ${runAt}
-              - name: FUNDTRACE_AGENT_PASS
+              - name: FINRAKSHAK_AI_AGENT_PASS
                 value: ${pass}
             timeout: 1800
         except:
@@ -250,9 +250,9 @@ run_score:
           region: ${region}
           job: ingest-score
           env:
-            - name: FUNDTRACE_RUN_ID
+            - name: FINRAKSHAK_AI_RUN_ID
               value: ${runId}
-            - name: FUNDTRACE_RUN_AT
+            - name: FINRAKSHAK_AI_RUN_AT
               value: ${runAt}
           timeout: 1800
         result: execution

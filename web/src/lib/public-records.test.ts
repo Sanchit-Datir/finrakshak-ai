@@ -1,4 +1,4 @@
-import type { GraphEdge, GraphLabBundle, GraphNode } from '@fund-tracker/shared';
+import type { GraphEdge, GraphLabBundle, GraphNode } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { createDemoDb } from '../demo/seed.js';
 import type { Application, TradeCustomer } from '../domain/schemas.js';

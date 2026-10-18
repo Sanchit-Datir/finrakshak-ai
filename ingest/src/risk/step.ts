@@ -7,7 +7,7 @@ import {
   type LoanScore,
   type ScoreSnapshot,
   type ScoringSettings,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 
 /**
  * One loan's step from its previous run to this one: the alert decision, the held band and the templated

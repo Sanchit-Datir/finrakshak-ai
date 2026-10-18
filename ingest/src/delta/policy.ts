@@ -1,4 +1,4 @@
-import type { ListingItem, SourceId } from '@fund-tracker/shared';
+import type { ListingItem, SourceId } from '@finrakshak-ai/shared';
 import type { SourceState } from './state.js';
 
 export type ListingMode = 'full' | 'incremental';
@@ -25,7 +25,7 @@ export const FULL_RELIST_EVERY_DAYS: Readonly<Partial<Record<SourceId, number>>>
   nfra: 7,
   sfio: 7,
   rbi: 30,
-  // Full index only (FUNDTRACE_SEBI_SAMPLE=false); the 10-order sample is capped and never incremental.
+  // Full index only (FINRAKSHAK_AI_SEBI_SAMPLE=false); the 10-order sample is capped and never incremental.
   sebi: 30,
 };
 

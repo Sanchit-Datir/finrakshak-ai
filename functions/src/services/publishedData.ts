@@ -1,4 +1,4 @@
-import type { PublishedVersion } from '@fund-tracker/shared';
+import type { PublishedVersion } from '@finrakshak-ai/shared';
 import { getStorage } from 'firebase-admin/storage';
 import { z } from 'zod';
 import { getPublicDataConfig } from '../config/env.js';

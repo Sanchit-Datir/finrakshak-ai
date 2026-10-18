@@ -1,4 +1,4 @@
-import type { InvestigationRatio } from '@fund-tracker/shared';
+import type { InvestigationRatio } from '@finrakshak-ai/shared';
 import type { ApplicationData, BorrowerType } from '../domain/schemas.js';
 import { formatMoney } from './format.js';
 import { parseAreaToHectares } from './land.js';

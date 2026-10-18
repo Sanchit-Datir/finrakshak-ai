@@ -19,7 +19,7 @@ export const USAGE = `Usage: node ingest/dist/risk/scoreCli.js [--in DIR] [--out
   --in             synthetic data folder (default data/synthetic; run npm run synth first)
   --out            where scores.jsonl and score_report.json go (default: the --in folder), never data/raw, data/processed or data/registry
   --patterns       "code" for the hand-written version 1 library (default), or a library file
-                   (default from FUNDTRACE_PATTERN_LIBRARY when set)
+                   (default from FINRAKSHAK_AI_PATTERN_LIBRARY when set)
   --seed-review    the owner's seed review (default data/verification/seed_review.json; a missing file is allowed)
   --data-built-on  pretend the public data was built on this IST day (shows B-56 stale handling);
                    by default each replayed month has fresh data
@@ -41,7 +41,7 @@ export function parseArgs(
   const parsed = Schema.safeParse({
     in: input,
     out: value(args, '--out') ?? input,
-    patterns: value(args, '--patterns') ?? env['FUNDTRACE_PATTERN_LIBRARY'] ?? 'code',
+    patterns: value(args, '--patterns') ?? env['FINRAKSHAK_AI_PATTERN_LIBRARY'] ?? 'code',
     seedReview: value(args, '--seed-review') ?? 'data/verification/seed_review.json',
     dataBuiltOn: value(args, '--data-built-on') ?? null,
     withinMonths: within === undefined ? 2 : Number(within),

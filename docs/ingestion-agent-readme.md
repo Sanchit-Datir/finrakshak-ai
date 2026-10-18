@@ -196,12 +196,12 @@ Details that matter:
 | RBI    | Press-release table, per year           | Full relist every 30 days.                                                                                                                 |
 | NFRA   | S3WaaS HTML pages                       | Full relist every 7 days.                                                                                                                  |
 | SFIO   | S3WaaS HTML pages                       | Full relist every 7 days. Small source.                                                                                                    |
-| SEBI   | Enforcement orders by sub-menu          | Full index is used in the cloud (`FUNDTRACE_SEBI_SAMPLE=false`); full relist every 30 days. The 10-order sample is never incremental.      |
+| SEBI   | Enforcement orders by sub-menu          | Full index is used in the cloud (`FINRAKSHAK_AI_SEBI_SAMPLE=false`); full relist every 30 days. The 10-order sample is never incremental.  |
 | MCA    | Company master CSV parts                | Not crawled (robots.txt forbids it). The owner uploads CSV parts to `state/raw/mca_ogd/`; a change in their generation triggers a rebuild. |
 
 Access rules baked into the shared HTTP layer: robots.txt respected, minimum delay per host,
 back-off on 429 or 5xx, stop on 403, an identifying user agent, and per-source caps on documents per
-run (`FUNDTRACE_MAX_DOCS_PER_SOURCE`, default 300).
+run (`FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE`, default 300).
 
 ### 6.2 From a page to stored evidence
 
@@ -321,7 +321,7 @@ flowchart TD
 | `newer_than_published` | The new `built_at` is later than the published one.                                          |
 | `seed_cases_kept`      | Every seed case present in the previous version is still present.                            |
 
-**Channels.** `FUNDTRACE_PUBLISH_ENABLED=false` (the default at first deploy) publishes to the
+**Channels.** `FINRAKSHAK_AI_PUBLISH_ENABLED=false` (the default at first deploy) publishes to the
 `dry-run` channel and loads `fundtrace_public_dryrun`. After a clean week it is switched to `live`
 and tables load to `fundtrace_public`.
 
@@ -365,7 +365,7 @@ flowchart TD
   RUN["Read ingestRuns/runId"] --> BL["Compute 30-day baselines per source<br/>from BigQuery history"]
   BL --> AS["Deterministic assessment<br/>findings + draft proposals"]
   AS --> ST["Status from findings:<br/>critical = failed, warn = degraded, else healthy"]
-  ST --> Q{"Healthy, or kill switch<br/>FUNDTRACE_AGENT_ENABLED=false?"}
+  ST --> Q{"Healthy, or kill switch<br/>FINRAKSHAK_AI_AGENT_ENABLED=false?"}
   Q -->|"yes"| TPL["Templated summary written by code<br/>(no model call, zero cost)"]
   Q -->|"no"| LOOP["Tool loop with Gemini"]
   LOOP -->|"valid review"| SUM["Model summary"]
@@ -457,9 +457,9 @@ actions are marked `applied` with the run ID once an acquire task finishes that 
 ### 9.6 AI extraction (MVP 3, shadow mode)
 
 `ingest-extract` runs between acquire and build. It is off unless
-`FUNDTRACE_AI_EXTRACT_ENABLED=true`, skips under the kill switch, and does nothing with the mock
+`FINRAKSHAK_AI_AI_EXTRACT_ENABLED=true`, skips under the kill switch, and does nothing with the mock
 provider (no fake claims are stored). When on, it reads pending documents (cap
-`FUNDTRACE_AI_EXTRACT_MAX_DOCS`, default 50 per run; page and character caps per document), and writes
+`FINRAKSHAK_AI_AI_EXTRACT_MAX_DOCS`, default 50 per run; page and character caps per document), and writes
 claims as create-only objects. The build loads them into the separate table
 `evidence_claims_ai_shadow` only. Claims never reach the graph until a measured quality gate passes and
 the owner approves (B-52); evidence status is never upgraded.
@@ -512,7 +512,7 @@ same listing or build twice at once.
 - Cloud Run jobs scale to zero; per-job CPU, memory, timeout and retry caps are set in
   `scripts/deploy-ingest.sh`.
 - The model is called only on non-healthy days, with a tool-call and input budget; the kill switch is
-  `FUNDTRACE_AGENT_ENABLED=false`. Tests and CI use the mock model.
+  `FINRAKSHAK_AI_AGENT_ENABLED=false`. Tests and CI use the mock model.
 - BigQuery loads are free; the agent's queries are parameterised and bounded.
 - Artifact Registry keeps the last 10 images.
 - Budget alerts exist (₹450 and ₹200 a month); they warn, they do not stop spend.

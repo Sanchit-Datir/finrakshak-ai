@@ -1,4 +1,4 @@
-import type { AnalyseApplicationResult, InvestigateApplicationResult } from '@fund-tracker/shared';
+import type { AnalyseApplicationResult, InvestigateApplicationResult } from '@finrakshak-ai/shared';
 import { AI_FINDING_KIND_LABEL, PRIORITY_LABEL } from '../domain/labels.js';
 import type { InvestigationEvidence, Priority } from '../domain/schemas.js';
 import type { Finding } from './checks.js';

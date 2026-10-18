@@ -9,7 +9,7 @@ import type {
   InvestigationRelated,
   InvestigationField,
   RejectionReason,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { LIMITS, SECTIONS } from './input.js';
 
 /**

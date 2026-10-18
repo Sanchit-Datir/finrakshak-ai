@@ -7,7 +7,7 @@ import {
   findRealLookingIdentifiers,
 } from './guards.js';
 
-const ROOT = '/work/fund-tracer';
+const ROOT = '/work/finrakshak-ai';
 
 describe('assertSafeOutputDir (SESSION_NOTES: never change real data)', () => {
   it('refuses the three real data folders and anything inside them', () => {
@@ -17,7 +17,7 @@ describe('assertSafeOutputDir (SESSION_NOTES: never change real data)', () => {
       'data/processed',
       'data/processed/bigquery',
       'data/registry',
-      '/work/fund-tracer/data/raw/ed',
+      '/work/finrakshak-ai/data/raw/ed',
       'data/synthetic/../raw',
       './data//processed/',
     ])
@@ -25,10 +25,10 @@ describe('assertSafeOutputDir (SESSION_NOTES: never change real data)', () => {
   });
 
   it('allows the synthetic folder and folders elsewhere, and returns the resolved path', () => {
-    expect(assertSafeOutputDir('data/synthetic', ROOT)).toBe('/work/fund-tracer/data/synthetic');
+    expect(assertSafeOutputDir('data/synthetic', ROOT)).toBe('/work/finrakshak-ai/data/synthetic');
     expect(assertSafeOutputDir('/tmp/synth-run', ROOT)).toBe('/tmp/synth-run');
-    expect(assertSafeOutputDir('data/rawish', ROOT)).toBe('/work/fund-tracer/data/rawish');
-    expect(assertSafeOutputDir('data/graph', ROOT)).toBe('/work/fund-tracer/data/graph');
+    expect(assertSafeOutputDir('data/rawish', ROOT)).toBe('/work/finrakshak-ai/data/rawish');
+    expect(assertSafeOutputDir('data/graph', ROOT)).toBe('/work/finrakshak-ai/data/graph');
   });
 });
 

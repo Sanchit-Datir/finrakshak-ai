@@ -4,7 +4,7 @@ import type {
   PatternDecision,
   PatternDecisionResult,
   PatternLibrary,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
 import { HttpsError } from 'firebase-functions/v2/https';
 import { z } from 'zod';

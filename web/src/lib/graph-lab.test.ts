@@ -1,4 +1,4 @@
-import type { GraphLabBundle, GraphLabIndexEntry } from '@fund-tracker/shared';
+import type { GraphLabBundle, GraphLabIndexEntry } from '@finrakshak-ai/shared';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   fetchIndex,

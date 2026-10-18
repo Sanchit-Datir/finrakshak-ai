@@ -2,8 +2,8 @@ import {
   INVESTIGATION_LIMITS as L,
   type InvestigationCandidate,
   type InvestigationRelated,
-} from '@fund-tracker/shared';
-import type { GraphNode } from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
+import type { GraphNode } from '@finrakshak-ai/shared';
 import { isOrganisation, type LabIndex } from './graph-lab.js';
 import {
   cinOf,

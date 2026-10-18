@@ -1,4 +1,4 @@
-import type { GateResult, GraphLabBundle, PublishedVersion } from '@fund-tracker/shared';
+import type { GateResult, GraphLabBundle, PublishedVersion } from '@finrakshak-ai/shared';
 import type { DatasetStats } from '../dataset/build.js';
 
 /** Everything a gate may look at. Gates are pure: no I/O, so they are cheap to add and reason about. */

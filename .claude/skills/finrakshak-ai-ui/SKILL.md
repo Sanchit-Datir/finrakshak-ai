@@ -1,17 +1,17 @@
 ---
-name: fundtrace-ui
-description: Token-efficient guide for changing the FundTrace AI web UI (web/src — React, Vite, Tailwind, zod). Use for ANY task that adds, fixes, restyles or debugs pages, components, routes, demo data, checks, monitoring rules, alerts, statuses or labels in the web app. Gives a code map, grep anchors for large files, change recipes and gotchas so you can edit without exploring or reading whole files.
+name: finrakshak-ai-ui
+description: Token-efficient guide for changing the FinRakshak AI web UI (web/src — React, Vite, Tailwind, zod). Use for ANY task that adds, fixes, restyles or debugs pages, components, routes, demo data, checks, monitoring rules, alerts, statuses or labels in the web app. Gives a code map, grep anchors for large files, change recipes and gotchas so you can edit without exploring or reading whole files.
 ---
 
-# FundTrace UI — work fast, read little
+# FinRakshak AI UI — work fast, read little
 
 The web UI is ~20k lines. Most tasks touch 1–3 files. Follow this order and stop as soon as you know enough.
 
 ## 1. Locate before you read (do this first)
 
 ```bash
-node .claude/skills/fundtrace-ui/scripts/ui-map.mjs --routes   # route → page component (~40 lines)
-node .claude/skills/fundtrace-ui/scripts/ui-map.mjs <word>     # files + exports matching a word, e.g. alert, badge, monitoring
+node .claude/skills/finrakshak-ai-ui/scripts/ui-map.mjs --routes   # route → page component (~40 lines)
+node .claude/skills/finrakshak-ai-ui/scripts/ui-map.mjs <word>     # files + exports matching a word, e.g. alert, badge, monitoring
 ```
 
 Then `Grep -n` for the symbol and `Read` with `offset`/`limit` around the hit. Do **not** read a whole file over ~300 lines.
@@ -19,7 +19,7 @@ Then `Grep -n` for the symbol and `Read` with `offset`/`limit` around the hit. D
 ## 2. Token rules
 
 - Never read these whole: `pages/CaseDetailPage.tsx`, `pages/MonitoringPage.tsx`, `pages/ReportsPage.tsx`, `pages/DocumentsPage.tsx`. Use the anchors in §4. Large modules are split into folders (`state/actions/`, `lib/checks/`, `domain/schemas/`, `demo/seed/`, `demo/samples/`); their old file is a barrel, so keep importing from it.
-- Don't re-read a file after a successful Edit. Don't open `node_modules`, `dist/`, lockfiles, or `docs/fundtrace-ai-ui-spec.md` unless the task is about spec wording — then grep it for the heading.
+- Don't re-read a file after a successful Edit. Don't open `node_modules`, `dist/`, lockfiles, or `docs/finrakshak-ai-ui-spec.md` unless the task is about spec wording — then grep it for the heading.
 - Prefer one targeted check over the full suite while iterating:
   - types: `npx tsc -p web/tsconfig.json --noEmit 2>&1 | grep error | head`
   - lint one file: `npx eslint web/src/path/File.tsx`

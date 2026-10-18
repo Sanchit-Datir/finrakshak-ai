@@ -3,7 +3,7 @@ import {
   type AssistFact,
   type AssistFactKind,
   type AssistInput,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { PRIORITY_LABEL, TXN_TYPE_LABEL } from '../../domain/labels.js';
 import type { Db, Transaction } from '../../domain/schemas.js';
 import type { Finding } from '../checks.js';

@@ -1,7 +1,7 @@
 import { Firestore } from '@google-cloud/firestore';
 
 /** Project id used by `npm run test:emulators`; `demo-` projects never reach real GCP. */
-export const EMULATOR_PROJECT = 'demo-fundtrace';
+export const EMULATOR_PROJECT = 'demo-finrakshak-ai';
 
 /** A Firestore client on the emulator. Fails fast when the suite is run without one. */
 export function emulatorFirestore(): Firestore {

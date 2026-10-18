@@ -1,4 +1,4 @@
-import type { GraphNode } from '@fund-tracker/shared';
+import type { GraphNode } from '@finrakshak-ai/shared';
 import { Route } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { EDGE_LABEL, pathBetween, type LabIndex } from '../../lib/graph-lab.js';

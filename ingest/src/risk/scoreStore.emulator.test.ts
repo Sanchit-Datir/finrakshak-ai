@@ -4,7 +4,7 @@ import {
   RISK_LATEST_COLLECTION,
   SCORING_SETTINGS_V1 as S,
   matchPattern,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { clearFirestore, emulatorFirestore } from '../test/emulator.js';
 import { writeSmallDataset } from '../test/synthScoring.js';
 import { scoreDay } from './daily.js';

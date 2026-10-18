@@ -1,7 +1,7 @@
 import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { SynthFlagSchema, type SynthEntity, type SynthFlag } from '@fund-tracker/shared';
+import { SynthFlagSchema, type SynthEntity, type SynthFlag } from '@finrakshak-ai/shared';
 import { writeSmallDataset } from '../test/synthScoring.js';
 import { fileScoringInputs, matchRecords, ScoringInputError } from './fileInputs.js';
 import type { ScoringData } from './inputs.js';

@@ -1,4 +1,4 @@
-import type { RawArtifact, SourceId } from '@fund-tracker/shared';
+import type { RawArtifact, SourceId } from '@finrakshak-ai/shared';
 import { dataKey } from '../config.js';
 import { errorMessage, log } from '../log.js';
 import { blobs } from '../storage/index.js';

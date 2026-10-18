@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { SynthManifestSchema } from '@fund-tracker/shared';
+import { SynthManifestSchema } from '@finrakshak-ai/shared';
 import { afterAll, describe, expect, it } from 'vitest';
 import { generate } from './generate.js';
 import { SynthGuardError } from './guards.js';

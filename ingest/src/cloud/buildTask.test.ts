@@ -4,7 +4,7 @@ import {
   type BuildRecord,
   type GraphLabBundle,
   type SourceRunRecord,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BlobHistory } from '../agent/history.js';
 import { toProposal } from '../agent/proposals.js';
@@ -39,7 +39,7 @@ vi.mock('../pipeline/graph.js', async (importOriginal) => ({
   buildGraphOutputs: vi.fn(),
 }));
 
-useTempDataDir('fundtrace-build-task-');
+useTempDataDir('finrakshak-ai-build-task-');
 
 const ROWS = { documents: 100, case_events: 10, entities: 10, relationships: 10 };
 const DAY1 = '2026-10-15T03:30:00.000Z';
@@ -74,7 +74,7 @@ function nextDataset(builtAt: string, rows: Readonly<Record<string, number>> = R
 }
 
 const envOf = (runId: string, over: Partial<CloudEnv> = {}): CloudEnv => ({
-  ...readCloudEnv({ FUNDTRACE_RUN_ID: runId, FUNDTRACE_RUN_AT: RUN_AT }),
+  ...readCloudEnv({ FINRAKSHAK_AI_RUN_ID: runId, FINRAKSHAK_AI_RUN_AT: RUN_AT }),
   ...over,
 });
 

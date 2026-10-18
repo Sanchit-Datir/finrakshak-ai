@@ -1,5 +1,5 @@
 import { BigQuery } from '@google-cloud/bigquery';
-import { SourceRunRecordSchema, type SourceId } from '@fund-tracker/shared';
+import { SourceRunRecordSchema, type SourceId } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { dataKey } from '../config.js';
 import { blobs } from '../storage/index.js';

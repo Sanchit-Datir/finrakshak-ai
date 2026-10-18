@@ -1,4 +1,4 @@
-# FundTrace graph lab — relationship discovery report (SYNTHETIC)
+# FinRakshak AI graph lab — relationship discovery report (SYNTHETIC)
 
 Generated 2026-10-16T14:21:46.144Z.
 
@@ -66,7 +66,7 @@ Established edges: 54. Candidate edges: 2. Strong (used to find networks): 18. W
 ## How to run
 
 ```bash
-npm run build -w @fund-tracker/shared && npm run build -w ingest
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # writes data/graph/* and web/public/graph-lab/
 npm run dev -w web                   # open http://localhost:5173/graph-lab (demo sign-in first)
 ```

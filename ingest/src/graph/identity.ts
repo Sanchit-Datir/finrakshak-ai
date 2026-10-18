@@ -3,7 +3,7 @@ import type {
   EntityMatchCandidate,
   GraphEdge,
   IdentityCandidate,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { nameSimilarity, normalizeCompanyName } from '../resolve/names.js';
 import { stableId } from '../util/ids.js';
 

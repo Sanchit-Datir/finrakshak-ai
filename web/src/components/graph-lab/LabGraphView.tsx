@@ -1,4 +1,4 @@
-import type { GraphEdge, GraphNodeKind } from '@fund-tracker/shared';
+import type { GraphEdge, GraphNodeKind } from '@finrakshak-ai/shared';
 import {
   Briefcase,
   Building,

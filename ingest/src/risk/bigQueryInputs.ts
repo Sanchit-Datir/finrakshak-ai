@@ -1,5 +1,5 @@
 import { BigQuery } from '@google-cloud/bigquery';
-import type { SeedVerificationFile } from '@fund-tracker/shared';
+import type { SeedVerificationFile } from '@finrakshak-ai/shared';
 import type { z } from 'zod';
 import { matchRecords, ScoringInputError } from './fileInputs.js';
 import type { ScoringData, ScoringInputPort } from './inputs.js';

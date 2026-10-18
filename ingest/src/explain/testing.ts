@@ -1,4 +1,4 @@
-import type { Reason, RiskAlertDoc } from '@fund-tracker/shared';
+import type { Reason, RiskAlertDoc } from '@finrakshak-ai/shared';
 
 /** Builders for the explainer's tests. Every id and value is invented (SYNTH). */
 

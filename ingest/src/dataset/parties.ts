@@ -1,4 +1,4 @@
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import { findCompanyNames } from '../extract/patterns.js';
 import { looksLikeOrganisation } from '../resolve/names.js';
 

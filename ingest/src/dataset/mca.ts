@@ -1,5 +1,5 @@
 import path from 'node:path';
-import type { Address, DocumentRecord, Relationship } from '@fund-tracker/shared';
+import type { Address, DocumentRecord, Relationship } from '@finrakshak-ai/shared';
 import { log } from '../log.js';
 import type { EntityRegistry } from '../resolve/entityRegistry.js';
 import { loadMcaMaster, type McaCompany } from '../sources/mcaMaster.js';

@@ -1,4 +1,4 @@
-import type { StepMatcher } from '@fund-tracker/shared';
+import type { StepMatcher } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import type { Candidate, MineResult } from './candidates.js';
 import { DEFAULT_MINER_SETTINGS, type MinerSettings } from './settings.js';

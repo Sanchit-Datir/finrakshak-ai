@@ -1,4 +1,4 @@
-import { istDate } from '@fund-tracker/shared';
+import { istDate } from '@finrakshak-ai/shared';
 
 /**
  * Date and time arithmetic for the generator, on strings and integers only (B-27). "A day" is an Indian

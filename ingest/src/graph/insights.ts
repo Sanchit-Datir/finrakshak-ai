@@ -4,7 +4,7 @@ import {
   type GraphLabBundle,
   type GraphNode,
   type PathStep,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { THRESHOLDS } from './edges.js';
 import { isOrg } from './networks.js';
 

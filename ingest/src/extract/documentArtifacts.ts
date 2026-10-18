@@ -3,7 +3,7 @@ import {
   type ListingItem,
   type RawArtifact,
   type SourceId,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { ItemDocumentsSchema, itemDocsKey, listingKey } from '../acquire.js';
 import { readJsonl } from '../store/jsonl.js';
 import type { RawStore } from '../store/rawStore.js';

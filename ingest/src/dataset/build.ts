@@ -13,7 +13,7 @@ import {
   RiskSignalSchema,
   type Entity,
   type ListingItem,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { listingKey } from '../acquire.js';
 import { dataKey } from '../config.js';

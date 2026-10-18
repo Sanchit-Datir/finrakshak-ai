@@ -7,7 +7,7 @@ import {
   type SeedCaseReview,
   type SeedEntryReview,
   type SeedVerificationFile,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { neutraliseFormula, parseCsv, toCsv } from './csv.js';
 import type { CaseTimeline, TimelineEntry } from './timelines.js';
 

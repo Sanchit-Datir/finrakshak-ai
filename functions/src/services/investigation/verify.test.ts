@@ -1,4 +1,4 @@
-import { INVESTIGATION_LIMITS } from '@fund-tracker/shared';
+import { INVESTIGATION_LIMITS } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { BUNDLE } from './bundle.fixture.js';
 import { LIMITS } from './input.js';

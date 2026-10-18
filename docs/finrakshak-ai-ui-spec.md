@@ -1,14 +1,14 @@
-# FundTrace AI --- UI & UX Implementation Specification
+# FinRakshak AI --- UI & UX Implementation Specification
 
 **Version:** 1.0\
 **Purpose:** Implementation-ready UI instructions for an AI coding
 agent\
-**Product:** FundTrace AI --- Loan Lifecycle Intelligence for rural and
+**Product:** FinRakshak AI --- Loan Lifecycle Intelligence for rural and
 commercial lenders
 
 ## 1. Instructions to the coding agent
 
-Build a polished, modern, responsive web application named **FundTrace
+Build a polished, modern, responsive web application named **FinRakshak AI
 AI** for banking employees who review loan applications and monitor
 post-disbursement activity.
 
@@ -85,7 +85,7 @@ case notes, and audit history.
 
 ### Brand
 
-- Product name: **FundTrace AI**
+- Product name: **FinRakshak AI**
 - Descriptor: **Loan Lifecycle Intelligence**
 - Suggested tagline: **Safer Loans. Stronger Communities.**
 - Tone: dependable, clear, modern, supportive, evidence-led.
@@ -152,7 +152,7 @@ Implement these routes or equivalent pages: - `/login` - `/dashboard` -
 
 ### Left sidebar
 
-Show FundTrace AI logo/wordmark, then: 1. **Dashboard** ---
+Show FinRakshak AI logo/wordmark, then: 1. **Dashboard** ---
 `LayoutDashboard` 2. **New Loan Application** --- `FilePlus2` 3.
 **Document Library** --- `Files` 4. **Borrowers** --- `Users` 5.
 **Post-disbursement Monitoring** --- `Activity` 6. **Investigations**
@@ -203,7 +203,7 @@ A welcoming, trustworthy entry point for bank employees.
 
 ### Left panel
 
-- FundTrace AI logo and "Loan Lifecycle Intelligence."
+- FinRakshak AI logo and "Loan Lifecycle Intelligence."
 - Headline: **"Safer Loans. Stronger Communities."**
 - Supporting text: **"AI-assisted risk intelligence for pre- and
   post-disbursement lending."**
@@ -215,7 +215,7 @@ A welcoming, trustworthy entry point for bank employees.
 ### Login card
 
 - Heading: **"Welcome back"**
-- Subheading: **"Sign in to your FundTrace AI workspace."**
+- Subheading: **"Sign in to your FinRakshak AI workspace."**
 - Employee ID or work email field.
 - Password field with show/hide control.
 - Remember me checkbox.

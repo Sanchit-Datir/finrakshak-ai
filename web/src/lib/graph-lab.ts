@@ -14,7 +14,7 @@ import {
   type GraphNode,
   type GraphNodeKind,
   type PathStep,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 
 /** Graph lab: local, exploratory view of the public-source graph bundle (data/graph). */
 

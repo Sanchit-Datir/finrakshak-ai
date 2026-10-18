@@ -3,7 +3,7 @@ import type {
   InvestigateApplicationInput,
   InvestigateApplicationResult,
   InvestigationFinding,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { InvestigationEvidence } from '../domain/schemas.js';
 
 /**

@@ -1,4 +1,4 @@
-import { RISK_BAND_LABELS, RISK_BANDS } from '@fund-tracker/shared';
+import { RISK_BAND_LABELS, RISK_BANDS } from '@finrakshak-ai/shared';
 import { Download } from 'lucide-react';
 import { Button } from '../ui/Button.js';
 import { Card } from '../ui/Card.js';

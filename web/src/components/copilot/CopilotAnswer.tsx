@@ -1,4 +1,4 @@
-import type { AssistCheck } from '@fund-tracker/shared';
+import type { AssistCheck } from '@finrakshak-ai/shared';
 import { ArrowUpRight, Copy, ShieldCheck, ShieldAlert, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';

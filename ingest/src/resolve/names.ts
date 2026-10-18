@@ -1,4 +1,4 @@
-import type { EntityType } from '@fund-tracker/shared';
+import type { EntityType } from '@finrakshak-ai/shared';
 
 const SUFFIX_RULES: readonly (readonly [RegExp, string])[] = [
   [/\b(PRIVATE|PVT|PVT\.)\s*(LIMITED|LTD)\b\.?/g, 'PRIVATE LIMITED'],

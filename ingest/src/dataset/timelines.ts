@@ -1,4 +1,4 @@
-import type { CaseDocumentLink, CaseEvent, DocumentRecord } from '@fund-tracker/shared';
+import type { CaseDocumentLink, CaseEvent, DocumentRecord } from '@finrakshak-ai/shared';
 import { CASE_SEEDS } from '../seed/cases.js';
 
 export interface TimelineEntry {

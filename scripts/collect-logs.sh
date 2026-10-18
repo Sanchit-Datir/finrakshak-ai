@@ -12,7 +12,7 @@ set -uo pipefail
 
 MINUTES="${1:-60}"
 PROJECT="${2:-fund-tracer}"
-REPO="Sanchit-Datir/fund-tracer"
+REPO="Sanchit-Datir/finrakshak-ai"
 OUT="logs/$(date -u +%Y%m%dT%H%M%SZ)"
 FUNCTIONS=(getprofile askgemini health)
 failed=()

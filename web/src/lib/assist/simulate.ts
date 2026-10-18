@@ -5,7 +5,7 @@ import {
   type AssistResult,
   type AssistTask,
   type RawAssistReply,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 
 /**
  * Demo-session copilot: builds an answer from the record's own facts with fixed rules. No model is

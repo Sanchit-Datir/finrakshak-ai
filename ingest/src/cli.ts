@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { SourceIdSchema, type SourceId } from '@fund-tracker/shared';
+import { SourceIdSchema, type SourceId } from '@finrakshak-ai/shared';
 import { dataKey, dataPath } from './config.js';
 import { withLock } from './delta/lock.js';
 import { writeRunSummary, type SourceRunResult } from './delta/report.js';

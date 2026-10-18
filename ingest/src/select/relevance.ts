@@ -1,4 +1,4 @@
-import type { CaseSeed, ListingItem, SourceId } from '@fund-tracker/shared';
+import type { CaseSeed, ListingItem, SourceId } from '@finrakshak-ai/shared';
 import { CASE_SEEDS } from '../seed/cases.js';
 
 export interface SeedMatch {

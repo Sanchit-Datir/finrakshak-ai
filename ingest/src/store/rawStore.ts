@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import path from 'node:path';
-import { RawArtifactSchema, type RawArtifact, type SourceId } from '@fund-tracker/shared';
+import { RawArtifactSchema, type RawArtifact, type SourceId } from '@finrakshak-ai/shared';
 import { dataKey } from '../config.js';
 import type { FetchResult } from '../http/fetcher.js';
 import { ABSENT, blobs, PreconditionFailedError } from '../storage/index.js';

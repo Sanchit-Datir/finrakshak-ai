@@ -1,4 +1,4 @@
-import { findSequenceChain, matchDefinition, type SubjectTimeline } from '@fund-tracker/shared';
+import { findSequenceChain, matchDefinition, type SubjectTimeline } from '@finrakshak-ai/shared';
 import type { SequenceDefinition } from './backtest.js';
 import { firstOutcomeOf } from './seedTimelines.js';
 

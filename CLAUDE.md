@@ -1,4 +1,4 @@
-# Fund Tracker — Engineering Instructions
+# FinRakshak AI — Engineering Instructions
 
 Monorepo: **React + Vite web UI** (`web/`), **Firebase Cloud Functions** backend (`functions/`),
 shared **zod** schemas/types (`packages/shared/`), and the public-source **data pipeline** (`ingest/`,
@@ -12,11 +12,11 @@ provider stays available but is not the default); hosted on **Firebase Hosting**
 working rules (ask before committing; no PR; never change source data) and open decisions. Update it
 before the session ends.
 
-## Web prototype layout (FundTrace AI)
+## Web prototype layout (FinRakshak AI)
 
-- **For any web UI task, load the `fundtrace-ui` skill first** (`.claude/skills/fundtrace-ui/SKILL.md`): code map, grep anchors and recipes so you don't read large files.
+- **For any web UI task, load the `finrakshak-ai-ui` skill first** (`.claude/skills/finrakshak-ai-ui/SKILL.md`): code map, grep anchors and recipes so you don't read large files.
 
-- Spec: `docs/fundtrace-ai-ui-spec.md` is the source of truth for UI behaviour and wording.
+- Spec: `docs/finrakshak-ai-ui-spec.md` is the source of truth for UI behaviour and wording.
 - `web/src/domain/` zod schemas + labels · `web/src/lib/` pure logic (checks, monitoring, graph, CSV, formatting) ·
   `web/src/state/` store, actions (every mutation writes an audit entry), session, toasts · `web/src/components/` UI ·
   `web/src/pages/` routes (lazy-loaded) · `web/src/demo/` synthetic seed data and sample documents.

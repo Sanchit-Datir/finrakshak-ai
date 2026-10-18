@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
-import { buildAdjacency, neighbourhood, type GraphLabBundle } from '@fund-tracker/shared';
+import { buildAdjacency, neighbourhood, type GraphLabBundle } from '@finrakshak-ai/shared';
 import { CASE_SEEDS } from '../seed/cases.js';
 import { blobs, joinKey } from '../storage/index.js';
 import { writeJson, writeJsonl } from '../store/jsonl.js';

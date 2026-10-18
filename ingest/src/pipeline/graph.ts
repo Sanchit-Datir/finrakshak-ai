@@ -1,4 +1,4 @@
-import type { GraphLabBundle } from '@fund-tracker/shared';
+import type { GraphLabBundle } from '@finrakshak-ai/shared';
 import { dataKey } from '../config.js';
 import { buildGraph } from '../graph/bundle.js';
 import { loadProcessed } from '../graph/input.js';

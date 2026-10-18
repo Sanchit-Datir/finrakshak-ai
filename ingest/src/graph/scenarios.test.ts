@@ -1,4 +1,4 @@
-import { buildAdjacency, shortestPath, type GraphLabBundle } from '@fund-tracker/shared';
+import { buildAdjacency, shortestPath, type GraphLabBundle } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { buildGraph } from './bundle.js';
 import { computeInsights } from './insights.js';

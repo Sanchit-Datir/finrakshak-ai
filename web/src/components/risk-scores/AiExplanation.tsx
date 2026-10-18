@@ -1,4 +1,4 @@
-import { AI_EXPLANATION_LABEL, reasonText } from '@fund-tracker/shared';
+import { AI_EXPLANATION_LABEL, reasonText } from '@finrakshak-ai/shared';
 import { Sparkles } from 'lucide-react';
 import { SimulatedBadge } from '../ui/States.js';
 import type { ExplainedAlert } from '../../lib/cloud/risk-scores.js';

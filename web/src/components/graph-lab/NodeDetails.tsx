@@ -1,4 +1,4 @@
-import { otherEnd, type GraphEdge, type GraphNode } from '@fund-tracker/shared';
+import { otherEnd, type GraphEdge, type GraphNode } from '@finrakshak-ai/shared';
 import { safeExternalUrl } from '../../lib/safe-url.js';
 import { CircleQuestionMark, ExternalLink, FileCheck, Network } from 'lucide-react';
 import { EDGE_LABEL, edgesOf, KIND_LABEL, type LabIndex } from '../../lib/graph-lab.js';

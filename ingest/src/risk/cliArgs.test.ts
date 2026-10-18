@@ -14,10 +14,10 @@ describe('score CLI options', () => {
     });
   });
 
-  it('takes the library file from FUNDTRACE_PATTERN_LIBRARY, and --patterns over it', () => {
-    expect(parseArgs([], { FUNDTRACE_PATTERN_LIBRARY: 'lib.json' }).patterns).toBe('lib.json');
+  it('takes the library file from FINRAKSHAK_AI_PATTERN_LIBRARY, and --patterns over it', () => {
+    expect(parseArgs([], { FINRAKSHAK_AI_PATTERN_LIBRARY: 'lib.json' }).patterns).toBe('lib.json');
     expect(
-      parseArgs(['--patterns', 'code'], { FUNDTRACE_PATTERN_LIBRARY: 'lib.json' }).patterns,
+      parseArgs(['--patterns', 'code'], { FINRAKSHAK_AI_PATTERN_LIBRARY: 'lib.json' }).patterns,
     ).toBe('code');
   });
 

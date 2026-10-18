@@ -4,7 +4,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
  * firestore.rules against the Firestore emulator, through its REST API as a browser would call it.
  * Run with `npm run test:emulators` (root). Tokens are the emulator's unsigned mock ID tokens.
  */
-const PROJECT = 'demo-fundtrace';
+const PROJECT = 'demo-finrakshak-ai';
 let base = '';
 
 beforeAll(() => {

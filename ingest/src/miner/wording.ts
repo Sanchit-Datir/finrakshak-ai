@@ -1,4 +1,4 @@
-import { violatesWording, type StepMatcher } from '@fund-tracker/shared';
+import { violatesWording, type StepMatcher } from '@finrakshak-ai/shared';
 import { numbersOf, unknownNumbers } from '../ai/outputChecks.js';
 import type { Candidate } from './candidates.js';
 
