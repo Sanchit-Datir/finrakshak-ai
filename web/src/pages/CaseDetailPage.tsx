@@ -25,6 +25,7 @@ import {
 } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { Tabs } from '../components/ui/Tabs.js';
+import { PinButton } from '../components/ui/PinButton.js';
 import {
   CASE_STATUS_LABEL,
   EVIDENCE_STATUS_LABEL,
@@ -55,6 +56,7 @@ import { useActor, useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
+import { useCopilotTarget } from '../state/copilot.js';
 import { NoteForm } from './ApplicationDetailPage.js';
 
 type Tab = 'overview' | 'evidence' | 'network' | 'timeline' | 'findings' | 'notes' | 'audit';
@@ -70,6 +72,7 @@ export function CaseDetailPage(): React.JSX.Element {
   const [dialog, setDialog] = useState<'status' | 'assign' | 'note' | 'evidence' | null>(null);
   const [openAlert, setOpenAlert] = useState<string | null>(null);
   const c = db.cases.find((x) => x.id === caseId);
+  useCopilotTarget(c === undefined ? null : { kind: 'case', id: c.id });
   if (c === undefined)
     return (
       <Card>
@@ -178,6 +181,9 @@ export function CaseDetailPage(): React.JSX.Element {
         }
         actions={
           <>
+            <PinButton
+              pin={{ href: `/investigations/${c.id}`, title: `${c.id} · ${c.title}`, kind: 'case' }}
+            />
             <Button
               icon={UserRoundCog}
               onClick={() => {

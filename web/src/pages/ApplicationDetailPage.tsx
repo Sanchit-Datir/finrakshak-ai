@@ -3,13 +3,17 @@ import {
   Download,
   FileQuestion,
   FileText,
+  Info,
   MessageSquarePlus,
   Pencil,
   Send,
+  UserRound,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router';
+import { ApplicationSummaryBar } from '../components/applications/ApplicationSummaryBar.js';
 import { applicantName } from '../components/applications/ApplicationsTable.js';
+import { ActionMenu, type MenuAction } from '../components/ui/ActionMenu.js';
 import { FindingsTable } from '../components/applications/Findings.js';
 import { PublicRecordsCheck } from '../components/applications/PublicRecordsCheck.js';
 import { ExtractStep } from '../components/applications/ExtractStep.js';
@@ -21,7 +25,7 @@ import { Card, CardHeader } from '../components/ui/Card.js';
 import { Dialog } from '../components/ui/Dialog.js';
 import { Checkbox, TextArea } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
-import { EmptyState, Notice } from '../components/ui/States.js';
+import { EmptyState } from '../components/ui/States.js';
 import { AppStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import {
@@ -49,17 +53,43 @@ import { useActor, useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
+import { useCopilotTarget } from '../state/copilot.js';
 import { Tabs } from '../components/ui/Tabs.js';
+import { PinButton } from '../components/ui/PinButton.js';
 
-type Tab =
-  | 'overview'
-  | 'applicant'
-  | 'documents'
-  | 'verification'
-  | 'findings'
-  | 'entities'
-  | 'timeline'
-  | 'audit';
+type Tab = 'overview' | 'documents' | 'findings' | 'activity';
+
+/** Older links used eight tab names; map them onto the four merged sections. */
+const TAB_ALIAS: Record<string, Tab> = {
+  overview: 'overview',
+  applicant: 'overview',
+  documents: 'documents',
+  verification: 'documents',
+  findings: 'findings',
+  entities: 'findings',
+  activity: 'activity',
+  timeline: 'activity',
+  audit: 'activity',
+};
+
+function tabFor(key: string): Tab {
+  return TAB_ALIAS[key] ?? 'overview';
+}
+
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}): React.JSX.Element {
+  return (
+    <section>
+      <h2 className="text-muted mb-3 text-xs font-semibold tracking-wider uppercase">{title}</h2>
+      {children}
+    </section>
+  );
+}
 
 export function ApplicationDetailPage(): React.JSX.Element {
   const { applicationId = '' } = useParams();
@@ -71,6 +101,7 @@ export function ApplicationDetailPage(): React.JSX.Element {
   const [noteOpen, setNoteOpen] = useState(false);
   const [requestOpen, setRequestOpen] = useState(false);
   const app = db.applications.find((a) => a.id === applicationId);
+  useCopilotTarget(app === undefined ? null : { kind: 'application', id: app.id });
 
   if (app === undefined) {
     return (
@@ -128,15 +159,34 @@ export function ApplicationDetailPage(): React.JSX.Element {
 
   const tabs = [
     { key: 'overview' as const, label: 'Overview' },
-    { key: 'applicant' as const, label: 'Applicant & Loan' },
-    { key: 'documents' as const, label: 'Documents', count: docs.length },
-    { key: 'verification' as const, label: 'Verification' },
-    { key: 'findings' as const, label: 'Risk Findings', count: open.length },
-    { key: 'entities' as const, label: 'Related Entities' },
-    { key: 'timeline' as const, label: 'Timeline & Notes', count: app.notes.length },
-    { key: 'audit' as const, label: 'Audit History' },
+    { key: 'documents' as const, label: 'Documents & verification', count: docs.length },
+    { key: 'findings' as const, label: 'Findings & entities', count: open.length },
+    { key: 'activity' as const, label: 'Activity', count: app.notes.length },
   ];
-  const current = (tabs.some((t) => t.key === tab) ? tab : 'overview') as Tab;
+  const current = tabFor(tab);
+  const goTab = (k: string): void => {
+    setTab(tabFor(k));
+  };
+  const moreActions: MenuAction[] = [
+    {
+      label: 'Add note',
+      icon: MessageSquarePlus,
+      onSelect: () => {
+        setNoteOpen(true);
+      },
+    },
+    {
+      label: 'Request information',
+      icon: Send,
+      onSelect: () => {
+        setRequestOpen(true);
+      },
+    },
+    { label: 'Export review summary', icon: Download, onSelect: exportSummary },
+    ...(borrower === undefined
+      ? []
+      : [{ label: 'Open borrower profile', icon: UserRound, to: `/borrowers/${borrower.id}` }]),
+  ];
 
   return (
     <>
@@ -147,52 +197,32 @@ export function ApplicationDetailPage(): React.JSX.Element {
             {app.id} · {applicantName(app)}
           </>
         }
-        badge={
-          <>
-            <AppStatusBadge status={app.status} />
-            <PriorityBadge priority={priority} />
-          </>
-        }
+        badge={<AppStatusBadge status={app.status} />}
         subtitle={
           <>
             {PRODUCT_LABEL[app.data.loan.product]} ·{' '}
             <span className="tabular">{formatMoney(app.data.loan.amountMinor)}</span> · {branch} ·
             Submitted {f.date(app.submittedAt)}
-            {borrower !== undefined && (
-              <>
-                {' '}
-                ·{' '}
-                <Link className="text-primary hover:underline" to={`/borrowers/${borrower.id}`}>
-                  Borrower profile
-                </Link>
-              </>
-            )}
+            <span className="text-muted mt-1 flex items-center gap-1.5 text-xs">
+              <Info className="size-3.5 shrink-0" aria-hidden />
+              Findings are review prompts, not a lending decision. Approve / decline is not part of
+              this prototype.
+            </span>
           </>
         }
         actions={
           <>
+            <PinButton
+              pin={{
+                href: `/applications/${app.id}`,
+                title: `${app.id} · ${applicantName(app)}`,
+                kind: 'application',
+              }}
+            />
             <LinkButton to={`/applications/${app.id}/edit`} icon={Pencil}>
-              Edit in workflow
+              Edit
             </LinkButton>
-            <Button
-              icon={MessageSquarePlus}
-              onClick={() => {
-                setNoteOpen(true);
-              }}
-            >
-              Add note
-            </Button>
-            <Button
-              icon={Send}
-              onClick={() => {
-                setRequestOpen(true);
-              }}
-            >
-              Request information
-            </Button>
-            <Button icon={Download} onClick={exportSummary}>
-              Export review summary
-            </Button>
+            <ActionMenu actions={moreActions} />
             {app.status === 'needs_review' && (
               <Button
                 variant="primary"
@@ -212,67 +242,86 @@ export function ApplicationDetailPage(): React.JSX.Element {
           </>
         }
       />
-      <Notice className="mb-4">
-        Approve / decline actions are not shown: no decision workflow is implemented in this
-        prototype. Findings are review prompts and must not be treated as a lending decision.
-      </Notice>
+      <ApplicationSummaryBar
+        app={app}
+        db={db}
+        priority={priority}
+        openFindings={open.length}
+        onGo={goTab}
+      />
 
-      <Tabs
-        label="Application sections"
-        tabs={tabs}
-        value={current}
-        onChange={(k) => {
-          setTab(k);
-        }}
-      >
-        {current === 'overview' && <Overview app={app} db={db} onTab={setTab} />}
-        {current === 'applicant' && <ApplicantTab app={app} />}
-        {current === 'documents' && <ExtractStep docs={docs} actor={actor} />}
-        {current === 'verification' && <VerificationTab app={app} db={db} />}
-        {current === 'findings' &&
-          (app.checksRunAt === null ? (
-            <Card>
-              <EmptyState
-                icon={FileText}
-                title="Checks have not been run"
-                action={
-                  <LinkButton to={`/applications/${app.id}/edit`}>Open risk analysis</LinkButton>
-                }
-              >
-                Run the configured checks in step 4 of the workflow.
-              </EmptyState>
-            </Card>
-          ) : (
-            <div className="space-y-4">
-              <Card>
-                <CardHeader
-                  title="Risk findings"
-                  subtitle={`Checks last run ${f.dateTime(app.checksRunAt)} · deterministic rules · no AI analysis ran`}
-                />
-                <FindingsTable app={app} findings={findings} actor={actor} />
-              </Card>
-              {app.data.business.businessName.trim() !== '' && (
-                <PublicRecordsCheck app={app} actor={actor} />
-              )}
-            </div>
-          ))}
-        {current === 'entities' && (
-          <Card className="p-4">
-            {borrower === undefined ? (
-              <EmptyState icon={FileText} title="No borrower record yet">
-                A borrower record is created when the application is submitted.
-              </EmptyState>
-            ) : (
-              <EntityGraph
-                db={db}
-                roots={[borrower.entityId]}
-                title={`Entities related to ${borrower.name}`}
-              />
-            )}
-          </Card>
+      <Tabs label="Application sections" tabs={tabs} value={current} onChange={goTab}>
+        {current === 'overview' && (
+          <div className="space-y-8">
+            <Overview app={app} db={db} onTab={goTab} />
+            <Section title="Applicant & loan">
+              <ApplicantTab app={app} />
+            </Section>
+          </div>
         )}
-        {current === 'timeline' && <Timeline app={app} />}
-        {current === 'audit' && <AuditTab app={app} db={db} />}
+        {current === 'documents' && (
+          <div className="space-y-8">
+            <ExtractStep docs={docs} actor={actor} />
+            <Section title="Cross-verification">
+              <VerificationTab app={app} db={db} />
+            </Section>
+          </div>
+        )}
+        {current === 'findings' && (
+          <div className="space-y-8">
+            {app.checksRunAt === null ? (
+              <Card>
+                <EmptyState
+                  icon={FileText}
+                  title="Checks have not been run"
+                  action={
+                    <LinkButton to={`/applications/${app.id}/edit`}>Open risk analysis</LinkButton>
+                  }
+                >
+                  Run the configured checks in step 4 of the workflow.
+                </EmptyState>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                <Card>
+                  <CardHeader
+                    title="Risk findings"
+                    subtitle={`Checks last run ${f.dateTime(app.checksRunAt)} · deterministic rules · no AI analysis ran`}
+                  />
+                  <FindingsTable app={app} findings={findings} actor={actor} />
+                </Card>
+                {app.data.business.businessName.trim() !== '' && (
+                  <PublicRecordsCheck app={app} actor={actor} />
+                )}
+              </div>
+            )}
+            <Section title="Related entities">
+              <Card className="p-4">
+                {borrower === undefined ? (
+                  <EmptyState icon={FileText} title="No borrower record yet">
+                    A borrower record is created when the application is submitted.
+                  </EmptyState>
+                ) : (
+                  <EntityGraph
+                    db={db}
+                    roots={[borrower.entityId]}
+                    title={`Entities related to ${borrower.name}`}
+                  />
+                )}
+              </Card>
+            </Section>
+          </div>
+        )}
+        {current === 'activity' && (
+          <div className="grid gap-6 xl:grid-cols-2">
+            <Section title="Timeline & notes">
+              <Timeline app={app} />
+            </Section>
+            <Section title="Audit history">
+              <AuditTab app={app} db={db} />
+            </Section>
+          </div>
+        )}
       </Tabs>
 
       <Dialog

@@ -13,6 +13,7 @@ import { reviewPriority } from '../lib/checks.js';
 import { matchesQuery } from '../lib/text.js';
 import { useUrlState } from '../state/url.js';
 import { useDb } from '../state/store.js';
+import { useBranchScope } from '../state/scope.js';
 
 const AWAITING = new Set(['documents_needed', 'processing', 'needs_review', 'ready_for_decision']);
 
@@ -21,7 +22,8 @@ export function ApplicationsPage(): React.JSX.Element {
   const [q, setQ] = useUrlState('q', '');
   const [status, setStatus] = useUrlState('status', 'all');
   const [priority, setPriority] = useUrlState('priority', 'all');
-  const [branch, setBranch] = useUrlState('branch', 'all');
+  const { scope } = useBranchScope();
+  const [branch, setBranch] = useUrlState('branch', scope);
   const [product, setProduct] = useUrlState('product', 'all');
 
   const rows = useMemo(

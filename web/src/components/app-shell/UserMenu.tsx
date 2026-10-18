@@ -11,9 +11,11 @@ import { Popover } from '../ui/Popover.js';
 export function Avatar({
   name,
   size = 'md',
+  className,
 }: {
   name: string;
   size?: 'sm' | 'md';
+  className?: string;
 }): React.JSX.Element {
   return (
     <span
@@ -21,6 +23,7 @@ export function Avatar({
       className={cn(
         'bg-navy flex shrink-0 items-center justify-center rounded-full font-semibold text-white',
         size === 'sm' ? 'size-7 text-[11px]' : 'size-9 text-xs',
+        className,
       )}
     >
       {initials(name)}
@@ -31,9 +34,12 @@ export function Avatar({
 export function UserMenu({
   compact = false,
   placement,
+  inverted = false,
 }: {
   compact?: boolean;
   placement: 'sidebar' | 'header';
+  /** On the dark sidebar. */
+  inverted?: boolean;
 }): React.JSX.Element | null {
   const session = useSession();
   const db = useDb();
@@ -44,7 +50,7 @@ export function UserMenu({
   return (
     <Popover
       align={placement === 'sidebar' ? 'left' : 'right'}
-      panelClassName={cn('w-64', placement === 'sidebar' && 'top-auto bottom-full mb-2')}
+      panelClassName={cn('text-ink w-64', placement === 'sidebar' && 'top-auto bottom-full mb-2')}
       trigger={({ open, toggle, id }) => (
         <button
           type="button"
@@ -53,20 +59,40 @@ export function UserMenu({
           aria-controls={id}
           aria-label={`Profile menu for ${session.name}`}
           className={cn(
-            'hover:bg-surface-2 flex w-full items-center gap-2.5 rounded-lg p-1.5 text-left',
+            'flex w-full items-center gap-2.5 rounded-lg p-1.5 text-left',
+            inverted ? 'hover:bg-white/10' : 'hover:bg-surface-2',
             compact && 'justify-center',
           )}
         >
-          <Avatar name={session.name} />
+          <Avatar
+            name={session.name}
+            className={
+              inverted ? 'from-rail-pre to-rail-investigate text-navy-deep bg-gradient-to-br' : ''
+            }
+          />
           {!compact && (
             <span className="min-w-0 flex-1 leading-tight">
-              <span className="block truncate text-sm font-semibold">{session.name}</span>
-              <span className="text-muted block truncate text-xs">
+              <span
+                className={cn('block truncate text-sm font-semibold', inverted && 'text-white')}
+              >
+                {session.name}
+              </span>
+              <span
+                className={cn(
+                  'block truncate text-xs',
+                  inverted ? 'text-rail-muted' : 'text-muted',
+                )}
+              >
                 {ROLE_LABEL[session.role]} · {branch}
               </span>
             </span>
           )}
-          {!compact && <ChevronDown className="text-muted size-4" aria-hidden />}
+          {!compact && (
+            <ChevronDown
+              className={cn('size-4', inverted ? 'text-rail-muted' : 'text-muted')}
+              aria-hidden
+            />
+          )}
         </button>
       )}
     >

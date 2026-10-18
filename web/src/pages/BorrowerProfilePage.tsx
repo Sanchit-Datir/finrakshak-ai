@@ -17,6 +17,7 @@ import {
 import { Badge } from '../components/ui/Badge.js';
 import { DataTable } from '../components/ui/Table.js';
 import { Tabs } from '../components/ui/Tabs.js';
+import { PinButton } from '../components/ui/PinButton.js';
 import { BORROWER_TYPE_LABEL, PRODUCT_LABEL, TXN_TYPE_LABEL } from '../domain/labels.js';
 import { allAlerts } from '../lib/alerts.js';
 import { docTypeLabel } from '../lib/doc-catalog.js';
@@ -24,6 +25,7 @@ import { formatMoney } from '../lib/format.js';
 import { useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useUrlState } from '../state/url.js';
+import { useCopilotTarget } from '../state/copilot.js';
 import { summarizeBorrower } from './BorrowersPage.js';
 
 type Tab =
@@ -35,6 +37,7 @@ export function BorrowerProfilePage(): React.JSX.Element {
   const f = useFormat();
   const [tab, setTab] = useUrlState('tab', 'overview');
   const b = db.borrowers.find((x) => x.id === borrowerId);
+  useCopilotTarget(b === undefined ? null : { kind: 'borrower', id: b.id });
   const data = useMemo(() => {
     if (b === undefined) return null;
     const apps = db.applications.filter((a) => a.borrowerId === b.id);
@@ -114,6 +117,9 @@ export function BorrowerProfilePage(): React.JSX.Element {
             {db.branches.find((x) => x.id === b.branchId)?.name} · RM: {b.relationshipManager} ·
             Updated {f.date(data.summary.lastActivity)}
           </>
+        }
+        actions={
+          <PinButton pin={{ href: `/borrowers/${b.id}`, title: b.name, kind: 'borrower' }} />
         }
       />
       <Tabs

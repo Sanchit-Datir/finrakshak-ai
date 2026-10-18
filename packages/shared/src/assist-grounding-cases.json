@@ -1,0 +1,88 @@
+{
+  "input": {
+    "task": "explain",
+    "subject": { "kind": "loan", "title": "L-2026-0112 · Anil Bapu Shinde" },
+    "question": "",
+    "facts": [
+      {
+        "ref": "S1",
+        "kind": "subject",
+        "label": "Loan",
+        "text": "Farmer loan of ₹3,50,000 disbursed on 01 Jun 2023"
+      },
+      {
+        "ref": "A1",
+        "kind": "alert",
+        "label": "3 cash withdrawals just below ₹1,00,000",
+        "text": "Needs attention. Withdrawals of ₹99,500, ₹99,000 and ₹98,700 within 4 days"
+      },
+      {
+        "ref": "T1",
+        "kind": "transaction",
+        "label": "02 Jun 2023",
+        "text": "₹99,500 cash withdrawal"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "keeps a cited statement whose numbers are in the cited facts",
+      "statement": { "text": "Three withdrawals stayed just below ₹1,00,000.", "refs": ["A1"] },
+      "kept": true,
+      "reason": null
+    },
+    {
+      "name": "drops a statement with no citation",
+      "statement": { "text": "The withdrawals look planned.", "refs": [] },
+      "kept": false,
+      "reason": "droppedUncited"
+    },
+    {
+      "name": "drops a statement that cites a fact that was not sent",
+      "statement": { "text": "A guarantor also withdrew cash.", "refs": ["F9"] },
+      "kept": false,
+      "reason": "droppedUncited"
+    },
+    {
+      "name": "drops a statement with a number the cited facts do not contain",
+      "statement": { "text": "About 62% of the loan was withdrawn in cash.", "refs": ["A1", "S1"] },
+      "kept": false,
+      "reason": "droppedNumbers"
+    },
+    {
+      "name": "drops a statement that uses a verdict word",
+      "statement": { "text": "This is fraud by the borrower.", "refs": ["A1"] },
+      "kept": false,
+      "reason": "droppedWording"
+    },
+    {
+      "name": "ignores citation handles written into the text",
+      "statement": { "text": "A cash withdrawal of ₹99,500 was made [T1].", "refs": ["T1"] },
+      "kept": true,
+      "reason": null
+    },
+    {
+      "name": "treats 1 Jun and 01 Jun as the same number",
+      "statement": { "text": "The loan was disbursed on 1 Jun 2023.", "refs": ["S1"] },
+      "kept": true,
+      "reason": null
+    },
+    {
+      "name": "accepts numbers from the record's title",
+      "statement": { "text": "Loan L-2026-0112 had a withdrawal of ₹99,500.", "refs": ["T1"] },
+      "kept": true,
+      "reason": null
+    },
+    {
+      "name": "does not accept a number that appears only in a fact it did not cite",
+      "statement": { "text": "The loan was ₹3,50,000.", "refs": ["T1"] },
+      "kept": false,
+      "reason": "droppedNumbers"
+    }
+  ],
+  "headlines": [
+    { "headline": "3 withdrawals below ₹1,00,000 need checking", "kept": true },
+    { "headline": "7 suspicious withdrawals", "kept": false },
+    { "headline": "Likely fraud on this loan", "kept": false }
+  ]
+}

@@ -105,6 +105,21 @@ disbursement. Gemini through the AI Studio key in Secret Manager (owner: not Ver
 locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:** budget limit first
 (B-15), whether names are masked too (B-64). Committed on this branch, not pushed.
 
+## Showcase UI and Copilot (18 Oct 2026, branch `remaining-ui-changes-2`, not committed)
+
+The owner approved `docs/plans/UI_SHOWCASE_PLAN.md`, re-ordered for the judging criteria (Gen AI is 65%).
+The owner said: do not commit yet, and stay on this branch.
+
+- **Built:**
+  - the dark "mission rail" sidebar, with the journey pre-sanction → ₹ disbursed → post-disbursement →
+    investigate and live counts (`web/src/lib/nav-counts.ts`);
+  - the branch-scope switcher (B-65), pinned records, `/queue` (My queue) and the mobile tab bar;
+  - **FinRakshak Copilot** (`docs/COPILOT.md`, B-66): the `assistRecord` callable, the grounding check
+    in shared plus its runtime copy in functions, and a simulated answer in demo sessions. Open it with
+    Ctrl/⌘ J, I, or **Ask AI**.
+- **Renames:** Dashboard → Command center, Monitoring → Loan book, Graph Lab → Relationship graph.
+- **Next:** the AI hub page (2C), AI in workflows (2B), then the money-trail Sankey and Story mode.
+
 ## Open decisions and next ideas
 
 - **New loan opens the form directly (18 Oct 2026, branch `ui/loan-page-layout`):** the form path is
