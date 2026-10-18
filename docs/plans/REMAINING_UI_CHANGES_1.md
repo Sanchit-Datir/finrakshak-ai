@@ -51,6 +51,15 @@ hint ("Marathi interface text is available on the sign-in page") became false af
 The stored `preferences.language` field stays in the schema so existing saved workspaces still load.
 Marathi **document** support (7/12 extracts, Devanagari text, Marathi digits) is unaffected.
 
+## 5. Dashboard: larger count links and Risk overview tiles
+
+- "Active loans monitored" and "Open investigations" links under the two main cards are larger
+  (`MiniLink` in `web/src/pages/DashboardPage.tsx`).
+- Risk overview (`web/src/components/charts/DonutChart.tsx`): the full-width legend list became four
+  tiles (coloured top strip, icon, label, count, "% of total", share bar, "View →"); each tile links to
+  the filtered applications list. Smaller donut on the left; tiles 2×2 under the donut on phones.
+  "Checks not run" uses the muted colour so its slice is visible.
+
 ## Verification
 
 - `tsc` (web) and `eslint --max-warnings 0` on changed files pass; prettier applied.
