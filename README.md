@@ -1,101 +1,665 @@
-# FundTrace AI — Loan Lifecycle Intelligence
+# FinRakshak AI — Loan Lifecycle Intelligence
 
-TypeScript monorepo on Google/Firebase: React UI, Cloud Functions backend, Firestore, Gemini via Vertex AI.
+> **Evidence-backed early warnings for every rupee a bank lends, from application to repayment.
+> The AI proposes with cited evidence, code verifies, a person decides.**
 
-The web app is a **functional prototype with synthetic demo data** built to the spec in
-[`docs/fundtrace-ai-ui-spec.md`](docs/fundtrace-ai-ui-spec.md). Core workflow: capture paper documents →
-review Marathi/English fields against the source → run evidence-backed checks → monitor post-disbursement
-transactions → investigate a unified case.
+[![CI](https://github.com/Sanchit-Datir/fund-tracer/actions/workflows/ci.yml/badge.svg)](https://github.com/Sanchit-Datir/fund-tracer/actions/workflows/ci.yml)
+![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-3178c6)
+![Gemini on Vertex AI](https://img.shields.io/badge/Gen%20AI-Gemini%20on%20Vertex%20AI-4285f4)
+![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
+Repository: `fund-tracer` · Product: **FinRakshak AI** (earlier working name FundTrace AI) · Stack:
+TypeScript monorepo on Google Cloud and Firebase.
+
+---
+
+## Contents
+
+1. [Description](#1-description)
+2. [Opportunity](#2-opportunity)
+3. [Features](#3-features)
+4. [How Gen AI is used](#4-how-gen-ai-is-used)
+5. [Process flow and use-case diagrams](#5-process-flow-and-use-case-diagrams)
+6. [Wireframes and mock-ups](#6-wireframes-and-mock-ups)
+7. [Architecture](#7-architecture)
+8. [Technologies](#8-technologies)
+9. [Repository structure](#9-repository-structure)
+10. [Prerequisites and installation](#10-prerequisites-and-installation)
+11. [Usage guide](#11-usage-guide)
+12. [Estimated implementation cost](#12-estimated-implementation-cost)
+13. [Prototype performance and benchmarks](#13-prototype-performance-and-benchmarks)
+14. [Security, privacy and responsible AI](#14-security-privacy-and-responsible-ai)
+15. [Scalability and sustainability](#15-scalability-and-sustainability)
+16. [Additional details and future development](#16-additional-details-and-future-development)
+17. [Contribution guidelines](#17-contribution-guidelines)
+18. [License and credits](#18-license-and-credits)
+
+---
+
+## 1. Description
+
+### The problem
+
+Indian banks, especially rural, cooperative and MSME lenders, lose money in three places:
+
+1. **Before sanction.** Paper documents (7/12 land extracts, Aadhaar, bank statements, warehouse
+   receipts) are typed in by hand, often in Marathi. Inconsistencies, such as a reused survey number,
+   a land area that does not match the 7/12 extract, or declared income far above bank credits, are
+   spotted late or not at all.
+2. **Right after disbursement.** Loan money can be moved on within hours to related parties, split
+   into cash withdrawals or routed in a circle back to the borrower. By the time the account turns
+   NPA, the trail is months old.
+3. **During the loan.** A borrower or its biggest customer can enter insolvency, liquidation or an
+   Enforcement Directorate (ED) action. That information is public (IBBI, NFRA, ED, RBI, SFIO, SEBI,
+   MCA) but scattered across sites that nobody at the branch checks.
+
+### The solution
+
+FinRakshak AI is a loan-lifecycle workspace for branch officers, managers, risk analysts and
+investigators. It joins the three stages into one evidence trail:
+
+- **Capture and verify:** documents are reviewed field by field against the source image, in
+  Marathi or English.
+- **Pre-sanction checks:** deterministic rules plus a public-records check of the applicant and its
+  customers, an **attention score** from 0 to 100, Gemini analysis and an **AI investigator**.
+- **Post-disbursement monitoring:** transaction rules (rapid onward transfer, linked counterparty,
+  circular flow, split cash), a **daily public-records watch** of every disbursed loan and a
+  synthetic risk-scoring job.
+- **Investigate:** alerts become cases with a checklist, evidence, an entity graph and a
+  relationship graph of the public records.
+- **FinRakshak Copilot:** on every screen, it answers "why was this flagged?", "what should I
+  verify?" and "draft the information request" from the record on screen. Every sentence cites a
+  fact, and the grounding check removes anything it cannot support.
+
+Every output is a **lead for a person to verify** (Routine review / Needs attention / Urgent
+review), never a verdict.
+
+---
+
+## 2. Opportunity
+
+### How it differs from existing solutions
+
+| Existing approach                            | Limitation                                                                                | FinRakshak AI                                                                                                                            |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Core-banking EWS (early-warning) modules     | Start after an account shows stress (overdue days, limit breaches); blind before sanction | One trail from the first document to the last repayment; checks run **before** money leaves                                              |
+| Rule-based AML / transaction monitoring      | Many alerts with little context; analysts rebuild the story by hand                       | Each alert carries its evidence and a cited Copilot explanation; graph view of related parties                                           |
+| Credit bureaus / commercial data APIs        | Paid per lookup; cover the borrower, rarely the borrower's **customers**                  | Built from free public records (IBBI, NFRA, ED, RBI, SFIO, SEBI, MCA); checks the chain of unpaid dues to customers in liquidation       |
+| Generic "chat with your documents" LLM tools | Free-form answers that can invent numbers; no audit trail; data leaves the bank's control | Closed tool lists, delimited data, **code-verified citations and numbers**, verdict words blocked, counts-only logs, Vertex AI in-region |
+| Manual public-record searches                | Slow, inconsistent, never repeated after disbursement                                     | Automatic daily watch of every disbursed loan; any record dated after disbursement raises an Urgent review alert                         |
+
+### How it solves the problem
+
+1. **Catches document problems at the counter.** Twelve deterministic checks run on the
+   reviewed fields, and every finding links to the exact field and document region.
+2. **Looks past the borrower.** Business applicants list their largest customers. The
+   public-records check follows the chain of unpaid dues and flags a customer in liquidation, with
+   its share of receivables.
+3. **Watches the money for 90 days.** Monitoring rules read the loan's transactions and draw the
+   money trail as a flow graph.
+4. **Keeps watching after disbursement.** A daily, delta-based pipeline refreshes public records,
+   and new records against a borrower raise an alert.
+5. **Saves analyst time without hiding the evidence.** The Copilot, the application analysis and
+   the AI investigator turn the evidence into plain sentences and draft questions. The officer
+   still sees every fact the AI used.
+
+### USP (unique selling points)
+
+- **Verified Gen AI, not free text.** Every AI sentence must cite facts that were sent, and every
+  number it writes must appear in those facts. Code rejects the rest and shows the officer how many
+  claims were kept and why others were dropped.
+- **Pre- and post-disbursement in one product,** linked by the same entities, documents and audit
+  log.
+- **Third-party exposure:** it finds risk in the borrower's customers, not only in the borrower.
+- **Built for Indian branches:** Marathi and English fields, 7/12 extracts and gat numbers, paise
+  arithmetic, IST days, rupee formatting.
+- **Cost-capped by design:** mock provider by default, the cheapest model that passes our checks,
+  per-user daily AI limits, `maxInstances` caps, scale to zero and budget alerts. A full month of
+  the cloud pipeline is estimated at under US$10.
+
+---
+
+## 3. Features
+
+| Area                              | Feature                                                                                                                                                                                                           | Status                                        |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| **Capture**                       | New loan from the form or from uploaded documents; PDF page count, blur, darkness and resolution warnings (local, pdf.js + canvas); field-by-field review against the source region; Marathi digits and names     | Real (local)                                  |
+| **Pre-sanction checks**           | 12 rules: required fields, missing documents, name and date-of-birth conflicts, land area vs 7/12, existing charges, survey number / warehouse receipt reuse, income vs bank credits, relationships to open cases | Real (`web/src/lib/checks/`)                  |
+| **Public-records check**          | Applicant and declared customers vs 18,286 entities and 57,382 relationships from IBBI, NFRA, ED, RBI, SFIO, SEBI and MCA; chain of unpaid dues; impact on receivables                                            | Real dataset (`ingest/`)                      |
+| **Attention score**               | 0–100 score computed by code from unresolved findings, with bands and top drivers                                                                                                                                 | Real (`web/src/lib/attention-score.ts`)       |
+| **AI analysis of an application** | Gemini summary, facts tied to recorded fields, a note per finding; verdict words withheld                                                                                                                         | Built (Vertex AI; mock locally)               |
+| **AI investigator**               | Gemini tool loop over 8 tools; proposes findings and draft questions; code verifies every citation, quote and number                                                                                              | Built (Vertex AI; mock locally)               |
+| **FinRakshak Copilot**            | Ask about any record (Ctrl/⌘ J): why flagged, what to verify, draft an info request, draft risk observations, where did the money go                                                                              | Built (Vertex AI); simulated in demo sessions |
+| **Transaction monitoring**        | Rapid onward transfer, linked counterparty, repeated counterparty, circular flow, split cash; thresholds editable; CSV import; flow graph                                                                         | Real (`web/src/lib/monitoring.ts`)            |
+| **Public-records watch**          | Every disbursed loan re-checked daily; each record dated after disbursement raises an Urgent review alert                                                                                                         | Real (`web/src/lib/public-watch.ts`)          |
+| **Synthetic risk scores**         | Monthly 0–100 behaviour + pattern score per loan, replayed over 24 months against ground-truth labels                                                                                                             | Real job (`ingest/src/risk/`), synthetic data |
+| **Investigation**                 | Cases with status, assignee, checklist, evidence, notes and audit; entity graph; relationship graph of public records                                                                                             | Real (local workspace)                        |
+| **Cloud data pipeline**           | Daily delta ingestion, publish gates, versioned publish and rollback, BigQuery loads; Gemini ingestion agent, pattern miner and risk explainer (off by default)                                                   | Built (Cloud Run jobs, Workflows)             |
+| **Shell and UX**                  | Role-aware navigation, branch scope, My queue, pinned records, command palette, mobile tab bar, dark mode, keyboard shortcuts, guided help                                                                        | Real                                          |
+| **Reports and exports**           | Period and branch reports, CSV/TXT exports with formula-injection protection                                                                                                                                      | Real                                          |
+
+**What is not connected yet:** OCR and handwriting recognition (sample documents show labelled
+_simulated demo output_), the bank's core-banking feed, SMS and email. The demo workspace stores data
+in the browser; names, accounts and amounts are fictional, except the TEST loans whose real
+borrowers are matched against public records.
+
+---
+
+## 4. How Gen AI is used
+
+Gen AI does work that rules cannot do well: reading the evidence for a whole record and explaining
+it, connecting sections that do not agree, and drafting questions and notes. Each of the six
+features below follows the same pattern: **code builds the evidence → Gemini proposes → code
+verifies → a person decides.**
+
+| Feature                           | What Gemini does                                                                                                                        | What code guarantees                                                                                                                                    | Code                                                                               |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **FinRakshak Copilot**            | Answers questions about the record on screen and drafts information requests and risk observations                                      | ≤ 60 numbered facts, identifiers masked; each statement must cite facts that were sent; numbers must appear in them; verdict words removed              | `functions/src/callable/assistRecord.ts`, `packages/shared/src/assistGrounding.ts` |
+| **AI analysis of an application** | Risk summary, facts per document field, a note per finding                                                                              | Facts must quote a field that was sent; one note per finding; summary withheld on verdict words or a stated score                                       | `functions/src/services/applicationAnalysis.ts`                                    |
+| **AI investigator**               | Reads the application through 8 tools (sections, ratios, public-record candidates, related entities) and submits findings and questions | Closed tool list, temperature 0, ≤ 8 reads / 10 turns; every citation, quote and number checked; rejection reasons counted; the AI never sets the score | `functions/src/services/investigation/`                                            |
+| **Ingestion agent**               | Explains a daily pipeline run and proposes allowlisted actions                                                                          | Findings and numbers come from code; proposals need the owner's approval (`decideProposal`); healthy days skip the model                                | `ingest/src/agent/`, `ingest/src/ai/toolLoop.ts`                                   |
+| **Pattern miner**                 | Proposes new risk patterns from seed cases                                                                                              | Proposals only; the owner approves each one (`decidePattern`); rejected candidates are counted, not stored                                              | `ingest/src/miner/`                                                                |
+| **Risk explainer**                | Words the recorded reasons of a risk alert in plain language                                                                            | The number check rejects sentences with unknown numbers; stored apart from the alert                                                                    | `ingest/src/explain/`                                                              |
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Officer
+    participant Web as Browser (React)
+    participant Fn as Callable function
+    participant Gate as Billed gate
+    participant G as Gemini on Vertex AI
+    participant V as Verifier (code)
+    Officer->>Web: Investigate with AI
+    Web->>Web: Build bundle (masked ids, ratios, shortlist by code)
+    Web->>Fn: investigateApplication(bundle) + Auth + App Check
+    Fn->>Fn: zod input, size limit, rate limit
+    Fn->>Gate: AI allow-list + daily limit
+    loop ≤ 10 model turns, ≤ 8 reads
+        Fn->>G: overview / tool result (delimited data)
+        G-->>Fn: tool call (get_section, get_ratio, submit_finding …)
+    end
+    Fn->>V: every claim
+    V-->>Fn: verified findings + rejection counts
+    Fn-->>Web: zod-typed result
+    Web-->>Officer: "AI made N claims: V verified, R rejected"
 ```
-web/              React + Vite UI (Firebase Hosting)
-functions/        Cloud Functions (callables, services, config)
-packages/shared/  zod schemas + shared types (incl. the evidence/graph data model)
-ingest/           public-source data pipeline (acquire → extract → build), see ingest/README.md
-data/             source registry, MCA master, canonical dataset, see data/README.md
-docs/             BOUNDARY_CONDITIONS.md, ARCHITECTURE.md
-CLAUDE.md         Coding standards & instructions (read first)
+
+**Guardrails in every AI path:** sign-in and App Check; zod-validated input and output; a size check
+before any use is counted; a burst rate limit plus a per-user daily limit that is never crossed;
+user content in delimited data blocks (prompt-injection defence); JSON-only replies with one retry;
+logs that hold counts only (no names, values or model text); and a **mock provider** that is the
+default in tests, CI and the emulator, so no test ever calls a billed model.
+
+Details: [`docs/COPILOT.md`](docs/COPILOT.md), [`docs/APPLICATION_AI_ANALYSIS.md`](docs/APPLICATION_AI_ANALYSIS.md),
+[`docs/AI_INVESTIGATOR.md`](docs/AI_INVESTIGATOR.md), [`docs/plans/AGENTS_PLAN.md`](docs/plans/AGENTS_PLAN.md).
+
+---
+
+## 5. Process flow and use-case diagrams
+
+### Process flow: one loan, end to end
+
+```mermaid
+flowchart LR
+    A[Application<br/>form or upload] --> B[Extract & verify<br/>field by field]
+    B --> C{Pre-sanction checks<br/>12 rules + public records}
+    C --> D[Attention score 0–100<br/>by code]
+    D --> E[AI analysis +<br/>AI investigator]
+    E --> F{Officer / manager<br/>decision}
+    F -- request info --> A
+    F -- decline --> Z[Closed]
+    F -- sanction --> G[Disbursement]
+    G --> H[Transaction monitoring<br/>90 days]
+    G --> I[Daily public-records watch]
+    G --> J[Monthly risk score]
+    H --> K[Alerts<br/>Routine / Needs attention / Urgent]
+    I --> K
+    J --> K
+    K --> L[Triage with Copilot]
+    L -- benign --> M[Resolved with reason]
+    L -- escalate --> N[Investigation case<br/>checklist, evidence, graph]
 ```
 
-## Getting started
+### Use cases
+
+```mermaid
+flowchart LR
+    BO([Branch officer])
+    BM([Branch manager])
+    RA([Risk analyst])
+    INV([Investigator])
+    ADM([Administrator])
+
+    subgraph FinRakshak AI
+      U1(Capture and verify documents)
+      U2(Run pre-sanction checks)
+      U3(Ask the Copilot / AI investigator)
+      U4(Approve, decline or request information)
+      U5(Triage monitoring alerts)
+      U6(Watch public records of disbursed loans)
+      U7(Open and work an investigation case)
+      U8(Tune rules, thresholds and checklists)
+      U9(Approve AI-proposed patterns and actions)
+    end
+
+    BO --> U1 & U2 & U3
+    BM --> U3 & U4 & U5
+    RA --> U3 & U5 & U6 & U8
+    INV --> U3 & U7
+    ADM --> U8 & U9
+```
+
+---
+
+## 6. Wireframes and mock-ups
+
+The screens below are wireframes of the working prototype, with illustrative values (run it with `npm run dev -w web` to see
+them live; the layout follows [`docs/fundtrace-ai-ui-spec.md`](docs/fundtrace-ai-ui-spec.md)).
+
+**Command center (dashboard)**
+
+```text
+┌──────────────┬──────────────────────────────────────────────────────────────────────┐
+│ FinRakshak AI│  Command center                 [Branch: All ▾] [⌘K Search] [Ask AI] 🔔│
+│──────────────│──────────────────────────────────────────────────────────────────────│
+│ PRE-SANCTION │  ┌ Awaiting decision ┐ ┌ Urgent alerts ┐ ┌ Open cases ┐ ┌ Watched ┐  │
+│  Applications│  │        4          │ │      7        │ │     3      │ │   12    │  │
+│  My queue  3 │  └───────────────────┘ └───────────────┘ └────────────┘ └─────────┘  │
+│ ₹ DISBURSED  │  ┌ Risk mix (donut) ───────┐  ┌ Recent alerts ─────────────────────┐ │
+│  Loan book   │  │  ● Urgent  ● Attention  │  │ ▲ Urgent  Circular flow  L-…0110  │ │
+│  Public rec. │  │  ● Routine              │  │ ● Attn.   Rapid onward   L-…0108  │ │
+│ POST-DISB.   │  └─────────────────────────┘  └────────────────────────────────────┘ │
+│  Alerts    7 │  ┌ Public records on disbursed loans ─────────────────────────────┐  │
+│ INVESTIGATE  │  │ L-2023-0601  Advantage Overseas  CIRP, liquidation, ED  ▲ Urgent│  │
+│  Cases       │  └────────────────────────────────────────────────────────────────┘  │
+└──────────────┴──────────────────────────────────────────────────────────────────────┘
+```
+
+**Application → Risk step (checks, attention score and AI)**
+
+```text
+┌ A-1013 · Shree Traders · MSME working capital ₹ 8,00,000 ── [Ask AI] [Decision ▾] ┐
+│ Steps: Application ✓ ─ Extract & verify ✓ ─ Review ✓ ─ ● Risk analysis            │
+│ ┌ Attention score ─────────────┐ ┌ Findings (by code) ───────────────────────────┐ │
+│ │  68 / 100   ▲ Urgent review  │ │ ▲ Customer in liquidation (4 links)  [Open]  │ │
+│ │  top: customer in public rec.│ │ ● Income vs bank credits            [Open]  │ │
+│ └──────────────────────────────┘ │ ● Relationship to open case          [Open]  │ │
+│                                  └───────────────────────────────────────────────┘ │
+│ ┌ AI-assisted document analysis ─── [Analyse with Gemini] ── Mock / Vertex AI ─┐   │
+│ │ Summary (≤ 6 sentences) · Facts per field · Note per finding                 │   │
+│ └──────────────────────────────────────────────────────────────────────────────┘   │
+│ ┌ AI investigator ───────────────── [Investigate with AI] ─────────────────────┐   │
+│ │ AI made 9 claims: 7 verified, 2 rejected (unknown_number, quote_mismatch)    │   │
+│ │ ● Possible match — needs verification   Evidence (checked by code) ▾         │   │
+│ │ Draft question for the applicant  [Edit] [Approve question]                  │   │
+│ └──────────────────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**FinRakshak Copilot (side panel, Ctrl/⌘ J)**
+
+```text
+┌ FinRakshak Copilot · Loan L-2026-0110 ─────────────── ✕ ┐
+│ [Why was this flagged?] [What should I verify?]         │
+│ [Where did the money go?] [Draft risk observations]     │
+│ ─────────────────────────────────────────────────────── │
+│ 1. ₹4,50,000 moved to Bhosale Infra within 2 days [T3]  │
+│ 2. Bhosale Infra shares a director with the borrower[R2]│
+│ 3. ₹4,20,000 came back to the borrower's account  [T7]  │
+│ Kept 3 of 4 statements · 1 removed (number not in facts)│
+│ ▸ Data the copilot can use (24 facts)                   │
+│ [ Ask about this loan…                         ] [Send] │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Mobile (360 px):** a single column with a bottom tab bar (Home, My queue, Applications, Alerts). The
+review form's actions stick to the bottom, and there is no horizontal scroll (tested in the
+Playwright `mobile-360` project).
+
+---
+
+## 7. Architecture
+
+```mermaid
+flowchart TB
+    subgraph Client["Browser — React 19 + Vite (Firebase Hosting)"]
+      UI[Pages & components]
+      LIB[Pure logic: checks, monitoring,<br/>attention score, public records,<br/>investigation bundle]
+      ST[State: zod-validated store,<br/>audited actions]
+      UI --> ST --> LIB
+    end
+
+    subgraph Firebase["Firebase / Cloud Functions (asia-south1)"]
+      AUTH[Firebase Auth + App Check]
+      CF["Callables: assistRecord, analyseApplication,<br/>investigateApplication, getRiskScores,<br/>decideProposal, decidePattern, getProfile"]
+      PD[publicData HTTP<br/>signed-in data feed]
+      FS[(Firestore<br/>default-deny rules)]
+    end
+
+    subgraph AI["Vertex AI"]
+      GEM[Gemini 3.1 Flash-Lite<br/>via ADC, no API key]
+    end
+
+    subgraph Pipeline["Data pipeline — Cloud Scheduler → Workflows → Cloud Run jobs"]
+      ACQ[acquire: delta per source] --> EXT[extract] --> BLD[build + 5 publish gates]
+      BLD --> AG[agent review]
+      SC[score: risk scores] --> EXP[explain]
+      MIN[miner: proposals]
+    end
+
+    SRC[(Public sources:<br/>IBBI · NFRA · ED · RBI · SFIO · SEBI · MCA)]
+    GCS[(Cloud Storage:<br/>raw · state · published)]
+    BQ[(BigQuery)]
+
+    UI -- ID token + App Check --> CF
+    UI -- /data/** --> PD
+    CF --> FS
+    CF --> GEM
+    PD --> GCS
+    SRC --> ACQ
+    ACQ & BLD --> GCS
+    BLD --> BQ
+    AG & EXP & MIN --> GEM
+    AG & SC & MIN --> FS
+```
+
+**Layering rules (enforced in review and CI):**
+
+- `web` never calls Gemini. Every AI call goes through a callable that (1) checks `request.auth`,
+  (2) validates input with zod, (3) authorises, (4) acts through a service, and (5) returns a
+  zod-typed result. App Check is enforced.
+- `functions/src/callable/` is thin; logic lives in `services/`; configuration is read once in
+  `config/env.ts`; secrets come from Secret Manager; Vertex AI uses Application Default Credentials.
+- `packages/shared` is the single source of truth for types: zod schemas used by the browser, the
+  functions and the pipeline.
+- Money is integer paise plus an ISO-4217 code; timestamps are UTC ISO-8601; a day is an IST day.
+
+More: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/ingestion-agent-readme.md`](docs/ingestion-agent-readme.md).
+
+---
+
+## 8. Technologies
+
+| Layer          | Technology                                                                                                                      | Why                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Language       | TypeScript 5 (`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`)                                               | One language and one type system across web, backend and pipeline               |
+| Web            | React 19, React Router, Vite 6, Tailwind CSS 4, lucide-react, pdf.js, Inter + Noto Sans Devanagari                              | Fast, accessible UI with Marathi support; local PDF and image checks            |
+| Validation     | zod 4 (in `packages/shared`)                                                                                                    | Parse, don't cast: every external value is validated at the boundary            |
+| Backend        | Firebase Cloud Functions v2 (Node 22), Firebase Auth, App Check, Firestore                                                      | Serverless, scale to zero, per-function limits                                  |
+| Gen AI         | Gemini (`gemini-3.1-flash-lite` by default) on **Vertex AI**, function calling, JSON output; mock provider                      | Cheapest model that passes our checks; in-region; no API key in code            |
+| Data pipeline  | Cloud Run jobs, Cloud Workflows, Cloud Scheduler, Cloud Storage, BigQuery, Artifact Registry                                    | Daily batch at low cost; versioned, reversible publishing                       |
+| Testing        | Vitest, Firebase Emulator Suite (rules + Firestore code), Playwright (desktop + 360 px)                                         | Unit, emulator and browser-scenario tests; no billed call in any test           |
+| Quality and CI | ESLint (typescript-eslint strict type-checked, jsx-a11y strict, react-hooks), Prettier, GitHub Actions, Dependabot, `npm audit` | Same gate locally and in CI; 0 known vulnerabilities in production dependencies |
+
+---
+
+## 9. Repository structure
+
+```text
+web/                    React + Vite app (Firebase Hosting)
+  src/pages/            one lazy-loaded route per page
+  src/components/       UI by area: applications/ (review/, detail/), monitoring/, investigations/,
+                        copilot/, graph/, settings/, dashboard/, ui/ (design-system primitives)
+  src/lib/              pure, unit-tested logic: checks/, monitoring, attention score, public records,
+                        investigation bundle, assist (Copilot context), review-form, report-data, CSV
+  src/state/            zod-validated store; actions/ (every mutation writes an audit entry)
+  src/domain/           schemas/ (zod, one module per aggregate) and user-facing labels
+  src/demo/             synthetic seed/ (one module per section) and samples/
+  e2e/                  Playwright tests for the app (desktop + 360 px)
+functions/src/          callable/ (thin) → services/ (logic, Gemini) → config/ (env, limits, secrets)
+packages/shared/src/    zod contracts: money, time, AI I/O, grounding check, evidence graph, risk, synth
+ingest/src/             public-data pipeline: sources/, delta/, extract/, graph/, cloud/, agent/, miner/,
+                        explain/, risk/ (scoring + replay), synth/ (synthetic transactions)
+e2e/                    Playwright end-to-end scenarios (real public records + TEST loans)
+data/                   source registry, MCA master, processed dataset, graph (see data/README.md)
+infra/                  Workflows, monitoring alerts, storage lifecycle, registry cleanup
+scripts/                GCP setup and deploy scripts
+docs/                   architecture, Gen AI features, boundary conditions, cost, deploy, plans/
+```
+
+Coding standards for contributors (and AI agents) are in [`CLAUDE.md`](CLAUDE.md); edge cases
+that must be handled are in [`docs/BOUNDARY_CONDITIONS.md`](docs/BOUNDARY_CONDITIONS.md).
+
+---
+
+## 10. Prerequisites and installation
+
+**Prerequisites**
+
+- Node.js **22** (`.nvmrc`) and npm 10
+- Java 21 (only for the Firebase emulators: `npm run test:emulators`)
+- Chromium for Playwright (only for browser tests)
+- For deployment: a Firebase project on the Blaze plan with Auth, Firestore, App Check and the
+  Vertex AI API enabled
+
+**Install and verify**
 
 ```bash
-nvm use            # Node 22
-npm install
-npm run check      # format + lint + typecheck + tests
-npm run test:emulators  # Firestore rules + Firestore code against the emulator (needs Java 21)
-npm run build
+git clone https://github.com/Sanchit-Datir/fund-tracer.git
+cd fund-tracer
+nvm use                      # Node 22
+npm ci                       # exact versions from the lockfile
+npm run check                # prettier + eslint (0 warnings) + tsc + all unit tests
+npm run build                # shared, functions, ingest and web
+npm run test:emulators       # Firestore rules + Firestore code against the emulator (Java 21)
 ```
 
-## Firebase setup (one-time)
-
-1. Create a Firebase project (Blaze plan, required for Functions/Vertex); enable Auth, Firestore, App Check, and the Vertex AI API.
-2. Put its ID in `.firebaserc`.
-3. `npx firebase login`, then `npm run emulators` to develop locally.
-4. Copy `web/.env.example` to `web/.env.local` and fill in the web app config.
-5. Deploy: `npm run build && npx firebase deploy`.
-
-See `CLAUDE.md` for standards and `docs/BOUNDARY_CONDITIONS.md` for edge cases that must be handled.
-
-## Run the web prototype
-
-```bash
-npm install
-npm run dev -w web        # http://localhost:5173 → “Continue with quick sign-in”
-npm run build -w web && npx vite preview --root web   # production build
-```
-
-Pick a demo role on the sign-in page (Risk Analyst / Administrator can edit rules and checklists).
-Settings → “Data sources & demo” resets or clears the demo dataset. Help & Support has a guided walkthrough.
-
-## Public-source dataset (`ingest/`)
-
-A TypeScript pipeline collects permitted public records (NFRA, IBBI, ED, RBI, SFIO, a SEBI sample)
-and the MCA company master into an evidence graph: case events, entities, relationships, evidence
-claims with `fact / finding / allegation / inference` status, and review leads. It is offline data for
-BigQuery and the upcoming graph features; the web app does not read it yet.
+**Public-records data for the app** (needed for the public-records check, the watch and the graph):
 
 ```bash
 npm run build -w @fund-tracker/shared && npm run build -w ingest
-node ingest/dist/cli.js build      # rebuild data/processed from data/raw (+ MCA join), ~30 s
+node ingest/dist/graphCli.js --web   # publishes web/public/graph-lab/ (git-ignored)
 ```
 
-**Daily updates (delta):** `acquire` fetches only what changed since the last run. IBBI, NFRA, SFIO and
-RBI are listed incrementally (newest pages until known items) with a weekly or monthly full relist
-(`--full` forces one). Each run diffs the listing against the stored one, merges it (records that vanish
-from a source are flagged, never deleted), downloads documents only for new or changed items, and writes
-a change report to `data/interim/delta/`. Empty, broken or sharply shrunken listings never overwrite stored
-data, and a lock allows one run at a time.
+**Firebase (one-time, for a deployed copy)**
+
+1. Put the project ID in `.firebaserc`; copy `web/.env.example` to `web/.env.local` and fill in the
+   web app config.
+2. Grant the functions' runtime account `roles/aiplatform.user` (`scripts/setup-gcp.sh`).
+3. `npm run build && npx firebase deploy`. Full steps: [`docs/DEPLOY.md`](docs/DEPLOY.md).
+
+---
+
+## 11. Usage guide
 
 ```bash
-node ingest/dist/cli.js acquire all          # daily run: incremental where possible
-node ingest/dist/cli.js acquire all --full   # force a full relist
+npm run dev -w web           # http://localhost:5173 → "Continue with quick sign-in"
 ```
 
-- How to run, sources, caps, daily delta, BigQuery load: [`ingest/README.md`](ingest/README.md)
-- What is stored where (git vs Cloud Storage), file layouts, MCA coverage: [`data/README.md`](data/README.md)
-- Source terms and access audit: [`data/registry/sources.json`](data/registry/sources.json)
+1. **Sign in** with a demo role (Branch officer, Branch manager, Risk analyst, Investigator or
+   Administrator). Roles change navigation and what can be edited.
+2. **New loan → Application form.** Fill in the form, or choose _Upload documents instead_ and
+   review each extracted field against the document region.
+3. **Risk analysis:** _Run checks_ runs the rules and the public-records check. Read the attention
+   score and its drivers, then open a finding to see its evidence and harmless explanations.
+4. **AI:** _Analyse with Gemini_ and _Investigate with AI_ on the Risk step, or press **Ctrl/⌘ J**
+   anywhere for the Copilot. In a demo session the Copilot gives labelled simulated answers; signed
+   in with a cloud account, it calls Gemini on Vertex AI.
+5. **Loan book → Monitoring:** open a loan to see the transaction flow graph and its alerts; import
+   a transaction CSV; adjust thresholds in Settings (Risk analyst / Administrator).
+6. **Alerts:** triage (in review, resolved with a reason, escalated). **Escalate** opens an
+   investigation case with a checklist, evidence and notes.
+7. **Public records** (`/monitoring/public-records`) shows every disbursed loan checked after
+   sign-in, and **Relationship graph** (`/graph-lab`) explores the public-records network.
+8. **Settings → Data** resets or clears the demo workspace; **Help** has a guided walkthrough.
 
-## What is real vs. simulated
+Other commands:
 
-| Area                                                                                                                     | Status                                                                                                             |
-| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| Application checks (checklist, name/DOB/land-area conflicts, duplicate survey/receipt, income vs credits, relationships) | **Real** — deterministic rules in `web/src/lib/checks.ts`, run in the browser                                      |
-| Monitoring rules (rapid onward transfer, linked counterparty, repeated counterparty, circular flow, split cash)          | **Real** — `web/src/lib/monitoring.ts`, thresholds editable in Settings                                            |
-| File intake (PDF page count, image blur/darkness/resolution warnings)                                                    | **Real**, local only (pdf.js + canvas)                                                                             |
-| CSV transaction import, CSV/TXT exports                                                                                  | **Real**, validated with zod                                                                                       |
-| OCR / handwriting / translation                                                                                          | **Not connected.** Demo sample documents show labelled _simulated demo output_; uploads require manual field entry |
-| Gemini on Vertex AI analysis                                                                                             | **Not connected.** No AI result is shown anywhere                                                                  |
-| Authentication / role enforcement                                                                                        | **Demo sign-in only** — no credential is checked; UI-only role gating                                              |
-| Storage                                                                                                                  | Browser `localStorage` (zod-validated on read); uploaded files live only in the open tab                           |
-| Public records (MCA, NFRA, IBBI, ED, RBI, SFIO, SEBI sample)                                                             | **Real dataset, not yet wired into the app** — built by `ingest/` into `data/processed/`                           |
-| Core-banking feed, SMS/email                                                                                             | Not connected                                                                                                      |
+| Command                               | What it does                                                         |
+| ------------------------------------- | -------------------------------------------------------------------- |
+| `npm run e2e`                         | Browser scenarios (build + preview on :4173)                         |
+| `npm run test:e2e`                    | Playwright tests of the app (desktop + 360 px)                       |
+| `npm run synth && npm run score`      | Generate synthetic loans and replay 24 months of risk scoring        |
+| `node ingest/dist/cli.js acquire all` | Daily delta fetch of public sources (`--full` forces a relist)       |
+| `node ingest/dist/cli.js build`       | Rebuild `data/processed` from `data/raw` (~30 s)                     |
+| `npm run serve:live -w functions`     | Functions against the real model (rarely, tiny prompts; costs money) |
 
-In the web app, all names, accounts, amounts and records are fictional. Alerts and findings are investigative leads, not fraud determinations.
+---
 
-## Integrating real services (next steps)
+## 12. Estimated implementation cost
 
-- Upload files to Cloud Storage and run OCR/extraction in a callable (`functions/`), returning fields with page/region references in the existing `ExtractedField` shape.
-- Call Gemini server-side only (`functions/src/services/gemini.ts`), with masked identifiers and zod-validated output.
-- Replace demo sign-in with Firebase Auth + App Check; enforce roles in Firestore rules and callables.
-- Move the store (`web/src/state/store.ts`) to Firestore behind the same action functions in `web/src/state/actions.ts`.
+**Running cost (prototype volume, per month)** — from [`docs/COST_GUIDELINES.md`](docs/COST_GUIDELINES.md),
+region `asia-south1`; confirm against the first month's bill.
+
+| Item                                                   | What stops it growing                                              | Estimate                   |
+| ------------------------------------------------------ | ------------------------------------------------------------------ | -------------------------- |
+| Firebase Hosting, Auth, Firestore, Functions           | Free tiers; `maxInstances` 2–5, 256 MiB, `minInstances: 0`         | free tier                  |
+| Cloud Run jobs (~40 min acquire, ~5 min build per day) | Jobs scale to zero; CPU, memory and timeout capped                 | free tier to ~US$3         |
+| Workflows + Scheduler                                  | One schedule a day                                                 | free tier                  |
+| Cloud Storage (~1–3 GB)                                | Create-only raw; state versions expire after 90 days               | < US$0.20                  |
+| BigQuery (~100 MB)                                     | Batch loads (free), partitioned tables                             | < US$0.50                  |
+| Artifact Registry                                      | Cleanup policy keeps 10 images                                     | < US$0.20                  |
+| Gemini, ingestion agent                                | Called only on days that need attention; ≤ 8 tool calls            | < US$0.10                  |
+| Gemini, app features (Copilot, analysis, investigator) | Per-user daily limit (`GEMINI_DAILY_LIMIT`, 30) and burst limits   | see per-call figures below |
+| **Total (prototype)**                                  | Budget alerts at ₹450/month (project) and ₹200/month (AI services) | **≈ US$5–10 / month**      |
+
+**Per AI call** (Gemini 3.1 Flash-Lite at US$0.25 per 1M input tokens and US$1.50 per 1M output
+tokens, the paid-tier price checked on 16 Oct 2026). These are upper-bound estimates from the input
+caps:
+
+| Call                          | Input cap                             | Approx. cost per call |
+| ----------------------------- | ------------------------------------- | --------------------- |
+| Copilot answer                | ≤ 60 facts (~4k tokens), short answer | ≈ US$0.002            |
+| AI analysis of an application | ≤ 20,000 characters (~5k tokens)      | ≈ US$0.003            |
+| AI investigator run           | ≤ 10 turns, tool replies ≤ 30k chars  | ≤ US$0.04             |
+
+At scale, 100 branches × 20 applications a day × (1 analysis + 1 investigation + 5 Copilot
+questions) ≈ 2,000 applications a day, or under US$110 a day of model cost at the upper bound
+(typically far less). Infrastructure stays serverless, so cost follows usage.
+
+**Build effort to production (estimate):** about 3–4 months for a team of 4 (2 full-stack, 1 data,
+1 QA/security). The work is OCR integration, a core-banking connector, moving the workspace to
+Firestore, role enforcement in rules and callables, a bank security review, and a pilot at 2–3
+branches.
+
+---
+
+## 13. Prototype performance and benchmarks
+
+All numbers below were measured on this repository; nothing here comes from a real bank.
+
+**Quality gate (every commit, enforced in CI)**
+
+| Measure             | Result                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| Unit tests (Vitest) | **1,566 tests in 168 files, all passing** (shared, functions, ingest, web)            |
+| Emulator tests      | Firestore rules and the pipeline's Firestore code (`npm run test:emulators`)          |
+| Browser tests       | Playwright scenarios for 3 real public-record cases + app flows at desktop and 360 px |
+| Lint                | ESLint strict type-checked + jsx-a11y strict, `--max-warnings 0`                      |
+| Types               | `tsc` strict across 5 workspaces; no `any`, no `!`, no `enum`                         |
+| Dependencies        | **0 known vulnerabilities** in production dependencies (`npm audit`)                  |
+
+**Detection quality on synthetic loans** (risk-scoring replay, 24 months, seed 20261017; full table
+in [`docs/RISK_SCORING.md`](docs/RISK_SCORING.md))
+
+| Settings                                  | Alerts per 1,000 loan-months | Controls and look-alikes alerted | Defaulters caught |
+| ----------------------------------------- | ---------------------------: | -------------------------------: | ----------------: |
+| v2 (published)                            |                         28.5 |                          0 of 85 |         85 of 105 |
+| v2 + behaviour option 4 + prepayment rule |                         30.4 |                          0 of 85 |    **105 of 105** |
+
+**Public-records dataset** (built by `ingest/`): 18,286 entities, 57,382 relationships, 46,907
+evidence claims, 19,624 case events and 19,628 documents from 7 official sources, with a full
+rebuild from raw files in about 30 seconds.
+
+**Gen AI reliability:** the grounding check and the investigator's verifier run on shared test
+cases (`packages/shared/src/assist-grounding-cases.json`). Every simulated Copilot answer passes
+the same check, and logs record how many claims were kept and rejected for each run.
+
+**Web performance:** every page is lazy-loaded, PDFs and images are processed locally (no upload
+round trip), and checks and monitoring run in the browser on each change.
+
+---
+
+## 14. Security, privacy and responsible AI
+
+- **Leads, not verdicts:** status wording is fixed (Routine review / Needs attention / Urgent
+  review), and verdict words such as "fraud", "scam" or "guilty" are blocked in AI output.
+- **Privacy:** PAN, Aadhaar, GSTIN, Udyam, account and phone numbers are masked before any AI call;
+  date of birth, mobile and street address are left out; logs hold counts only.
+- **Prompt-injection defence:** user content goes in delimited data blocks, tool lists are closed,
+  and model output cannot write anything without schema validation and an ownership check.
+- **Web hardening:** strict Content-Security-Policy, HSTS, no `dangerouslySetInnerHTML`, safe URLs
+  only, CSV formula-injection protection, upload size and decompression limits.
+- **Backend:** default-deny Firestore rules with emulator tests; App Check on every callable;
+  least-privilege service accounts; secrets only in Secret Manager.
+- **Kill switches:** a one-click GitHub Actions emergency stop closes the functions to outside calls and switches off the Vertex AI API, while the static site and demo mode keep working ([`docs/EMERGENCY_STOP.md`](docs/EMERGENCY_STOP.md)).
+
+Full threat table: [`SECURITY.md`](SECURITY.md).
+
+---
+
+## 15. Scalability and sustainability
+
+- **Serverless everywhere:** functions and Cloud Run jobs scale to zero, with `maxInstances` caps.
+  Firestore and BigQuery grow with data, and there are no always-on servers.
+- **Incremental by design:** daily delta ingestion fetches only what changed; publishing is
+  versioned with compare-and-swap and instant rollback; BigQuery job IDs are deterministic, so a
+  retried run never loads twice.
+- **Configurable, not hard-coded:** rule thresholds, checklists, attention weights, risk-score
+  settings (versioned) and the Gemini model are configuration.
+- **Extensible:** a new check is one function in `web/src/lib/checks/`; a new monitoring rule is one
+  function in `lib/monitoring.ts`; a new public source is one adapter in `ingest/src/sources/`; a new
+  AI feature reuses the shared tool loop, grounding check and billed gate.
+- **Maintainable:** one shared contract package, strict types, 1,500+ tests, boundary conditions
+  documented and tested, and a CI gate that blocks a PR that is behind `main`.
+
+---
+
+## 16. Additional details and future development
+
+**Next steps**
+
+1. **OCR and handwriting extraction** for Marathi documents (Document AI or Gemini vision) into the
+   existing `ExtractedField` shape with page regions, behind the same verify-before-use flow.
+2. **Core-banking connector:** sync the loan book and transactions instead of CSV import.
+3. **Move the workspace to Firestore** behind the existing audited action functions, with roles
+   enforced in rules and callables.
+4. **Group contagion:** watch sister companies and the customers of disbursed loans, not only the
+   borrower.
+5. **Approval view for AI proposals** (patterns and pipeline actions) and a golden set to quality-gate
+   AI evidence extraction.
+6. **Multilingual Copilot** answers in Marathi and Hindi, using the same grounding check.
+7. **Bank pilot:** measure time saved per appraisal and alert precision on real, consented data.
+
+**Planning documents:** [`docs/plans/README.md`](docs/plans/README.md) (index and status),
+[`docs/BOUNDARY_CONDITIONS.md`](docs/BOUNDARY_CONDITIONS.md) (B-01 to B-67).
+
+---
+
+## 17. Contribution guidelines
+
+Contributions are welcome. Read [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`CLAUDE.md`](CLAUDE.md)
+first. In short:
+
+1. Create a branch from `main`, make small focused commits in the imperative mood, and open a PR
+   using the template.
+2. Before every commit, run `npm run check && npm run build`. Never bypass it with `--no-verify`,
+   `@ts-ignore` or `eslint-disable`.
+3. Add a unit test next to the source (`*.test.ts`) for every change, a regression test for every
+   bug fix, and an emulator test for every new Firestore rule.
+4. Never call a billed model from tests; the mock provider is the default.
+5. Flag any boundary condition you touch (`docs/BOUNDARY_CONDITIONS.md`) in the PR.
+
+Report security issues privately (see [`SECURITY.md`](SECURITY.md)).
+
+---
+
+## 18. License and credits
+
+Released under the [MIT License](LICENSE).
+
+**Team:** _team name and members to be added_.
+
+**Credits**
+
+- Public records: Insolvency and Bankruptcy Board of India (IBBI), National Financial Reporting
+  Authority (NFRA), Directorate of Enforcement (ED), Reserve Bank of India (RBI), Serious Fraud
+  Investigation Office (SFIO), Securities and Exchange Board of India (SEBI), and the Ministry of
+  Corporate Affairs company master via data.gov.in (Open Government Data Platform India). Terms and
+  access audit: [`data/registry/sources.json`](data/registry/sources.json).
+- Google Cloud, Firebase and Gemini on Vertex AI.
+- Open-source libraries: React, Vite, Tailwind CSS, zod, pdf.js, lucide, Vitest, Playwright,
+  ESLint, Prettier and others listed in `package.json` files.
+- All people, businesses, accounts and amounts in the demo workspace are fictional, except the
+  public-record borrowers used in the labelled TEST scenarios.

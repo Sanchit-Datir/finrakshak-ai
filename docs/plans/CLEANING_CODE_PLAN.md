@@ -19,17 +19,25 @@ app does. Every step keeps `npm run check && npm run build` green.
 
 | #   | Step                                                                                                                                                                                                                                                                                                             | Status |
 | --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 1   | **Lint gap:** ESLint ignores only build output (`functions/lib/**`, `dist/`), so `web/src/lib/` is linted; fix the hidden errors.                                                                                                                                                                                | todo   |
-| 2   | **Split oversized files** (behaviour unchanged, public imports kept through barrel files): `state/actions.ts` → `state/actions/`, `lib/checks.ts` → `lib/checks/`, `domain/schemas.ts` → `domain/schemas/`, `demo/seed.ts` → `demo/seed/`, page tab bodies and dialogs → `components/<area>/`, large components. | todo   |
-| 3   | **Benchmarks:** a reproducible `npm run bench` (Vitest bench) for the deterministic engines (checks, monitoring, grounding check, attention score) and results in `docs/BENCHMARKS.md`, with the test counts, build sizes and the risk-scoring replay numbers already measured in `docs/RISK_SCORING.md`.        | todo   |
-| 4   | **Screenshots** of the prototype (desktop and 360 px) with Playwright, in `docs/images/`, used as the wireframes/mock-ups.                                                                                                                                                                                       | todo   |
-| 5   | **Docs:** `docs/GEN_AI.md` (every Gen AI feature, what the model does, what code verifies, limits, tests), `docs/ARCHITECTURE.md` updated (diagrams, scalability), `docs/README.md` index.                                                                                                                       | todo   |
-| 6   | **README** rewritten in sections: title and tagline, description, opportunity (how it differs, how it solves the problem, USP), features, process flow and use-case diagrams, mock-ups, architecture, tech stack, prerequisites and installation, usage, cost, benchmarks, future work, contributing, license.   | todo   |
-| 7   | **Repo hygiene:** `LICENSE`, `CONTRIBUTING.md`, `.github/pull_request_template.md`.                                                                                                                                                                                                                              | todo   |
-| 8   | **Verify:** `npm run check && npm run build`, `npm run e2e`, `npm run test:e2e`; update `docs/SESSION_NOTES.md`.                                                                                                                                                                                                 | todo   |
+| 1   | **Lint gap:** ESLint ignores only build output (`functions/lib/**`, `dist/`), so `web/src/lib/` is linted; fix the hidden errors.                                                                                                                                                                                | done   |
+| 2   | **Split oversized files** (behaviour unchanged, public imports kept through barrel files): `state/actions.ts` → `state/actions/`, `lib/checks.ts` → `lib/checks/`, `domain/schemas.ts` → `domain/schemas/`, `demo/seed.ts` → `demo/seed/`, page tab bodies and dialogs → `components/<area>/`, large components. | part   |
+| 3   | **Benchmarks:** a reproducible `npm run bench` (Vitest bench) for the deterministic engines (checks, monitoring, grounding check, attention score) and results in `docs/BENCHMARKS.md`, with the test counts, build sizes and the risk-scoring replay numbers already measured in `docs/RISK_SCORING.md`.        | cut    |
+| 4   | **Screenshots** of the prototype (desktop and 360 px) with Playwright, in `docs/images/`, used as the wireframes/mock-ups.                                                                                                                                                                                       | cut    |
+| 5   | **Docs:** `docs/GEN_AI.md` (every Gen AI feature, what the model does, what code verifies, limits, tests), `docs/ARCHITECTURE.md` updated (diagrams, scalability), `docs/README.md` index.                                                                                                                       | part   |
+| 6   | **README** rewritten in sections: title and tagline, description, opportunity (how it differs, how it solves the problem, USP), features, process flow and use-case diagrams, mock-ups, architecture, tech stack, prerequisites and installation, usage, cost, benchmarks, future work, contributing, license.   | done   |
+| 7   | **Repo hygiene:** `LICENSE`, `CONTRIBUTING.md`, `.github/pull_request_template.md`.                                                                                                                                                                                                                              | done   |
+| 8   | **Verify:** `npm run check && npm run build`, `npm run e2e`, `npm run test:e2e`; update `docs/SESSION_NOTES.md`.                                                                                                                                                                                                 | done   |
 
 ## Out of scope
 
 - No change to app behaviour, wording, data in `data/raw`, `data/processed` or `data/registry`, Firestore
   rules, callables' contracts or cloud resources.
 - No new runtime dependency.
+
+## Outcome
+
+The owner limited the session to about 20 minutes. Done: steps 1, 6, 7 and 8. Step 2 covers the
+largest files (actions, checks, schemas, seed, samples, dialogs and tabs, the review form); the
+remaining pages over 300 lines are listed in `docs/SESSION_NOTES.md`. Steps 3 and 4 were cut: the README
+uses the already-measured numbers (tests, replay, dataset) and ASCII wireframes. Step 5 is folded into
+the README (Gen AI and architecture sections).

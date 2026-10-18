@@ -3,7 +3,7 @@
 Read this first in a new session. It records what has been built, the rules the owner has set,
 and what is open. Update it at the end of every session.
 
-_Last updated: 18 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
+_Last updated: 18 Oct 2026 (cleaning-code session). Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
 
 ## Owner's working rules (keep following them)
 
@@ -135,6 +135,31 @@ The owner said: do not commit yet, and stay on this branch.
 - **Renames:** Dashboard → Command center, Monitoring → Loan book, Graph Lab → Relationship graph.
 - **Next:** the AI hub page (2C), AI in workflows (2B), then the money-trail Sankey and Story mode.
 
+## Cleaning-code session (18 Oct 2026, branch `cleaning-code` from `main`)
+
+For the judging criteria (technical merit and Gen AI 40%, UX 10%); plan and status in
+`docs/plans/CLEANING_CODE_PLAN.md`. Owner's answers: full plan, **MIT** license, commit and push to
+`cleaning-code` (no PR), credits left as a placeholder. The owner then limited the session to ~20
+minutes, so the remaining component splits, the benchmark script and the screenshots were dropped.
+
+- **Lint gap fixed:** ESLint and Prettier ignored every `lib/` folder (also `web/src/lib`); now only
+  `functions/lib`. 12 hidden lint errors fixed. `web/src/lib/synth-sample.json` is prettier-ignored
+  (byte-compared by `sample.test.ts`).
+- **Split into folders, behaviour unchanged** (old files are barrels, no importer changed):
+  `state/actions/`, `lib/checks/`, `domain/schemas/`, `demo/seed/` (createDemoDb output compared byte
+  for byte), `demo/samples/`, dialogs/tabs into `components/<area>/`, `ReviewStep` into
+  `components/applications/review/` with pure `lib/review-form.ts`; `lib/report-data.ts`. New tests:
+  `review-form.test.ts`, `report-data.test.ts` (1,566 tests total).
+- **Docs:** README rewritten (all requested sections, Mermaid diagrams, ASCII wireframes, cost,
+  benchmarks), `LICENSE` (MIT), `CONTRIBUTING.md`, `.github/pull_request_template.md`; the
+  fundtrace-ui skill's code map points at the new folders.
+- **Still over ~300 lines:** `pages/MonitoringPage.tsx`, `CaseDetailPage.tsx`, `ReportsPage.tsx`,
+  `DocumentsPage.tsx`, `components/graph/EntityGraph.tsx`, `monitoring/AlertDrawer.tsx`,
+  `BorrowerProfilePage.tsx`, `ApplicationDetailPage.tsx`, `AlertsPage.tsx`, `DashboardPage.tsx`,
+  `LoginPage.tsx`, `lib/graph-lab.ts` (each is one large component; split the JSX next).
+- **Not run:** `npm run test:e2e -w web` fails in the cloud container because `@playwright/test`
+  1.64 wants a Chromium build that is not installed (environment, not code); `npm run e2e` not run.
+
 ## Open decisions and next ideas
 
 - **New loan opens the form directly (18 Oct 2026, branch `ui/loan-page-layout`):** the form path is
@@ -228,8 +253,8 @@ npm run dev -w web              # manual testing at http://localhost:5173 (quick
 
 **Gotchas:**
 
-- **ESLint and `lib/`:** ESLint ignores `**/lib/**`, so lint `web/src/lib` files with
-  `npx eslint --no-ignore`.
+- **ESLint and `lib/`:** fixed on `cleaning-code`: ESLint and Prettier now ignore only
+  `functions/lib`, so `web/src/lib` is linted.
 - **Missing public-records data:** if a check says "Could not run the public-records check", run
   `graphCli --web`.
 - **Saved data:** after schema changes the saved data resets on its own, with a toast.
