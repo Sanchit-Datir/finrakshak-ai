@@ -18,6 +18,7 @@ _Last updated: 17 Oct 2026. Steps 12, 14 and 17 (E2) are on branch `pattern-mine
 | `PATTERN_CONTRACT.md`            | The interface between the pattern miner and the risk scoring job: the `Pattern` object, the library, the timeline input, the matcher signature, shared fixtures | Proposed, to agree before parallel work                                |
 | `AGENTS_PLAN.md`                 | The one pattern all agents follow, shared parts, authority, testing, cost, failure modes                                                                        | Built: shared loop, `agentRuns`, miner and explainer                   |
 | `RISK_EXPLAINER_PLAN.md`         | Optional agent that words the recorded reasons of an alert                                                                                                      | E2 built at the owner's request (17 Oct 2026), off by default; E3 open |
+| `PERFORMANCE_BENCHMARK_PLAN.md`  | Prototype performance report and the `bench/` script: detection, speed, scaling, web, APIs, throttling, Gen AI and agents                                       | Planned (updated 18 Oct 2026), not started                             |
 
 ## Build order
 

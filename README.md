@@ -538,6 +538,8 @@ branches.
 ## 13. Prototype performance and benchmarks
 
 All numbers below were measured on this repository; nothing here comes from a real bank.
+The full measured report (speed, memory, scaling, web, APIs and limits) is
+[`docs/PERFORMANCE_REPORT.md`](docs/PERFORMANCE_REPORT.md).
 
 **Quality gate (every commit, enforced in CI)**
 
@@ -568,6 +570,38 @@ the same check, and logs record how many claims were kept and rejected for each 
 
 **Web performance:** every page is lazy-loaded, PDFs and images are processed locally (no upload
 round trip), and checks and monitoring run in the browser on each change.
+
+### What the benchmark measures
+
+| Area                  | Measures                                                                                                                                                    |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Detection quality     | Defaulters caught, false alarms, alerts per 1,000 loan-months, months from onset to alert (synthetic loans)                                                 |
+| Data pipeline         | Rebuild and graph build time, peak memory, rows per second, MCA match rate                                                                                  |
+| Scalability           | Risk-scoring time and memory at 200, 2,000 and 20,000 loans                                                                                                 |
+| Web app               | Bundle sizes, Lighthouse performance and accessibility at desktop and 360 px, in-browser check timings                                                      |
+| APIs                  | p50 / p95 latency of every callable, cold and warm                                                                                                          |
+| Throttling and limits | Burst rate limits (`retryAfterSeconds`), the per-user daily AI limit under parallel calls, the AI allow-list, oversized input refused before use is counted |
+| Gen AI and agents     | Model latency, tokens and cost per call; Copilot grounding and investigator verifier results; turns and tool calls per run                                  |
+
+### Run the benchmark
+
+> The benchmark scripts are being added in `bench/`; the plan and status are in
+> [`docs/plans/PERFORMANCE_BENCHMARK_PLAN.md`](docs/plans/PERFORMANCE_BENCHMARK_PLAN.md).
+
+```bash
+npm ci
+npm run build
+node ingest/dist/graphCli.js --web     # public-records bundle for the app
+npm run bench                          # offline: detection, pipeline, scaling, web (free, no credentials)
+npm run bench:api                      # APIs, throttling and limits on the Firebase emulators, mock model (free)
+npm run bench:report                   # writes docs/PERFORMANCE_REPORT.md from the results
+```
+
+The first two commands never call a billed API. A live run against a deployed project
+(`BENCH_LIVE=1 BENCH_PROJECT=<project-id> npm run bench:live`) measures real latency and Gemini
+tokens; it needs credentials, a TEST user with AI enabled and an App Check debug token, and costs
+under US$1. Results are saved in `bench/results/` with the machine, Node version and commit they
+ran on.
 
 ---
 

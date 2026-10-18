@@ -160,6 +160,20 @@ minutes, so the remaining component splits, the benchmark script and the screens
 - **Not run:** `npm run test:e2e -w web` fails in the cloud container because `@playwright/test`
   1.64 wants a Chromium build that is not installed (environment, not code); `npm run e2e` not run.
 
+## Performance report plan (18 Oct 2026, branch `claude/intelligent-faraday-xbjw3e`)
+
+Plan only, nothing built: `docs/plans/PERFORMANCE_BENCHMARK_PLAN.md` (updated after merging `main`: AI
+callables, billed gate, burst and daily limits, agents). It adds a `bench/` workspace (`npm run bench`,
+`bench:api` on the emulators, `bench:live`, `bench:report`) and small log-only API changes (tokens and
+durations). README section 13 now lists what the benchmark measures and how to run it, with a note that
+the scripts are being added; remove that note once `bench/` exists. Owner approved live Gemini calls
+(under US$1) and a live run. Open for the owner: the `roles/aiplatform.user` grant, credentials, TEST
+users, an App Check debug token, and how to fit ~100 model calls under the daily limit of 30 (B-15).
+
+**Report measured (18 Oct 2026):** `docs/PERFORMANCE_REPORT.md` (offline parts; live API and Gemini
+blocked by App Check). Finding for the owner: the scoring replay grows with loans × transactions
+(`byAccount` in `packages/shared/src/risk/scoring/run.ts`): 200 loans 31 s, 1,000 loans 761 s. Not fixed.
+
 ## Open decisions and next ideas
 
 - **New loan opens the form directly (18 Oct 2026, branch `ui/loan-page-layout`):** the form path is
