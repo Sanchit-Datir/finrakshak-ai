@@ -199,14 +199,6 @@ export const SECTION_LABEL: Record<ApplicationSection, string> = {
   receivables: 'Trade receivables (largest customers)',
 };
 
-export const DISCLAIMERS = [
-  'OCR extraction does not establish document authenticity.',
-  'A relationship does not establish wrongdoing.',
-  'An alert is not a fraud determination.',
-  'Results depend on the completeness and quality of available data.',
-  'Public-source data may be incomplete, delayed or ambiguous.',
-] as const;
-
 /** Kinds of verified AI-investigator findings (docs/AI_INVESTIGATOR.md). Leads, never verdicts. */
 export const AI_FINDING_KIND_LABEL: Record<InvestigationFindingKind, string> = {
   public_record_match: 'Possible public-record match',

@@ -9,7 +9,7 @@ import { investigatorTools, newCollector, type Collector } from './tools.js';
 import { indexBundle } from './verify.js';
 
 /**
- * One application's AI investigation (docs/AI_INVESTIGATOR.md, B-66): Gemini reads the bundle only
+ * One application's AI investigation (docs/AI_INVESTIGATOR.md, B-67): Gemini reads the bundle only
  * through the closed tool list and proposes findings and draft questions; tools.ts keeps only what
  * verify.ts accepts. The result is a set of leads for an officer, never a decision.
  */

@@ -16,7 +16,7 @@ import { nameSimilarity } from './text.js';
 
 /**
  * Public-records shortlist for the AI investigator: code, not the model, picks the candidates a party
- * may match, with fuzzy name matching over the published index (docs/AI_INVESTIGATOR.md, B-66). The
+ * may match, with fuzzy name matching over the published index (docs/AI_INVESTIGATOR.md, B-67). The
  * model may only point at these; a candidate is a possible match until the CIN or address agrees.
  * A record with a different CIN is a different legal entity and is never shortlisted (B-37).
  */

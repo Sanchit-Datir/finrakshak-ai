@@ -7,7 +7,7 @@ import { AnalysisFindingSchema } from './applicationAnalysis.js';
  * masked, B-16), ratios computed by code, a public-records shortlist per party made by code, related
  * entities and the check findings. Gemini reads it only through a closed list of tools and proposes
  * findings and draft questions that cite the bundle; code verifies every citation, quoted value and
- * number before anything is kept. Leads for a reviewer, never a verdict (B-58, B-66).
+ * number before anything is kept. Leads for a reviewer, never a verdict (B-58, B-67).
  */
 
 export const INVESTIGATION_LIMITS = {

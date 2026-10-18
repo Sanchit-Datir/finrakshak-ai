@@ -1,7 +1,7 @@
 # AI investigator for a loan application
 
 _Added 18 Oct 2026 (branch `claude/ai-investigator-e63431`, from `feat/application-ai-analysis`), as decided
-with the owner the same day. Boundary condition: **B-66**._
+with the owner the same day. Boundary condition: **B-67**._
 
 The owner wants visible AI doing the assessment, with no hallucination: **the AI proposes with cited
 evidence, code verifies, a person decides.** Findings are leads (Routine review / Needs attention / Urgent

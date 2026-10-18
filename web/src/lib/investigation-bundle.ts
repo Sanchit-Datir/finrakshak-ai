@@ -16,7 +16,7 @@ import { publicRelated, shortlist } from './investigation-shortlist.js';
 
 /**
  * The bundle the browser sends to `investigateApplication` (docs/AI_INVESTIGATOR.md). Typed-in data
- * only, identifiers masked and date of birth, mobile and street address left out (B-16, B-66); empty
+ * only, identifiers masked and date of birth, mobile and street address left out (B-16, B-67); empty
  * fields are kept as '' so the investigator can ask about gaps. Ratios, shortlists and related
  * entities are all made by code.
  */

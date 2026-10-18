@@ -113,12 +113,27 @@ browser sends a bundle (typed-in data, identifiers masked; ratios, public-record
 entities all made by code); Gemini reads it through 8 tools and proposes findings and draft questions; code
 verifies every citation, quote and number and counts rejections. Verified findings add to the attention
 score as their own kinds (45/40/25/15, scaled by priority); mock and out-of-date ones do not. See
-`docs/AI_INVESTIGATOR.md` and **B-66** (B-65 is taken on another branch). Checked in the browser against the
+`docs/AI_INVESTIGATOR.md` and **B-67** (B-65 and B-66 are the branch scope and the copilot). Checked in the browser against the
 auth + functions emulators with the mock. **Owner decided (18 Oct 2026):** every model call counts
 against the daily limit and the limit is never crossed (the run stops and keeps what was verified); names
 are not masked (applies to B-64 too). **Open for the owner:** grant `roles/aiplatform.user` to the
 functions runtime account `728958349363-compute@developer.gserviceaccount.com` (it does not have it yet;
-the grant was not run from the session). Committed on the branch, not pushed.
+the grant was not run from the session). PR opened against `main` at the owner's request.
+
+## Showcase UI and Copilot (18 Oct 2026, branch `remaining-ui-changes-2`, not committed)
+
+The owner approved `docs/plans/UI_SHOWCASE_PLAN.md`, re-ordered for the judging criteria (Gen AI is 65%).
+The owner said: do not commit yet, and stay on this branch.
+
+- **Built:**
+  - the dark "mission rail" sidebar, with the journey pre-sanction → ₹ disbursed → post-disbursement →
+    investigate and live counts (`web/src/lib/nav-counts.ts`);
+  - the branch-scope switcher (B-65), pinned records, `/queue` (My queue) and the mobile tab bar;
+  - **FinRakshak Copilot** (`docs/COPILOT.md`, B-66): the `assistRecord` callable, the grounding check
+    in shared plus its runtime copy in functions, and a simulated answer in demo sessions. Open it with
+    Ctrl/⌘ J, I, or **Ask AI**.
+- **Renames:** Dashboard → Command center, Monitoring → Loan book, Graph Lab → Relationship graph.
+- **Next:** the AI hub page (2C), AI in workflows (2B), then the money-trail Sankey and Story mode.
 
 ## Open decisions and next ideas
 

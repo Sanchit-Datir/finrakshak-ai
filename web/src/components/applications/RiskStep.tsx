@@ -1,6 +1,6 @@
 import { ArrowLeft, CircleCheck, ClipboardCheck, Play, Send } from 'lucide-react';
 import { useState } from 'react';
-import { DISCLAIMERS, PRIORITY_HELP } from '../../domain/labels.js';
+import { PRIORITY_HELP } from '../../domain/labels.js';
 import type { Application, Db } from '../../domain/schemas.js';
 import { CHECK_NAMES, reviewPriority, runChecks } from '../../lib/checks.js';
 import { checkPublicRecords, loadPublicRecords } from '../../lib/public-records.js';
@@ -150,23 +150,6 @@ export function RiskStep({
           </Card>
         </>
       )}
-
-      <Card className="p-5">
-        <h3 className="mb-2 text-sm font-semibold">Limitations</h3>
-        <ul className="text-muted list-disc space-y-0.5 pl-5 text-xs">
-          {DISCLAIMERS.map((d) => (
-            <li key={d}>{d}</li>
-          ))}
-          <li>
-            Checks only see documents and fields recorded in this workspace. Unreviewed fields are
-            reported, not trusted.
-          </li>
-          <li>
-            Nothing here approves or declines an application. Decisions remain with authorised
-            staff.
-          </li>
-        </ul>
-      </Card>
 
       <div className="flex flex-wrap gap-2">
         <Button icon={ArrowLeft} onClick={onBack}>

@@ -24,6 +24,7 @@ import { SearchInput } from '../components/ui/SearchInput.js';
 import { EmptyState, Notice } from '../components/ui/States.js';
 import { AlertStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
+import { PinButton } from '../components/ui/PinButton.js';
 import { ALERT_STATUS_LABEL, PRODUCT_LABEL, TXN_TYPE_LABEL } from '../domain/labels.js';
 import {
   AlertStatusSchema,
@@ -44,6 +45,8 @@ import { useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
+import { useBranchScope } from '../state/scope.js';
+import { useCopilotTarget } from '../state/copilot.js';
 
 const DAY = 86_400_000;
 
@@ -63,7 +66,8 @@ export function MonitoringPage(): React.JSX.Element {
   const toast = useToast();
   const [loanId, setLoanId] = useUrlState('loan', db.loans[0]?.id ?? '');
   const [loanQuery, setLoanQuery] = useState('');
-  const [branch, setBranch] = useUrlState('branch', 'all');
+  const { scope } = useBranchScope();
+  const [branch, setBranch] = useUrlState('branch', scope);
   const [type, setType] = useUrlState('type', 'all');
   const [alertStatus, setAlertStatus] = useUrlState('alerts', 'all');
   const [period, setPeriod] = useState<PeriodValue>({ kind: 'custom', from: '', to: '' });
@@ -81,6 +85,7 @@ export function MonitoringPage(): React.JSX.Element {
     matchesQuery(loanQuery, l.id, db.borrowers.find((b) => b.id === l.borrowerId)?.name, l.purpose),
   );
   const loan = db.loans.find((l) => l.id === loanId) ?? loans[0];
+  useCopilotTarget(loan === undefined ? null : { kind: 'loan', id: loan.id });
   const alerts = useMemo(() => allAlerts(db).filter((a) => a.source === 'monitoring'), [db]);
   const scopedAlerts = alerts.filter((a) => loans.some((l) => l.id === a.loanId));
   const range = usePeriod ? resolvePeriod(period) : null;
@@ -170,9 +175,9 @@ export function MonitoringPage(): React.JSX.Element {
   return (
     <>
       <PageHeader
-        docTitle="Monitoring"
-        title="Post-disbursement Monitoring"
-        subtitle="Review transaction patterns and investigate movements that may need attention."
+        docTitle="Loan book"
+        title="Loan book"
+        subtitle="Post-disbursement monitoring: transaction patterns and movements that may need attention."
         actions={
           <>
             <LinkButton to="/monitoring/public-records" icon={Landmark}>
@@ -354,9 +359,18 @@ export function MonitoringPage(): React.JSX.Element {
                   )}
                 </p>
               </div>
-              <Badge tone={loan.dataSource.startsWith('No ') ? 'warn' : 'info'}>
-                Data source: {loan.dataSource}
-              </Badge>
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge tone={loan.dataSource.startsWith('No ') ? 'warn' : 'info'}>
+                  Data source: {loan.dataSource}
+                </Badge>
+                <PinButton
+                  pin={{
+                    href: `/monitoring?loan=${encodeURIComponent(loan.id)}`,
+                    title: `${loan.id}${borrower === undefined ? '' : ` · ${borrower.name}`}`,
+                    kind: 'loan',
+                  }}
+                />
+              </div>
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
               <div>

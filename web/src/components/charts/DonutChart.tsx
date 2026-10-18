@@ -29,10 +29,10 @@ export function DonutChart({
   let offset = 0;
   const focused = slices.find((s) => s.key === hover);
   return (
-    <div className="flex flex-col items-center gap-5 sm:flex-row lg:flex-col 2xl:flex-row">
+    <div className="flex flex-col items-center gap-6 md:flex-row">
       <svg
         viewBox="0 0 200 200"
-        className="size-44 shrink-0"
+        className="size-40 shrink-0"
         role="img"
         aria-label={`${title}: ${slices.map((s) => `${s.label} ${s.value}`).join(', ')}`}
       >
@@ -72,7 +72,7 @@ export function DonutChart({
           {focused?.label ?? centerLabel}
         </text>
       </svg>
-      <ul className="w-full space-y-1.5">
+      <ul className="grid w-full grid-cols-2 gap-3 lg:grid-cols-4">
         {slices.map((s) => {
           const Icon = s.icon;
           const pct = total === 0 ? 0 : Math.round((s.value / total) * 100);
@@ -80,16 +80,38 @@ export function DonutChart({
             <>
               <span
                 aria-hidden
-                className="size-3 shrink-0 rounded-sm"
+                className="absolute inset-x-0 top-0 h-1"
                 style={{ background: s.color }}
               />
-              <Icon className="text-muted size-4 shrink-0" aria-hidden />
-              <span className="flex-1 text-sm">{s.label}</span>
-              <span className="tabular text-sm font-semibold">{s.value}</span>
-              <span className="text-muted tabular w-10 text-right text-xs">{pct}%</span>
+              <span className="flex items-center gap-2 text-sm font-medium">
+                <span
+                  aria-hidden
+                  className="grid size-8 shrink-0 place-items-center rounded-lg"
+                  style={{ background: `color-mix(in srgb, ${s.color} 14%, transparent)` }}
+                >
+                  <Icon className="size-4" style={{ color: s.color }} />
+                </span>
+                {s.label}
+              </span>
+              <span className="flex items-baseline gap-2">
+                <span className="tabular text-3xl font-bold">{s.value}</span>
+                <span className="text-muted tabular text-sm">
+                  {pct}% of {total}
+                </span>
+              </span>
+              <span aria-hidden className="bg-surface-2 block h-1.5 overflow-hidden rounded-full">
+                <span
+                  className="block h-full rounded-full"
+                  style={{ width: `${pct}%`, background: s.color }}
+                />
+              </span>
+              {s.href !== undefined && (
+                <span className="text-primary text-sm font-semibold">View →</span>
+              )}
             </>
           );
-          const cls = 'hover:bg-surface-2 flex items-center gap-2 rounded-lg px-2 py-1.5';
+          const cls =
+            'border-line bg-surface relative flex h-full flex-col gap-3 overflow-hidden rounded-xl border p-4 pt-5';
           return (
             <li key={s.key} title={s.help}>
               {s.href === undefined ? (
@@ -97,7 +119,7 @@ export function DonutChart({
               ) : (
                 <Link
                   to={s.href}
-                  className={cls}
+                  className={`${cls} hover:border-primary/50 hover:shadow-sm`}
                   onMouseEnter={() => {
                     setHover(s.key);
                   }}

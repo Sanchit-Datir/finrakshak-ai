@@ -3,7 +3,7 @@ import type { ToolCall, ToolModel, ToolResult, ToolSpec } from '../tool-model.js
 
 /**
  * Slim tool loop for the investigator, after ingest/src/ai/toolLoop.ts (functions cannot import
- * ingest). Bounds (B-10, B-14, B-66): model turns, read calls, characters of tool replies and a
+ * ingest). Bounds (B-10, B-14, B-67): model turns, read calls, characters of tool replies and a
  * deadline. A reply with arguments that do not parse is reported back once; a second such reply, a
  * cut-off reply or the deadline ends the run as a failure (GeminiError), so no partial result is kept.
  */

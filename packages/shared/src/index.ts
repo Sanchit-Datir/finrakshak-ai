@@ -7,6 +7,8 @@ export * from './ingest/index.js';
 export * from './ai.js';
 export * from './applicationAnalysis.js';
 export * from './applicationInvestigation.js';
+export * from './assist.js';
+export * from './assistGrounding.js';
 export * from './profile.js';
 export * from './time.js';
 export * from './risk/index.js';

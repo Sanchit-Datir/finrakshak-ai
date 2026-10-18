@@ -40,7 +40,7 @@ export function StackedBarChart({
   const step = (W - padL) / Math.max(1, buckets.length);
   const active = hover === null ? undefined : buckets[hover];
   return (
-    <div>
+    <div className="relative overflow-hidden">
       <div className="relative">
         <svg
           viewBox={`0 0 ${W} ${height}`}

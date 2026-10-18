@@ -68,11 +68,8 @@ function ProfileTab(): React.JSX.Element {
   // A signed-in cloud account is managed by the administrator; only a demo profile is editable here.
   const managed = useSession()?.demo === false;
   const [p, setP] = useState(db.settings.profile);
-  const [lang, setLang] = useState(db.settings.preferences.language);
   const [err, setErr] = useState<string | null>(null);
-  const dirty =
-    JSON.stringify(p) !== JSON.stringify(db.settings.profile) ||
-    lang !== db.settings.preferences.language;
+  const dirty = JSON.stringify(p) !== JSON.stringify(db.settings.profile);
   const save = (): void => {
     if (p.name.trim() === '') {
       setErr('Name is required.');
@@ -85,7 +82,6 @@ function ProfileTab(): React.JSX.Element {
     setErr(null);
     mutate((d) => {
       d.settings.profile = { ...p, name: p.name.trim() };
-      d.settings.preferences.language = lang;
     });
     updateDemoSession({ name: p.name.trim(), employeeId: p.employeeId, branchId: p.branchId });
     toast.push({ tone: 'success', title: 'Profile saved' });
@@ -150,17 +146,6 @@ function ProfileTab(): React.JSX.Element {
             </option>
           ))}
         </SelectField>
-        <SelectField
-          label="Preferred language"
-          value={lang}
-          onChange={(e) => {
-            setLang(e.target.value === 'mr' ? 'mr' : 'en');
-          }}
-          hint="Marathi interface text is available on the sign-in page; other screens are English for now. Marathi documents are fully supported."
-        >
-          <option value="en">English</option>
-          <option value="mr">मराठी</option>
-        </SelectField>
       </div>
       <div className="mt-5 flex gap-2">
         <Button variant="primary" icon={Save} disabled={!dirty} onClick={save}>
@@ -170,7 +155,6 @@ function ProfileTab(): React.JSX.Element {
           disabled={!dirty}
           onClick={() => {
             setP(db.settings.profile);
-            setLang(db.settings.preferences.language);
             setErr(null);
           }}
         >

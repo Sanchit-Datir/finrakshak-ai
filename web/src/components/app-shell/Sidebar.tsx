@@ -1,52 +1,76 @@
-import { ChevronDown, CircleHelp, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
+import { navCounts, type NavCounts } from '../../lib/nav-counts.js';
+import { useBranchScope } from '../../state/scope.js';
+import { useSession } from '../../state/session.js';
+import { useDb } from '../../state/store.js';
 import { cn } from '../ui/cn.js';
+import { LoanBookCheckpoint } from './LoanBookCheckpoint.js';
 import { Wordmark } from './Logo.js';
-import { PRIMARY_NAV, REPORTS_GROUP, SETTINGS_NAV, type NavItem } from './nav.js';
-import { UserMenu } from './UserMenu.js';
+import { NAV_SECTIONS, activeNavPath, type NavSection } from './nav.js';
+import { PinnedList } from './PinnedList.js';
+import { ScopeSwitcher } from './ScopeSwitcher.js';
+import { SidebarFooter } from './SidebarFooter.js';
+import { STAGE_TEXT, SidebarItem, type HintTarget } from './SidebarItem.js';
 
-function Item({
-  item,
+const RING: Record<NonNullable<NavSection['stage']>['kind'], string> = {
+  pre: 'ring-rail-pre',
+  post: 'ring-rail-post',
+  investigate: 'ring-rail-investigate',
+};
+
+/** One-line status beside each journey step, e.g. "6 in review". */
+function stageMeta(id: string, c: NavCounts): string {
+  if (id === 'pre') return c.applications.value > 0 ? `${c.applications.value} in review` : '';
+  if (id === 'post') return c.loans.value > 0 ? `${c.loans.value} flagged` : 'all clear';
+  if (id === 'investigate') return c.cases.value > 0 ? `${c.cases.value} open` : '';
+  return '';
+}
+
+function SectionHeader({
+  section,
+  meta,
   collapsed,
-  onNavigate,
-  nested = false,
 }: {
-  item: NavItem;
+  section: NavSection;
+  meta: string;
   collapsed: boolean;
-  onNavigate?: () => void;
-  nested?: boolean;
-}): React.JSX.Element {
-  const Icon = item.icon;
-  return (
-    <NavLink
-      to={item.to}
-      end={item.to === '/applications/new'}
-      title={collapsed ? item.label : undefined}
-      onClick={onNavigate}
-      className={({ isActive }) =>
-        cn(
-          'relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-          nested && !collapsed && 'pl-9',
-          isActive
-            ? 'bg-primary-soft text-primary'
-            : 'text-muted hover:bg-surface-2 hover:text-ink',
-        )
-      }
-    >
-      {({ isActive }) => (
-        <>
-          {isActive && (
-            <span
-              aria-hidden
-              className="bg-primary absolute top-1.5 bottom-1.5 left-0 w-[3px] rounded-r"
-            />
-          )}
-          <Icon className="size-[18px] shrink-0" aria-hidden />
-          <span className={cn('truncate', collapsed && 'sr-only')}>{item.label}</span>
-        </>
+}): React.JSX.Element | null {
+  const stage = section.stage;
+  if (stage === undefined) {
+    if (section.bare === true && !collapsed) return null;
+    return collapsed ? (
+      <div aria-hidden className="mx-4 my-2 border-t border-white/10" />
+    ) : (
+      <p className="text-rail-muted mb-1 px-2.5 text-[11px] font-semibold tracking-[0.08em] uppercase">
+        {section.label}
+      </p>
+    );
+  }
+  const node = (
+    <span
+      aria-hidden
+      className={cn(
+        'bg-rail relative z-10 grid size-[22px] shrink-0 place-items-center rounded-full text-[11px] font-bold ring-2',
+        RING[stage.kind],
+        STAGE_TEXT[stage.kind],
       )}
-    </NavLink>
+    >
+      {stage.n}
+    </span>
+  );
+  if (collapsed) return <div className="my-2 flex justify-center">{node}</div>;
+  return (
+    <div className="flex h-7 items-center gap-2.5 pr-2 pl-[10px]" title={section.hint}>
+      {node}
+      <span className="text-[11px] font-semibold tracking-[0.06em] whitespace-nowrap text-white/90 uppercase">
+        {section.label}
+      </span>
+      {meta !== '' && (
+        <span className="text-rail-muted ml-auto text-[11px] whitespace-nowrap">{meta}</span>
+      )}
+    </div>
   );
 }
 
@@ -61,88 +85,111 @@ export function Sidebar({
   onNavigate?: () => void;
   mobile?: boolean;
 }): React.JSX.Element {
+  const db = useDb();
+  const session = useSession();
   const location = useLocation();
-  const inGroup = REPORTS_GROUP.items.some((i) => location.pathname.startsWith(i.to));
-  const [groupOpen, setGroupOpen] = useState(true);
-  const GroupIcon = REPORTS_GROUP.icon;
-  const navProps = onNavigate === undefined ? {} : { onNavigate };
+  const { scope } = useBranchScope();
+  const [hint, setHint] = useState<HintTarget | null>(null);
+  const active = activeNavPath(location.pathname);
+  const counts = navCounts(db, session?.name ?? '', scope);
+
+  const renderSection = (section: NavSection): React.JSX.Element => (
+    <div key={section.id} className={cn(section.stage === undefined && 'mt-3 first:mt-0')}>
+      <SectionHeader section={section} meta={stageMeta(section.id, counts)} collapsed={collapsed} />
+      <div className="space-y-0.5">
+        {section.items.map((item) => (
+          <SidebarItem
+            key={item.to}
+            item={item}
+            stage={section.stage?.kind ?? 'none'}
+            count={item.count === undefined ? undefined : counts[item.count]}
+            active={active === item.to}
+            collapsed={collapsed}
+            onJourney={section.stage !== undefined}
+            onNavigate={onNavigate}
+            onHint={setHint}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  const journey = NAV_SECTIONS.filter((s) => s.stage !== undefined);
+  const [workspace, ...rest] = NAV_SECTIONS.filter((s) => s.stage === undefined);
+
   return (
-    <div className="flex h-full flex-col">
+    <div className="rail-surface flex h-full flex-col">
       <div
         className={cn(
-          'flex h-16 items-center px-4',
+          'flex h-16 shrink-0 items-center px-4',
           collapsed ? 'justify-center' : 'justify-between',
         )}
       >
-        <Wordmark collapsed={collapsed} />
+        <Wordmark collapsed={collapsed} inverted />
         {!mobile && !collapsed && onToggleCollapse !== undefined && (
           <button
             type="button"
             onClick={onToggleCollapse}
             aria-label="Collapse sidebar"
-            className="text-muted hover:text-ink hover:bg-surface-2 rounded-lg p-1.5"
+            className="text-rail-muted rounded-lg p-1.5 hover:bg-white/10 hover:text-white"
           >
             <PanelLeftClose className="size-[18px]" aria-hidden />
           </button>
         )}
       </div>
-      <nav aria-label="Main" className="flex-1 space-y-1 overflow-y-auto px-3 py-2">
-        {PRIMARY_NAV.map((item) => (
-          <Item key={item.to} item={item} collapsed={collapsed} {...navProps} />
-        ))}
-        {collapsed ? (
-          REPORTS_GROUP.items.map((item) => (
-            <Item key={item.to} item={item} collapsed {...navProps} />
-          ))
-        ) : (
-          <div>
-            <button
-              type="button"
-              aria-expanded={groupOpen}
-              onClick={() => {
-                setGroupOpen((o) => !o);
-              }}
-              className={cn(
-                'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium',
-                inGroup ? 'text-primary' : 'text-muted hover:bg-surface-2 hover:text-ink',
-              )}
-            >
-              <GroupIcon className="size-[18px] shrink-0" aria-hidden />
-              <span className="flex-1 text-left">{REPORTS_GROUP.label}</span>
-              <ChevronDown
-                className={cn('size-4 transition-transform', groupOpen ? 'rotate-180' : '')}
-                aria-hidden
-              />
-            </button>
-            {groupOpen && (
-              <div className="mt-1 space-y-1">
-                {REPORTS_GROUP.items.map((item) => (
-                  <Item key={item.to} item={item} collapsed={false} nested {...navProps} />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-        <Item item={SETTINGS_NAV} collapsed={collapsed} {...navProps} />
-      </nav>
-      <div className="border-line space-y-1 border-t px-3 py-3">
-        {collapsed && onToggleCollapse !== undefined && (
-          <button
-            type="button"
-            onClick={onToggleCollapse}
-            aria-label="Expand sidebar"
-            className="text-muted hover:text-ink hover:bg-surface-2 flex w-full justify-center rounded-lg p-2"
-          >
-            <PanelLeftOpen className="size-[18px]" aria-hidden />
-          </button>
-        )}
-        <Item
-          item={{ to: '/help', label: 'Help & Support', icon: CircleHelp }}
-          collapsed={collapsed}
-          {...navProps}
-        />
-        <UserMenu compact={collapsed} placement="sidebar" />
+      <div className="shrink-0 px-3 pb-3">
+        <ScopeSwitcher collapsed={collapsed} urgentElsewhere={counts.urgentElsewhere} />
       </div>
+      <nav
+        aria-label="Main"
+        className="rail-scroll flex-1 overflow-x-hidden overflow-y-auto px-3 pb-3"
+      >
+        {workspace !== undefined && renderSection(workspace)}
+        <div
+          className={cn(
+            'relative mt-3',
+            !collapsed &&
+              'before:from-rail-pre before:via-rail-post before:to-rail-investigate before:absolute before:top-[14px] before:bottom-[16px] before:left-[20px] before:w-0.5 before:rounded-full before:bg-gradient-to-b before:opacity-40',
+          )}
+        >
+          {journey.map((section) => (
+            <div key={section.id}>
+              {renderSection(section)}
+              {section.id === 'pre' && (
+                <LoanBookCheckpoint
+                  pulse={counts.pulse}
+                  collapsed={collapsed}
+                  onNavigate={onNavigate}
+                />
+              )}
+              {section.id === 'post' && <div className="h-2" />}
+            </div>
+          ))}
+        </div>
+        {rest.map(renderSection)}
+        {!collapsed && <PinnedList onNavigate={onNavigate} />}
+      </nav>
+      {collapsed && onToggleCollapse !== undefined && (
+        <button
+          type="button"
+          onClick={onToggleCollapse}
+          aria-label="Expand sidebar"
+          className="text-rail-muted mx-auto mb-1 grid size-9 place-items-center rounded-lg hover:bg-white/10 hover:text-white"
+        >
+          <PanelLeftOpen className="size-[18px]" aria-hidden />
+        </button>
+      )}
+      <SidebarFooter db={db} collapsed={collapsed} onNavigate={onNavigate} />
+      {hint !== null && collapsed && (
+        <div
+          aria-hidden
+          className="bg-navy-deep pointer-events-none fixed left-[84px] z-50 -translate-y-1/2 rounded-lg px-3 py-1.5 text-xs whitespace-nowrap text-white shadow-[var(--shadow-pop)] ring-1 ring-white/10"
+          style={{ top: hint.top }}
+        >
+          <span className="font-semibold">{hint.label}</span>
+          {hint.detail !== '' && <span className="text-rail-muted"> · {hint.detail}</span>}
+        </div>
+      )}
     </div>
   );
 }

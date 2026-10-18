@@ -100,8 +100,8 @@ export function GraphLabPage(): React.JSX.Element {
   return (
     <div className="space-y-4">
       <PageHeader
-        docTitle="Graph lab"
-        title="Graph lab"
+        docTitle="Relationship graph"
+        title="Relationship graph"
         subtitle="Exploratory relationship discovery over collected public records (local prototype)."
         badge={
           <Badge tone="violet" icon={FlaskConical}>

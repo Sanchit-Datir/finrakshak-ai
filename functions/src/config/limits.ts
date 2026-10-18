@@ -8,6 +8,8 @@ export const RATE_LIMITS = {
   askGeminiPerMinute: 5,
   /** Analysing an application: one click per review, rarely more than a couple a minute. */
   analyseApplicationPerMinute: 3,
+  /** Copilot questions: a short back-and-forth about one record. */
+  assistRecordPerMinute: 6,
   /** Investigating an application: a tool loop of several model turns, so fewer than an analysis. */
   investigateApplicationPerMinute: 2,
   /** Loading a profile happens at sign-in and on page loads; generous, but not unbounded. */

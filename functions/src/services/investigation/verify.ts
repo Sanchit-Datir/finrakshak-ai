@@ -13,7 +13,7 @@ import type {
 import { LIMITS, SECTIONS } from './input.js';
 
 /**
- * Code verification of every claim the investigator makes (docs/AI_INVESTIGATOR.md, B-66). A claim is
+ * Code verification of every claim the investigator makes (docs/AI_INVESTIGATOR.md, B-67). A claim is
  * kept only when each citation points at something in the bundle, each quoted value appears in the
  * cited field, each number it writes is in the cited evidence (the model never does arithmetic), it
  * uses no verdict word and states no score. Anything else is rejected with a reason and counted.
@@ -116,7 +116,7 @@ function citedEvidence(ix: BundleIndex, citations: readonly Citation[]): Verdict
   return { ok: true, value: out };
 }
 
-/** What each kind of finding must cite (B-66). */
+/** What each kind of finding must cite (B-67). */
 function kindRule(
   ix: BundleIndex,
   kind: InvestigationFinding['kind'],
@@ -149,7 +149,7 @@ function kindRule(
   }
 }
 
-/** Strong only when the CIN or the address of a cited candidate also agrees (B-37, B-66). */
+/** Strong only when the CIN or the address of a cited candidate also agrees (B-37, B-67). */
 function matchOf(ix: BundleIndex, cites: readonly Citation[]): 'possible' | 'strong' {
   const strong = cites.some((c) => {
     if (c.type !== 'record') return false;

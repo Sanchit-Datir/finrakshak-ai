@@ -20,6 +20,7 @@ import { useActor, useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
+import { useBranchScope } from '../state/scope.js';
 
 const SOURCE: Record<Case['source'], string> = {
   pre_disbursement: 'Pre-disbursement',
@@ -33,7 +34,8 @@ export function InvestigationsPage(): React.JSX.Element {
   const [q, setQ] = useUrlState('q', '');
   const [status, setStatus] = useUrlState('status', 'all');
   const [priority, setPriority] = useUrlState('priority', 'all');
-  const [branch, setBranch] = useUrlState('branch', 'all');
+  const { scope } = useBranchScope();
+  const [branch, setBranch] = useUrlState('branch', scope);
   const [owner, setOwner] = useUrlState('owner', 'all');
   const [source, setSource] = useUrlState('source', 'all');
   const [period, setPeriod] = useUrlState('opened', 'all');
