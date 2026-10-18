@@ -97,6 +97,12 @@ proposals with `model: null`; model-rejected candidates are not proposed and onl
   accounts, checkpoint 4 (miner Vertex dry run) and E3 (explainer dry run); step 15 (approval view, scorer
   reading the Firestore library, `proposals_waiting`) is not built.
 
+## Performance report plan (18 Oct 2026, branch `claude/intelligent-faraday-xbjw3e`)
+
+Plan only, nothing built: `docs/plans/PERFORMANCE_BENCHMARK_PLAN.md`. Owner approved live Gemini calls
+(under $1) and a live run against `fund-tracer`. Open for the owner: credentials, a TEST user, an App
+Check debug token, and how to fit about 50 calls under the daily AI limit of 30 (B-15).
+
 ## Open decisions and next ideas
 
 - **Risk scoring programme (planned 17 Oct 2026):** synthetic transaction data, a daily risk-scoring
