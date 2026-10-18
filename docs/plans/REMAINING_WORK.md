@@ -138,12 +138,12 @@ without workspace packages.
 
 **Parallel?** Yes, and these block the others at the points shown. **Owner:** A.
 
-| Task                                                                                                                                                | Blocks                                                                               |
-| --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Review the 23 seed cases (`npm run miner`, `data/verification/README.md`); this creates `seed_review.json`                                          | Pattern support weights (every run records `no_seed_review` and uses 0.6 until then) |
-| **Checkpoint 2:** choose a tuning option from W1b                                                                                                   | Publishing settings v2                                                               |
-| **Checkpoint 3:** run `scripts/setup-ingest-gcp.sh` (see `docs/DEPLOY.md`) and create the budget alert (B-15); create the `fundtrace_synth` dataset | The real dry run in W2g                                                              |
-| Set `INGEST_ENABLED=true` (and later `INGEST_PUBLISH_ENABLED=true`) if not already set                                                              | Deployment of any new job                                                            |
+| Task                                                                                                                                                                      | Blocks                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Review the 23 seed cases (`npm run miner`, `data/verification/README.md`); this creates `seed_review.json`                                                                | Pattern support weights (every run records `no_seed_review` and uses 0.6 until then) |
+| **Checkpoint 2:** choose a tuning option from W1b                                                                                                                         | Publishing settings v2                                                               |
+| **Checkpoint 3:** run `scripts/setup-ingest-gcp.sh` (see `docs/DEPLOY.md`) and create the budget alert (B-15, **done 18 Oct 2026**); create the `fundtrace_synth` dataset | The real dry run in W2g                                                              |
+| Set `INGEST_ENABLED=true` (and later `INGEST_PUBLISH_ENABLED=true`) if not already set                                                                                    | Deployment of any new job                                                            |
 
 ### W5. Housekeeping
 

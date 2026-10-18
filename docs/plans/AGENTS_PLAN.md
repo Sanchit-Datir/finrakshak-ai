@@ -153,8 +153,8 @@ All figures are my estimates from the existing caps and should be confirmed on t
 | Miner     | 1 session, up to 12 tool calls | 60,000 input characters, 15 candidates      | A few cents per run, on demand          |
 | Explainer | 1 short call per alerted loan  | At most 30 per run                          | Negligible at a 3% monthly alert budget |
 
-The budget alert is still parked (B-15). Create it **before** any provider other than `mock` is switched on
-in the cloud. Every agent stays on `mock` until you set its provider explicitly.
+The budget alerts exist (B-15, checked 18 Oct 2026: ₹450/month for the project, ₹200/month for the AI
+services). They warn but do not stop spend, so the per-run caps above stay. Every agent stays on `mock` until you set its provider explicitly.
 
 ## Autonomy
 

@@ -15,6 +15,7 @@ describe('analyseApplication schemas', () => {
         borrowerType: 'individual',
         documents: [],
         findings: [],
+        attention: null,
       }).success,
     ).toBe(true);
   });
@@ -28,8 +29,15 @@ describe('analyseApplication schemas', () => {
           borrowerType: 'individual',
           documents,
           findings: [],
+          attention: null,
         }).success,
       ).toBe(false);
+  });
+
+  it('rejects an attention score outside 0–100', () => {
+    const input = { borrowerType: 'individual', documents: [], findings: [] };
+    const attention = { score: 101, band: 'urgent', driverIds: [] };
+    expect(AnalyseApplicationInputSchema.safeParse({ ...input, attention }).success).toBe(false);
   });
 
   it('rejects a malformed result', () => {

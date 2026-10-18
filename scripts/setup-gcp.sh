@@ -97,6 +97,12 @@ for runtime_sa in "${RUNTIME_SAS[@]}"; do
   grant "$runtime_sa" roles/datastore.user
 done
 
+# The app's AI callables (askGemini, analyseApplication) call Gemini on Vertex AI as their runtime account
+# (Application Default Credentials, no API key).
+for runtime_sa in "${RUNTIME_SAS[@]}"; do
+  grant "$runtime_sa" roles/aiplatform.user
+done
+
 # Emergency stop (scripts/emergency-stop.sh): may only change who can call Cloud Run services and switch an
 # API off. It cannot deploy, delete, read data or secrets, change billing, or turn anything ON.
 STOP_ROLE="emergencyStop"

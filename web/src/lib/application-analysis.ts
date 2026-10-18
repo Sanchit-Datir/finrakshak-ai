@@ -4,6 +4,7 @@ import {
   type AnalysisDocument,
 } from '@fund-tracker/shared';
 import type { Application, FtDocument } from '../domain/schemas.js';
+import type { AttentionScore } from './attention-score.js';
 import type { Finding } from './checks.js';
 import { docTypeLabel } from './doc-catalog.js';
 import { maskIdentifier } from './format.js';
@@ -46,9 +47,18 @@ export function buildAnalysisRequest(
   app: Application,
   docs: readonly FtDocument[],
   findings: readonly Finding[],
+  attention: AttentionScore | null = null,
 ): AnalysisRequest {
   const base: AnalyseApplicationInput = {
     borrowerType: app.borrowerType,
+    attention:
+      attention === null
+        ? null
+        : {
+            score: attention.score,
+            band: attention.band,
+            driverIds: attention.drivers.map((d) => d.findingId),
+          },
     documents: [],
     findings: findings.slice(0, L.maxFindings).map((f) => ({
       findingId: f.id,
@@ -69,10 +79,15 @@ export function buildAnalysisRequest(
   return { input: { ...base, documents }, omittedDocuments: candidates.length - documents.length };
 }
 
-/** Same data, same key: a stored analysis is shown only while it still describes the application. */
-export function analysisInputsKey(input: AnalyseApplicationInput): string {
+/** A short, stable key of any JSON value (FNV-1a over its JSON text and its length). */
+export function inputsKeyOf(value: unknown): string {
   let h = 0x811c9dc5;
-  const s = JSON.stringify(input);
+  const s = JSON.stringify(value);
   for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 0x01000193) >>> 0;
   return `${String(s.length)}:${h.toString(16)}`;
+}
+
+/** Same data, same key: a stored analysis is shown only while it still describes the application. */
+export function analysisInputsKey(input: AnalyseApplicationInput): string {
+  return inputsKeyOf(input);
 }

@@ -12,6 +12,7 @@ import { Button } from '../ui/Button.js';
 import { Card, CardHeader } from '../ui/Card.js';
 import { PriorityBadge } from '../ui/StatusBadges.js';
 import { AiAnalysisCard } from './AiAnalysisCard.js';
+import { AiInvestigatorCard } from './AiInvestigatorCard.js';
 import { FindingsTable } from './Findings.js';
 import { PublicRecordsCheck } from './PublicRecordsCheck.js';
 
@@ -114,8 +115,16 @@ export function RiskStep({
             )}
           </div>
         </Card>
-        <AiAnalysisCard app={app} db={db} actor={actor} findings={ran ? findings : []} />
+        <AiAnalysisCard
+          app={app}
+          db={db}
+          actor={actor}
+          findings={ran ? findings : []}
+          checksRun={ran}
+        />
       </div>
+
+      <AiInvestigatorCard app={app} db={db} actor={actor} findings={ran ? findings : []} />
 
       <PublicRecordsCheck app={app} actor={actor} />
 

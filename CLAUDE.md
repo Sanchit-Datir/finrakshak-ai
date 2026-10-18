@@ -3,7 +3,8 @@
 Monorepo: **React + Vite web UI** (`web/`), **Firebase Cloud Functions** backend (`functions/`),
 shared **zod** schemas/types (`packages/shared/`), and the public-source **data pipeline** (`ingest/`,
 outputs in `data/` — read `ingest/README.md` and `data/README.md` before changing either). Data in **Firestore**; AI via **Gemini**: the
-app's callables use the Gemini Developer API key from Secret Manager (owner, 18 Oct 2026), the `ingest/` jobs use Vertex AI; hosted on **Firebase Hosting**. Language: **TypeScript only**.
+app's callables and the `ingest/` jobs both use **Vertex AI** (owner, 18 Oct 2026; the Gemini API key
+provider stays available but is not the default); hosted on **Firebase Hosting**. Language: **TypeScript only**.
 
 ## Session handoff
 
