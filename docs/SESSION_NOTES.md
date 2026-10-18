@@ -129,8 +129,8 @@ locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:**
   days, partial below 90%); monitoring rules feed the pattern layer only; direct layer 10 for 2+
   proceedings, 15 for 3+ sources, counterparties left out, status weights 100% in v1; a missing seed
   review means support 0.6 everywhere; months scored on their last IST day.
-- **Budget alert (parked):** not created on purpose. When ready, rerun
-  `BILLING_ACCOUNT=… BUDGET_USD=… scripts/setup-ingest-gcp.sh fund-tracer` (plan D7, B-15).
+- **Budget alert (done, checkpoint 3 / B-15):** **Budget alerts exist** (checked 18 Oct 2026 on billing account `My Billing Account`, project `fund-tracer`): `fund-tracer monthly budget` ₹450/month on all services and `fund-tracer Vertex AI (agents)` ₹200/month on the AI services, each alerting at 50%, 90% and 100%. Budgets warn, they do not cap spend; the
+  per-user daily limits and per-run caps still apply. AI Studio has its own spend cap setting.
 - **Urgent threshold:** confirm `URGENT_RECEIVABLE_SHARE_PERCENT = 20`
   (`web/src/lib/public-records-findings.ts`).
 - **Alert levels:** confirm every insolvency, liquidation or ED record after disbursement is

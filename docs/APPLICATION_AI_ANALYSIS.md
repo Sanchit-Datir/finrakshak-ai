@@ -2,7 +2,7 @@
 
 _Added 18 Oct 2026 (branch `feat/application-ai-analysis`). Owner's decisions: Gemini through the
 Gemini Developer API (AI Studio) key held in Secret Manager, not Vertex AI; runs only on a click, with
-the daily limit; real calls only after a budget limit exists (B-15)._
+the daily limit; real calls only after a budget limit exists (B-15, done 18 Oct 2026)._
 
 ## Attention score (code, not the model)
 
@@ -66,9 +66,10 @@ person to approve, so it has nothing to say about one application.
 
 ## Switching it on (owner)
 
-1. Create the budget limit first (B-15, checkpoint 3). AI Studio billing is separate from the GCP
-   budget alert: set a spend cap on the AI Studio project too. Use a key on a billed (paid) project so
-   prompts are not used to improve Google's models.
+1. Budget alerts exist (B-15, checkpoint 3, done 18 Oct 2026: ₹450/month for `fund-tracer`, ₹200/month
+   for the AI services). They only warn; also set a spend cap in AI Studio, and if the key belongs to
+   another project, that project needs its own budget. Use a key on a billed (paid) project so prompts are
+   not used to improve Google's models.
 2. `firebase functions:secrets:set GEMINI_API_KEY` and the IAM grant in `docs/DEPLOY.md`.
 3. Give the reviewers `aiEnabled: true` in their profile.
 4. Deploy. The card shows "Not connected" until a person signs in with a cloud account.

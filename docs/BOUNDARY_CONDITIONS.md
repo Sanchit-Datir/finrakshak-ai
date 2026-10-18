@@ -25,7 +25,7 @@ Claude (and humans) must flag any of these to the project owner when touched. Fo
 - **B-12 Empty / blocked / safety-filtered response** → treat as a handled failure, never as success.
 - **B-13 Malformed / non-conforming output** → parse with zod; on failure retry once or return a graceful error; never trust free text.
 - **B-14 Timeout, 429, 5xx** → bounded timeout, limited retries with exponential backoff + jitter; surface a retryable error.
-- **B-15 Cost runaway** → per-user quotas and budget alerts on the GCP project before enabling in prod.
+- **B-15 Cost runaway** → per-user quotas and budget alerts on the GCP project before enabling in prod. Budget alerts exist (18 Oct 2026): ₹450/month for `fund-tracer`, ₹200/month for the AI services, at 50/90/100%. They warn and do not stop spend; the per-user daily limits and per-run caps are the hard brakes, and AI Studio has its own spend cap.
 - **B-16 Prompt injection / PII** → delimit user data; don't send secrets or unnecessary PII to the model; don't log prompts.
 - **B-17 Model/region availability** → model name and region come from config; verify availability before deploy; models get deprecated.
 
