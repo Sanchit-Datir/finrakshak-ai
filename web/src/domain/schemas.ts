@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * Domain model for the FundTrace AI prototype. Every persisted value is parsed
+ * Domain model for the FinRakshak AI prototype. Every persisted value is parsed
  * through these schemas when read back from browser storage (CLAUDE.md: parse,
  * don't cast). Money is integer minor units (paise) — see B-01.
  */

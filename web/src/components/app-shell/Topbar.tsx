@@ -17,7 +17,7 @@ export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }): React.JSX.El
       >
         <Menu className="size-5" aria-hidden />
       </button>
-      <Link to="/dashboard" className="lg:hidden" aria-label="FundTrace AI dashboard">
+      <Link to="/dashboard" className="lg:hidden" aria-label="FinRakshak AI dashboard">
         <LogoMark />
       </Link>
       <GlobalSearch className="max-w-xl min-w-0 flex-1" />
