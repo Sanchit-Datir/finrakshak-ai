@@ -11,7 +11,8 @@ export const GEMINI_LIMITS = {
 
 let client: GoogleGenAI | undefined;
 
-function getClient(): GoogleGenAI {
+/** The shared client for the configured billed provider (never created on the mock). */
+export function getClient(): GoogleGenAI {
   const env = getEnv();
   if (env.GEMINI_PROVIDER === 'vertex') {
     // Vertex AI mode uses Application Default Credentials: no API keys in code.

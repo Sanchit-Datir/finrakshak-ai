@@ -1,3 +1,4 @@
+import type { InvestigationFindingKind, RejectionReason } from '@fund-tracker/shared';
 import type {
   AlertStatus,
   ApplicationSection,
@@ -205,3 +206,31 @@ export const DISCLAIMERS = [
   'Results depend on the completeness and quality of available data.',
   'Public-source data may be incomplete, delayed or ambiguous.',
 ] as const;
+
+/** Kinds of verified AI-investigator findings (docs/AI_INVESTIGATOR.md). Leads, never verdicts. */
+export const AI_FINDING_KIND_LABEL: Record<InvestigationFindingKind, string> = {
+  public_record_match: 'Possible public-record match',
+  related_entity_link: 'Link to a related entity of concern',
+  implausible_numbers: 'Numbers that look implausible together',
+  section_mismatch: 'Sections that do not agree',
+};
+
+/** Shown next to every AI finding in the attention score and the investigator card. */
+export const AI_FINDING_SOURCE_LABEL = 'AI finding (evidence verified)';
+
+/** Why code rejected an AI claim (counts only). */
+export const REJECTION_LABEL: Record<RejectionReason, string> = {
+  invalid: 'not in the expected shape',
+  unknown_field: 'cited a field that was not sent',
+  quote_mismatch: 'quoted a value the field does not hold',
+  unknown_ratio: 'cited a ratio code did not compute',
+  unknown_record: 'cited a record outside the shortlists',
+  not_in_shortlist: "cited another party's shortlist",
+  unknown_entity: 'cited an entity that was not sent',
+  unknown_party: 'named a party that was not sent',
+  unknown_number: 'wrote a number not in its evidence',
+  verdict_word: 'used verdict wording',
+  stated_score: 'stated a score',
+  missing_evidence: 'lacked the evidence its kind needs',
+  over_limit: 'over a limit',
+};

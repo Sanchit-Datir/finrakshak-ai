@@ -63,7 +63,7 @@ describe('buildAnalysisRequest', () => {
       score: 70,
       band: 'urgent',
       counted: 2,
-      drivers: [{ findingId: 'X1', title: 'T', priority: 'urgent', points: 60 }],
+      drivers: [{ findingId: 'X1', source: 'rule', title: 'T', priority: 'urgent', points: 60 }],
     } as const;
     const { input } = buildAnalysisRequest(app, [], [], attention);
     expect(input.attention).toEqual({ score: 70, band: 'urgent', driverIds: ['X1'] });

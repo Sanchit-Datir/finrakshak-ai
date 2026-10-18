@@ -571,6 +571,7 @@ export function createDemoDb(now: Date = new Date()): Db {
       findingStates: {},
       publicRecords: null,
       aiAnalysis: null,
+      aiInvestigation: null,
     };
     if (submitted !== null)
       a.audit.push(

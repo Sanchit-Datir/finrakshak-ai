@@ -1,4 +1,4 @@
-import { PRIORITY_LABEL } from '../../domain/labels.js';
+import { AI_FINDING_SOURCE_LABEL, PRIORITY_LABEL } from '../../domain/labels.js';
 import type { Priority } from '../../domain/schemas.js';
 import { ATTENTION_MAX, type AttentionScore } from '../../lib/attention-score.js';
 import { PriorityBadge } from '../ui/StatusBadges.js';
@@ -47,7 +47,12 @@ export function AttentionScoreView({
         <ul className="mt-2 space-y-0.5 text-xs">
           {drivers.map((d) => (
             <li key={d.findingId} className="flex justify-between gap-3">
-              <span>{d.title}</span>
+              <span>
+                {d.title}
+                {d.source === 'ai' && (
+                  <span className="text-muted"> · {AI_FINDING_SOURCE_LABEL}</span>
+                )}
+              </span>
               <span className="tabular text-muted shrink-0">+{d.points}</span>
             </li>
           ))}
@@ -56,7 +61,8 @@ export function AttentionScoreView({
       <p className="text-muted mt-2 text-xs">
         Calculated by code from {counted} unresolved finding(s). Each kind of finding has its own
         weight (an applicant in public records counts far more than a missing document); a milder
-        finding of the same check counts less. Up to 100. A guide to how much attention this case
+        finding of the same check counts less. Verified AI-investigator findings count as their own
+        kinds; the AI never sets the number. Up to 100. A guide to how much attention this case
         needs, not a probability or a decision.
       </p>
     </section>

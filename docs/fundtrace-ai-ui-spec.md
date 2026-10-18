@@ -475,6 +475,25 @@ it, so the same data always gives the same score. Methodology:
 - The weights are a starting point, not tuned on outcomes. Code:
   `web/src/lib/attention-score.ts`; details:
   `docs/APPLICATION_AI_ANALYSIS.md`.
+- Verified AI-investigator findings (below) add points as their own
+  kinds, scaled the same way: possible public-record match 45, link to a
+  related entity of concern 40, numbers that look implausible together
+  25, sections that do not agree 15. Only findings from a real model,
+  still current and not dismissed count; their drivers read "AI finding
+  (evidence verified)".
+
+**AI investigator (added 18 Oct 2026).** A card under the AI-assisted
+analysis card. **Investigate with AI** sends the typed-in application
+(identifiers masked), ratios computed by code, a public-records
+shortlist made by code and related entities; Gemini proposes findings
+and draft questions with cited evidence, and code verifies every
+citation, quoted value and number. The card shows the verified findings
+with their evidence, public-record matches as "Possible match — needs
+verification" (or "CIN or address agrees"), editable draft questions an
+officer approves (recorded as a note, nothing sent), and "AI made N
+claims: V verified, R rejected". It has loading, error (with Try
+again), empty and out-of-date states; the demo session shows "Not
+connected"; the mock is labelled. Details: `docs/AI_INVESTIGATOR.md`.
 
 ## 8. Application detail and risk review
 
@@ -780,7 +799,8 @@ A 0--100 number on the application's Risk step, computed by code from
 weighted findings (methodology in section 7, Step 4). Its bands use the
 three labels above (0--29, 30--59, 60--100). Always show it with its
 band (icon and text), its drivers and the line "not a probability or a
-decision". It is not the synthetic loan risk score on the Risk scores
+decision". Drivers from the AI investigator are labelled "AI finding
+(evidence verified)"; the AI never sets the number. It is not the synthetic loan risk score on the Risk scores
 page, which is a separate four-layer score (`docs/RISK_SCORING.md`).
 
 ### Evidence status

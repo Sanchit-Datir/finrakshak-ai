@@ -3,7 +3,7 @@
 Read this first in a new session. It records what has been built, the rules the owner has set,
 and what is open. Update it at the end of every session.
 
-_Last updated: 17 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
+_Last updated: 18 Oct 2026. Cloud ingestion work is on branch `ingestion-agent` (one commit per MVP)._
 
 ## Owner's working rules (keep following them)
 
@@ -105,6 +105,18 @@ disbursement. Gemini on Vertex AI (owner switched from the AI Studio key on 18 O
 roles/aiplatform.user); mock
 locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:** budget limit first
 (B-15), whether names are masked too (B-64). Attention score 0–100 added (code-computed, top of the card), with a weight per kind of finding scaled by priority (owner, 18 Oct 2026; table in the doc). Not tuned on outcomes.
+
+## AI investigator (18 Oct 2026, branch `claude/ai-investigator-e63431` from `feat/application-ai-analysis`)
+
+"Investigate with AI" on the Risk step (`investigateApplication` callable, Vertex AI, mock locally): the
+browser sends a bundle (typed-in data, identifiers masked; ratios, public-records shortlist and related
+entities all made by code); Gemini reads it through 8 tools and proposes findings and draft questions; code
+verifies every citation, quote and number and counts rejections. Verified findings add to the attention
+score as their own kinds (45/40/25/15, scaled by priority); mock and out-of-date ones do not. See
+`docs/AI_INVESTIGATOR.md` and **B-66** (B-65 is taken on another branch). Checked in the browser against the
+auth + functions emulators with the mock. **Open for the owner:** whether one investigation (up to 10
+model calls) should count as more than one use of the daily limit; whether names are masked (as B-64).
+Not committed yet.
 
 ## Open decisions and next ideas
 

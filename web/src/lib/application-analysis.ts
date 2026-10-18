@@ -79,10 +79,15 @@ export function buildAnalysisRequest(
   return { input: { ...base, documents }, omittedDocuments: candidates.length - documents.length };
 }
 
-/** Same data, same key: a stored analysis is shown only while it still describes the application. */
-export function analysisInputsKey(input: AnalyseApplicationInput): string {
+/** A short, stable key of any JSON value (FNV-1a over its JSON text and its length). */
+export function inputsKeyOf(value: unknown): string {
   let h = 0x811c9dc5;
-  const s = JSON.stringify(input);
+  const s = JSON.stringify(value);
   for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 0x01000193) >>> 0;
   return `${String(s.length)}:${h.toString(16)}`;
+}
+
+/** Same data, same key: a stored analysis is shown only while it still describes the application. */
+export function analysisInputsKey(input: AnalyseApplicationInput): string {
+  return inputsKeyOf(input);
 }

@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { createDemoDb } from '../demo/seed.js';
-import type { Application, Priority } from '../domain/schemas.js';
-import { attentionScore, bandOf, pointsOf } from './attention-score.js';
+import type { InvestigateApplicationResult, InvestigationFinding } from '@fund-tracker/shared';
+import type { AiInvestigationSnapshot, Application, Priority } from '../domain/schemas.js';
+import {
+  AI_FINDING_POINTS,
+  aiFindingsForScore,
+  aiPointsOf,
+  attentionScore,
+  bandOf,
+  pointsOf,
+} from './attention-score.js';
 import type { Finding } from './checks.js';
 
 const db = createDemoDb(new Date('2026-10-15T06:00:00Z'));
@@ -111,5 +119,74 @@ describe('attentionScore', () => {
       'urgent',
       'urgent',
     ]);
+  });
+});
+
+describe('verified AI findings in the score', () => {
+  const ai = (
+    id: string,
+    kind: InvestigationFinding['kind'],
+    priority: Priority = 'urgent',
+  ): InvestigationFinding => ({
+    id,
+    kind,
+    priority,
+    statement: 'SYNTH lead',
+    partyId: null,
+    match: null,
+    citations: [{ type: 'ratio', name: 'loan_per_acre' }],
+  });
+  const result = (findings: InvestigationFinding[], mock = false): InvestigateApplicationResult => ({
+    mock,
+    model: mock ? null : 'gemini-3.1-flash-lite',
+    investigatedAt: '2026-10-18T06:00:00.000Z',
+    summary: '',
+    notEnoughEvidence: false,
+    findings,
+    questions: [],
+    claims: { made: findings.length, verified: findings.length, rejected: 0 },
+    rejections: [],
+    toolCalls: 3,
+    remainingToday: null,
+  });
+  const snap = (findings: InvestigationFinding[], mock = false): AiInvestigationSnapshot => ({
+    inputsKey: 'K',
+    evidence: {},
+    publicRecordsLoaded: true,
+    approved: {},
+    result: result(findings, mock),
+  });
+
+  it('weights each kind and scales it by priority like rule findings', () => {
+    expect(AI_FINDING_POINTS).toEqual({
+      public_record_match: 45,
+      related_entity_link: 40,
+      implausible_numbers: 25,
+      section_mismatch: 15,
+    });
+    const scale = (kind: InvestigationFinding['kind']): number[] =>
+      (['urgent', 'needs_attention', 'routine'] as const).map((p) => aiPointsOf({ kind, priority: p }));
+    expect(scale('public_record_match')).toEqual([45, 27, 14]);
+    expect(scale('related_entity_link')).toEqual([40, 24, 12]);
+    expect(scale('implausible_numbers')).toEqual([25, 15, 8]);
+    expect(scale('section_mismatch')).toEqual([15, 9, 5]);
+  });
+
+  it('adds verified AI findings as labelled drivers', () => {
+    const fs = aiFindingsForScore(snap([ai('ai:1', 'public_record_match')]), 'K');
+    const r = attentionScore(app, [finding('R1', 'routine')], fs);
+    expect(r.score).toBe(45 + 9);
+    expect(r.drivers[0]).toMatchObject({ source: 'ai', title: 'Possible public-record match', points: 45 });
+    expect(r.drivers[1]?.source).toBe('rule');
+  });
+
+  it('counts nothing from a mock, an out-of-date or a dismissed AI finding', () => {
+    expect(aiFindingsForScore(snap([ai('ai:1', 'section_mismatch')], true), 'K')).toEqual([]);
+    expect(aiFindingsForScore(snap([ai('ai:1', 'section_mismatch')]), 'other')).toEqual([]);
+    expect(aiFindingsForScore(null, 'K')).toEqual([]);
+    const [f] = aiFindingsForScore(snap([ai('ai:1', 'section_mismatch')]), 'K');
+    if (f === undefined) throw new Error('expected a finding');
+    const dismissed = { ...app, findingStates: { [f.id]: { status: 'not_an_issue' as const, comments: [] } } };
+    expect(attentionScore(dismissed, [], [f]).score).toBe(0);
   });
 });

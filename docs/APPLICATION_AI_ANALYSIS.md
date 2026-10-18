@@ -27,6 +27,14 @@ the score and its drivers and explains them; a summary or note that states any o
 | Unclear fields, missing documents                            |           8 |               5 |       2 |
 | Required fields, purpose, failed documents, unreviewed items |           5 |               3 |       2 |
 | Any check not listed (a new rule)                            |          30 |              18 |       9 |
+| AI investigator: possible public-record match (verified)     |          45 |              27 |      14 |
+| AI investigator: link to a related entity of concern         |          40 |              24 |      12 |
+| AI investigator: numbers that look implausible together      |          25 |              15 |       8 |
+| AI investigator: sections that do not agree                  |          15 |               9 |       5 |
+
+AI-investigator rows count only for findings code verified, from a real model (not the mock), still
+current (the application has not changed since) and not dismissed; their drivers are labelled "AI finding
+(evidence verified)". The model never sets the score. See `docs/AI_INVESTIGATOR.md`.
 
 Because weights differ by check, the score's band can be lower than Review priority (an urgent but
 low-weight finding, such as missing documents) or higher (several findings adding up). The weights are
