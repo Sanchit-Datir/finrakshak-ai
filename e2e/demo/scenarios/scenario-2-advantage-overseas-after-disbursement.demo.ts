@@ -9,17 +9,16 @@ import {
   openSource,
   openWatchTimeline,
   showBell,
-  showLoanBook,
   showWatchOnDashboard,
   walkTimeline,
 } from '../support/post-disbursement.js';
 import { signIn } from '../support/sign-in.js';
 
 /**
- * Demo video, scenario 2 (post-disbursement): TEST loan L-2023-0601 (₹2 crore, 1 Jun 2023) to
- * Advantage Overseas Pvt Ltd sits in the demo loan book. Nobody types anything: after sign-in the
- * automatic public-records watch finds six records dated after disbursement (insolvency,
- * liquidation, an ED search and three ED attachments) while MCA still lists the company as Active.
+ * Demo video, part 2: scenario 2 (post-disbursement). TEST loan L-2023-0601 (₹2 crore, 1 Jun 2023)
+ * to Advantage Overseas Pvt Ltd. Nobody types anything: after sign-in the automatic public-records
+ * watch finds six records dated after disbursement. FinRakshak Copilot explains an alert and plans
+ * the next checks; a closing card shows the agents behind the scenes.
  */
 
 test('Scenario 2 · Disbursed loan: Advantage Overseas goes into insolvency, liquidation and ED action', async ({
@@ -28,7 +27,7 @@ test('Scenario 2 · Disbursed loan: Advantage Overseas goes into insolvency, liq
   const config = readDemoConfig();
   const d = await createDirector(page, config, {
     label: 'Scenario 2',
-    scenes: config.DEMO_AI ? 7 : 6,
+    scenes: config.DEMO_AI ? 5 : 4,
   });
   await d.goto('/login');
   await d.titleCard(
@@ -36,77 +35,82 @@ test('Scenario 2 · Disbursed loan: Advantage Overseas goes into insolvency, liq
       kicker: 'Scenario 2 · Post-disbursement',
       title: 'A disbursed loan, and what happened next',
       subtitle: 'A ₹2 crore loan (L-2023-0601) went to Advantage Overseas Pvt Ltd on 1 Jun 2023.',
-      points: [
-        'Nobody types anything in: the app checks every disbursed loan right after sign-in.',
-        'It finds six public records dated after disbursement.',
-        'The loan values are TEST data; the borrower and its public records are real.',
-      ],
+      points: ['The loan values are TEST data; the borrower and its public records are real.'],
     },
-    6,
+    3,
+    'Scenario two: a loan already disbursed, and what happened next.',
   );
 
   await d.scene(
     'Sign in',
-    'Signing in starts the automatic public-records watch on the whole loan book.',
+    'Signing in starts an automatic check of every disbursed loan against public records.',
     () => signIn(d),
   );
 
   await d.scene(
     'The watch has already run',
-    'Command center: the loan is flagged with 6 records since disbursement, Urgent review.',
-    () => showWatchOnDashboard(d, s),
+    'Every night, new IBBI, ED, RBI and SEBI records are collected and an agent reviews the run. The watch found six new records about Advantage Overseas, each an urgent alert.',
+    async () => {
+      await showWatchOnDashboard(d, s);
+      await showBell(d);
+    },
   );
 
   await d.scene(
-    'The bell',
-    'Each record raised its own alert, so they also arrive in the bell.',
-    () => showBell(d),
-  );
-
-  await d.scene(
-    'Timeline since disbursement',
-    'SBI started insolvency (Nov 2023), liquidation followed (Dec 2024), then ED search and attachments.',
+    'Public records: the timeline',
+    'Insolvency in 2023, liquidation in 2024, then Enforcement Directorate searches and attachments. Yet MCA still lists the company as active.',
     async () => {
       const watch = await openWatchTimeline(d, s);
-      await d.say(
-        'MCA still lists the company as “Active”: the master data alone would miss all of this.',
-      );
-      await d.pause(1500);
-      await d.say('Records in date order, each linked to its source document.');
       await walkTimeline(d, watch, s);
-      await d.say('Every record opens its source document: here, the IBBI public announcement.');
+      await d.say('Every record links to its public source document.');
       await openSource(d, watch.getByRole('link', { name: /Open public record/ }).first());
     },
   );
 
   await d.scene(
-    'The loan in the loan book',
-    'The banner on the loan points back to the records and the alerts.',
-    () => showLoanBook(d, s),
-  );
-
-  await d.scene(
     'An alert, with evidence',
-    'Each alert says why it was raised, cites its source and suggests the next step.',
+    'Each alert explains why it was raised, cites its source and suggests the next check.',
     () => openAlert(d, s),
   );
 
-  if (config.DEMO_AI)
+  if (config.DEMO_AI) {
     await d.scene(
-      'Ask FinRakshak Copilot',
-      'Why was this flagged? Every statement must cite the alert’s own data, or it is removed.',
-      () => askCopilot(d, 'Why was this flagged?', 'shortcut'),
+      'FinRakshak Copilot on the alert',
+      'Control J opens Copilot on this alert. Gemini answers only from the record’s numbered facts, and uncited statements are removed.',
+      async () => {
+        await askCopilot(d, 'Why was this flagged?', 'shortcut');
+      },
     );
+  }
   await closeDialog(d);
 
-  await d.finish({
-    kicker: 'Scenario 2 · What we saw',
-    title: 'Six urgent leads, found without anyone asking',
-    subtitle: 'Advantage Overseas: insolvency → liquidation → ED search → ED attachments.',
-    points: [
-      'Raised automatically after sign-in, on the dashboard, the loan, the Alerts page and the bell.',
-      'Every alert links to its public source document.',
-      'MCA still says “Active”: the watch reads the records, not just the status.',
-    ],
-  });
+  await d.titleCard(
+    {
+      kicker: 'Behind the scenes',
+      title: 'Four agents, one rule',
+      subtitle: 'Code computes the facts, the model puts them into words, a person decides.',
+      points: [
+        'Ingestion agent: reviews every nightly public-records run and proposes actions.',
+        'Evidence extractor: reads new documents in shadow mode until it passes a quality gate.',
+        'Pattern miner: proposes risk patterns from past defaults, for a person to approve.',
+        'Risk explainer: writes a plain-language reason for each risk alert, checked by code.',
+      ],
+    },
+    10,
+    'Behind the scenes, four agents follow the same rule: they review each nightly data run, extract evidence, mine risk patterns and explain risk alerts. Code checks them, and a person approves.',
+  );
+
+  await d.finish(
+    {
+      kicker: 'FinRakshak AI',
+      title: 'Leads you can verify, found before they cost you',
+      subtitle:
+        'Advantage Overseas: six urgent leads, found automatically, each with its public source.',
+      points: [
+        'AI proposes. Code verifies. A person decides.',
+        'Built on Gemini, Vertex AI and Firebase.',
+      ],
+    },
+    'FinRakshak AI: leads you can verify, found before they cost you. Thank you.',
+  );
 });

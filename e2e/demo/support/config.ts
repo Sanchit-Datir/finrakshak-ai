@@ -6,8 +6,8 @@ import { z } from 'zod';
  * password, which is never committed: put it in `e2e/demo/.env` or type it in the launcher.
  */
 
-/** Pause multipliers: slow for a narrated video, fast for a dry run. */
-export const PACE_FACTOR = { slow: 1.6, normal: 1, fast: 0.4 } as const;
+/** Pause multipliers: slow for a narrated video, brisk for a 3–4 minute video, fast for a dry run. */
+export const PACE_FACTOR = { slow: 1.6, normal: 1, brisk: 0.6, fast: 0.4 } as const;
 export type Pace = keyof typeof PACE_FACTOR;
 
 const onOff = z.enum(['on', 'off']).transform((v) => v === 'on');
@@ -24,8 +24,10 @@ const DemoEnvSchema = z.object({
   DEMO_PASSWORD: z.string().default(''),
   /** Registered App Check debug token, for when reCAPTCHA refuses an automated browser. */
   DEMO_APPCHECK_DEBUG_TOKEN: z.string().default(''),
-  DEMO_PACE: z.enum(['slow', 'normal', 'fast']).default('normal'),
+  DEMO_PACE: z.enum(['slow', 'normal', 'brisk', 'fast']).default('brisk'),
   DEMO_CAPTIONS: onOff.default('on'),
+  /** Open a public record's source document in a new tab (government sites can be slow). */
+  DEMO_OPEN_SOURCES: onOff.default('on'),
   /** Include the Gemini / Copilot steps. */
   DEMO_AI: onOff.default('on'),
   /** Seconds the final screen stays up before the browser closes. */
@@ -36,6 +38,15 @@ const DemoEnvSchema = z.object({
     .string()
     .regex(/^(auto|\d{3,4}x\d{3,4})$/, 'use auto or WIDTHxHEIGHT, e.g. 1920x1080')
     .default('auto'),
+  /** Window size and position 0,0 (e.g. 1920x1080), for screen capture without a window manager. */
+  DEMO_WINDOW_SIZE: z
+    .string()
+    .regex(/^(\d{3,4}x\d{3,4})?$/, 'use WIDTHxHEIGHT, e.g. 1920x1080')
+    .default(''),
+  /** Voice-over: JSON {spoken line: seconds}; each line then waits for the one before. */
+  DEMO_NARRATION_FILE: z.string().default(''),
+  /** Appends one JSON line per spoken line with its time, to place the audio afterwards. */
+  DEMO_TIMELINE_FILE: z.string().default(''),
   DEMO_HEADLESS: onOff.default('off'),
   /** Also save a Playwright video (1920×1080) under e2e/demo/recordings/. */
   DEMO_RECORD: onOff.default('off'),

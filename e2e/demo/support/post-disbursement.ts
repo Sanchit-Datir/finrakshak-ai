@@ -55,13 +55,11 @@ export async function openAlert(d: Director, s: MonitoringScenario): Promise<voi
   );
   await d.select(page.getByLabel('Source', { exact: true }), 'Public-records watch');
   await expect.soft(page.getByText(loanLabel(s))).toHaveCount(s.expectedAlerts);
-  await d.point(page.getByRole('table').first(), 2500);
   await d.click(page.getByRole('button', { name: s.alert.title }).first());
   const drawer = page.getByRole('dialog');
   await expect(drawer).toContainText(s.alert.priority);
   await expect.soft(drawer).toContainText(s.alert.detail);
   await d.point(drawer.getByText(s.alert.detail).first(), 2500);
-  await d.point(drawer.getByRole('link', { name: /Open public record/ }).first(), 2000);
 }
 
 /** Closes the top-most drawer or dialog. */
@@ -90,7 +88,7 @@ export async function walkTimeline(
   s: MonitoringScenario,
 ): Promise<void> {
   const timeline = watch.getByRole('list', { name: `Timeline for ${s.loanId}` });
-  for (const record of s.timeline) await d.point(timeline.getByText(record).first(), 1600);
+  for (const record of s.timeline) await d.point(timeline.getByText(record).first(), 1200);
 }
 
 /**
@@ -99,7 +97,7 @@ export async function walkTimeline(
  */
 export async function openSource(d: Director, link: Locator): Promise<void> {
   const { page, config } = d;
-  if (config.DEMO_HEADLESS) {
+  if (config.DEMO_HEADLESS || !config.DEMO_OPEN_SOURCES) {
     // Headless browsers download PDFs instead of showing them.
     await d.point(link, 1500);
     return;
@@ -117,7 +115,7 @@ export async function openSource(d: Director, link: Locator): Promise<void> {
       () => false,
     );
     if (!loaded) log('Source document is slow to load; showing what has arrived.');
-    await tab.waitForTimeout(5000);
+    await tab.waitForTimeout(3500);
   } finally {
     await tab.close();
     await page.bringToFront();
@@ -156,12 +154,13 @@ export async function askCopilot(
   if (open === 'button')
     await d.click(page.getByRole('button', { name: /Ask FinRakshak Copilot/ }));
   else {
-    await d.say('Ctrl + J opens FinRakshak Copilot on the record in front: this alert.');
     await page.keyboard.press('Control+j');
   }
   const panel = page.getByRole('dialog').filter({ hasText: 'FinRakshak Copilot' });
+  await panel.waitFor();
+  // The thread keeps earlier answers: wait for the one this click adds.
+  const answer = panel.locator('article').nth(await panel.locator('article').count());
   await d.click(panel.getByRole('button', { name: task }));
-  const answer = panel.locator('article').last();
   const outcome = await firstVisible(
     [
       ['answered', answer.locator('h3')],

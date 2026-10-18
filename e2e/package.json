@@ -9,8 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "demo": "node --experimental-strip-types --disable-warning=ExperimentalWarning demo/launcher/server.ts",
     "demo:1": "playwright test -c demo/playwright.config.ts scenario-1",
-    "demo:2": "playwright test -c demo/playwright.config.ts scenario-2",
-    "demo:3": "playwright test -c demo/playwright.config.ts scenario-3"
+    "demo:2": "playwright test -c demo/playwright.config.ts scenario-2"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",

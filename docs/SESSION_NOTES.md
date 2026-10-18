@@ -152,6 +152,15 @@ now `https://finrakshak-ai.web.app`; scenario 1 also shows the AI investigator a
 `scripts/run-demo.sh` / `scripts/run-demo.ps1` set everything up and run the launcher, one scenario or
 `all`. All three passed against the new URL with quick sign-in; account sign-in again stopped at App
 Check in the sandbox (the password itself was accepted).
+Later the same day (owner's requests for the submission video): the demo kit keeps only scenarios 1 and 2,
+re-cut around the AI story (intro, "how FinRakshak uses AI", the investigator's tools, the one-click AI
+review from `main` #50, Copilot, the four background agents) at a new default `brisk` pace, about 3:50 in
+total; the form is filled at once. Narration timing (`DEMO_NARRATION_FILE`, `DEMO_TIMELINE_FILE`) lets a
+voice-over be placed on a screen capture. The owner received a 1080p video without audio plus a timed
+voice-over script. Live AI could not be filmed: Gemini first failed (`functions/unavailable`, likely the
+missing `roles/aiplatform.user` on the functions account), then the daily AI allowance was used up by the
+failed attempts (B-15); the recording used quick sign-in, so the AI review card shows "Not connected" and
+Copilot's answers are labelled simulated. Owner: this branch will not be merged.
 
 ## Open decisions and next ideas
 

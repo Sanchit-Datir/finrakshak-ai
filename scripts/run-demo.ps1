@@ -4,8 +4,8 @@ Plays the FinRakshak demo scenarios in a visible browser against the hosted app
 scripts/run-demo.sh.
 
 Usage: .\scripts\run-demo.ps1          open the launcher page (one Start button per scenario)
-       .\scripts\run-demo.ps1 1|2|3    play one scenario
-       .\scripts\run-demo.ps1 all      play scenarios 1, 2 and 3 one after another
+       .\scripts\run-demo.ps1 1|2    play one scenario
+       .\scripts\run-demo.ps1 all      play scenarios 1 and 2 one after another
 
 First run: installs the dependencies and Playwright's Chromium, and asks for the demo account's
 password. It is saved only in e2e\demo\.env (git-ignored); press Enter to use quick sign-in instead.
@@ -13,7 +13,7 @@ If PowerShell refuses to run scripts: powershell -ExecutionPolicy Bypass -File .
 All settings: e2e\demo\README.md.
 #>
 param(
-  [ValidateSet('launcher', '1', '2', '3', 'all')]
+  [ValidateSet('launcher', '1', '2', 'all')]
   [string]$Target = 'launcher'
 )
 $ErrorActionPreference = 'Stop'
@@ -55,6 +55,6 @@ if (-not (Test-Path $envFile)) {
 
 switch ($Target) {
   'launcher' { Invoke-Npm @('run', 'demo') }
-  'all' { foreach ($n in 1..3) { Invoke-Npm @('run', "demo:$n") } }
+  'all' { foreach ($n in 1..2) { Invoke-Npm @('run', "demo:$n") } }
   default { Invoke-Npm @('run', "demo:$Target") }
 }

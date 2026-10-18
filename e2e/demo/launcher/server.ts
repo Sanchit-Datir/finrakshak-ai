@@ -31,13 +31,13 @@ const MAX_BODY = 16 * 1024;
 
 const RunRequestSchema = z
   .object({
-    scenario: z.enum(['1', '2', '3']),
+    scenario: z.enum(['1', '2']),
     baseUrl: z.string().url().max(300),
     signIn: z.enum(['account', 'quick']),
     email: z.string().max(200),
     password: z.string().max(200),
     appCheckDebugToken: z.string().max(200),
-    pace: z.enum(['slow', 'normal', 'fast']),
+    pace: z.enum(['slow', 'normal', 'brisk', 'fast']),
     captions: z.boolean(),
     ai: z.boolean(),
     record: z.boolean(),

@@ -1,5 +1,6 @@
 import { test, type Locator, type Page } from '@playwright/test';
 import { PACE_FACTOR, type DemoConfig } from './config.js';
+import { createNarrator } from './narration.js';
 import { installOverlay, type CaptionText, type Rect, type TitleCardText } from './overlay.js';
 
 /**
@@ -16,7 +17,8 @@ export interface Director {
   say: (text: string) => Promise<void>;
   /** A line for the terminal / launcher log only (not shown on screen). */
   note: (line: string) => void;
-  titleCard: (card: TitleCardText, seconds: number) => Promise<void>;
+  /** Full-screen card for at least `seconds`, and until its `voice` line has been spoken. */
+  titleCard: (card: TitleCardText, seconds: number, voice?: string) => Promise<void>;
   /** Full page load; the caption is put back afterwards. */
   goto: (path: string) => Promise<void>;
   click: (target: Locator) => Promise<void>;
@@ -29,8 +31,8 @@ export interface Director {
   point: (target: Locator, ms?: number) => Promise<void>;
   pause: (ms: number) => Promise<void>;
   dismissToasts: () => Promise<void>;
-  /** Closing card, then holds the last screen for DEMO_HOLD_SECONDS. */
-  finish: (card: TitleCardText) => Promise<void>;
+  /** Closing card (and its voice line), then holds the last screen for DEMO_HOLD_SECONDS. */
+  finish: (card: TitleCardText, voice?: string) => Promise<void>;
 }
 
 export interface ScenarioMeta {
@@ -75,6 +77,9 @@ export async function createDirector(
   let caption: CaptionText | null = null;
 
   const pause = (ms: number): Promise<void> => page.waitForTimeout(Math.round(ms * factor));
+  const narrator = createNarrator(config.DEMO_NARRATION_FILE, config.DEMO_TIMELINE_FILE, (ms) =>
+    page.waitForTimeout(ms),
+  );
 
   const showCaption = async (c: CaptionText | null): Promise<void> => {
     if (!config.DEMO_CAPTIONS) return;
@@ -147,6 +152,7 @@ export async function createDirector(
       sceneNo += 1;
       caption = { kicker: `${meta.label} · Step ${sceneNo} of ${meta.scenes}`, title, text };
       log(`▶ ${meta.label} · step ${sceneNo}/${meta.scenes}: ${title}`);
+      await narrator.speak(text);
       await showCaption(caption);
       await test.step(title, body);
     },
@@ -157,15 +163,17 @@ export async function createDirector(
       if (caption === null) return;
       caption = { ...caption, text };
       log(`  · ${text}`);
+      await narrator.speak(text);
       await showCaption(caption);
       await pause(400);
     },
-    titleCard: async (card, seconds) => {
+    titleCard: async (card, seconds, voice = '') => {
       log(`■ ${card.kicker}: ${card.title}`);
-      if (!config.DEMO_CAPTIONS) return;
-      await page.evaluate((x) => window.__demoOverlay?.card(x), card);
+      await narrator.speak(voice);
+      if (config.DEMO_CAPTIONS) await page.evaluate((x) => window.__demoOverlay?.card(x), card);
       await pause(seconds * 1000);
-      await page.evaluate(() => window.__demoOverlay?.card(null));
+      await narrator.done();
+      if (config.DEMO_CAPTIONS) await page.evaluate(() => window.__demoOverlay?.card(null));
     },
     goto: async (path) => {
       await page.goto(path);
@@ -176,7 +184,7 @@ export async function createDirector(
       act(target, async () => {
         await target.click();
         await target.fill('');
-        await target.pressSequentially(text, { delay: Math.round(38 * factor) });
+        await target.pressSequentially(text, { delay: Math.round(22 * factor) });
       }),
     set: (target, value) => act(target, () => target.fill(value)),
     select: (target, label) =>
@@ -193,10 +201,12 @@ export async function createDirector(
       const close = page.getByRole('button', { name: 'Dismiss notification' });
       while ((await close.count()) > 0) await close.first().click();
     },
-    finish: async (card) => {
+    finish: async (card, voice = '') => {
+      await narrator.speak(voice);
       await showCaption(null);
       log(`■ ${card.kicker}: ${card.title}`);
       if (config.DEMO_CAPTIONS) await page.evaluate((x) => window.__demoOverlay?.card(x), card);
+      await narrator.done();
       log(`  Holding the last screen for ${config.DEMO_HOLD_SECONDS}s.`);
       await page.waitForTimeout(config.DEMO_HOLD_SECONDS * 1000);
     },

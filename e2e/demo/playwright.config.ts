@@ -18,6 +18,11 @@ const fixed = viewportSize(demo.DEMO_VIEWPORT);
 const viewport =
   fixed ??
   (demo.DEMO_RECORD ? recordSize : demo.DEMO_HEADLESS ? { width: 1440, height: 900 } : null);
+const windowSize = viewportSize(demo.DEMO_WINDOW_SIZE);
+const windowArgs =
+  windowSize === null
+    ? []
+    : [`--window-size=${windowSize.width},${windowSize.height}`, '--window-position=0,0'];
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 
 export default defineConfig({
@@ -44,7 +49,7 @@ export default defineConfig({
     launchOptions: {
       // Maximised window; and no "controlled by automated software" bar or navigator.webdriver
       // flag, which also makes reCAPTCHA (App Check) less likely to refuse the sign-in.
-      args: ['--start-maximized', '--disable-blink-features=AutomationControlled'],
+      args: ['--start-maximized', '--disable-blink-features=AutomationControlled', ...windowArgs],
       ignoreDefaultArgs: ['--enable-automation'],
     },
   },

@@ -15,15 +15,15 @@ export async function signIn(d: Director): Promise<void> {
   if (!new URL(page.url()).pathname.startsWith('/login')) await d.goto('/login');
   await d.pause(800);
   if (config.DEMO_SIGN_IN === 'quick') {
-    await d.say('Quick sign-in as Branch Manager (prototype, synthetic data).');
+    d.note('Quick sign-in as Branch Manager (prototype, synthetic data).');
     await d.click(page.getByRole('button', { name: /Continue with quick sign-in/ }));
   } else {
     if (config.DEMO_PASSWORD === '')
       throw new Error(
         'No password set. Put DEMO_PASSWORD in e2e/demo/.env, type it in the launcher, or use DEMO_SIGN_IN=quick.',
       );
-    await d.type(page.locator('#login-id'), config.DEMO_EMAIL);
-    await d.type(page.locator('#login-password'), config.DEMO_PASSWORD);
+    await d.set(page.locator('#login-id'), config.DEMO_EMAIL);
+    await d.set(page.locator('#login-password'), config.DEMO_PASSWORD);
     await d.click(page.getByRole('button', { name: 'Sign in', exact: true }));
   }
   await waitForSignedIn(d);

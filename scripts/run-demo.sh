@@ -3,8 +3,8 @@
 # (https://finrakshak-ai.web.app by default), so you can screen-record them.
 #
 # Usage: scripts/run-demo.sh          open the launcher page (one Start button per scenario)
-#        scripts/run-demo.sh 1|2|3    play one scenario
-#        scripts/run-demo.sh all      play scenarios 1, 2 and 3 one after another
+#        scripts/run-demo.sh 1|2    play one scenario
+#        scripts/run-demo.sh all      play scenarios 1 and 2 one after another
 #
 # First run: installs the dependencies and Playwright's Chromium, and asks for the demo account's
 # password. It is saved only in e2e/demo/.env (git-ignored); press Enter to use quick sign-in instead.
@@ -14,9 +14,9 @@ cd "$(dirname "$0")/.."
 
 target="${1:-launcher}"
 case "$target" in
-  launcher | 1 | 2 | 3 | all) ;;
+  launcher | 1 | 2 | all) ;;
   *)
-    echo "Usage: $0 [1|2|3|all]" >&2
+    echo "Usage: $0 [1|2|all]" >&2
     exit 2
     ;;
 esac
@@ -52,6 +52,6 @@ fi
 
 case "$target" in
   launcher) exec npm run demo ;;
-  all) for n in 1 2 3; do npm run "demo:$n"; done ;;
+  all) for n in 1 2; do npm run "demo:$n"; done ;;
   *) exec npm run "demo:$target" ;;
 esac

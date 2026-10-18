@@ -14,8 +14,8 @@ Mac or Linux:
 
 ```bash
 scripts/run-demo.sh        # launcher page with a Start button per scenario
-scripts/run-demo.sh 1      # or 2, 3: play one scenario
-scripts/run-demo.sh all    # play 1, 2 and 3 one after another
+scripts/run-demo.sh 1      # or 2: play one scenario
+scripts/run-demo.sh all    # play 1 and 2 one after another
 ```
 
 Windows (PowerShell):
@@ -39,11 +39,10 @@ While a scenario plays, the page shows:
 The overlay never takes clicks and is not part of the app: it exists only in the browser that the
 script drives.
 
-| #   | Script                                                               | Story                                                                                                                                                                                                                                                                   |
-| --- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `scenarios/scenario-1-new-loan-trade-credit-chain.demo.ts`           | Pre-sanction. New application for Maheep Marketing; the public-records check finds the chain Deep Star → Navmi → Maruti Strips → Yatin Steels (liquidation) and 36% of receivables at risk. Then the AI investigator, the attention score, Gemini analysis and Copilot. |
-| 2   | `scenarios/scenario-2-advantage-overseas-after-disbursement.demo.ts` | Post-disbursement. TEST loan L-2023-0601: six records after disbursement (CIRP, liquidation, ED search, three ED attachments) raised automatically after sign-in; MCA still says Active.                                                                                |
-| 3   | `scenarios/scenario-3-jai-corp-sudden-enforcement.demo.ts`           | Post-disbursement. TEST loan L-2024-0401: clean at onboarding, then an ED attachment of ₹230 crore (6 Oct 2026) raises one Urgent review alert.                                                                                                                         |
+| #   | Script                                                               | Story                                                                                                                                                                                                                                                                                                                   |
+| --- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `scenarios/scenario-1-new-loan-trade-credit-chain.demo.ts`           | Introduction and how FinRakshak uses AI, then pre-sanction: Maheep Marketing's application (filled at once), the public-records chain Deep Star → Navmi → Maruti Strips → Yatin Steels (liquidation), 36% of receivables at risk, the attention score, the AI investigator (card), the one-click AI review and Copilot. |
+| 2   | `scenarios/scenario-2-advantage-overseas-after-disbursement.demo.ts` | Post-disbursement: TEST loan L-2023-0601, six records found automatically after sign-in (CIRP, liquidation, ED search and attachments), the alert with evidence, Copilot on the alert, and the four background agents.                                                                                                  |
 
 Inputs and expectations come from the e2e scenarios (`e2e/scenarios/<id>/scenario.ts`), so the
 demo and the tests stay in step. Counts are checked softly: if a newer public-records dataset
@@ -56,7 +55,7 @@ npm ci
 npm exec -w e2e -- playwright install chromium   # the browser the scripts drive
 cp e2e/demo/.env.example e2e/demo/.env           # then put the password in DEMO_PASSWORD
 npm run demo                                     # launcher, http://localhost:4400
-npm run demo:1                                   # or demo:2, demo:3, demo:all
+npm run demo:1                                   # or demo:2, demo:all
 DEMO_PACE=slow DEMO_SIGN_IN=quick npm run demo:2 # any setting can be given like this
 ```
 
@@ -77,7 +76,7 @@ Set them in the launcher, in `e2e/demo/.env`, or on the command line (that order
 | `DEMO_EMAIL`                | `manager@gmail.com`             | Account email.                                                                                       |
 | `DEMO_PASSWORD`             | (none)                          | Account password. Only in `.env` or the launcher.                                                    |
 | `DEMO_APPCHECK_DEBUG_TOKEN` | (none)                          | See "Sign-in is refused" below.                                                                      |
-| `DEMO_PACE`                 | `normal`                        | `slow` leaves room for a voice-over; `fast` is a dry run.                                            |
+| `DEMO_PACE`                 | `brisk`                         | `brisk` fits both scenarios in 3–4 minutes; `slow` / `normal` leave more room; `fast` is a dry run.  |
 | `DEMO_CAPTIONS`             | `on`                            | Captions and title cards. The cursor and ring always show.                                           |
 | `DEMO_AI`                   | `on`                            | The Gemini and FinRakshak Copilot steps.                                                             |
 | `DEMO_VIEWPORT`             | `auto`                          | `auto` fills the maximised window; or a fixed page size such as `1920x1080`.                         |
@@ -86,6 +85,12 @@ Set them in the launcher, in `e2e/demo/.env`, or on the command line (that order
 | `DEMO_HOLD_SECONDS`         | `15`                            | How long the summary card stays before the browser closes.                                           |
 | `DEMO_HEADLESS`             | `off`                           | `on` runs without a window (checks only; not for recording).                                         |
 | `DEMO_LAUNCHER_PORT`        | `4400`                          | The launcher's port.                                                                                 |
+
+**Voice-over and screen capture (optional).** `DEMO_NARRATION_FILE` (JSON: spoken line → seconds) makes
+each caption wait until its line has been spoken; `DEMO_TIMELINE_FILE` records when each line appeared,
+so recorded audio can be placed on the video afterwards. `DEMO_WINDOW_SIZE=1920x1080` puts the window at
+0,0 for screen capture without a window manager. `DEMO_OPEN_SOURCES=off` points at a source link instead
+of opening the (sometimes slow) government PDF.
 
 Videos saved with `DEMO_RECORD=on` go to `e2e/demo/recordings/<time>/<test>/video.webm`
 (git-ignored). A screen recorder (OBS, the Xbox Game Bar, QuickTime, Loom) gives sharper video;
