@@ -4,6 +4,8 @@ import {
   matchPattern,
   monthEnd,
   type GetRiskScoresResult,
+  type Reason,
+  type RiskExplanationView,
   type RiskAlertDoc,
   type RiskLatestDoc,
 } from '@fund-tracker/shared';
@@ -55,8 +57,70 @@ function sampleData(): ScoringData {
   };
 }
 
-/** The sample never carries AI explanations: no model writes it (CLAUDE.md, simulated output). */
-export async function buildRiskSample(): Promise<Omit<GetRiskScoresResult, 'explanations'>> {
+const SAMPLE_EXPLANATIONS = 3;
+/** Marks sentences the app must show as "Simulated demo output": no model wrote them. */
+export const SAMPLE_EXPLANATION_MODEL = 'bundled-sample';
+
+const an = (w: string): string => `${/^[aeiou]/i.test(w) ? 'an' : 'a'} ${w}`;
+
+/** A short phrase from the facts of one recorded reason; null when it is not worded here. */
+function phrase(r: Reason): string | null {
+  const f = r.facts;
+  const words = (v: unknown): string => (typeof v === 'string' ? v.replace(/_/g, ' ') : '');
+  switch (r.code) {
+    case 'public_record_after_disbursement':
+      return `a public record (${words(f['case_type'])}) dated ${String(f['date'])} names the borrower after disbursement`;
+    case 'pattern_match':
+      return r.pattern === null
+        ? null
+        : `the public timeline is similar to the pattern "${r.pattern.pattern_name}"`;
+    case 'graph_proximity':
+      return `an entity with ${an(words(f['kinds']))} record is ${String(f['hops'])} ${f['hops'] === 1 ? 'link' : 'links'} from the borrower`;
+    case 'growing_delay':
+      return `the delay grew over the last ${String(f['count'])} EMIs`;
+    case 'public_record_before_disbursement':
+    case 'nfra_finding':
+    case 'several_proceedings':
+    case 'many_sources':
+    case 'related_party_record':
+    case 'missed_emi':
+    case 'late_emi':
+    case 'partial_emi':
+    case 'receipts_fall':
+      return null;
+  }
+}
+
+/**
+ * Hand-templated sentences for a few alerts of the sample, from the alert's recorded reasons only, so
+ * the explainer panel can be seen without the cloud. Not model output: the app labels them as
+ * simulated (CLAUDE.md). Alerts whose reasons are not all worded above are skipped.
+ */
+function sampleExplanations(alerts: readonly RiskAlertDoc[]): RiskExplanationView[] {
+  const out: RiskExplanationView[] = [];
+  for (const a of alerts) {
+    if (out.length >= SAMPLE_EXPLANATIONS) break;
+    const parts = a.reasons.filter((r) => r.points > 0).map(phrase);
+    const first = parts[0];
+    if (first === undefined || first === null || parts.includes(null)) continue;
+    const unique = [...new Set(parts)];
+    const text = `${unique.join('; ')}.`.replace(/^./, (c) => c.toUpperCase());
+    out.push({
+      alert_id: a.alert_id,
+      loan_id: a.loan_id,
+      branch_id: a.branch_id,
+      run_id: a.run_id,
+      text,
+      model: SAMPLE_EXPLANATION_MODEL,
+      prompt_version: 'sample',
+      created_at: a.created_at,
+      synthetic: true,
+    });
+  }
+  return out;
+}
+
+export async function buildRiskSample(): Promise<GetRiskScoresResult> {
   const data = sampleData();
   const library = await loadLibrary(codePatterns());
   let previous = new Map<string, RiskLatestDoc>();
@@ -76,9 +140,11 @@ export async function buildRiskSample(): Promise<Omit<GetRiskScoresResult, 'expl
     previous = new Map(out.latestDocs.map((doc) => [doc.loan_id, doc]));
     for (const a of out.alertDocs) if (!alerts.has(a.alert_id)) alerts.set(a.alert_id, a);
   }
+  const sorted = [...alerts.values()].sort((a, b) => b.created_at.localeCompare(a.created_at));
   return {
     scores: [...previous.values()].map((doc) => RiskScoreViewSchema.parse(doc)),
-    alerts: [...alerts.values()].sort((a, b) => b.created_at.localeCompare(a.created_at)),
+    alerts: sorted,
+    explanations: sampleExplanations(sorted),
     truncated: false,
   };
 }
