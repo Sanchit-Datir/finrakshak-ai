@@ -30,8 +30,11 @@ possible; anything that changes production belongs to `github-deployer`.
 
 ## Functions that use a secret
 
-A function reads a Secret Manager secret as its **runtime account** (the App Engine default account,
-`<project>@appspot.gserviceaccount.com`, with the current firebase-tools). That account needs
+A function reads a Secret Manager secret, and calls Vertex AI, as its **runtime account** (on
+`fund-tracer` today the Compute default account `728958349363-compute@developer.gserviceaccount.com`;
+firebase-tools has used the App Engine default account `<project>@appspot.gserviceaccount.com` before, so
+`scripts/setup-gcp.sh` grants both). For Vertex AI (the default provider since 18 Oct 2026) it needs
+`roles/aiplatform.user`, which `scripts/setup-gcp.sh` grants. For the optional API-key provider it needs
 `roles/secretmanager.secretAccessor` on the secret. `github-deployer` only has `secretmanager.viewer`
 on purpose, so it cannot grant this itself. Grant it once, by hand, when you add a secret:
 

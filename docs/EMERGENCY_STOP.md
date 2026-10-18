@@ -61,7 +61,9 @@ Relink promptly, and redeploy anything that did not come back. This is a command
 - It stops **callers**, not compute that is already running. A Cloud Run service with a minimum number of
   instances, or an agent that runs on a schedule, can keep billing while private. I could not verify whether
   an already-deployed Agent Engine agent keeps billing once the API is off.
-- The Gemini key is a free-tier key from AI Studio and is outside this project's billing.
+- The app now calls Gemini on Vertex AI (18 Oct 2026), so disabling `aiplatform.googleapis.com` stops it.
+  The old free-tier AI Studio key (`GEMINI_API_KEY` secret) is outside this project's billing and is only
+  used if `GEMINI_PROVIDER=apikey` is set; delete or rotate it in AI Studio if it is no longer needed.
 
 ## Keeping it honest
 

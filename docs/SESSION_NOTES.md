@@ -101,7 +101,8 @@ proposals with `model: null`; model-rejected candidates are not proposed and onl
 
 The Risk step's "AI-assisted document analysis" card now runs `analyseApplication` on a click: grounded
 facts from the recorded fields, a note per finding, a short summary; matched patterns do not apply before
-disbursement. Gemini through the AI Studio key in Secret Manager (owner: not Vertex for this); mock
+disbursement. Gemini on Vertex AI (owner switched from the AI Studio key on 18 Oct 2026; runtime account needs
+roles/aiplatform.user); mock
 locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:** budget limit first
 (B-15), whether names are masked too (B-64). Attention score 0–100 added (code-computed, top of the card), with a weight per kind of finding scaled by priority (owner, 18 Oct 2026; table in the doc). Not tuned on outcomes.
 
@@ -130,7 +131,7 @@ locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:**
   proceedings, 15 for 3+ sources, counterparties left out, status weights 100% in v1; a missing seed
   review means support 0.6 everywhere; months scored on their last IST day.
 - **Budget alert (done, checkpoint 3 / B-15):** **Budget alerts exist** (checked 18 Oct 2026 on billing account `My Billing Account`, project `fund-tracer`): `fund-tracer monthly budget` ₹450/month on all services and `fund-tracer Vertex AI (agents)` ₹200/month on the AI services, each alerting at 50%, 90% and 100%. Budgets warn, they do not cap spend; the
-  per-user daily limits and per-run caps still apply. AI Studio has its own spend cap setting.
+  per-user daily limits and per-run caps still apply.
 - **Urgent threshold:** confirm `URGENT_RECEIVABLE_SHARE_PERCENT = 20`
   (`web/src/lib/public-records-findings.ts`).
 - **Alert levels:** confirm every insolvency, liquidation or ED record after disbursement is

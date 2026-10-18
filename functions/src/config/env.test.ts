@@ -29,10 +29,10 @@ describe('GEMINI_PROVIDER default (cost guard)', () => {
     expect(getEnv().GEMINI_PROVIDER).toBe('mock');
   });
 
-  it('is the real model only when deployed', () => {
+  it('is Vertex AI only when deployed, with no API key needed', () => {
     stubDeployed();
-    vi.stubEnv('GEMINI_API_KEY', 'AIza-not-a-real-key');
-    expect(getEnv().GEMINI_PROVIDER).toBe('apikey');
+    vi.stubEnv('GEMINI_API_KEY', undefined);
+    expect(getEnv()).toMatchObject({ GEMINI_PROVIDER: 'vertex', VERTEX_LOCATION: 'global' });
   });
 
   it('can be forced explicitly, e.g. a live local test', () => {
@@ -41,8 +41,9 @@ describe('GEMINI_PROVIDER default (cost guard)', () => {
     expect(getEnv().GEMINI_PROVIDER).toBe('vertex');
   });
 
-  it('fails fast when the real provider has no key', () => {
+  it('fails fast when the API-key provider is chosen without a key', () => {
     stubDeployed();
+    vi.stubEnv('GEMINI_PROVIDER', 'apikey');
     vi.stubEnv('GEMINI_API_KEY', undefined);
     expect(() => getEnv()).toThrow(/GEMINI_API_KEY/);
   });
@@ -108,6 +109,7 @@ describe('getPublicDataConfig', () => {
 
   it('does not need the Gemini key, even where getEnv() would fail without it', () => {
     stubDeployed();
+    vi.stubEnv('GEMINI_PROVIDER', 'apikey');
     vi.stubEnv('GEMINI_API_KEY', undefined);
     expect(() => getEnv()).toThrow(/GEMINI_API_KEY/);
     expect(getPublicDataConfig()).toEqual({
