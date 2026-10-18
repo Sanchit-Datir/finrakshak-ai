@@ -33,6 +33,13 @@ describe('buildPrompt', () => {
     expect(data).toContain('SYNTH Mills');
   });
 
+  it('asks for a short summary and keeps the no-verdict and data-only rules', () => {
+    const p = buildPrompt(INPUT);
+    expect(p).toContain('2 or 3 plain sentences, at most 400 characters');
+    expect(p).toContain('never say');
+    expect(p).toContain('Use only the data between the markers');
+  });
+
   it('refuses data over the prompt cap (B-10)', () => {
     const big = { ...INPUT, findings: [{ ...INPUT.findings[0], observed: 'x'.repeat(30_000) }] };
     expect(() => buildPrompt(big as AnalyseApplicationInput)).toThrow(AnalysisInputTooLarge);
@@ -110,7 +117,7 @@ describe('ground', () => {
     const g = ground(INPUT, reply({ facts: many, summary: 'z'.repeat(5_000) }));
     expect(g.facts).toHaveLength(ANALYSIS_LIMITS.maxFacts);
     expect(g.facts[0]?.statement.length).toBe(ANALYSIS_LIMITS.maxTextChars);
-    expect(g.summary.length).toBe(ANALYSIS_LIMITS.maxSummaryChars);
+    expect(g.summary.length).toBe(ANALYSIS_LIMITS.summaryChars);
   });
 });
 

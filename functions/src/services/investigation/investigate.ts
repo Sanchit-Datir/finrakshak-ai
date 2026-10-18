@@ -40,7 +40,10 @@ const SYSTEM = [
   'ids, entity ids. Write only numbers that appear in what you cite. Never state a score.',
   'A shortlisted candidate is only a possible match; say it needs verification.',
   `You may make at most ${String(LIMITS.maxReadCalls)} read calls. If the data does not support any`,
-  'finding, say so: call submit_summary with notEnoughEvidence true. Always finish with submit_summary.',
+  `Keep it short: at most ${String(LIMITS.outputFindings)} findings, each statement one sentence; put the detail in the`,
+  `citations, not the text. The summary is 2 or 3 sentences, at most ${String(LIMITS.outputSummaryChars)} characters, top lead first.`,
+  'If the data does not support any finding, say so: call submit_summary with notEnoughEvidence true.',
+  'Always finish with submit_summary.',
 ].join('\n');
 
 /** What the model sees first: an overview of the bundle, not its contents. */

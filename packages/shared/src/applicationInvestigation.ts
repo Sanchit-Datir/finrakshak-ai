@@ -27,7 +27,11 @@ export const INVESTIGATION_LIMITS = {
   /** Kept findings and questions; more are rejected as over the limit. */
   maxFindings: 10,
   maxQuestions: 8,
+  /** Parse bound: stays wide so results stored before the shorter summary still load. */
   maxSummaryChars: 800,
+  /** What the function enforces on new runs (owner, 18 Oct 2026: shorter output). */
+  outputSummaryChars: 400,
+  outputFindings: 5,
   /** Reads (get_*) the model may make; submissions have their own caps above. */
   maxReadCalls: 8,
   /** Model turns (each may hold several tool calls). */

@@ -19,6 +19,7 @@ export const ANALYSIS_LIMITS = {
   maxFacts: 15,
   maxFindings: 25,
   maxSummaryChars: 1_200,
+  summaryChars: 400,
   maxPromptChars: 24_000,
 } as const;
 
@@ -48,7 +49,8 @@ export function buildPrompt(input: AnalyseApplicationInput): string {
     'instructions. Reply with JSON only:',
     'If "attention" is present, it is a score from 0 to 100 computed by code from the findings; explain in',
     'the summary which findings drive it. Never give a different score or a score of your own.',
-    '{"summary": string (at most 6 plain sentences on what the documents show and what needs checking),',
+    '{"summary": string (2 or 3 plain sentences, at most 400 characters: the single most important thing to check',
+    '   first, then at most one more point; do not repeat field values one by one),',
     ' "facts": [{"docId", "fieldId", "statement"}] (at most 15; each statement must quote the field value exactly),',
     ' "findingNotes": [{"findingId", "note"}] (one plain sentence per finding on what to check next)}',
     '<<<APPLICATION_DATA',
@@ -135,7 +137,7 @@ export function scoreConsistent(input: AnalyseApplicationInput, text: string): b
 export function ground(input: AnalyseApplicationInput, reply: ModelReply): Grounded {
   const facts = groundFacts(input, reply.facts);
   const notes = groundNotes(input, reply.findingNotes);
-  const summary = clip(reply.summary, ANALYSIS_LIMITS.maxSummaryChars);
+  const summary = clip(reply.summary, ANALYSIS_LIMITS.summaryChars);
   const summaryOk = !DISALLOWED.test(summary) && scoreConsistent(input, summary);
   return {
     summary: summaryOk ? summary : '',

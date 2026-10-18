@@ -15,7 +15,10 @@ export const APPLICATION_ANALYSIS_LIMITS = {
   maxValueChars: 200,
   maxTextChars: 300,
   maxFacts: 15,
+  /** Parse bound: stays wide so results stored before the shorter summary still load. */
   maxSummaryChars: 1_200,
+  /** What the function asks for and keeps (owner, 18 Oct 2026: shorter output). */
+  summaryChars: 400,
 } as const;
 
 const L = APPLICATION_ANALYSIS_LIMITS;
