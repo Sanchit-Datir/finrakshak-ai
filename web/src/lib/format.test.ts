@@ -22,7 +22,7 @@ describe('masking', () => {
 });
 
 describe('land and digits', () => {
-  it('reads 7/12 hectare-are notation in Marathi digits', () => {
+  it('reads 7/12 hectare-are notation in Devanagari digits', () => {
     expect(parseAreaToHectares('१ हे ६२ आर', 'hectare')).toBeCloseTo(1.62);
   });
   it('converts acres explicitly', () => {

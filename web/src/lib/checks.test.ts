@@ -24,7 +24,7 @@ describe('compareNames', () => {
 });
 
 describe('normalizeDate', () => {
-  it('normalises Marathi digits and DD/MM/YYYY', () => {
+  it('normalises Devanagari digits and DD/MM/YYYY', () => {
     expect(normalizeDate('०५/०८/१९८५')).toBe('1985-08-05');
     expect(normalizeDate('1985-08-05')).toBe('1985-08-05');
     expect(normalizeDate('not a date')).toBeNull();
@@ -61,7 +61,7 @@ describe('application checks on demo data', () => {
   it('does not flag the subject of the case itself for relationship review', () => {
     expect(rules('A-1010')).not.toContain('relationship_review');
   });
-  it('cross-checks normalise Marathi survey digits', () => {
+  it('cross-checks normalise Devanagari survey digits', () => {
     const rows = crossChecks(app('A-1001'), db);
     expect(rows.find((r) => r.label === 'Survey / Gat number')?.verdict).toBe('match');
     expect(rows.find((r) => r.label === 'Land area')?.verdict).toBe('match');

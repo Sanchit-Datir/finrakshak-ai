@@ -1,4 +1,4 @@
-/** Text utilities for multilingual (Marathi/English) comparison. */
+/** Text utilities for Devanagari/English comparison. */
 
 const DEVANAGARI_DIGITS = '०१२३४५६७८९';
 

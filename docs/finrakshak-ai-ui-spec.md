@@ -39,7 +39,7 @@ Prioritize a working, coherent prototype over decorative complexity.
     Do not use "Fraud confirmed" without a verified case outcome.
 7.  All extracted document values must be editable and reviewable by a
     human before being treated as confirmed.
-8.  Support Marathi and English documents. Preserve original Marathi
+8.  Support Devanagari and English documents. Preserve the original
     text, show transliteration/translation separately, and let users
     compare the source image with extracted fields.
 9.  Make the interface accessible: keyboard navigation, visible focus,
@@ -224,7 +224,6 @@ A welcoming, trustworthy entry point for bank employees.
 - Optional "Continue with Google" only if authentication is
   implemented and permitted.
 - Footer: "Secure access for authorized banking staff."
-- Optional language selector: English / मराठी.
 
 ### Behaviour
 
@@ -303,7 +302,7 @@ mode.
 ## 7. New loan application and document capture
 
 This is a core workflow: rural bank employees may receive paper
-documents, handwritten Marathi forms, photocopies, or photos rather than
+documents, handwritten forms, photocopies, or photos rather than
 PDFs.
 
 ### Main flow
@@ -331,8 +330,7 @@ end-to-end. 3. **Upload from mobile** --- QR-assisted upload only if
 implemented end-to-end; otherwise omit it.
 
 Controls: - Large drop zone: **"Drop documents here or browse
-files."** - Supporting text: **"PDF, JPG or PNG. Marathi and English
-documents supported."** - Buttons: Scan document, Upload files, Add
+files."** - Supporting text: **"PDF, JPG or PNG."** - Buttons: Scan document, Upload files, Add
 another document. - Show file names, thumbnails, page counts, size,
 upload progress, remove/replace actions. - Support multiple documents
 and multi-page PDFs. - Allow rotate, crop, zoom, reorder and remove
@@ -373,16 +371,16 @@ These are configurable examples, not a statement that every loan
 requires every document. Let the bank configure a checklist by loan
 product.
 
-### Marathi and multilingual requirements
+### Multilingual requirements
 
-- Detect language where possible; allow manual selection: Marathi /
-  English / Hindi / Other.
+- Detect language where possible; allow manual selection: Regional
+  (Devanagari) / English / Hindi / Other.
 - Support Devanagari, English, mixed-language documents and scanned
   PDFs.
 - Preserve original image and extracted text.
-- Show English translation separately; never overwrite original
-  Marathi.
-- Show extracted Marathi text and optional transliteration separately.
+- Show English translation separately; never overwrite the original
+  text.
+- Show extracted original text and optional transliteration separately.
 - Provide **Compare with original**, highlighting the source region
   for a selected field.
 - Allow OCR corrections before verification.
@@ -399,7 +397,7 @@ Three-panel workspace: - Left: uploaded document list and thumbnails. -
 Centre: viewer with zoom, rotate, page navigation and selected-region
 highlight. - Right: extracted fields and verification status.
 
-Tabs: Extracted fields; Original text (Marathi/English); English
+Tabs: Extracted fields; Original text; English
 translation (when available); Raw extraction details (optional
 admin/developer mode).
 
@@ -758,7 +756,7 @@ avatar/initials, save/cancel.
 
 ### Preferences
 
-Language: English / मराठी; theme Light / Dark / System (Light default);
+Theme Light / Dark / System (Light default);
 date format/timezone; notification preferences; optional table
 density/dashboard preferences.
 
@@ -820,9 +818,9 @@ New; In review; Escalated; Resolved; False positive.
 - Results depend on completeness and quality of available data.
 - Public-source data may be incomplete, delayed or ambiguous.
 
-## 17. Marathi-first document handling details
+## 17. Paper document handling details
 
-Because rural branches may receive paper records in Marathi, document
+Because rural branches may receive paper records, document
 capture is core functionality.
 
 - Accept camera photos, scans and PDFs.
@@ -836,7 +834,7 @@ capture is core functionality.
 - Retain source image/page references for each extracted field.
 - Allow corrections to names, village/taluka/district, dates, survey
   numbers and units.
-- Handle Marathi numerals and Arabic numerals without silently
+- Handle Devanagari numerals and Arabic numerals without silently
   changing values.
 - Highlight uncertain characters and conflicting values.
 - Provide manual-entry fallback for handwriting or poor scans.
@@ -912,7 +910,7 @@ data may stack or use tabs.
 
 Drawer or compact bottom navigation; single-column cards/forms; large
 camera/upload targets; sticky bottom Next/Save where useful; viewer and
-extracted data in tabs; avoid cramped tables; ensure Marathi text wraps
+extracted data in tabs; avoid cramped tables; ensure Devanagari text wraps
 without clipping.
 
 ## 21. Suggested component structure
@@ -993,7 +991,7 @@ used.
 ## 22. Demo data and believable interactions
 
 Seed the prototype with clearly fictional records: - 10--20 loan
-applications. - Several document types, including synthetic Marathi
+applications. - Several document types, including synthetic
 7/12-style sample text/image if available. - Clean records, missing
 fields, conflicting dates, repeated identifiers and legitimate
 overlaps. - A small transaction ledger with ordinary payments and a few
@@ -1023,7 +1021,7 @@ Never show fake processing as a real AI request.
 - [ ] Multiple images/PDFs can be selected, previewed, removed and
       associated.
 - [ ] Camera capture path works where browser/device supports it.
-- [ ] Marathi/English document states are clear.
+- [ ] Document language states are clear.
 - [ ] Extracted fields can be edited and marked
       confirmed/corrected/unclear.
 - [ ] Source document can be compared with extracted fields.
@@ -1070,7 +1068,7 @@ and storage behind stable interfaces.
 Build a **cohesive, modern banking workspace**, not unrelated mockup
 pages. The most important workflow is:
 
-**Capture paper document → extract Marathi/English information → human
+**Capture paper document → extract the information → human
 verifies extracted fields → application checks produce evidence-backed
 findings → after disbursement, transaction monitoring adds new evidence
 → investigator reviews a unified case.**

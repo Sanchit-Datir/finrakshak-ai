@@ -100,8 +100,8 @@ export function ExtractedFieldsPanel({
             ) : (
               <div className="space-y-2">
                 <Notice>
-                  Machine translation (simulated). Use it as a reading aid only — the Marathi
-                  original is authoritative.
+                  Machine translation (simulated). Use it as a reading aid only — the original
+                  document is authoritative.
                 </Notice>
                 <pre className="bg-surface-2 border-line rounded-lg border p-3 font-sans text-sm whitespace-pre-wrap">
                   {sample?.translation}

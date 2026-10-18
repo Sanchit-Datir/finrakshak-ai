@@ -44,7 +44,7 @@ Then `Grep -n` for the symbol and `Read` with `offset`/`limit` around the hit. D
 | Pre-disbursement checks                              | `lib/checks/` (`CHECKS`, `runChecks`, `reviewPriority` in `run.ts`)                  |
 | Monitoring rules                                     | `lib/monitoring.ts` (`RULES`, `runMonitoring`)                                       |
 | Unified alerts list                                  | `lib/alerts.ts` `allAlerts(db)`                                                      |
-| Money/date/mask formatting                           | `lib/format.ts`; Marathi digits/names `lib/text.ts`; land units `lib/land.ts`        |
+| Money/date/mask formatting                           | `lib/format.ts`; Devanagari digits/names `lib/text.ts`; land units `lib/land.ts`     |
 | Doc types + manual-entry field templates             | `lib/doc-catalog.ts`                                                                 |
 | File intake (local only)                             | `lib/processing.ts`, `lib/pdf.ts`, `lib/image-quality.ts`                            |
 | CSV import/export                                    | `lib/csv-import.ts`, `lib/export.ts`                                                 |

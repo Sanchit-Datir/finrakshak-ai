@@ -11,6 +11,9 @@
 Repository: `finrakshak-ai` · Product: **FinRakshak AI** · Stack:
 TypeScript monorepo on Google Cloud and Firebase.
 
+> **Judges and reviewers:** start with [`how-to-use/`](how-to-use/README.md): every user flow with
+> screenshots, the AI agents, the Google Cloud services and an architecture and code tour.
+
 ---
 
 ## Contents
@@ -45,7 +48,7 @@ TypeScript monorepo on Google Cloud and Firebase.
 Indian banks, especially rural, cooperative and MSME lenders, lose money in three places:
 
 1. **Before sanction.** Paper documents (7/12 land extracts, Aadhaar, bank statements, warehouse
-   receipts) are typed in by hand, often in Marathi. Inconsistencies, such as a reused survey number,
+   receipts) are typed in by hand. Inconsistencies, such as a reused survey number,
    a land area that does not match the 7/12 extract, or declared income far above bank credits, are
    spotted late or not at all.
 2. **Right after disbursement.** Loan money can be moved on within hours to related parties, split
@@ -60,8 +63,7 @@ Indian banks, especially rural, cooperative and MSME lenders, lose money in thre
 FinRakshak AI is a loan-lifecycle workspace for branch officers, managers, risk analysts and
 investigators. It joins the three stages into one evidence trail:
 
-- **Capture and verify:** documents are reviewed field by field against the source image, in
-  Marathi or English.
+- **Capture and verify:** documents are reviewed field by field against the source image.
 - **Pre-sanction checks:** deterministic rules plus a public-records check of the applicant and its
   customers, an **attention score** from 0 to 100, Gemini analysis and an **AI investigator**.
 - **Post-disbursement monitoring:** transaction rules (rapid onward transfer, linked counterparty,
@@ -113,7 +115,7 @@ review), never a verdict.
 - **Pre- and post-disbursement in one product,** linked by the same entities, documents and audit
   log.
 - **Third-party exposure:** it finds risk in the borrower's customers, not only in the borrower.
-- **Built for Indian branches:** Marathi and English fields, 7/12 extracts and gat numbers, paise
+- **Built for Indian branches:** Devanagari digits and names, 7/12 extracts and gat numbers, paise
   arithmetic, IST days, rupee formatting.
 - **Cost-capped by design:** mock provider by default, the cheapest model that passes our checks,
   per-user daily AI limits, `maxInstances` caps, scale to zero and budget alerts. A full month of
@@ -125,7 +127,7 @@ review), never a verdict.
 
 | Area                              | Feature                                                                                                                                                                                                           | Status                                        |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| **Capture**                       | New loan from the form or from uploaded documents; PDF page count, blur, darkness and resolution warnings (local, pdf.js + canvas); field-by-field review against the source region; Marathi digits and names     | Real (local)                                  |
+| **Capture**                       | New loan from the form or from uploaded documents; PDF page count, blur, darkness and resolution warnings (local, pdf.js + canvas); field-by-field review against the source region; Devanagari digits and names  | Real (local)                                  |
 | **Pre-sanction checks**           | 12 rules: required fields, missing documents, name and date-of-birth conflicts, land area vs 7/12, existing charges, survey number / warehouse receipt reuse, income vs bank credits, relationships to open cases | Real (`web/src/lib/checks/`)                  |
 | **Public-records check**          | Applicant and declared customers vs 18,286 entities and 57,382 relationships from IBBI, NFRA, ED, RBI, SFIO, SEBI and MCA; chain of unpaid dues; impact on receivables                                            | Real dataset (`ingest/`)                      |
 | **Attention score**               | 0–100 score computed by code from unresolved findings, with bands and top drivers                                                                                                                                 | Real (`web/src/lib/attention-score.ts`)       |
@@ -515,7 +517,7 @@ More: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/ingestion-agent-rea
 | Layer          | Technology                                                                                                                      | Why                                                                             |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | Language       | TypeScript 5 (`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`)                                               | One language and one type system across web, backend and pipeline               |
-| Web            | React 19, React Router, Vite 6, Tailwind CSS 4, lucide-react, pdf.js, Inter + Noto Sans Devanagari                              | Fast, accessible UI with Marathi support; local PDF and image checks            |
+| Web            | React 19, React Router, Vite 6, Tailwind CSS 4, lucide-react, pdf.js, Inter + Noto Sans Devanagari                              | Fast, accessible UI with Devanagari text; local PDF and image checks            |
 | Validation     | zod 4 (in `packages/shared`)                                                                                                    | Parse, don't cast: every external value is validated at the boundary            |
 | Backend        | Firebase Cloud Functions v2 (Node 22), Firebase Auth, App Check, Firestore                                                      | Serverless, scale to zero, per-function limits                                  |
 | Gen AI         | Gemini (`gemini-3.1-flash-lite` by default) on **Vertex AI**, function calling, JSON output; mock provider                      | Cheapest model that passes our checks; in-region; no API key in code            |
@@ -775,7 +777,7 @@ Full threat table: [`SECURITY.md`](SECURITY.md).
 
 **Next steps**
 
-1. **OCR and handwriting extraction** for Marathi documents (Document AI or Gemini vision) into the
+1. **OCR and handwriting extraction** for scanned documents (Document AI or Gemini vision) into the
    existing `ExtractedField` shape with page regions, behind the same verify-before-use flow.
 2. **Core-banking connector:** sync the loan book and transactions instead of CSV import.
 3. **Move the workspace to Firestore** behind the existing audited action functions, with roles
@@ -784,7 +786,7 @@ Full threat table: [`SECURITY.md`](SECURITY.md).
    borrower.
 5. **Approval view for AI proposals** (patterns and pipeline actions) and a golden set to quality-gate
    AI evidence extraction.
-6. **Multilingual Copilot** answers in Marathi and Hindi, using the same grounding check.
+6. **Multilingual Copilot** answers in Indian languages, using the same grounding check.
 7. **Bank pilot:** measure time saved per appraisal and alert precision on real, consented data.
 
 **Planning documents:** [`docs/plans/README.md`](docs/plans/README.md) (index and status),

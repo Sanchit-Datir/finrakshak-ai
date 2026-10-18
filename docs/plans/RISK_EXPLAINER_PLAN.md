@@ -133,7 +133,7 @@ web: alert view shows the sentence with its label and the reasons list under it
 
 1. **Build it at all?** _Decided 17 Oct 2026:_ defer; decide after step 13 against the go conditions above.
 2. **Label wording** in the app for the AI sentence.
-3. **Language.** The templates and the prompt are English. Do reviewers need Hindi or Marathi? The app has a
+3. **Language.** The templates and the prompt are English. Do reviewers need a regional language? The app has a
    language preference; templates would then need translation by a person, not the model.
 
 ## Not in this plan

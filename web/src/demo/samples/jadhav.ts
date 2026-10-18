@@ -140,7 +140,7 @@ export const aadhaarJadhav: Sample = {
   fields: [
     {
       key: 'applicant_name_original',
-      label: 'Name (Marathi)',
+      label: 'Name (Devanagari)',
       value: 'रमेश शंकर जाधव',
       region: r(86, 230, 180, 28),
       quality: 'clear',
