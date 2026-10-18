@@ -42,7 +42,8 @@ export function RiskScoresPage(): React.JSX.Element {
       <Notice title="SYNTH test loans only">
         Every loan and name here is fictional (B-54). The scores show that the scoring works end to
         end; they say nothing about real borrowers. A band is a lead for review, never a finding of
-        wrongdoing. See also <Link to="/alerts?source=risk_score">risk score alerts</Link>.
+        wrongdoing. See also{' '}
+        <Link to="/alerts?source=risk_score&branch=all">risk score alerts</Link>.
       </Notice>
       {state.status === 'loading' && (
         <div role="status" aria-label="Loading risk scores" className="space-y-3">
