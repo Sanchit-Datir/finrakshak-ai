@@ -47,7 +47,7 @@ const EnvSchema = z.object({
   GEMINI_PROVIDER: z.enum(GEMINI_PROVIDERS).optional(),
   PROFILE_SOURCE: z.enum(PROFILE_SOURCES).optional(),
   /** Billed AI calls each signed-in user may make per Indian calendar day (B-15). */
-  GEMINI_DAILY_LIMIT: z.coerce.number().int().min(1).max(10_000).default(30),
+  GEMINI_DAILY_LIMIT: z.coerce.number().int().min(1).max(10_000).default(100),
   /** Injected from Secret Manager at runtime (see `geminiApiKey` in config/secrets.ts). */
   GEMINI_API_KEY: z.string().min(1).optional(),
 });

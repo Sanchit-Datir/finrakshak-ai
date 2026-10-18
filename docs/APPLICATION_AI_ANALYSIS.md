@@ -63,7 +63,7 @@ person to approve, so it has nothing to say about one application.
   out and counted.
 - `functions/src/callable/analyseApplication.ts`: sign-in, App Check, 3 calls a minute, input schema,
   size check (before any use is counted), AI allow-list (`aiEnabled`) and the daily limit
-  (`GEMINI_DAILY_LIMIT`, 30), then `services/applicationAnalysis.ts`.
+  (`GEMINI_DAILY_LIMIT`, 100 since 18 Oct 2026), then `services/applicationAnalysis.ts`.
 - The model gets the data inside `<<<APPLICATION_DATA … APPLICATION_DATA>>>` and is asked for JSON. A
   reply that is not the expected JSON is retried once; a cut-off reply (`MAX_TOKENS`) is a failure.
 - Logs hold counts only, never field values, findings or model text.
