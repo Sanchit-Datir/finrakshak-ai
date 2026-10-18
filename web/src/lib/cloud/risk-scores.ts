@@ -2,9 +2,12 @@ import {
   GetRiskScoresResultSchema,
   RiskAlertDocSchema,
   RiskExplanationViewSchema,
+  RiskHistoryPointSchema,
+  RiskHistorySchema,
   RiskScoreViewSchema,
   type RiskAlertDoc,
   type RiskExplanationView,
+  type RiskHistoryPoint,
   type RiskScoreView,
 } from '@fund-tracker/shared';
 import type { Cloud } from './firebase.js';
@@ -15,6 +18,8 @@ export interface RiskScores {
   readonly alerts: RiskAlertDoc[];
   /** AI-written sentences for some alerts (RISK_EXPLAINER_PLAN.md); always shown labelled. */
   readonly explanations: RiskExplanationView[];
+  /** Month-end scores per loan, oldest first. Only the bundled sample has them; empty from the cloud. */
+  readonly history: Readonly<Record<string, readonly RiskHistoryPoint[]>>;
   readonly truncated: boolean;
   /** Items dropped because they did not match the shared schema (never shown, never trusted). */
   readonly dropped: number;
@@ -44,7 +49,24 @@ export function parseRiskScores(raw: unknown, origin: RiskScores['origin']): Ris
     const p = RiskExplanationViewSchema.safeParse(x);
     return p.success ? p.data : null;
   });
-  return { scores, alerts, explanations, truncated: envelope.truncated, dropped, origin };
+  const history = parseHistory(raw);
+  return { scores, alerts, explanations, history, truncated: envelope.truncated, dropped, origin };
+}
+
+/** Optional `history` key of the sample; anything malformed is left out rather than trusted. */
+function parseHistory(raw: unknown): Record<string, RiskHistoryPoint[]> {
+  if (typeof raw !== 'object' || raw === null || !('history' in raw)) return {};
+  const holder = RiskHistorySchema.safeParse(raw.history);
+  if (!holder.success) return {};
+  const out: Record<string, RiskHistoryPoint[]> = {};
+  for (const [loan, items] of Object.entries(holder.data)) {
+    const points = items.flatMap((x) => {
+      const p = RiskHistoryPointSchema.safeParse(x);
+      return p.success ? [p.data] : [];
+    });
+    out[loan] = points.sort((a, b) => a.as_of.localeCompare(b.as_of));
+  }
+  return out;
 }
 
 export interface ExplainedAlert {

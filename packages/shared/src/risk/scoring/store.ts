@@ -131,6 +131,20 @@ export type GetRiskScoresInput = z.infer<typeof GetRiskScoresInputSchema>;
 export const RiskScoreViewSchema = RiskLatestDocSchema.omit({ state: true, previous: true });
 export type RiskScoreView = z.infer<typeof RiskScoreViewSchema>;
 
+/**
+ * One point of a loan's score history (a month-end run). Only the bundled sample carries history for now;
+ * the cloud history sits in BigQuery and has no reader yet (B-57: history is append-only).
+ */
+export const RiskHistoryPointSchema = z.object({
+  as_of: IsoDateSchema,
+  score: z.number().int().min(0).max(100),
+  held_band: RiskBandSchema,
+});
+export type RiskHistoryPoint = z.infer<typeof RiskHistoryPointSchema>;
+
+/** Loan id to its points, oldest first. */
+export const RiskHistorySchema = z.record(z.string(), z.array(z.unknown()));
+
 /** Result of `getRiskScores`. Parsed on the web side; a malformed item is dropped and counted. */
 export const GetRiskScoresResultSchema = z.object({
   scores: z.array(z.unknown()),
