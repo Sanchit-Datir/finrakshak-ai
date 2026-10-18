@@ -1,4 +1,9 @@
-import { RISK_BAND_LABELS, reasonText, type RiskScoreView } from '@fund-tracker/shared';
+import {
+  RISK_BAND_LABELS,
+  reasonText,
+  type RiskHistoryPoint,
+  type RiskScoreView,
+} from '@fund-tracker/shared';
 import { Bell } from 'lucide-react';
 import { LinkButton } from '../ui/Button.js';
 import { Badge } from '../ui/Badge.js';
@@ -7,6 +12,7 @@ import { Notice } from '../ui/States.js';
 import { PriorityBadge } from '../ui/StatusBadges.js';
 import { useFormat } from '../../state/hooks.js';
 import type { ExplainedAlert } from '../../lib/cloud/risk-scores.js';
+import { ScoreHistory } from './ScoreHistory.js';
 import { AiExplanation } from './AiExplanation.js';
 import { ALERT_KIND_LABEL, LAYER_LABEL } from './labels.js';
 
@@ -15,6 +21,7 @@ export function RiskScoreDetail({
   score,
   explained,
   fromSample,
+  history,
   onClose,
 }: {
   score: RiskScoreView | null;
@@ -22,6 +29,8 @@ export function RiskScoreDetail({
   explained: ExplainedAlert | null;
   /** True when the data is the bundled sample, so any AI sentence is simulated demo output. */
   fromSample: boolean;
+  /** The loan's month-end scores, oldest first (empty when none are available). */
+  history: readonly RiskHistoryPoint[];
   onClose: () => void;
 }): React.JSX.Element {
   return (
@@ -32,7 +41,9 @@ export function RiskScoreDetail({
       title={score === null ? 'Risk score' : `Risk score · ${score.loan_id}`}
       description="SYNTH test loan. A score is a lead for review, never a verdict."
     >
-      {score !== null && <DetailBody score={score} explained={explained} fromSample={fromSample} />}
+      {score !== null && (
+        <DetailBody score={score} explained={explained} fromSample={fromSample} history={history} />
+      )}
     </Dialog>
   );
 }
@@ -41,10 +52,12 @@ function DetailBody({
   score,
   explained,
   fromSample,
+  history,
 }: {
   score: RiskScoreView;
   explained: ExplainedAlert | null;
   fromSample: boolean;
+  history: readonly RiskHistoryPoint[];
 }): React.JSX.Element {
   const f = useFormat();
   const s = score.latest;
@@ -72,6 +85,7 @@ function DetailBody({
         </Notice>
       )}
       {explained !== null && <AiExplanation explained={explained} simulated={fromSample} />}
+      <ScoreHistory history={history} fromSample={fromSample} />
       <section aria-labelledby="risk-points">
         <h3 id="risk-points" className="mb-2 text-sm font-semibold">
           Points by layer

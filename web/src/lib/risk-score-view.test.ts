@@ -7,6 +7,7 @@ import {
   hasRiskFilters,
   NO_RISK_FILTERS,
   riskScoresCsv,
+  summariseTrend,
 } from './risk-score-view.js';
 
 function score(
@@ -93,5 +94,32 @@ describe('riskScoresCsv', () => {
   it('neutralises spreadsheet formulas in borrower ids', () => {
     const csv = riskScoresCsv([score('L-1', { borrower: '=CMD()' })], () => 'x');
     expect(csv).toContain("'=CMD()");
+  });
+});
+
+describe('summariseTrend', () => {
+  const pt = (as_of: string, score: number, held_band: 'routine' | 'needs_attention' | 'urgent') => ({
+    as_of,
+    score,
+    held_band,
+  });
+  it('is null for fewer than two runs', () => {
+    expect(summariseTrend([])).toBeNull();
+    expect(summariseTrend([pt('2025-01-31', 5, 'routine')])).toBeNull();
+  });
+  it('reports change, peak and band rises', () => {
+    const t = summariseTrend([
+      pt('2025-01-31', 0, 'routine'),
+      pt('2025-02-28', 20, 'needs_attention'),
+      pt('2025-03-31', 49, 'urgent'),
+      pt('2025-04-30', 30, 'urgent'),
+    ]);
+    expect(t?.change).toBe(30);
+    expect(t?.peak.as_of).toBe('2025-03-31');
+    expect(t?.bandRises).toBe(2);
+    expect(t?.points).toBe(4);
+  });
+  it('shows a fall as a negative change', () => {
+    expect(summariseTrend([pt('a', 40, 'urgent'), pt('b', 10, 'routine')])?.change).toBe(-30);
   });
 });

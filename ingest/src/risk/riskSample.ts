@@ -5,6 +5,7 @@ import {
   monthEnd,
   type GetRiskScoresResult,
   type Reason,
+  type RiskHistoryPoint,
   type RiskExplanationView,
   type RiskAlertDoc,
   type RiskLatestDoc,
@@ -120,11 +121,15 @@ function sampleExplanations(alerts: readonly RiskAlertDoc[]): RiskExplanationVie
   return out;
 }
 
-export async function buildRiskSample(): Promise<GetRiskScoresResult> {
+/** The sample plus each loan's month-end history, which `getRiskScores` does not return yet. */
+export type RiskSample = GetRiskScoresResult & { history: Record<string, RiskHistoryPoint[]> };
+
+export async function buildRiskSample(): Promise<RiskSample> {
   const data = sampleData();
   const library = await loadLibrary(codePatterns());
   let previous = new Map<string, RiskLatestDoc>();
   const alerts = new Map<string, RiskAlertDoc>();
+  const history: Record<string, RiskHistoryPoint[]> = {};
   for (const month of monthsFrom('2024-01', SAMPLE_MONTHS)) {
     const asOf = monthEnd(month);
     const out = scoreDay({
@@ -137,6 +142,12 @@ export async function buildRiskSample(): Promise<GetRiskScoresResult> {
       matcher: matchPattern,
       previous,
     });
+    for (const doc of out.latestDocs)
+      (history[doc.loan_id] ??= []).push({
+        as_of: doc.as_of,
+        score: doc.latest.score,
+        held_band: doc.held_band,
+      });
     previous = new Map(out.latestDocs.map((doc) => [doc.loan_id, doc]));
     for (const a of out.alertDocs) if (!alerts.has(a.alert_id)) alerts.set(a.alert_id, a);
   }
@@ -146,5 +157,6 @@ export async function buildRiskSample(): Promise<GetRiskScoresResult> {
     alerts: sorted,
     explanations: sampleExplanations(sorted),
     truncated: false,
+    history,
   };
 }

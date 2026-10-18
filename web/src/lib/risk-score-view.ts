@@ -1,4 +1,9 @@
-import { RISK_BAND_LABELS, type RiskBand, type RiskScoreView } from '@fund-tracker/shared';
+import {
+  RISK_BAND_LABELS,
+  type RiskBand,
+  type RiskHistoryPoint,
+  type RiskScoreView,
+} from '@fund-tracker/shared';
 import { toCsv } from './export.js';
 
 /** Pure helpers for the Risk scores page: movement summary, filters and CSV rows (B-54, B-58). */
@@ -93,4 +98,31 @@ export function riskScoresCsv(
       s.latest.stale_inputs ? 'Yes' : 'No',
     ]),
   );
+}
+
+export interface Trend {
+  readonly points: number;
+  readonly first: RiskHistoryPoint;
+  readonly last: RiskHistoryPoint;
+  readonly peak: RiskHistoryPoint;
+  /** Last score minus first score. */
+  readonly change: number;
+  /** Runs where the held band was higher than in the run before. */
+  readonly bandRises: number;
+}
+
+const BAND_RANK: Readonly<Record<RiskBand, number>> = { routine: 0, needs_attention: 1, urgent: 2 };
+
+/** Summary of a loan's history (oldest first); null when there are fewer than two runs to compare. */
+export function summariseTrend(history: readonly RiskHistoryPoint[]): Trend | null {
+  const [first] = history;
+  const last = history[history.length - 1];
+  if (first === undefined || last === undefined || history.length < 2) return null;
+  const peak = history.reduce((best, p) => (p.score > best.score ? p : best), first);
+  let bandRises = 0;
+  history.forEach((p, i) => {
+    const before = history[i - 1];
+    if (before !== undefined && BAND_RANK[p.held_band] > BAND_RANK[before.held_band]) bandRises++;
+  });
+  return { points: history.length, first, last, peak, change: last.score - first.score, bandRises };
 }

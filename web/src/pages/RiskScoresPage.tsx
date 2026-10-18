@@ -196,6 +196,7 @@ function Scores({ data }: { data: RiskScores }): React.JSX.Element {
       </Card>
       <RiskScoreDetail
         fromSample={data.origin === 'sample'}
+        history={open === null ? [] : (data.history[open.loan_id] ?? [])}
         score={open}
         explained={open === null ? null : latestExplained(data, open.loan_id)}
         onClose={() => {
