@@ -55,7 +55,7 @@ this branch does, what exists in Google Cloud, and how the parts fit together. P
 | `infra/`, `scripts/`              | `workflows/ingest-daily.yaml`, `monitoring/*.json` alert policies, `storage/state-lifecycle.json`, `artifact-registry/cleanup-policy.json`, `scripts/setup-ingest-gcp.sh`, `scripts/deploy-ingest.sh`. |
 | `docs/`                           | The two plans, `DEPLOY.md` (cloud ingestion section), `SESSION_NOTES.md`, and this file.                                                                                                               |
 | Fix made while creating resources | `scripts/setup-ingest-gcp.sh` used `bq add-iam-policy-binding --dataset`, which needs allowlisting on this project. It now edits the dataset ACL with `bq update` (idempotent).                        |
-| Parked by decision                | The budget alert. The script supports it (`BILLING_ACCOUNT`, `BUDGET_USD`); it was left out on purpose and is noted in `DEPLOY.md`, the plan (D7) and `SESSION_NOTES.md`.                              |
+| Done (18 Oct 2026)                | The budget alerts: ₹450/month for the project and ₹200/month for the AI services, alerting at 50%, 90% and 100% (`SESSION_NOTES.md`).                                                                  |
 
 ## 3. System overview
 
@@ -123,7 +123,7 @@ The alert policies needed one retry because new log metrics take a few minutes t
   merge to `main` (repository variable `INGEST_ENABLED=true`), through `scripts/deploy-ingest.sh`.
 - The functions `publicData` and `decideProposal`; the same deploy publishes them. After that, the
   owner must allow network-level invocation once (see `docs/DEPLOY.md`).
-- The budget alert (parked).
+- The budget alerts (done, 18 Oct 2026).
 
 **Until the deploy runs,** the Scheduler job fires at 03:05 IST against a workflow that does not
 exist, so those executions will fail. Either merge and deploy first, or pause the job with
@@ -515,7 +515,7 @@ same listing or build twice at once.
   `FUNDTRACE_AGENT_ENABLED=false`. Tests and CI use the mock model.
 - BigQuery loads are free; the agent's queries are parameterised and bounded.
 - Artifact Registry keeps the last 10 images.
-- No budget alert yet (parked).
+- Budget alerts exist (₹450 and ₹200 a month); they warn, they do not stop spend.
 - Alert policies (`infra/monitoring/`): run failed, source failed, publish gate failed. No notification
   channel yet (decided); they show in the console.
 

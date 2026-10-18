@@ -62,6 +62,13 @@ const InputSchema = z.object({
       }),
     )
     .max(25),
+  attention: z
+    .object({
+      score: z.number().int().min(0).max(100),
+      band: z.enum(['routine', 'needs_attention', 'urgent']),
+      driverIds: z.array(ref).max(3),
+    })
+    .nullable(),
 });
 type AssertTrue<T extends true> = T;
 type Input = z.infer<typeof InputSchema>;

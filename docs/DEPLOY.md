@@ -69,8 +69,11 @@ possible; anything that changes production belongs to `github-deployer`.
 
 ## Functions that use a secret
 
-A function reads a Secret Manager secret as its **runtime account** (the App Engine default account,
-`<project>@appspot.gserviceaccount.com`, with the current firebase-tools). That account needs
+A function reads a Secret Manager secret, and calls Vertex AI, as its **runtime account** (on
+`fund-tracer` today the Compute default account `728958349363-compute@developer.gserviceaccount.com`;
+firebase-tools has used the App Engine default account `<project>@appspot.gserviceaccount.com` before, so
+`scripts/setup-gcp.sh` grants both). For Vertex AI (the default provider since 18 Oct 2026) it needs
+`roles/aiplatform.user`, which `scripts/setup-gcp.sh` grants. For the optional API-key provider it needs
 `roles/secretmanager.secretAccessor` on the secret. `github-deployer` only has `secretmanager.viewer`
 on purpose, so it cannot grant this itself. Grant it once, by hand, when you add a secret:
 
@@ -209,7 +212,7 @@ Design: [`docs/plans/GCP_INGESTION_AGENT_PLAN.md`](plans/GCP_INGESTION_AGENT_PLA
 
 ```bash
 SEED=1 scripts/setup-ingest-gcp.sh fund-tracer            # buckets, datasets, accounts, scheduler, alerts
-# budget alert: PARKED (owner decision). Later: BILLING_ACCOUNT=XXXXXX-XXXXXX-XXXXXX BUDGET_USD=<figure> scripts/setup-ingest-gcp.sh fund-tracer
+# budget alerts: DONE (created in the console, 18 Oct 2026: INR 450/month all services, INR 200/month AI services)
 ```
 
 `SEED=1` copies the five MCA master parts and `data/registry/sources.json` into the state bucket.
@@ -341,8 +344,8 @@ Until a public build is published, every score is marked `stale_inputs` (B-50, B
 
 Both follow `docs/plans/AGENTS_PLAN.md`: code computes the facts, the model only words them, a person decides.
 Each execution writes one `agentRuns/<agent>_<runId>` record (counts, versions and tokens, never a prompt or a
-response; removed after about 400 days by a TTL policy). Create the budget alert (B-15) before switching either
-on with a billed model.
+response; removed after about 400 days by a TTL policy). The budget alerts exist (B-15, checked 18 Oct 2026); they warn but do not stop spend, so keep the
+per-run caps.
 
 1. **Setup** (once, Owner): re-run `scripts/setup-ingest-gcp.sh <project>`. It creates `ingest-miner` (reads
    the state and publish buckets, Firestore, Vertex AI) and `ingest-explainer` (Firestore and Vertex AI only)

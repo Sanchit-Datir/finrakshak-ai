@@ -19,6 +19,7 @@ import type {
   PrSubject,
   PublicRecordsSnapshot,
   AiAnalysisSnapshot,
+  AiInvestigationSnapshot,
   PublicWatch,
   Transaction,
   WatchEvent,
@@ -75,6 +76,7 @@ export function unsavedApplication(branchId: string): Application {
     findingStates: {},
     publicRecords: null,
     aiAnalysis: null,
+    aiInvestigation: null,
   };
 }
 
@@ -159,6 +161,49 @@ export function recordPublicRecordsCheck(
           `${found} customer(s) in insolvency or liquidation`,
       ),
     );
+  });
+}
+
+/** Stores the AI investigation on the application (one audit entry; counts only, no AI text). */
+export function recordAiInvestigation(
+  appId: string,
+  actor: string,
+  snapshot: Omit<AiInvestigationSnapshot, 'approved'>,
+): void {
+  mutate((d) => {
+    const a = findApp(d, appId);
+    a.aiInvestigation = { ...snapshot, approved: {} };
+    const r = snapshot.result;
+    a.audit.push(
+      audit(
+        actor,
+        r.mock ? 'AI investigation run (mock, no model called)' : 'AI investigation run',
+        `${r.model ?? 'mock provider'}; ${r.claims.made} claim(s): ${r.claims.verified} verified, ` +
+          `${r.claims.rejected} rejected by code`,
+      ),
+    );
+  });
+}
+
+/** An officer approves (and may edit) a draft question: it is recorded as a note, nothing is sent. */
+export function approveInvestigationQuestion(
+  appId: string,
+  actor: string,
+  questionId: string,
+  text: string,
+): void {
+  mutate((d) => {
+    const a = findApp(d, appId);
+    if (a.aiInvestigation === null) return;
+    const at = nowIso();
+    a.aiInvestigation.approved[questionId] = { text, by: actor, at };
+    a.notes.push({
+      id: uid('n'),
+      author: actor,
+      at,
+      text: `Information request (drafted with AI, approved): ${text}`,
+    });
+    a.audit.push(audit(actor, 'AI-drafted question approved', text.slice(0, 80)));
   });
 }
 

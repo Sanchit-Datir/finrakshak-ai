@@ -2,8 +2,10 @@ import { BrainCircuit, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import type { Application, Db } from '../../domain/schemas.js';
 import { analysisInputsKey, buildAnalysisRequest } from '../../lib/application-analysis.js';
+import { aiFindingsForScore, attentionScore } from '../../lib/attention-score.js';
 import { applicationDocs, type Finding } from '../../lib/checks.js';
 import { analyseApplication, explainAnalysisError } from '../../lib/cloud/application-analysis.js';
+import { investigationInputsKey } from '../../lib/investigation-bundle.js';
 import { recordAiAnalysis } from '../../state/actions.js';
 import { useCloudAuth } from '../../state/cloud-auth.js';
 import { useToast } from '../../state/toast.js';
@@ -11,6 +13,7 @@ import { Button } from '../ui/Button.js';
 import { Card, CardHeader } from '../ui/Card.js';
 import { Notice } from '../ui/States.js';
 import { AiAnalysisResult } from './AiAnalysisResult.js';
+import { AttentionScoreView } from './AttentionScoreView.js';
 
 /**
  * AI-assisted analysis of this application (analyseApplication). Runs only on a click: each run
@@ -22,18 +25,23 @@ export function AiAnalysisCard({
   db,
   actor,
   findings,
+  checksRun,
 }: {
   app: Application;
   db: Db;
   actor: string;
   findings: readonly Finding[];
+  /** False until the checks have run: no score is shown before then. */
+  checksRun: boolean;
 }): React.JSX.Element {
   const auth = useCloudAuth();
   const toast = useToast();
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const docs = applicationDocs(app, db);
-  const request = buildAnalysisRequest(app, docs, findings);
+  const ai = aiFindingsForScore(app.aiInvestigation, investigationInputsKey(app, findings));
+  const attention = checksRun ? attentionScore(app, findings, ai) : null;
+  const request = buildAnalysisRequest(app, docs, findings, attention);
   const key = analysisInputsKey(request.input);
   const nothing = request.input.documents.length === 0 && request.input.findings.length === 0;
   const stored = app.aiAnalysis;
@@ -68,6 +76,7 @@ export function AiAnalysisCard({
         subtitle="Gemini (server-side, through the analyseApplication function)"
       />
       <div className="space-y-4 px-5 pb-5">
+        <AttentionScoreView attention={attention} />
         {auth.status !== 'ready' ? (
           <Notice tone="warn" title="Not connected — no AI analysis ran">
             Sign in with a cloud account to run the AI analysis. In this session no document is sent

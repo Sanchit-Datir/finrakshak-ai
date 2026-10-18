@@ -44,8 +44,8 @@ export function normalizeCompanyName(s: string): string {
 }
 
 const detailParts = (n: GraphNode): string[] => (n.detail ?? '').split(' · ').filter(Boolean);
-const cinOf = (n: GraphNode): string | null => detailParts(n).find((p) => CIN_PATTERN.test(p)) ?? null;
-const mcaStatusOf = (n: GraphNode): string | null =>
+export const cinOf = (n: GraphNode): string | null => detailParts(n).find((p) => CIN_PATTERN.test(p)) ?? null;
+export const mcaStatusOf = (n: GraphNode): string | null =>
   detailParts(n).find((p) => !CIN_PATTERN.test(p)) ?? null;
 const caseTypeOf = (event: GraphNode): string => detailParts(event)[2] ?? '';
 
@@ -67,9 +67,10 @@ function resolver(ix: LabIndex): Resolver {
   return { byCin, byName };
 }
 
-function recordsOf(ix: LabIndex, id: string): PrRecord[] {
+/** Records a company or person is named in, with the record's node id, latest first. */
+export function namedRecords(ix: LabIndex, id: string): { eventId: string; record: PrRecord }[] {
   const seen = new Set<string>();
-  const out: PrRecord[] = [];
+  const out: { eventId: string; record: PrRecord }[] = [];
   for (const e of ix.all.out.get(id) ?? []) {
     const event = ix.nodes.get(e.to);
     if (e.type !== 'named_in' || e.from !== id || event === undefined || seen.has(event.id)) continue;
@@ -77,16 +78,21 @@ function recordsOf(ix: LabIndex, id: string): PrRecord[] {
     if (kind === undefined) continue;
     seen.add(event.id);
     const doc = ix.docs.get(e.document_id ?? event.document_id ?? '');
-    out.push({
+    const record = {
       kind,
       caseType: caseTypeOf(event),
       date: event.date,
       title: event.label,
       url: doc?.url ?? null,
       evidenceStatus: e.evidence_status,
-    });
+    };
+    out.push({ eventId: event.id, record });
   }
-  return out.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
+  return out.sort((a, b) => (b.record.date ?? '').localeCompare(a.record.date ?? ''));
+}
+
+function recordsOf(ix: LabIndex, id: string): PrRecord[] {
+  return namedRecords(ix, id).map((r) => r.record);
 }
 
 function subjectFromNode(

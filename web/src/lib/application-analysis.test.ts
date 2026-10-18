@@ -53,9 +53,21 @@ describe('buildAnalysisRequest', () => {
   it('handles an application with no documents and no findings', () => {
     const r = buildAnalysisRequest(app, [], []);
     expect(r).toEqual({
-      input: { borrowerType: app.borrowerType, documents: [], findings: [] },
+      input: { borrowerType: app.borrowerType, attention: null, documents: [], findings: [] },
       omittedDocuments: 0,
     });
+  });
+
+  it('sends the code-computed attention score with its drivers', () => {
+    const attention = {
+      score: 70,
+      band: 'urgent',
+      counted: 2,
+      drivers: [{ findingId: 'X1', source: 'rule', title: 'T', priority: 'urgent', points: 60 }],
+    } as const;
+    const { input } = buildAnalysisRequest(app, [], [], attention);
+    expect(input.attention).toEqual({ score: 70, band: 'urgent', driverIds: ['X1'] });
+    expect(AnalyseApplicationInputSchema.safeParse(input).success).toBe(true);
   });
 });
 
