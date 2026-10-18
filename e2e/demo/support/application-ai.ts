@@ -1,6 +1,6 @@
 import type { Locator } from '@playwright/test';
 import type { Director } from './director.js';
-import { firstVisible } from './wait.js';
+import { firstVisible, noticeText } from './wait.js';
 
 /**
  * The two Gemini cards on a new application's Risk step: the AI investigator
@@ -40,6 +40,11 @@ async function runCard(
     await d.dismissToasts();
     return true;
   }
+  d.note(
+    outcome === 'timeout'
+      ? `No AI result within ${timeout / 1000}s.`
+      : `The app said: ${await noticeText(c)}`,
+  );
   await d.say('The AI did not finish this time; the checks above are unaffected.');
   await d.pause(2500);
   return false;

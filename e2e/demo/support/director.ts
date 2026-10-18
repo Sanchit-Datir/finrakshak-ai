@@ -14,6 +14,8 @@ export interface Director {
   scene: (title: string, text: string, body: () => Promise<void>) => Promise<void>;
   /** New caption text within the current step. */
   say: (text: string) => Promise<void>;
+  /** A line for the terminal / launcher log only (not shown on screen). */
+  note: (line: string) => void;
   titleCard: (card: TitleCardText, seconds: number) => Promise<void>;
   /** Full page load; the caption is put back afterwards. */
   goto: (path: string) => Promise<void>;
@@ -147,6 +149,9 @@ export async function createDirector(
       log(`▶ ${meta.label} · step ${sceneNo}/${meta.scenes}: ${title}`);
       await showCaption(caption);
       await test.step(title, body);
+    },
+    note: (line) => {
+      log(`  ! ${line}`);
     },
     say: async (text) => {
       if (caption === null) return;

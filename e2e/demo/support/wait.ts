@@ -18,3 +18,10 @@ export async function firstVisible<K extends string>(
     ),
   );
 }
+
+/** The text of the app's error notice inside `scope`, for the log; '' when there is none. */
+export async function noticeText(scope: Locator): Promise<string> {
+  const notice = scope.locator('.bg-danger-soft').first();
+  if ((await notice.count()) === 0) return '';
+  return (await notice.innerText()).replace(/\s+/g, ' ').trim();
+}

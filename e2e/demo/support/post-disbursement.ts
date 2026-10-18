@@ -1,7 +1,7 @@
 import { expect, type Locator } from '@playwright/test';
 import type { MonitoringScenario } from '../../scenarios/types.js';
 import type { Director } from './director.js';
-import { firstVisible } from './wait.js';
+import { firstVisible, noticeText } from './wait.js';
 
 /**
  * Steps shared by the post-disbursement demos (scenarios 2 and 3). Nothing is typed in: the
@@ -170,6 +170,11 @@ export async function askCopilot(
     120_000,
   );
   if (outcome !== 'answered') {
+    d.note(
+      outcome === 'timeout'
+        ? 'Copilot gave no answer within 120s.'
+        : `The app said: ${await noticeText(answer)}`,
+    );
     await d.say('The copilot did not answer this time; the rest of the demo is unaffected.');
     await d.pause(2500);
   } else {
