@@ -68,7 +68,6 @@ async function runScenario(page: Page, s: LoanScenario): Promise<void> {
   await test.step('Start a new application and fill it', async () => {
     await signIn(page);
     await page.goto('/applications/new');
-    await page.getByRole('button', { name: 'Fill the application form' }).click();
     await fillApplication(page, s.input);
     await page
       .getByRole('group', { name: /Trade receivables/ })

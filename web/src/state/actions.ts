@@ -53,6 +53,31 @@ function findDoc(d: Db, id: string): FtDocument {
 
 // ---------- applications ----------
 
+/** A blank application that is not stored yet: the form shown before the first save. */
+export function unsavedApplication(branchId: string): Application {
+  return {
+    id: '',
+    borrowerId: null,
+    borrowerType: 'individual',
+    branchId,
+    status: 'draft',
+    createdAt: '',
+    submittedAt: null,
+    updatedAt: '',
+    createdBy: '',
+    step: 1,
+    data: newApplicationData(),
+    unverifiedSections: [],
+    documentIds: [],
+    notes: [],
+    audit: [],
+    checksRunAt: null,
+    findingStates: {},
+    publicRecords: null,
+    aiAnalysis: null,
+  };
+}
+
 export function createDraftApplication(actor: string, branchId: string): string {
   let id = '';
   mutate((d) => {
@@ -60,25 +85,12 @@ export function createDraftApplication(actor: string, branchId: string): string 
     id = `A-${d.counters.application}`;
     const at = nowIso();
     d.applications.push({
+      ...unsavedApplication(branchId),
       id,
-      borrowerId: null,
-      borrowerType: 'individual',
-      branchId,
-      status: 'draft',
       createdAt: at,
-      submittedAt: null,
       updatedAt: at,
       createdBy: actor,
-      step: 1,
-      data: newApplicationData(),
-      unverifiedSections: [],
-      documentIds: [],
-      notes: [],
       audit: [audit(actor, 'Application created', 'Draft started')],
-      checksRunAt: null,
-      findingStates: {},
-      publicRecords: null,
-      aiAnalysis: null,
     });
   });
   return id;

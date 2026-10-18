@@ -105,16 +105,16 @@ export function CaptureStep({
     <div className="space-y-5">
       <div className="card flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div>
-          <h3 className="font-semibold">Fill the application form</h3>
+          <h3 className="font-semibold">Upload documents</h3>
           <p className="text-muted text-sm">
-            Enter the applicant and loan details directly. Uploading documents is optional.
+            The application is created from the document fields you confirm. You do not need to fill
+            the application form.
           </p>
         </div>
-        <Button variant="primary" icon={FileText} onClick={onFillForm} className="h-12 px-5">
-          Fill the application form
+        <Button icon={FileText} onClick={onFillForm} className="h-12 shrink-0 px-5">
+          Fill the form instead
         </Button>
       </div>
-      <p className="text-muted text-center text-sm font-medium">or upload documents</p>
       <div
         ref={dropRef}
         className={cn(
@@ -174,8 +174,8 @@ export function CaptureStep({
         {docs.length === 0 ? (
           <div className="card">
             <EmptyState icon={Upload} title="No documents yet">
-              Documents are optional. Scan or upload them to extract and verify their details, or
-              fill the application form directly.
+              Scan or upload documents to extract and verify their details, or fill the application
+              form instead.
             </EmptyState>
           </div>
         ) : (

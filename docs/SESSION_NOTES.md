@@ -107,6 +107,13 @@ locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:**
 
 ## Open decisions and next ideas
 
+- **New loan opens the form directly (18 Oct 2026, branch `ui/loan-page-layout`):** the form path is
+  Application form → Risk analysis (name, amount, purpose required). "Upload documents instead" gives
+  Upload → Extract & verify → Application form (optional) → Risk analysis; nothing is required on that
+  path (owner's answer): continuing fills empty fields from confirmed document fields and the checks
+  report what is missing. On the loan page, "Alerts for this loan" now sits directly before
+  "Transaction flow". Known, not fixed: the flow graph's SVG makes the Monitoring page scroll
+  sideways at 360px (pre-existing).
 - **Risk scoring programme (planned 17 Oct 2026):** synthetic transaction data, a daily risk-scoring
   job, a pattern miner agent and an optional explainer agent. **Start at `docs/plans/README.md`**: it has
   the plan index, the 17-step build order with a status per step (steps 1–4 done), the decisions taken and

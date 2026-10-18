@@ -49,8 +49,9 @@ E2E_APPLICATIONS_DATA=/path/to/my-cases.json npm run test:e2e -w web
 }
 ```
 
-Each case starts with "Fill the application form" (no documents). Any labelled field on the review
-step can be filled, no code change needed.
+Each case starts on the application form, which opens directly on "New loan" (no documents). Any
+labelled field on the form can be filled, no code change needed. The upload path (no form) is
+covered by `new-application-upload.e2e.ts`.
 
 ## Layout
 
