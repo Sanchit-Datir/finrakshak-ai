@@ -108,6 +108,13 @@ describe('investigate', () => {
     expect(r.summaryWithheld).toBe(true);
   });
 
+  it('withholds a summary longer than the short cap', async () => {
+    const long = call('submit_summary', { summary: 'Two leads. '.repeat(50) });
+    const r = await investigate(BUNDLE, scripted([[long]]));
+    expect(r.summary).toBe('');
+    expect(r.summaryWithheld).toBe(true);
+  });
+
   it('caps kept findings at the limit', async () => {
     const f = call('submit_finding', {
       kind: 'implausible_numbers',
@@ -117,9 +124,9 @@ describe('investigate', () => {
     });
     const r = await investigate(
       BUNDLE,
-      scripted([[...Array.from({ length: LIMITS.maxFindings + 2 }, () => f), summary]]),
+      scripted([[...Array.from({ length: LIMITS.outputFindings + 2 }, () => f), summary]]),
     );
-    expect(r.findings).toHaveLength(LIMITS.maxFindings);
+    expect(r.findings).toHaveLength(LIMITS.outputFindings);
     expect(r.rejections).toEqual([{ reason: 'over_limit', count: 2 }]);
   });
 });

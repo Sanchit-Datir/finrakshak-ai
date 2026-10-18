@@ -128,7 +128,7 @@ function claimed<T>(c: Collector, schema: z.ZodType<T>, args: unknown): T {
 
 function submitFinding(c: Collector, args: unknown): Record<string, unknown> {
   const a = claimed(c, FindingArgs, args);
-  if (c.findings.length >= LIMITS.maxFindings) return reject(c, 'over_limit');
+  if (c.findings.length >= LIMITS.outputFindings) return reject(c, 'over_limit');
   if (a.citations.length === 0) return reject(c, 'missing_evidence');
   const claim = {
     kind: a.kind,

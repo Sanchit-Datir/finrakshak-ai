@@ -200,6 +200,6 @@ export function verifyQuestion(
 
 /** The summary is kept or withheld whole; it may repeat only numbers the bundle holds. */
 export function verifySummary(ix: BundleIndex, summary: string): RejectionReason | null {
-  if (summary.length > LIMITS.maxSummaryChars) return 'over_limit';
+  if (summary.length > LIMITS.outputSummaryChars) return 'over_limit';
   return checkText(summary, [ix.input]);
 }
