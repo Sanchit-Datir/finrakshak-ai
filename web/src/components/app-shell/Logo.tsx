@@ -35,7 +35,7 @@ export function Wordmark({
               inverted ? 'text-white' : 'text-ink',
             )}
           >
-            FundTrace <span className={inverted ? 'text-teal-300' : 'text-teal'}>AI</span>
+            FinRakshak <span className={inverted ? 'text-teal-300' : 'text-teal'}>AI</span>
           </p>
           <p className={cn('text-[11px] font-medium', inverted ? 'text-white/70' : 'text-muted')}>
             Loan Lifecycle Intelligence

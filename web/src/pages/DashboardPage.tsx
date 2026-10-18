@@ -90,12 +90,12 @@ function MiniLink({
     <li>
       <Link
         to={to}
-        className="border-line bg-surface hover:border-primary/50 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm"
+        className="border-line bg-surface hover:border-primary/50 inline-flex items-center gap-2.5 rounded-full border px-4 py-2.5 text-base"
       >
-        <Icon className="text-muted size-4" aria-hidden />
-        <span className="tabular font-semibold">{value}</span>
+        <Icon className="text-muted size-5" aria-hidden />
+        <span className="tabular text-lg font-semibold">{value}</span>
         <span className="text-muted">{label}</span>
-        <span className="text-primary text-xs font-semibold">View →</span>
+        <span className="text-primary text-sm font-semibold">View →</span>
       </Link>
     </li>
   );
@@ -218,7 +218,7 @@ export function DashboardPage(): React.JSX.Element {
           to="/alerts?view=open"
         />
       </div>
-      <ul aria-label="More counts" className="mt-3 flex flex-wrap gap-2">
+      <ul aria-label="More counts" className="mt-4 flex flex-wrap gap-3">
         <MiniLink
           icon={Activity}
           value={scoped.loans.length}
@@ -382,7 +382,7 @@ function RiskDonut({ apps, db }: { apps: Application[]; db: Db }): React.JSX.Ele
           key: 'none',
           label: 'Checks not run',
           value: counts.none,
-          color: 'var(--color-line)',
+          color: 'var(--color-muted)',
           icon: CircleDashed,
           href: '/applications?priority=none',
         },

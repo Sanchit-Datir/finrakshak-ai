@@ -6,7 +6,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Design tokens (FundTrace AI spec §3). Components must use these semantic
+ * Design tokens (FinRakshak AI spec §3). Components must use these semantic
  * tokens, never raw hex values. Dark theme overrides the same names below.
  */
 @theme {

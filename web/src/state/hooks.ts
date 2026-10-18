@@ -45,6 +45,6 @@ export function useThemeEffect(): void {
 
 export function useDocumentTitle(title: string): void {
   useEffect(() => {
-    document.title = `${title} · FundTrace AI`;
+    document.title = `${title} · FinRakshak AI`;
   }, [title]);
 }
