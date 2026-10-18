@@ -124,7 +124,9 @@ export function rankLeads(leads: readonly Lead[]): Lead[] {
   const sorted = leads.map((l, i) => ({ l, i })).sort((a, b) => order(a.l, b.l) || a.i - b.i);
   const kept: Lead[] = [];
   for (const { l } of sorted) {
-    const dup = kept.some((k) => similarity(`${k.label} ${k.text}`, `${l.label} ${l.text}`) >= SIMILAR);
+    const dup = kept.some(
+      (k) => similarity(`${k.label} ${k.text}`, `${l.label} ${l.text}`) >= SIMILAR,
+    );
     if (!dup) kept.push(l);
   }
   return kept;

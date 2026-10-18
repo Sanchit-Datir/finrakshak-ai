@@ -137,9 +137,12 @@ describe('runStatus and buildHeadline', () => {
   it('names which half ran', () => {
     const a = analysis([]);
     const i = {} as InvestigateApplicationResult;
-    expect([runStatus(a, i), runStatus(a, null), runStatus(null, i), runStatus(null, null)]).toEqual(
-      ['both', 'documents', 'investigator', 'none'],
-    );
+    expect([
+      runStatus(a, i),
+      runStatus(a, null),
+      runStatus(null, i),
+      runStatus(null, null),
+    ]).toEqual(['both', 'documents', 'investigator', 'none']);
   });
 
   it('builds 2-3 sentences from the leads with the app’s priority wording', () => {
@@ -147,7 +150,9 @@ describe('runStatus and buildHeadline', () => {
       [lead('a', 'urgent', 'Name differs.'), lead('b', 'routine', 'Minor gap')],
       'both',
     );
-    expect(h).toBe('2 leads for review (1 Urgent review, 1 Routine review). Top lead: Name differs.');
+    expect(h).toBe(
+      '2 leads for review (1 Urgent review, 1 Routine review). Top lead: Name differs.',
+    );
     expect(h).not.toMatch(/fraud/i);
   });
 
