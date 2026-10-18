@@ -3,7 +3,7 @@ import type {
   AnalyseApplicationResult,
   AnalysisFact,
   AnalysisFindingNote,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { GeminiError, generateJson } from './gemini.js';
 

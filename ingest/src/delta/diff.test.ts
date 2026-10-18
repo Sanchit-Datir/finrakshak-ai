@@ -1,4 +1,4 @@
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { diffListings, itemFingerprint, mergeListing } from './diff.js';
 

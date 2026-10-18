@@ -1,4 +1,4 @@
-import type { SynthArchetype } from '@fund-tracker/shared';
+import type { SynthArchetype } from '@finrakshak-ai/shared';
 import { bigPrepayment } from './bigPrepayment.js';
 import { cashSplit } from './cashSplit.js';
 import { contagion } from './contagion.js';

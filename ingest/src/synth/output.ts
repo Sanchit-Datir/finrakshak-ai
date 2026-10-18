@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { SynthManifestSchema, type SynthManifest } from '@fund-tracker/shared';
+import { SynthManifestSchema, type SynthManifest } from '@finrakshak-ai/shared';
 import { monthStart } from './calendar.js';
 import { GENERATOR_VERSION, type SynthDataset } from './generate.js';
 import { assertNoRealIdentifiers, assertSafeOutputDir } from './guards.js';

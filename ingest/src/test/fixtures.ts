@@ -1,4 +1,4 @@
-import type { BuildRecord, IngestRun, SourceRunRecord } from '@fund-tracker/shared';
+import type { BuildRecord, IngestRun, SourceRunRecord } from '@finrakshak-ai/shared';
 
 export const RUN_AT = '2026-10-17T03:05:00.000Z';
 

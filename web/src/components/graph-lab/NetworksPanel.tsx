@@ -1,4 +1,4 @@
-import type { GraphNetwork } from '@fund-tracker/shared';
+import type { GraphNetwork } from '@finrakshak-ai/shared';
 import { Telescope } from 'lucide-react';
 import { useState } from 'react';
 import { isOrganisation, type LabIndex } from '../../lib/graph-lab.js';

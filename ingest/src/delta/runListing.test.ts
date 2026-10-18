@@ -1,7 +1,7 @@
 import { mkdtempSync, readFileSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { dataPath } from '../config.js';
 import { runListing } from '../acquire.js';
@@ -43,7 +43,7 @@ const listingText = (): string =>
   readFileSync(dataPath('interim', 'listings', 'ibbi.jsonl'), 'utf8');
 
 beforeAll(() => {
-  process.env['FUNDTRACE_DATA_DIR'] = mkdtempSync(path.join(tmpdir(), 'fundtrace-delta-'));
+  process.env['FINRAKSHAK_AI_DATA_DIR'] = mkdtempSync(path.join(tmpdir(), 'finrakshak-ai-delta-'));
 });
 
 describe('runListing', () => {

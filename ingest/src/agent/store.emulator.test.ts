@@ -1,4 +1,4 @@
-import type { RunReview } from '@fund-tracker/shared';
+import type { RunReview } from '@finrakshak-ai/shared';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { clearFirestore, emulatorFirestore } from '../test/emulator.js';
 import { RUN_AT } from '../test/fixtures.js';

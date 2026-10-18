@@ -6,7 +6,7 @@ import {
   type AgentName,
   type AgentRun,
   type AgentRunStatus,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { Timestamp, type Firestore } from '@google-cloud/firestore';
 import { dataKey } from '../config.js';
 import { writeJson } from '../store/jsonl.js';

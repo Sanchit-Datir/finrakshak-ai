@@ -8,7 +8,7 @@ import {
   type IngestRun,
   type SourceId,
   type SourceRunRecord,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import type { DocumentReference, Firestore } from '@google-cloud/firestore';
 import { dataKey } from '../config.js';

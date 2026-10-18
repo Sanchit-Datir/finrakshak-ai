@@ -21,7 +21,7 @@ npm run score                    # replay 24 months, compare with the truth labe
 npm run score -- --help          # options
 npm run score -- --settings v1                # an earlier published settings version
 npm run score -- --data-built-on 2024-06-30   # pretend the public data is old (B-56 demo)
-npm run score -- --patterns path/to/library.json   # or FUNDTRACE_PATTERN_LIBRARY=...
+npm run score -- --patterns path/to/library.json   # or FINRAKSHAK_AI_PATTERN_LIBRARY=...
 ```
 
 It writes two git-ignored files to `data/synthetic/`:

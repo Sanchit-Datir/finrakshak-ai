@@ -9,7 +9,7 @@ import {
   type RiskExplanationView,
   type RiskAlertDoc,
   type RiskLatestDoc,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { generate } from '../synth/generate.js';
 import { scoreDay } from './daily.js';
 import { matchRecords } from './fileInputs.js';

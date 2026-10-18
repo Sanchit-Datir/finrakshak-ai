@@ -26,6 +26,19 @@ _Last updated: 18 Oct 2026 (cleaning-code session). Cloud ingestion work is on b
   "fraud"). Mark test inputs **TEST** or **SYNTH**; public-record results are real.
 - **Session credits are limited:** keep replies and exploration short.
 
+## Rename session (18 Oct 2026, branch `rename`)
+
+At the owner's request the repo was renamed `finrakshak-ai`: package scope `@finrakshak-ai/*`, env-var
+prefix `FINRAKSHAK_AI_` (was `FUNDTRACE_`), skill `.claude/skills/finrakshak-ai-ui/`, spec
+`docs/finrakshak-ai-ui-spec.md`, browser storage keys `finrakshak-ai.*` (old demo workspaces and
+sessions start fresh), emulator project `demo-finrakshak-ai`, repo URLs and display names. **Kept on
+purpose** (Google Cloud cannot rename them in place): project ID `fund-tracer` and everything derived
+from it (Hosting site, `*.web.app`, functions URL, service accounts, buckets `fund-tracer-ingest-*`)
+and the BigQuery datasets `fundtrace`, `fundtrace_public(_dryrun)`, `fundtrace_synth`. **Owner step:**
+redeploy the ingest jobs and workflow together (`scripts/deploy-ingest.sh`, which uses
+`--set-env-vars`) so the jobs get the new env-var names. README gained sections 5 (API calls,
+datasets and AI) and 6 (Agents).
+
 ## What exists
 
 | Area                                   | Where                                                                                                                                                                                                                    | Notes                                                                                                                                                                                                                                               |
@@ -54,7 +67,7 @@ Owner's UI review comments, plan and status in `docs/plans/UI_UPDATES_PLAN.md` (
 there). Dashboard trimmed, "Demo data" / "local copy" badges and the footer removed, branches renamed
 Mumbai / Delhi / Pune / Kolkata (ids unchanged), new application can start from the form (documents
 optional, no demo sample), products Business / Education / MSME / Farmer loan, Settings "Data
-sources" and "Cloud & AI" removed, nav reordered. Storage key bumped to `fundtrace.demo.v2`. Open for
+sources" and "Cloud & AI" removed, nav reordered. Storage key bumped to `finrakshak-ai.demo.v2`. Open for
 the owner: the product and borrower-sort decisions listed in the plan. Not committed yet.
 
 ## Remaining-work session (17 Oct 2026, branch `remaining-work-changes`)
@@ -87,10 +100,10 @@ proposals with `model: null`; model-rejected candidates are not proposed and onl
   envelope (all three agents write one). The 14a edge-case tests found a bug: once the input budget was used,
   the ingestion agent's `submit_review` was refused too, so it could never finish; fixed in the shared loop.
 - Miner: `ingest/src/miner/{agent,tools,wording,proposals,store,load}.ts`, task `mine` (job `ingest-miner`, on
-  demand, `FUNDTRACE_MINER_ENABLED=false`), `npm run miner -- propose` (prints only). On the real timelines:
+  demand, `FINRAKSHAK_AI_MINER_ENABLED=false`), `npm run miner -- propose` (prints only). On the real timelines:
   0 candidates, nothing proposed (as at checkpoint 1). `decidePattern` callable writes the library (B-61).
 - Explainer: `ingest/src/explain/`, task `explain` (job `ingest-explain`, after `score`,
-  `FUNDTRACE_EXPLAIN_ENABLED=false`); sentences in `synthRiskExplanations` (not on the alert: B-57), shown
+  `FINRAKSHAK_AI_EXPLAIN_ENABLED=false`); sentences in `synthRiskExplanations` (not on the alert: B-57), shown
   labelled in the risk score drawer (B-62).
 - B-60 to B-63 added (B-59 was taken by the prepayment fix on `main`, so "patterns from hand-picked defaulters" is B-63). Everything runs on the mock; the mock and the kill switches store nothing.
 - Open for the owner: the budget alert (B-15), re-running `scripts/setup-ingest-gcp.sh` for the two new
@@ -152,7 +165,7 @@ minutes, so the remaining component splits, the benchmark script and the screens
   `review-form.test.ts`, `report-data.test.ts` (1,579 tests total after merging `main` on 18 Oct 2026).
 - **Docs:** README rewritten (all requested sections, Mermaid diagrams, ASCII wireframes, cost,
   benchmarks), `LICENSE` (MIT), `CONTRIBUTING.md`, `.github/pull_request_template.md`; the
-  fundtrace-ui skill's code map points at the new folders.
+  finrakshak-ai-ui skill's code map points at the new folders.
 - **Still over ~300 lines:** `pages/MonitoringPage.tsx`, `CaseDetailPage.tsx`, `ReportsPage.tsx`,
   `DocumentsPage.tsx`, `components/graph/EntityGraph.tsx`, `monitoring/AlertDrawer.tsx`,
   `BorrowerProfilePage.tsx`, `ApplicationDetailPage.tsx`, `AlertsPage.tsx`, `DashboardPage.tsx`,
@@ -246,7 +259,7 @@ blocked by App Check). Finding for the owner: the scoring replay grows with loan
   See `ingest/README.md` → "Daily delta". Next MVPs
   (storage abstraction, publish step, Cloud Run job) need the GCP project; B-27 decided: a day is an IST day (`istDate` in packages/shared).
 - **Merge with `main`:** `main` has a separate Playwright setup under `web/e2e/`
-  (`Sanchit-Datir/fund-tracer#3`). Expect conflicts in `package.json`, the lockfile,
+  (`Sanchit-Datir/finrakshak-ai#3`). Expect conflicts in `package.json`, the lockfile,
   `.gitignore` and `.prettierignore` when merging.
 
 - **Hosting bridge (B-46):** `deploy.yml` runs `graphCli --web` before the web build so `/graph-lab/` ships
@@ -258,7 +271,7 @@ blocked by App Check). Finding for the owner: the scoring replay grows with loan
 ```bash
 git checkout feat/public-data-ingest && git pull
 npm ci
-npm run build -w @fund-tracker/shared && npm run build -w ingest
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web
 npm run check && npm run build
 npm run e2e                     # all scenarios (Chromium preinstalled in the cloud container)

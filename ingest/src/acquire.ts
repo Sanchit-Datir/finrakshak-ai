@@ -1,4 +1,4 @@
-import { istDate, ListingItemSchema, type ListingItem, type SourceId } from '@fund-tracker/shared';
+import { istDate, ListingItemSchema, type ListingItem, type SourceId } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { dataKey, getConfig, SOURCE_MIN_DELAY_MS } from './config.js';
 import { diffListings, mergeListing, type ListingDelta } from './delta/diff.js';

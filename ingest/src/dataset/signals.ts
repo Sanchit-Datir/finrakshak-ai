@@ -1,4 +1,4 @@
-import type { CaseEvent, Relationship, RiskSignal, SourceId } from '@fund-tracker/shared';
+import type { CaseEvent, Relationship, RiskSignal, SourceId } from '@finrakshak-ai/shared';
 import { stableId } from '../util/ids.js';
 
 interface EntityEvents {

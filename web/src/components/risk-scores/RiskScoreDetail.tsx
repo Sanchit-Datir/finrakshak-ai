@@ -3,7 +3,7 @@ import {
   reasonText,
   type RiskHistoryPoint,
   type RiskScoreView,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { Bell } from 'lucide-react';
 import { LinkButton } from '../ui/Button.js';
 import { Badge } from '../ui/Badge.js';

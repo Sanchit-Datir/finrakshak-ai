@@ -1,4 +1,4 @@
-import type { InvestigateApplicationInput } from '@fund-tracker/shared';
+import type { InvestigateApplicationInput } from '@finrakshak-ai/shared';
 import type { ToolCall, ToolModel, ToolSession } from '../tool-model.js';
 
 /** A small SYNTH bundle for the investigator's tests (test-only; excluded from the build). */

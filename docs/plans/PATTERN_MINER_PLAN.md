@@ -148,7 +148,7 @@ support weight. Starting with the largest and the best-known cases covers most e
   config limits), the cheapest model that passes the check (`gemini-3.1-flash-lite` is the current default).
   Roughly a few cents per run in my estimate; confirm after a first dry run. The provider is `mock` by
   default and in all tests (B-15).
-- **Off by default:** `FUNDTRACE_MINER_ENABLED=false`, plus the existing agent kill switch.
+- **Off by default:** `FINRAKSHAK_AI_MINER_ENABLED=false`, plus the existing agent kill switch.
 - **Authority list (like B-49):** the miner has exactly three actions, `propose_pattern`,
   `reject_candidate` and `submit_summary`, and two read-only lookups (`get_candidate`, `get_case_timeline`). It cannot fetch URLs, approve,
   or write to pipeline data.

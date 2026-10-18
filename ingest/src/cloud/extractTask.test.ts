@@ -1,4 +1,4 @@
-import type { ExtractionRecord, ListingItem } from '@fund-tracker/shared';
+import type { ExtractionRecord, ListingItem } from '@finrakshak-ai/shared';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ToolCall, ToolSession, Usage } from '../ai/toolModel.js';
 import { assess, statusOf } from '../agent/findings.js';
@@ -57,7 +57,7 @@ vi.mock('../extract/ai/select.js', async (importOriginal) => ({
   pendingDocuments: vi.fn(),
 }));
 
-useTempDataDir('fundtrace-extract-task-');
+useTempDataDir('finrakshak-ai-extract-task-');
 
 const RUN_ID = 'run_t';
 const MODEL = 'gemini-test-model';
@@ -109,7 +109,7 @@ const deps: CloudDeps = {
   history: new BlobHistory(),
   agentRuns: new MemoryAgentRunStore(),
 };
-const env = readCloudEnv({ FUNDTRACE_RUN_ID: RUN_ID, FUNDTRACE_RUN_AT: RUN_AT });
+const env = readCloudEnv({ FINRAKSHAK_AI_RUN_ID: RUN_ID, FINRAKSHAK_AI_RUN_AT: RUN_AT });
 
 async function extractionRecord(): Promise<ExtractionRecord | null> {
   return (await deps.runs.get(RUN_ID))?.extraction ?? null;
@@ -117,10 +117,10 @@ async function extractionRecord(): Promise<ExtractionRecord | null> {
 
 /** Extraction on, with a billed provider (here the stand-in above). */
 function switchOn(): void {
-  vi.stubEnv('FUNDTRACE_AI_EXTRACT_ENABLED', 'true');
-  vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'vertex');
-  vi.stubEnv('FUNDTRACE_AGENT_ENABLED', 'true');
-  vi.stubEnv('FUNDTRACE_AI_MODEL', MODEL);
+  vi.stubEnv('FINRAKSHAK_AI_AI_EXTRACT_ENABLED', 'true');
+  vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'vertex');
+  vi.stubEnv('FINRAKSHAK_AI_AGENT_ENABLED', 'true');
+  vi.stubEnv('FINRAKSHAK_AI_AI_MODEL', MODEL);
 }
 
 beforeEach(() => {
@@ -130,9 +130,9 @@ beforeEach(() => {
   vi.mocked(pendingDocuments)
     .mockReset()
     .mockResolvedValue([doc(1)]);
-  vi.stubEnv('FUNDTRACE_AI_EXTRACT_ENABLED', 'false');
-  vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'mock');
-  vi.stubEnv('FUNDTRACE_AGENT_ENABLED', 'true');
+  vi.stubEnv('FINRAKSHAK_AI_AI_EXTRACT_ENABLED', 'false');
+  vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'mock');
+  vi.stubEnv('FINRAKSHAK_AI_AGENT_ENABLED', 'true');
 });
 
 afterEach(() => {
@@ -144,20 +144,20 @@ describe('runExtractTask: skip reasons (B-52)', () => {
     [
       'extraction is off (the default)',
       {},
-      'AI extraction is switched off (FUNDTRACE_AI_EXTRACT_ENABLED)',
+      'AI extraction is switched off (FINRAKSHAK_AI_AI_EXTRACT_ENABLED)',
     ],
     [
       'the agent kill switch is on',
       {
-        FUNDTRACE_AI_EXTRACT_ENABLED: 'true',
-        FUNDTRACE_AI_PROVIDER: 'vertex',
-        FUNDTRACE_AGENT_ENABLED: 'false',
+        FINRAKSHAK_AI_AI_EXTRACT_ENABLED: 'true',
+        FINRAKSHAK_AI_AI_PROVIDER: 'vertex',
+        FINRAKSHAK_AI_AGENT_ENABLED: 'false',
       },
-      'agent kill switch is on (FUNDTRACE_AGENT_ENABLED=false)',
+      'agent kill switch is on (FINRAKSHAK_AI_AGENT_ENABLED=false)',
     ],
     [
       'the provider is the mock',
-      { FUNDTRACE_AI_EXTRACT_ENABLED: 'true' },
+      { FINRAKSHAK_AI_AI_EXTRACT_ENABLED: 'true' },
       'mock provider: nothing is extracted or stored',
     ],
   ])('skips when %s, without creating a model', async (_label, vars, reason) => {

@@ -46,7 +46,7 @@ function historyFor(env: CloudEnv): HistorySource {
 export function makeDeps(env: CloudEnv, role: TaskRole): CloudDeps {
   if (getConfig().storage.kind === 'gcs' && env.coordination !== 'firestore')
     throw new Error(
-      'Cloud Storage needs FUNDTRACE_COORDINATION=firestore (file locks are per machine)',
+      'Cloud Storage needs FINRAKSHAK_AI_COORDINATION=firestore (file locks are per machine)',
     );
   const history = historyFor(env);
   if (env.coordination === 'file')

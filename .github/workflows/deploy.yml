@@ -52,10 +52,10 @@ jobs:
       # data/processed). Fallback until the cloud /data/** feed is live; it is NOT behind sign-in (B-46).
       - name: Publish public-records bundle for Hosting
         run: |
-          npm run build -w @fund-tracker/shared && npm run build -w ingest
+          npm run build -w @finrakshak-ai/shared && npm run build -w ingest
           node ingest/dist/graphCli.js --web
       # Lint, types and tests already run in ci.yml for every PR; only build here.
-      - run: npm run build -w @fund-tracker/shared && npm run build -w web
+      - run: npm run build -w @finrakshak-ai/shared && npm run build -w web
         env:
           VITE_FIREBASE_PROJECT_ID: ${{ env.FIREBASE_PROJECT_ID }}
       - uses: google-github-actions/auth@v2
@@ -86,7 +86,7 @@ jobs:
       # data/processed). Fallback until the cloud /data/** feed is live; it is NOT behind sign-in (B-46).
       - name: Publish public-records bundle for Hosting
         run: |
-          npm run build -w @fund-tracker/shared && npm run build -w ingest
+          npm run build -w @finrakshak-ai/shared && npm run build -w ingest
           node ingest/dist/graphCli.js --web
       - run: npm run build
         env:

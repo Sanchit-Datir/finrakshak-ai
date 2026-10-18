@@ -13,7 +13,7 @@
 set -euo pipefail
 
 PROJECT_ID="${1:?usage: scripts/setup-gcp.sh <firebase-project-id> [owner/repo]}"
-REPO="${2:-Sanchit-Datir/fund-tracer}"
+REPO="${2:-Sanchit-Datir/finrakshak-ai}"
 POOL="github"
 PROVIDER="github-oidc"
 PREVIEW_SA="github-preview@${PROJECT_ID}.iam.gserviceaccount.com"

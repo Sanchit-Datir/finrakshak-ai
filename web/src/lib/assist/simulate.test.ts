@@ -1,4 +1,4 @@
-import { ASSIST_TASKS, AssistInputSchema, AssistResultSchema } from '@fund-tracker/shared';
+import { ASSIST_TASKS, AssistInputSchema, AssistResultSchema } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { createDemoDb } from '../../demo/seed.js';
 import { allAlerts } from '../alerts.js';

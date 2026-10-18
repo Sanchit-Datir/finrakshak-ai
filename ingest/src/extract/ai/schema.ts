@@ -1,4 +1,4 @@
-import { EvidenceStatusSchema, MoneySchema, SourceIdSchema } from '@fund-tracker/shared';
+import { EvidenceStatusSchema, MoneySchema, SourceIdSchema } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 
 export const ORG_ROLES = [

@@ -1,4 +1,4 @@
-import { RISK_BAND_LABELS, type RiskHistoryPoint } from '@fund-tracker/shared';
+import { RISK_BAND_LABELS, type RiskHistoryPoint } from '@finrakshak-ai/shared';
 import { Sparkline } from '../charts/Sparkline.js';
 import { summariseTrend } from '../../lib/risk-score-view.js';
 import { useFormat } from '../../state/hooks.js';

@@ -7,7 +7,7 @@ export interface RobotsRules {
   readonly disallow: readonly string[];
 }
 
-const BOT_TOKEN = 'fundtraceresearchbot';
+const BOT_TOKEN = 'finrakshakairesearchbot';
 
 export function parseRobots(text: string): RobotsRules {
   const allow: string[] = [];

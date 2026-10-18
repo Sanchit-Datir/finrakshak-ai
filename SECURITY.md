@@ -1,6 +1,6 @@
 # Security
 
-How FundTrace AI protects itself against injection, tampering and vulnerable dependencies.
+How FinRakshak AI protects itself against injection, tampering and vulnerable dependencies.
 Report a vulnerability privately to the repository owner. Do not open a public issue.
 
 ## Injection and tampering (web app)

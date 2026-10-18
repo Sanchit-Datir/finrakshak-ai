@@ -3,8 +3,8 @@
 import {
   AnalyseApplicationResultSchema,
   InvestigateApplicationResultSchema,
-} from '@fund-tracker/shared';
-import type { AnalyseApplicationResult, InvestigateApplicationResult } from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
+import type { AnalyseApplicationResult, InvestigateApplicationResult } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { AuditEntrySchema, NoteSchema, id, isoDate, minor } from './primitives.js';
 import { BorrowerTypeSchema } from './borrowers.js';

@@ -1,4 +1,4 @@
-import type { SourceId } from '@fund-tracker/shared';
+import type { SourceId } from '@finrakshak-ai/shared';
 import { makeContext, runDownloads, runListing } from '../acquire.js';
 import { dataKey, sourceDocCap, sourceItemCap } from '../config.js';
 import { LayoutChangedError } from '../delta/policy.js';
@@ -15,7 +15,7 @@ export interface AcquireOptions {
   readonly allowShrink?: boolean;
   readonly listOnly?: boolean;
   readonly docsOnly?: boolean;
-  /** Documents to download (default: per-source cap, then `FUNDTRACE_MAX_DOCS_PER_SOURCE`). */
+  /** Documents to download (default: per-source cap, then `FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE`). */
   readonly maxDocs?: number;
   /** Listing rows (default: per-source cap such as the SEBI sample). */
   readonly maxItems?: number;

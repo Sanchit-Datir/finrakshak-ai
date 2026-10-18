@@ -1,4 +1,4 @@
-import type { GraphLabIndexEntry } from '@fund-tracker/shared';
+import type { GraphLabIndexEntry } from '@finrakshak-ai/shared';
 import { Upload } from 'lucide-react';
 import { useId } from 'react';
 import { SelectField } from '../ui/Field.js';

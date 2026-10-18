@@ -4,7 +4,7 @@ import {
   type GraphLabIndexEntry,
   type PublishChannel,
   type PublishedVersion,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { stamp } from '../delta/report.js';
 import { log } from '../log.js';
 import type { GraphOutputs } from '../pipeline/graph.js';

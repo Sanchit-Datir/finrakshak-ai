@@ -6,7 +6,7 @@ import { writeJsonl } from '../store/jsonl.js';
 import { freshFsStore } from '../test/tempData.js';
 import { RUN_AT, runOf, sourceRecord } from '../test/fixtures.js';
 import type { HistoryRow } from './history.js';
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import { AGENT_TOOLS, type AgentTool, type ToolContext } from './tools.js';
 
 const tool = (name: string): AgentTool => {

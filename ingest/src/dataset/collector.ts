@@ -7,7 +7,7 @@ import type {
   ListingItem,
   RawArtifact,
   SourceId,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { getConfig } from '../config.js';
 import type { ExtractedText } from '../extract/text.js';
 import { EntityRegistry } from '../resolve/entityRegistry.js';

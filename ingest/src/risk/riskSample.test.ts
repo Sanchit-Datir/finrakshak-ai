@@ -6,7 +6,7 @@ import {
   RiskAlertDocSchema,
   RiskExplanationViewSchema,
   RiskScoreViewSchema,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { buildRiskSample, RISK_SAMPLE_PATH } from './riskSample.js';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');

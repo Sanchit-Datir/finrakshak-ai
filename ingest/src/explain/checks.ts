@@ -3,7 +3,7 @@ import {
   EXPLANATION_MAX_SENTENCES,
   violatesWording,
   type Reason,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { numbersOf, unknownNumbers } from '../ai/outputChecks.js';
 import { REASON_TOPICS } from './digest.js';
 import { tokensIn, type Placeholders } from './placeholders.js';

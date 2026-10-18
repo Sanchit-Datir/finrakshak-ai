@@ -74,7 +74,7 @@ checks, or reads as stronger than the recorded reasons, stop and keep the templa
    list under the sentence either way, and labels the sentence "AI-written summary of the recorded reasons"
    (CLAUDE.md: never present AI output unlabelled).
 6. **Runs as its own job,** `ingest-explain`, after `ingest-score`, off by default
-   (`FUNDTRACE_EXPLAIN_ENABLED`). Its service account may read alerts and write only the AI explanation
+   (`FINRAKSHAK_AI_EXPLAIN_ENABLED`). Its service account may read alerts and write only the AI explanation
    field. It cannot change a score, a band, a reason or whether an alert exists.
 7. **Capped and idempotent.** At most 30 alerts per run; an alert whose input hash already has an
    explanation is skipped; ids are deterministic so a retry writes nothing new.

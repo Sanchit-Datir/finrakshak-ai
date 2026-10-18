@@ -12,7 +12,7 @@ import { RoleSchema, type Role } from '../domain/schemas.js';
  * server, not by what this module says.
  */
 
-const KEY = 'fundtrace.session.v1';
+const KEY = 'finrakshak-ai.session.v1';
 
 const SessionSchema = z.object({
   name: z.string().min(1),

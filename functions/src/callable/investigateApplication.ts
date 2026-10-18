@@ -1,4 +1,4 @@
-import type { InvestigateApplicationResult } from '@fund-tracker/shared';
+import type { InvestigateApplicationResult } from '@finrakshak-ai/shared';
 import { logger } from 'firebase-functions';
 import { HttpsError, onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { getEnv } from '../config/env.js';

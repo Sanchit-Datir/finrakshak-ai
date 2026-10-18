@@ -1,4 +1,4 @@
-import type { EvidenceClaim, Relationship, RelationshipType } from '@fund-tracker/shared';
+import type { EvidenceClaim, Relationship, RelationshipType } from '@finrakshak-ai/shared';
 import { stableId } from '../util/ids.js';
 import type { DatasetCollector, PendingOrg, PendingPerson } from './collector.js';
 

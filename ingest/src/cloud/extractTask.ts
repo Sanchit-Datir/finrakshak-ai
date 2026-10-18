@@ -1,4 +1,4 @@
-import type { ExtractionRecord } from '@fund-tracker/shared';
+import type { ExtractionRecord } from '@finrakshak-ai/shared';
 import { readAiConfig, type AiConfig } from '../ai/config.js';
 import { GeminiToolModel } from '../ai/geminiModel.js';
 import { extractDocument } from '../extract/ai/extractor.js';
@@ -21,8 +21,8 @@ const record = (
 /** Why extraction does not run; null when it should. A mock model writes nothing (no fake claims). */
 function skipReason(cfg: AiConfig): string | null {
   if (!cfg.extraction.enabled)
-    return 'AI extraction is switched off (FUNDTRACE_AI_EXTRACT_ENABLED)';
-  if (!cfg.enabled) return 'agent kill switch is on (FUNDTRACE_AGENT_ENABLED=false)';
+    return 'AI extraction is switched off (FINRAKSHAK_AI_AI_EXTRACT_ENABLED)';
+  if (!cfg.enabled) return 'agent kill switch is on (FINRAKSHAK_AI_AGENT_ENABLED=false)';
   if (cfg.provider === 'mock') return 'mock provider: nothing is extracted or stored';
   return null;
 }

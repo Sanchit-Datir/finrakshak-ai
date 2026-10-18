@@ -3,7 +3,7 @@ import {
   type RiskBand,
   type RiskHistoryPoint,
   type RiskScoreView,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { toCsv } from './export.js';
 
 /** Pure helpers for the Risk scores page: movement summary, filters and CSV rows (B-54, B-58). */

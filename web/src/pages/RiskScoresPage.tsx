@@ -1,4 +1,4 @@
-import { RISK_BANDS, type RiskBand, type RiskScoreView } from '@fund-tracker/shared';
+import { RISK_BANDS, type RiskBand, type RiskScoreView } from '@finrakshak-ai/shared';
 import { Gauge, SearchX } from 'lucide-react';
 import { Link } from 'react-router';
 import { BandMovement } from '../components/risk-scores/BandMovement.js';

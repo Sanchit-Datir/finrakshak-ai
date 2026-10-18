@@ -5,7 +5,7 @@ import {
   RiskExplanationDocSchema,
   type RiskAlertDoc,
   type RiskExplanationDoc,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { Firestore } from '@google-cloud/firestore';
 import { log } from '../log.js';
 

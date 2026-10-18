@@ -19,7 +19,7 @@ import { RouteErrorBoundary } from './RouteErrorBoundary.js';
 import { Sidebar } from './Sidebar.js';
 import { Topbar } from './Topbar.js';
 
-const COLLAPSE_KEY = 'fundtrace.sidebar.collapsed';
+const COLLAPSE_KEY = 'finrakshak-ai.sidebar.collapsed';
 
 function readCollapsed(): boolean {
   try {

@@ -1,6 +1,6 @@
 # UI updates plan (branch `ui-updates`)
 
-Owner's review comments on the FundTrace AI web prototype, 17 Oct 2026. Items marked _skip_ were
+Owner's review comments on the FinRakshak AI web prototype, 17 Oct 2026. Items marked _skip_ were
 parked by the owner and are not built here.
 
 | #   | Comment (short)                                                             | Plan                                                                                                                                                                                                                                                                          | Status |

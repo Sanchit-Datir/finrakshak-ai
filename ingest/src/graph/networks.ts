@@ -5,7 +5,7 @@ import {
   type GraphNetwork,
   type GraphNode,
   type GraphNodeKind,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { stableId } from '../util/ids.js';
 
 const ORG_KINDS = new Set<GraphNodeKind>(['company', 'bank', 'llp', 'audit_firm', 'other_org']);

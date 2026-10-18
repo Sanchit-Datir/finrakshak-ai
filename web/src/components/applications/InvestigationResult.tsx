@@ -1,4 +1,4 @@
-import type { InvestigateApplicationResult } from '@fund-tracker/shared';
+import type { InvestigateApplicationResult } from '@finrakshak-ai/shared';
 import { REJECTION_LABEL } from '../../domain/labels.js';
 import type { AiInvestigationSnapshot, Application } from '../../domain/schemas.js';
 import { useFormat } from '../../state/hooks.js';

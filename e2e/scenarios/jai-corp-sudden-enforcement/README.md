@@ -50,7 +50,7 @@ borrower that looks **clean at disbursement** and then has a **sudden enforcemen
 ## Test it by hand
 
 ```bash
-npm run build -w @fund-tracker/shared && npm run build -w ingest
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # publish the public-records data (once per machine)
 npm run dev -w web                   # http://localhost:5173 → Continue with quick sign-in
 ```

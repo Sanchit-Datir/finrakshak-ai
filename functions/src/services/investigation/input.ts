@@ -1,4 +1,4 @@
-import type { InvestigateApplicationInput } from '@fund-tracker/shared';
+import type { InvestigateApplicationInput } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 
 /**

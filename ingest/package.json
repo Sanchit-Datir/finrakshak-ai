@@ -13,7 +13,7 @@
     "cli": "node dist/cli.js"
   },
   "dependencies": {
-    "@fund-tracker/shared": "*",
+    "@finrakshak-ai/shared": "*",
     "@google-cloud/bigquery": "^9.3.0",
     "@google-cloud/firestore": "^9.3.1",
     "@google-cloud/storage": "^8.4.0",

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { SeedVerificationFileSchema } from '@fund-tracker/shared';
+import { SeedVerificationFileSchema } from '@finrakshak-ai/shared';
 import { dataKey } from './config.js';
 import { errorMessage, log } from './log.js';
 import { readAiConfig } from './ai/config.js';
@@ -34,7 +34,7 @@ const USAGE = `Usage: node ingest/dist/minerCli.js <command>
   candidates [--min-lift N] [--min-support N] [--min-population N] [--json]
                                           find sequences the seed cases share (no model is used)
   propose [--allow-billed]                print the proposals the miner agent would make; writes nothing
-                                          (mock model unless FUNDTRACE_AI_PROVIDER is set)`;
+                                          (mock model unless FINRAKSHAK_AI_AI_PROVIDER is set)`;
 
 const flag = (args: readonly string[], name: string): string | undefined => {
   const i = args.indexOf(name);
@@ -110,7 +110,7 @@ async function propose(args: readonly string[]): Promise<void> {
   const cfg = readAiConfig();
   if (cfg.provider !== 'mock' && !args.includes('--allow-billed'))
     throw new Error(
-      `FUNDTRACE_AI_PROVIDER=${cfg.provider} is billed; pass --allow-billed to call it (B-15)`,
+      `FINRAKSHAK_AI_AI_PROVIDER=${cfg.provider} is billed; pass --allow-billed to call it (B-15)`,
     );
   const ctx = await loadMinerContext(DEFAULT_MINER_SETTINGS);
   const model = modelFor(cfg, () => scriptedReview(ctx.result));

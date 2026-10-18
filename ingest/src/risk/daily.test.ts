@@ -4,7 +4,7 @@ import {
   matchPattern,
   monthEnd,
   type RiskLatestDoc,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { writeSmallDataset } from '../test/synthScoring.js';
 import { alertId, priorFor, scoreDay, ScoringOrderError, type DailyOutput } from './daily.js';
 import { fileScoringInputs } from './fileInputs.js';

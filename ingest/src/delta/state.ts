@@ -1,4 +1,4 @@
-import { SourceIdSchema, type SourceId } from '@fund-tracker/shared';
+import { SourceIdSchema, type SourceId } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { dataKey } from '../config.js';
 import { readJson, writeJson } from '../store/jsonl.js';

@@ -1,4 +1,4 @@
-import { CaseSeedSchema, type CaseSeed } from '@fund-tracker/shared';
+import { CaseSeedSchema, type CaseSeed } from '@finrakshak-ai/shared';
 
 const REASON =
   'Widely reported Indian corporate lending / fund-diversion matter with public regulatory or court records. Seed candidate for engineering and backtests only: verify every fact against the linked official documents.';

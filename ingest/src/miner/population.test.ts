@@ -1,4 +1,4 @@
-import type { CaseEvent, Relationship } from '@fund-tracker/shared';
+import type { CaseEvent, Relationship } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { buildPopulation } from './population.js';
 

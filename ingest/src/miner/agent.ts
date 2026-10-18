@@ -1,4 +1,4 @@
-import { canonicalJson, violatesWording } from '@fund-tracker/shared';
+import { canonicalJson, violatesWording } from '@finrakshak-ai/shared';
 import { numbersOf, unknownNumbers } from '../ai/outputChecks.js';
 import { runToolLoop } from '../ai/toolLoop.js';
 import type { ToolCall, ToolModel, Usage } from '../ai/toolModel.js';

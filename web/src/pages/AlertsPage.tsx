@@ -13,7 +13,7 @@ import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
 import { Tabs, type TabDef } from '../components/ui/Tabs.js';
 import { PRIORITY_LABEL } from '../domain/labels.js';
-import type { RiskAlertDoc } from '@fund-tracker/shared';
+import type { RiskAlertDoc } from '@finrakshak-ai/shared';
 import {
   SOURCE_LABEL,
   allAlerts,

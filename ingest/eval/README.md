@@ -37,8 +37,8 @@ already extracted by the pipeline (the `sha256` of the raw file, as in `interim/
 ## Run
 
 ```bash
-npm run build -w @fund-tracker/shared && npm run build -w ingest
-FUNDTRACE_STORAGE=gcs FUNDTRACE_RAW_BUCKET=... FUNDTRACE_STATE_BUCKET=... FUNDTRACE_PUBLISH_BUCKET=... \
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
+FINRAKSHAK_AI_STORAGE=gcs FINRAKSHAK_AI_RAW_BUCKET=... FINRAKSHAK_AI_STATE_BUCKET=... FINRAKSHAK_AI_PUBLISH_BUCKET=... \
   node ingest/dist/cli.js eval-ai --golden ingest/eval/extraction-golden.jsonl --model gemini-3.1-flash-lite
 ```
 

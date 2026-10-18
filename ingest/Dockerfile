@@ -11,10 +11,10 @@ COPY ingest/package.json ingest/
 COPY functions/package.json functions/
 COPY web/package.json web/
 COPY e2e/package.json e2e/
-RUN npm ci --workspace @fund-tracker/shared --workspace ingest --ignore-scripts --no-audit --no-fund
+RUN npm ci --workspace @finrakshak-ai/shared --workspace ingest --ignore-scripts --no-audit --no-fund
 COPY packages/shared packages/shared
 COPY ingest ingest
-RUN npm run build -w @fund-tracker/shared && npm run build -w ingest
+RUN npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 
 FROM node:22-slim AS deps
 WORKDIR /app
@@ -24,7 +24,7 @@ COPY ingest/package.json ingest/
 COPY functions/package.json functions/
 COPY web/package.json web/
 COPY e2e/package.json e2e/
-RUN npm ci --omit=dev --workspace @fund-tracker/shared --workspace ingest --ignore-scripts --no-audit --no-fund
+RUN npm ci --omit=dev --workspace @finrakshak-ai/shared --workspace ingest --ignore-scripts --no-audit --no-fund
 
 FROM node:22-slim
 ENV NODE_ENV=production

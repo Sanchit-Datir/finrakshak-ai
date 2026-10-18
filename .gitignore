@@ -15,7 +15,7 @@ service-account*.json
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# FundTrace ingest (see data/README.md "How data is stored"):
+# FinRakshak AI ingest (see data/README.md "How data is stored"):
 # - committed: data/registry/, data/processed/ and the MCA master as 5 parts
 #   (data/raw/mca_ogd/company_master.partNof5.csv, each under GitHub's 100 MB limit)
 # - not committed: downloaded PDFs/HTML (~800 MB; ED/SFIO need permission to reproduce)

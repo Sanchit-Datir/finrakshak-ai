@@ -5,7 +5,7 @@ import type {
   GraphLabBundle,
   GraphNode,
   IdentityCandidate,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { stableId } from '../util/ids.js';
 import { findHubs, regulatorIds, relationshipEdges, THRESHOLDS, withStrength } from './edges.js';
 import { identityCandidates } from './identity.js';

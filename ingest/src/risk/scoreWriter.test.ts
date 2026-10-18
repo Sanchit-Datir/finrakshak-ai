@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SCORING_SETTINGS_V1 as S, matchPattern } from '@fund-tracker/shared';
+import { SCORING_SETTINGS_V1 as S, matchPattern } from '@finrakshak-ai/shared';
 import type { LoadSpec } from '../cloud/bigquery.js';
 import { writeSmallDataset } from '../test/synthScoring.js';
 import { freshFsStore, freshGcsLikeStore } from '../test/tempData.js';

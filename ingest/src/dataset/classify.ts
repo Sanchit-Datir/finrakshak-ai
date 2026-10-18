@@ -1,4 +1,4 @@
-import type { EvidenceStatus, ListingItem } from '@fund-tracker/shared';
+import type { EvidenceStatus, ListingItem } from '@finrakshak-ai/shared';
 
 export interface Classification {
   readonly case_type: string;

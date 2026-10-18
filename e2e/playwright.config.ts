@@ -25,7 +25,7 @@ export default defineConfig({
   ],
   webServer: {
     command:
-      'npm run build -w @fund-tracker/shared && npm run build -w web && npm exec -w web -- vite preview --port 4173 --strictPort',
+      'npm run build -w @finrakshak-ai/shared && npm run build -w web && npm exec -w web -- vite preview --port 4173 --strictPort',
     cwd: '..',
     url: 'http://localhost:4173',
     reuseExistingServer: true,

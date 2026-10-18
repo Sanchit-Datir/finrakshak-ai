@@ -29,7 +29,7 @@ a loan's detail and the `risk_score` alerts against the bundled sample `web/src/
 ## Run
 
 ```bash
-npm run build -w @fund-tracker/shared && npm run build -w ingest
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # publishes the public-records graph used by the check
 npm run e2e                          # builds the web app, starts vite preview, runs all scenarios
 npm run e2e -- -g maheep             # one scenario, by id

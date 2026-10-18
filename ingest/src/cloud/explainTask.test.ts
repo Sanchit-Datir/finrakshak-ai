@@ -1,4 +1,4 @@
-import { RISK_EXPLANATIONS_COLLECTION } from '@fund-tracker/shared';
+import { RISK_EXPLANATIONS_COLLECTION } from '@finrakshak-ai/shared';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryAgentRunStore } from '../ai/agentRuns.js';
 import type { ToolCall, ToolSession, Usage } from '../ai/toolModel.js';
@@ -40,7 +40,10 @@ vi.mock('../ai/geminiModel.js', () => ({
   },
 }));
 
-const env = readCloudEnv({ FUNDTRACE_RUN_ID: 'run_1', FUNDTRACE_RUN_AT: '2025-09-30T22:00:00Z' });
+const env = readCloudEnv({
+  FINRAKSHAK_AI_RUN_ID: 'run_1',
+  FINRAKSHAK_AI_RUN_AT: '2025-09-30T22:00:00Z',
+});
 const GOOD = 'A public record dated 2025-05-26 names {BORROWER} (an allegation, not a finding).';
 
 function setup(alerts = [alert()]): {
@@ -62,8 +65,8 @@ beforeEach(() => {
   gemini.starts = 0;
   gemini.text = GOOD;
   gemini.fail = null;
-  vi.stubEnv('FUNDTRACE_EXPLAIN_ENABLED', 'true');
-  vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'vertex');
+  vi.stubEnv('FINRAKSHAK_AI_EXPLAIN_ENABLED', 'true');
+  vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'vertex');
 });
 
 afterEach(() => {
@@ -72,7 +75,7 @@ afterEach(() => {
 
 describe('runExplainTask', () => {
   it('is off by default and never calls the model (B-15)', async () => {
-    vi.stubEnv('FUNDTRACE_EXPLAIN_ENABLED', 'false');
+    vi.stubEnv('FINRAKSHAK_AI_EXPLAIN_ENABLED', 'false');
     const t = setup();
     expect(await runExplainTask(env, t.deps, { store: t.store })).toBe(true);
     expect(gemini.starts).toBe(0);
@@ -116,7 +119,7 @@ describe('runExplainTask', () => {
   });
 
   it('the mock runs every check but stores nothing', async () => {
-    vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'mock');
+    vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'mock');
     const t = setup();
     await runExplainTask(env, t.deps, { store: t.store });
     expect(t.store.explanations.size).toBe(0);
@@ -124,7 +127,7 @@ describe('runExplainTask', () => {
   });
 
   it('caps the alerts per run, most urgent first, and ignores other runs', async () => {
-    vi.stubEnv('FUNDTRACE_EXPLAIN_MAX_ALERTS', '1');
+    vi.stubEnv('FINRAKSHAK_AI_EXPLAIN_MAX_ALERTS', '1');
     const t = setup([
       alert({ alert_id: 'L-1_a', score: 35 }),
       alert({ alert_id: 'L-2_a', score: 49 }),

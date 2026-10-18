@@ -1,4 +1,4 @@
-import type { RiskScoreView } from '@fund-tracker/shared';
+import type { RiskScoreView } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import {
   bandMovement,

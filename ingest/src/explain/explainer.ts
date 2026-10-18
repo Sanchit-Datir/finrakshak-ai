@@ -1,4 +1,4 @@
-import { RISK_BAND_LABELS, type RiskAlertDoc } from '@fund-tracker/shared';
+import { RISK_BAND_LABELS, type RiskAlertDoc } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { runToolLoop, type LoopTool } from '../ai/toolLoop.js';
 import type { ToolCall, ToolModel, Usage } from '../ai/toolModel.js';

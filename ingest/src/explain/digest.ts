@@ -4,7 +4,7 @@ import {
   type Reason,
   type ReasonCode,
   type RiskAlertDoc,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { sha256Hex } from '../miner/hash.js';
 import { mask, type Placeholders } from './placeholders.js';
 import { EXPLAIN_PROMPT_VERSION } from './prompts/explain.js';

@@ -1,4 +1,4 @@
-import type { AgentProposal, ProposalDecision } from '@fund-tracker/shared';
+import type { AgentProposal, ProposalDecision } from '@finrakshak-ai/shared';
 import { getFirestore } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
 import { HttpsError, onCall, type CallableRequest } from 'firebase-functions/v2/https';

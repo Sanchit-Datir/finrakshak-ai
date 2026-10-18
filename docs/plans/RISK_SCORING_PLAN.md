@@ -130,7 +130,7 @@ missing previous row; stale inputs.
 - **Service account** `ingest-scorer`: BigQuery job user, data editor on the `*_synth` dataset only, data
   viewer on the public dataset, Firestore write on the `synth*` collections only, no bucket write.
 - **Order in `ingest-daily.yaml`:** after `build`, before `agent`; a failure is recorded like the other
-  steps. It is **off by default** (`FUNDTRACE_SCORE_ENABLED`), as extraction is.
+  steps. It is **off by default** (`FINRAKSHAK_AI_SCORE_ENABLED`), as extraction is.
 - **Reads only the published, gated build** (B-50), never an interim one.
 - **Lease:** a Firestore lease `score-synthetic` stops two runs from writing at once (B-51).
 - **Idempotent:** deterministic `score_id`; a re-run for the same `as_of` inserts nothing new.

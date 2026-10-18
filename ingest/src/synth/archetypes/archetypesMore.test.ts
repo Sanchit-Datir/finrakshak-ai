@@ -1,4 +1,4 @@
-import type { SynthTransaction } from '@fund-tracker/shared';
+import type { SynthTransaction } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { HOUR, addDays, addMonths, istDayOf, istMonthOf } from '../calendar.js';
 import { makeHorizon } from '../base.js';

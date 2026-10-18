@@ -1,4 +1,4 @@
-import type { GraphLabBundle, PublishedVersion } from '@fund-tracker/shared';
+import type { GraphLabBundle, PublishedVersion } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import {
   allPassed,

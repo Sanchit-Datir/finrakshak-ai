@@ -5,7 +5,7 @@ import type {
   ScoringLink,
   ScoringLoan,
   SeedVerificationFile,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 
 /**
  * The scoring job's input port (RISK_SCORING_PLAN.md design decision 3), like the storage port in

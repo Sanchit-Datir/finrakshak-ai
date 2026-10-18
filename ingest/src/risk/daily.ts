@@ -12,7 +12,7 @@ import {
   type RiskScoreRow,
   type RunFinding,
   type ScoringSettings,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { ScoringData } from './inputs.js';
 import type { UsableLibrary } from './patternSources.js';
 import { stepLoan, type LoanMemory, type LoanStep } from './step.js';

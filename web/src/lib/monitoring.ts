@@ -6,7 +6,7 @@ import {
   type MonitoringDetection,
   type RapidOnwardDetection,
   type RepeatedCounterpartyDetection,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type {
   Db,
   Entity,
@@ -17,7 +17,7 @@ import type {
 } from '../domain/schemas.js';
 import { formatMoney } from './format.js';
 
-export { linkedEntities, loanOutflows } from '@fund-tracker/shared';
+export { linkedEntities, loanOutflows } from '@finrakshak-ai/shared';
 
 /**
  * Deterministic post-disbursement monitoring rules (spec §11). The detection itself lives in

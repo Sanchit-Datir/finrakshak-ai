@@ -99,6 +99,6 @@ verified)". The AI never sets the number. Table: `docs/APPLICATION_AI_ANALYSIS.m
   `roles/aiplatform.user` (call Vertex AI models; no new account or custom role is needed). Granting it is
   the owner's step (`scripts/setup-gcp.sh`, or the one `gcloud projects add-iam-policy-binding` command in
   `docs/APPLICATION_AI_ANALYSIS.md`).
-- Browser check done on 18 Oct 2026 against the auth + functions emulators (project `demo-fund-tracer`,
+- Browser check done on 18 Oct 2026 against the auth + functions emulators (project `demo-finrakshak-ai`,
   mock provider): demo session shows Not connected; a run produces a verified possible/strong match with
   its evidence, a draft question that can be approved, out-of-date marking, no horizontal scroll at 360 px.

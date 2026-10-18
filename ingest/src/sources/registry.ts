@@ -1,4 +1,4 @@
-import { SourceRegistryEntrySchema, type SourceRegistryEntry } from '@fund-tracker/shared';
+import { SourceRegistryEntrySchema, type SourceRegistryEntry } from '@finrakshak-ai/shared';
 
 const CHECKED = '2026-10-16';
 const POLITE =
@@ -53,7 +53,7 @@ const ENTRIES: readonly SourceRegistryEntry[] = [
     refresh_cadence: 'Daily (orders published as passed).',
     collections: ['sebi.orders.*'],
     known_gaps: [
-      '10-order sample locally (FUNDTRACE_SEBI_SAMPLE=true, the default); the cloud lists the full ~24.5k-order index, incrementally after the first run.',
+      '10-order sample locally (FINRAKSHAK_AI_SEBI_SAMPLE=true, the default); the cloud lists the full ~24.5k-order index, incrementally after the first run.',
       'Interim/ex-parte orders and settlements are not findings; SAT appeal references are captured from listings when shown.',
     ],
     last_checked: CHECKED,

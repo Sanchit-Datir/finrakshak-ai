@@ -3,7 +3,7 @@ import { readCloudEnv, sourcesForTask } from './env.js';
 
 describe('readCloudEnv', () => {
   it('defaults to a dry run on one task with file coordination', () => {
-    const env = readCloudEnv({ FUNDTRACE_RUN_AT: '2026-10-17T03:05:00.000Z' });
+    const env = readCloudEnv({ FINRAKSHAK_AI_RUN_AT: '2026-10-17T03:05:00.000Z' });
     expect(env).toMatchObject({
       runId: 'run_2026-10-17T03-05-00-000Z',
       taskIndex: 0,
@@ -20,37 +20,39 @@ describe('readCloudEnv', () => {
   });
 
   it('prefers the Workflows run id, then the Cloud Run execution', () => {
-    expect(readCloudEnv({ FUNDTRACE_RUN_ID: 'run_x', CLOUD_RUN_EXECUTION: 'exec-1' }).runId).toBe(
-      'run_x',
-    );
+    expect(
+      readCloudEnv({ FINRAKSHAK_AI_RUN_ID: 'run_x', CLOUD_RUN_EXECUTION: 'exec-1' }).runId,
+    ).toBe('run_x');
     expect(readCloudEnv({ CLOUD_RUN_EXECUTION: 'exec-1' }).runId).toBe('exec-1');
   });
 
   it('sends a dry run to the _dryrun dataset and a live run to the real one', () => {
-    expect(readCloudEnv({ FUNDTRACE_BIGQUERY_DATASET: 'fundtrace_public' }).bigquery?.dataset).toBe(
-      'fundtrace_public_dryrun',
-    );
+    expect(
+      readCloudEnv({ FINRAKSHAK_AI_BIGQUERY_DATASET: 'fundtrace_public' }).bigquery?.dataset,
+    ).toBe('fundtrace_public_dryrun');
     const live = readCloudEnv({
-      FUNDTRACE_BIGQUERY_DATASET: 'fundtrace_public',
-      FUNDTRACE_PUBLISH_ENABLED: 'true',
+      FINRAKSHAK_AI_BIGQUERY_DATASET: 'fundtrace_public',
+      FINRAKSHAK_AI_PUBLISH_ENABLED: 'true',
     });
     expect(live.bigquery).toEqual({ dataset: 'fundtrace_public', location: 'asia-south1' });
   });
 
   it('parses per-source flags and rejects malformed or unknown ones', () => {
     expect(
-      readCloudEnv({ FUNDTRACE_SOURCE_FLAGS: '{"nfra":{"forceFull":true}}' }).sourceFlags,
+      readCloudEnv({ FINRAKSHAK_AI_SOURCE_FLAGS: '{"nfra":{"forceFull":true}}' }).sourceFlags,
     ).toEqual({ nfra: { forceFull: true } });
-    expect(() => readCloudEnv({ FUNDTRACE_SOURCE_FLAGS: '{not json' })).toThrow(/not valid JSON/);
-    expect(() => readCloudEnv({ FUNDTRACE_SOURCE_FLAGS: '{"nope":{}}' })).toThrow();
-    expect(() => readCloudEnv({ FUNDTRACE_SOURCES: 'nfra,unknown' })).toThrow();
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_SOURCE_FLAGS: '{not json' })).toThrow(
+      /not valid JSON/,
+    );
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_SOURCE_FLAGS: '{"nope":{}}' })).toThrow();
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_SOURCES: 'nfra,unknown' })).toThrow();
   });
 
   it('rejects unsafe run ids and out-of-range limits', () => {
-    expect(() => readCloudEnv({ FUNDTRACE_RUN_ID: '../etc' })).toThrow();
-    expect(() => readCloudEnv({ FUNDTRACE_LEASE_TTL_MINUTES: '1' })).toThrow();
-    expect(() => readCloudEnv({ FUNDTRACE_GATE_MAX_DROP: '1.5' })).toThrow();
-    expect(() => readCloudEnv({ FUNDTRACE_AGENT_PASS: '3' })).toThrow();
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_RUN_ID: '../etc' })).toThrow();
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_LEASE_TTL_MINUTES: '1' })).toThrow();
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_GATE_MAX_DROP: '1.5' })).toThrow();
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_AGENT_PASS: '3' })).toThrow();
   });
 });
 
@@ -67,14 +69,14 @@ describe('sourcesForTask', () => {
 
 describe('score step settings (W2d)', () => {
   it('is off by default and reads the synthetic dataset, never a dry-run suffix', () => {
-    const env = readCloudEnv({ FUNDTRACE_BIGQUERY_DATASET: 'fundtrace_public' });
+    const env = readCloudEnv({ FINRAKSHAK_AI_BIGQUERY_DATASET: 'fundtrace_public' });
     expect(env.score).toEqual({ enabled: false, dataset: 'fundtrace_synth', settings: 'v2' });
     expect(env.bigquery?.dataset).toBe('fundtrace_public_dryrun');
   });
 
   it('refuses a dataset that is not synthetic and a malformed settings version (B-54)', () => {
-    expect(() => readCloudEnv({ FUNDTRACE_SYNTH_DATASET: 'fundtrace_public' })).toThrow();
-    expect(() => readCloudEnv({ FUNDTRACE_SCORE_SETTINGS: 'latest' })).toThrow();
-    expect(readCloudEnv({ FUNDTRACE_SCORE_ENABLED: 'true' }).score.enabled).toBe(true);
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_SYNTH_DATASET: 'fundtrace_public' })).toThrow();
+    expect(() => readCloudEnv({ FINRAKSHAK_AI_SCORE_SETTINGS: 'latest' })).toThrow();
+    expect(readCloudEnv({ FINRAKSHAK_AI_SCORE_ENABLED: 'true' }).score.enabled).toBe(true);
   });
 });

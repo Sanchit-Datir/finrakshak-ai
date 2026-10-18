@@ -1,6 +1,6 @@
 # ingest — public-source acquisition & dataset build
 
-TypeScript pipeline for **Phase 0–2** of the FundTrace AI brief: audit sources, download permitted
+TypeScript pipeline for **Phase 0–2** of the FinRakshak AI brief: audit sources, download permitted
 public records with provenance, extract text, and build the canonical tables (brief section 8) that
 BigQuery, Gemini extraction and the graph/risk layers consume.
 
@@ -24,7 +24,7 @@ What is committed, what goes to Cloud Storage, file layouts and conventions: see
 
 ```bash
 npm ci
-npm run build -w @fund-tracker/shared && npm run build -w ingest
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 node ingest/dist/cli.js registry
 node ingest/dist/cli.js acquire all            # or: acquire nfra sebi --max 500
 node ingest/dist/cli.js extract
@@ -37,11 +37,11 @@ Options:
 - `--list-only` / `--docs-only` — run only the listing or only the document step.
 - `--full` — force a full relist (ignores the incremental schedule).
 - `--allow-shrink` — accept a complete relist that lost more than half of the listed items (see below).
-- `--max N` — documents per source (default 1500, env `FUNDTRACE_MAX_DOCS_PER_SOURCE`; SEBI 10 via
+- `--max N` — documents per source (default 1500, env `FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE`; SEBI 10 via
   `SOURCE_DOC_CAPS` in `src/config.ts`).
 - `--max-items N` — listing rows per source (SEBI 10 via `SOURCE_ITEM_CAPS`).
-- `FUNDTRACE_MIN_DELAY_MS` — per-host delay, default 1500 ms (use 2500 for IBBI).
-- `FUNDTRACE_DATA_DIR` — data folder, default `<repo>/data`.
+- `FINRAKSHAK_AI_MIN_DELAY_MS` — per-host delay, default 1500 ms (use 2500 for IBBI).
+- `FINRAKSHAK_AI_DATA_DIR` — data folder, default `<repo>/data`.
 
 Every step is idempotent: already-downloaded URLs and already-extracted checksums are skipped; a
 changed document becomes a new manifest line (new version), never an overwrite.
@@ -152,17 +152,17 @@ Cloud Scheduler 03:05 IST → Workflows ingest-daily → Cloud Run job ingest-ac
 
 Cloud configuration (all validated with zod; set by `scripts/deploy-ingest.sh`):
 
-| Variable                                                                                | Meaning                                                                             |
-| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `FUNDTRACE_STORAGE=gcs`, `FUNDTRACE_{RAW,STATE,PUBLISH}_BUCKET`, `FUNDTRACE_PROJECT_ID` | Cloud Storage instead of `data/`                                                    |
-| `FUNDTRACE_COORDINATION=firestore`                                                      | Firestore leases and run records (required with `gcs`)                              |
-| `FUNDTRACE_RUN_ID`, `FUNDTRACE_RUN_AT`                                                  | Shared by every job of one run (passed by Workflows)                                |
-| `FUNDTRACE_SOURCES`                                                                     | Sources, comma-separated (default: all six); task `i` takes every `i`-th            |
-| `FUNDTRACE_SOURCE_FLAGS`                                                                | JSON per-source one-run flags: `{"nfra":{"forceFull":true}}`, `allowShrink`, `skip` |
-| `FUNDTRACE_PUBLISH_ENABLED`                                                             | `false` (default) = dry run: `dry-run` channel and `<dataset>_dryrun`               |
-| `FUNDTRACE_BIGQUERY_DATASET`, `FUNDTRACE_BIGQUERY_LOCATION`                             | Where tables and history are loaded                                                 |
-| `FUNDTRACE_MAX_DOCS_PER_SOURCE`                                                         | New documents per source per run (300 in the cloud: paced backfill, B-53)           |
-| `FUNDTRACE_GATE_MAX_DROP`, `FUNDTRACE_PUBLISH_KEEP`, `FUNDTRACE_FORCE_BUILD`            | Gate threshold (0.2), versions kept (14), rebuild without changes                   |
+| Variable                                                                                            | Meaning                                                                             |
+| --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `FINRAKSHAK_AI_STORAGE=gcs`, `FINRAKSHAK_AI_{RAW,STATE,PUBLISH}_BUCKET`, `FINRAKSHAK_AI_PROJECT_ID` | Cloud Storage instead of `data/`                                                    |
+| `FINRAKSHAK_AI_COORDINATION=firestore`                                                              | Firestore leases and run records (required with `gcs`)                              |
+| `FINRAKSHAK_AI_RUN_ID`, `FINRAKSHAK_AI_RUN_AT`                                                      | Shared by every job of one run (passed by Workflows)                                |
+| `FINRAKSHAK_AI_SOURCES`                                                                             | Sources, comma-separated (default: all six); task `i` takes every `i`-th            |
+| `FINRAKSHAK_AI_SOURCE_FLAGS`                                                                        | JSON per-source one-run flags: `{"nfra":{"forceFull":true}}`, `allowShrink`, `skip` |
+| `FINRAKSHAK_AI_PUBLISH_ENABLED`                                                                     | `false` (default) = dry run: `dry-run` channel and `<dataset>_dryrun`               |
+| `FINRAKSHAK_AI_BIGQUERY_DATASET`, `FINRAKSHAK_AI_BIGQUERY_LOCATION`                                 | Where tables and history are loaded                                                 |
+| `FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE`                                                                 | New documents per source per run (300 in the cloud: paced backfill, B-53)           |
+| `FINRAKSHAK_AI_GATE_MAX_DROP`, `FINRAKSHAK_AI_PUBLISH_KEEP`, `FINRAKSHAK_AI_FORCE_BUILD`            | Gate threshold (0.2), versions kept (14), rebuild without changes                   |
 
 What the build publishes: `publish/<live|dry-run>/versions/<builtAt>/…` (immutable bundles) and
 `publish/<channel>/current.json` (the pointer, `PublishedVersion` in `packages/shared`). The build
@@ -171,15 +171,15 @@ is skipped when no source changed and the MCA upload is unchanged.
 **Try the cloud tasks locally** (file system, no GCP):
 
 ```bash
-npm run build -w @fund-tracker/shared && npm run build -w ingest
-FUNDTRACE_DATA_DIR=/tmp/ft FUNDTRACE_SOURCES=sfio FUNDTRACE_MAX_DOCS_PER_SOURCE=3 \
-  FUNDTRACE_RUN_ID=run_local node ingest/dist/cloud/main.js acquire
-FUNDTRACE_DATA_DIR=/tmp/ft FUNDTRACE_RUN_ID=run_local node ingest/dist/cloud/main.js build
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
+FINRAKSHAK_AI_DATA_DIR=/tmp/ft FINRAKSHAK_AI_SOURCES=sfio FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE=3 \
+  FINRAKSHAK_AI_RUN_ID=run_local node ingest/dist/cloud/main.js acquire
+FINRAKSHAK_AI_DATA_DIR=/tmp/ft FINRAKSHAK_AI_RUN_ID=run_local node ingest/dist/cloud/main.js build
 ```
 
 Against emulators (Cloud Storage: `fake-gcs-server`; Firestore: `firebase emulators:start --only
-firestore`), add `FUNDTRACE_STORAGE=gcs FUNDTRACE_GCS_ENDPOINT=http://localhost:4443
-FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FUNDTRACE_COORDINATION=firestore` and the bucket names.
+firestore`), add `FINRAKSHAK_AI_STORAGE=gcs FINRAKSHAK_AI_GCS_ENDPOINT=http://localhost:4443
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FINRAKSHAK_AI_COORDINATION=firestore` and the bucket names.
 The container: `docker build -f ingest/Dockerfile -t ingest .` (from the repository root).
 
 ### The agent, AI extraction and diagnostics
@@ -191,11 +191,11 @@ The container: `docker build -f ingest/Dockerfile -t ingest .` (from the reposit
 | `src/extract/ai/`            | AI evidence extraction in shadow mode: `select.ts` (pending documents), `extractor.ts` (one forced `record_claims` call), `ground.ts` (keeps only values printed in the document; organisations only; paise by code; status from the source classification), `store.ts` (create-only claim objects, shadow table), `evaluate.ts` (quality gate) |
 | `src/agent/pageStructure.ts` | Reduces a saved diagnostic page to its structure and text for the agent                                                                                                                                                                                                                                                                         |
 
-AI configuration (`src/ai/config.ts`): `FUNDTRACE_AI_PROVIDER` (`mock` default, `apikey`, `vertex`),
-`FUNDTRACE_AI_MODEL`, `FUNDTRACE_AI_LOCATION`, `FUNDTRACE_AGENT_ENABLED` (kill switch),
-`FUNDTRACE_AI_MAX_TOOL_CALLS`, `FUNDTRACE_AI_MAX_INPUT_CHARS`, `FUNDTRACE_AI_EXTRACT_ENABLED` (off by
-default), `FUNDTRACE_AI_EXTRACT_MAX_DOCS` / `_MAX_PAGES` / `_MAX_CHARS` (per-run and per-document caps).
-`FUNDTRACE_SEBI_SAMPLE=false` lists SEBI's full index instead of the 10-order sample.
+AI configuration (`src/ai/config.ts`): `FINRAKSHAK_AI_AI_PROVIDER` (`mock` default, `apikey`, `vertex`),
+`FINRAKSHAK_AI_AI_MODEL`, `FINRAKSHAK_AI_AI_LOCATION`, `FINRAKSHAK_AI_AGENT_ENABLED` (kill switch),
+`FINRAKSHAK_AI_AI_MAX_TOOL_CALLS`, `FINRAKSHAK_AI_AI_MAX_INPUT_CHARS`, `FINRAKSHAK_AI_AI_EXTRACT_ENABLED` (off by
+default), `FINRAKSHAK_AI_AI_EXTRACT_MAX_DOCS` / `_MAX_PAGES` / `_MAX_CHARS` (per-run and per-document caps).
+`FINRAKSHAK_AI_SEBI_SAMPLE=false` lists SEBI's full index instead of the 10-order sample.
 
 Cloud tasks: `node dist/cloud/main.js acquire | extract-ai | build | agent`. Quality gate for AI
 extraction: `node dist/cli.js eval-ai --golden <file>` ([`eval/README.md`](eval/README.md)).

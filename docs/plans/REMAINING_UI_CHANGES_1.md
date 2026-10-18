@@ -6,7 +6,7 @@ package changes.
 ## 1. Product renamed to "FinRakshak AI" in the UI
 
 The product flags borrower risk before and after disbursement rather than tracing funds, so the
-user-facing name changes from "FundTrace AI" to **FinRakshak AI**.
+user-facing name changes from "FinRakshak AI" to **FinRakshak AI**.
 
 | File                                              | Change                                     |
 | ------------------------------------------------- | ------------------------------------------ |
@@ -17,7 +17,7 @@ user-facing name changes from "FundTrace AI" to **FinRakshak AI**.
 | `web/src/domain/schemas.ts`, `web/src/styles.css` | Code comments only                         |
 
 **Not renamed (deliberately):** the Firebase project ID `fund-tracer` and its Cloud Functions URL
-(`web/security-headers.ts`, tests), `@fund-tracker/*` package names, `infra/`, CI workflows and
+(`web/security-headers.ts`, tests), `@finrakshak-ai/*` package names, `infra/`, CI workflows and
 `docs/`. A project ID cannot be changed; the agreed later plan is to keep the project, add a
 `finrakshak.web.app` Hosting site and authorise that domain in Auth and reCAPTCHA.
 

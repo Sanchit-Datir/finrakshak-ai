@@ -1,4 +1,4 @@
-import type { RawArtifact, SourceId } from '@fund-tracker/shared';
+import type { RawArtifact, SourceId } from '@finrakshak-ai/shared';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { itemDocsKey, listingKey } from '../../acquire.js';
 import { writeJson, writeJsonl } from '../../store/jsonl.js';

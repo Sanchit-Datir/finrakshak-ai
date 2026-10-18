@@ -4,7 +4,7 @@ import {
   type AgentProposal,
   type SourceId,
   type SourceRunRecord,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BlobHistory } from '../agent/history.js';
 import { toProposal } from '../agent/proposals.js';
@@ -42,7 +42,7 @@ vi.mock('../extract/runExtract.js', async (importOriginal) => ({
   extractAllText: vi.fn(),
 }));
 
-useTempDataDir('fundtrace-acquire-task-');
+useTempDataDir('finrakshak-ai-acquire-task-');
 
 const RUN_ID = 'run_t';
 
@@ -62,9 +62,9 @@ class FakeLeases implements LeaseManager {
 
 const envOf = (over: Partial<CloudEnv> = {}): CloudEnv => ({
   ...readCloudEnv({
-    FUNDTRACE_RUN_ID: RUN_ID,
-    FUNDTRACE_RUN_AT: RUN_AT,
-    FUNDTRACE_SOURCES: 'ibbi,nfra',
+    FINRAKSHAK_AI_RUN_ID: RUN_ID,
+    FINRAKSHAK_AI_RUN_AT: RUN_AT,
+    FINRAKSHAK_AI_SOURCES: 'ibbi,nfra',
   }),
   ...over,
 });

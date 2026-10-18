@@ -1,4 +1,4 @@
-import type { BuildRecord, IngestRun, PublishChannel } from '@fund-tracker/shared';
+import type { BuildRecord, IngestRun, PublishChannel } from '@finrakshak-ai/shared';
 import { getConfig } from '../config.js';
 import { buildDataset, TABLE_NAMES, tableBigQuerySchema, tableKey } from '../dataset/build.js';
 import { errorMessage, log } from '../log.js';

@@ -3,7 +3,7 @@
 _Updated 18 Oct 2026 after merging `main` (up to `26fe2af`) into `claude/intelligent-faraday-xbjw3e`.
 Status: **planned, not started**._
 
-This plan explains how we produce the **Prototype Performance Report** for FundTrace: what we measure,
+This plan explains how we produce the **Prototype Performance Report** for FinRakshak AI: what we measure,
 how, which code changes it needs, and how anyone can re-run the benchmark from a fresh clone. The
 report goes to `docs/PERFORMANCE_REPORT.md`; raw results go to `bench/results/`.
 
@@ -135,7 +135,7 @@ no credentials. 3 = live `fund-tracer` project, needs credentials, costs under U
 
 ### Tier 2: local API on the emulators (mock model)
 
-`firebase emulators:exec --only auth,functions,firestore --project demo-fund-tracer` runs the API
+`firebase emulators:exec --only auth,functions,firestore --project demo-finrakshak-ai` runs the API
 benchmark, which:
 
 1. creates 3 TEST users in the Auth emulator and their profiles in the Firestore emulator (one with

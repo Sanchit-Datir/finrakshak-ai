@@ -1,4 +1,4 @@
-import type { SourceId } from '@fund-tracker/shared';
+import type { SourceId } from '@finrakshak-ai/shared';
 import { edAdapter } from '../sources/ed.js';
 import { ibbiAdapter } from '../sources/ibbi.js';
 import { nfraAdapter } from '../sources/nfra.js';

@@ -6,7 +6,7 @@ import type {
   Reason,
   RiskBand,
   SynthTruth,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { evaluate, reasonCodesOf } from './evaluate.js';
 import type { ReplayRow } from './replay.js';
 

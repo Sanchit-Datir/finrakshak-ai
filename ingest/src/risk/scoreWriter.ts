@@ -1,4 +1,8 @@
-import { RiskAlertDocSchema, RiskPatternRowSchema, RiskScoreRowSchema } from '@fund-tracker/shared';
+import {
+  RiskAlertDocSchema,
+  RiskPatternRowSchema,
+  RiskScoreRowSchema,
+} from '@finrakshak-ai/shared';
 import type { z } from 'zod';
 import { bigQuerySchema } from '../dataset/bigquery.js';
 import { ABSENT, blobs, joinKey, PreconditionFailedError } from '../storage/index.js';
@@ -71,7 +75,7 @@ export async function writeHistory(
     const uri = blobs().uri(key);
     if (loader !== null) {
       if (uri === null)
-        throw new Error('BigQuery loads need the gcs store (FUNDTRACE_STORAGE=gcs)');
+        throw new Error('BigQuery loads need the gcs store (FINRAKSHAK_AI_STORAGE=gcs)');
       await loader.load({
         table,
         uri,

@@ -1,4 +1,4 @@
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { parseDate } from '../util/dates.js';
 import { absoluteUrl, cleanText, stableId } from '../util/ids.js';

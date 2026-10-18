@@ -6,7 +6,7 @@ import {
   RiskLatestDocSchema,
   type RiskAlertDoc,
   type RiskLatestDoc,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { log } from '../log.js';
 
 /**

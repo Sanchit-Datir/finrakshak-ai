@@ -1,4 +1,4 @@
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import { listS3waasCategory, type S3waasCategory } from './s3waas.js';
 import type { SourceAdapter, SourceContext } from './types.js';
 

@@ -1,4 +1,4 @@
-import type { GraphLabBundle, GraphNode } from '@fund-tracker/shared';
+import type { GraphLabBundle, GraphNode } from '@finrakshak-ai/shared';
 import type { Insights } from './insights.js';
 
 const RELATIONSHIPS: readonly (readonly [string, string, string])[] = [
@@ -114,14 +114,14 @@ export function renderReport(b: GraphLabBundle, ins: Insights): string {
   const used = datasetsSection(b);
   return (
     [
-      `# FundTrace graph lab — relationship discovery report${b.meta.synthetic ? ' (SYNTHETIC)' : ''}`,
+      `# FinRakshak AI graph lab — relationship discovery report${b.meta.synthetic ? ' (SYNTHETIC)' : ''}`,
       `Generated ${b.meta.generated_at}.\n\n${b.meta.notes.map((n) => `- ${n}`).join('\n')}`,
       used,
       relationshipSection(b),
       revealSection(b, ins),
       networkSection(b, byId),
       CANNOT,
-      `## How to run\n\n\`\`\`bash\nnpm run build -w @fund-tracker/shared && npm run build -w ingest\nnode ingest/dist/graphCli.js --web   # writes data/graph/* and web/public/graph-lab/\nnpm run dev -w web                   # open http://localhost:5173/graph-lab (demo sign-in first)\n\`\`\``,
+      `## How to run\n\n\`\`\`bash\nnpm run build -w @finrakshak-ai/shared && npm run build -w ingest\nnode ingest/dist/graphCli.js --web   # writes data/graph/* and web/public/graph-lab/\nnpm run dev -w web                   # open http://localhost:5173/graph-lab (demo sign-in first)\n\`\`\``,
       IMPROVE,
     ].join('\n\n') + '\n'
   );

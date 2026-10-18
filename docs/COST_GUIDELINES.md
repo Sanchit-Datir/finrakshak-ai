@@ -73,7 +73,7 @@ with the first month's bill and update this table.
 | Gemini, agent review                                                  | Model called only on days that need attention; ≤ 8 tool calls, 60k input chars | < US$0.10                      |
 | Gemini, AI extraction (off by default)                                | ≤ 50 documents/run, ≤ 10 pages / 30k chars each, cached per prompt version     | ~US$5 (backfill ~US$5–10 once) |
 
-Rules: documents per source per run are capped (`FUNDTRACE_MAX_DOCS_PER_SOURCE`, 300 in the cloud)
+Rules: documents per source per run are capped (`FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE`, 300 in the cloud)
 so a backlog is fetched over several days; the build is skipped when no source changed; every
 BigQuery job has a deterministic id, so a retried run never loads (or bills) twice.
 

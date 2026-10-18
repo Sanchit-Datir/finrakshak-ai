@@ -1,4 +1,4 @@
-import type { AnalyseApplicationInput } from '@fund-tracker/shared';
+import type { AnalyseApplicationInput } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import {
   ANALYSIS_LIMITS,

@@ -5,7 +5,7 @@ import {
   type SynthClass,
   type SynthRuleId,
   type SynthTruth,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { monthRange, monthsBetween } from './calendar.js';
 import type { Horizon } from './archetypes/types.js';
 import type { LoanBase } from './base.js';

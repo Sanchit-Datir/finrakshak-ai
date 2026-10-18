@@ -1,4 +1,4 @@
-import type { Money } from '@fund-tracker/shared';
+import type { Money } from '@finrakshak-ai/shared';
 
 /** Indian state/UT codes used in CINs. */
 const CIN_STATES = new Set(

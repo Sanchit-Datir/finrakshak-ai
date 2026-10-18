@@ -1,4 +1,4 @@
-# FundTrace public-source dataset
+# FinRakshak AI public-source dataset
 
 Built by `ingest/` (see `ingest/README.md`). Row counts, MCA match counts and build time:
 `processed/stats.json`. Source access audit (terms, robots, licences, gaps): `registry/sources.json`.

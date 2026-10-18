@@ -7,7 +7,7 @@ import {
   SynthTruthSchema,
   matchPattern,
   type SynthTruth,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { errorMessage, log } from '../log.js';
 import { assertSafeOutputDir } from '../synth/guards.js';
 import { USAGE, parseArgs } from './cliArgs.js';

@@ -1,4 +1,4 @@
-import type { Finding, IngestRun } from '@fund-tracker/shared';
+import type { Finding, IngestRun } from '@finrakshak-ai/shared';
 import { runToolLoop } from '../ai/toolLoop.js';
 import type { ToolModel, Usage } from '../ai/toolModel.js';
 import { log } from '../log.js';

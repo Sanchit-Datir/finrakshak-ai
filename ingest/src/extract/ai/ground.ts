@@ -1,4 +1,4 @@
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import { classify } from '../../dataset/classify.js';
 import { looksLikeOrganisation } from '../../resolve/names.js';
 import { stableId } from '../../util/ids.js';

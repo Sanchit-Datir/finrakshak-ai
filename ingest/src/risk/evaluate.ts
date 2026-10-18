@@ -1,4 +1,4 @@
-import type { LoanScore, SynthClass, SynthTruth } from '@fund-tracker/shared';
+import type { LoanScore, SynthClass, SynthTruth } from '@finrakshak-ai/shared';
 import type { ReplayRow } from './replay.js';
 
 /**

@@ -1,4 +1,4 @@
-import { AGENT_ACTIONS } from '@fund-tracker/shared';
+import { AGENT_ACTIONS } from '@finrakshak-ai/shared';
 
 /** Versioned prompt: the version is stored on every review; change the text = bump the version. */
 export const RUN_REVIEW_PROMPT_VERSION = 'run-review.v2';

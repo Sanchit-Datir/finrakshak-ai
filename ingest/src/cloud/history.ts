@@ -4,7 +4,7 @@ import {
   type BuildRecord,
   type IngestRun,
   type SourceRunRecord,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { dataKey } from '../config.js';
 import { bigQuerySchema } from '../dataset/bigquery.js';

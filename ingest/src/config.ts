@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { SourceId } from '@fund-tracker/shared';
+import type { SourceId } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { joinKey } from './storage/blobStore.js';
 
@@ -8,29 +8,29 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 
 const EnvSchema = z
   .object({
-    FUNDTRACE_DATA_DIR: z.string().min(1).optional(),
-    FUNDTRACE_MIN_DELAY_MS: z.coerce.number().int().min(500).max(60_000).default(1_500),
-    FUNDTRACE_MAX_DOCS_PER_SOURCE: z.coerce.number().int().min(0).max(100_000).default(1_500),
+    FINRAKSHAK_AI_DATA_DIR: z.string().min(1).optional(),
+    FINRAKSHAK_AI_MIN_DELAY_MS: z.coerce.number().int().min(500).max(60_000).default(1_500),
+    FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE: z.coerce.number().int().min(0).max(100_000).default(1_500),
     /** `fs` (local disk, default) or `gcs` (Cloud Storage; needs the three bucket names). */
-    FUNDTRACE_STORAGE: z.enum(['fs', 'gcs']).default('fs'),
-    FUNDTRACE_RAW_BUCKET: z.string().min(3).optional(),
-    FUNDTRACE_STATE_BUCKET: z.string().min(3).optional(),
-    FUNDTRACE_PUBLISH_BUCKET: z.string().min(3).optional(),
-    FUNDTRACE_PROJECT_ID: z.string().min(1).optional(),
+    FINRAKSHAK_AI_STORAGE: z.enum(['fs', 'gcs']).default('fs'),
+    FINRAKSHAK_AI_RAW_BUCKET: z.string().min(3).optional(),
+    FINRAKSHAK_AI_STATE_BUCKET: z.string().min(3).optional(),
+    FINRAKSHAK_AI_PUBLISH_BUCKET: z.string().min(3).optional(),
+    FINRAKSHAK_AI_PROJECT_ID: z.string().min(1).optional(),
     /** `true` (default) keeps SEBI to a 10-order sample; the cloud sets `false` for the full index. */
-    FUNDTRACE_SEBI_SAMPLE: z
+    FINRAKSHAK_AI_SEBI_SAMPLE: z
       .enum(['true', 'false'])
       .default('true')
       .transform((v) => v === 'true'),
     /** Cloud Storage API endpoint override, only for local emulators (never set in the cloud). */
-    FUNDTRACE_GCS_ENDPOINT: z.string().url().optional(),
+    FINRAKSHAK_AI_GCS_ENDPOINT: z.string().url().optional(),
   })
   .superRefine((env, ctx) => {
-    if (env.FUNDTRACE_STORAGE !== 'gcs') return;
+    if (env.FINRAKSHAK_AI_STORAGE !== 'gcs') return;
     for (const key of [
-      'FUNDTRACE_RAW_BUCKET',
-      'FUNDTRACE_STATE_BUCKET',
-      'FUNDTRACE_PUBLISH_BUCKET',
+      'FINRAKSHAK_AI_RAW_BUCKET',
+      'FINRAKSHAK_AI_STATE_BUCKET',
+      'FINRAKSHAK_AI_PUBLISH_BUCKET',
     ] as const)
       if (env[key] === undefined)
         ctx.addIssue({ code: 'custom', path: [key], message: `${key} is required for gcs` });
@@ -60,17 +60,21 @@ export interface IngestConfig {
 let cached: IngestConfig | undefined;
 
 function storageConfig(env: z.infer<typeof EnvSchema>): StorageConfig {
-  if (env.FUNDTRACE_STORAGE === 'fs') return { kind: 'fs' };
+  if (env.FINRAKSHAK_AI_STORAGE === 'fs') return { kind: 'fs' };
   const buckets = {
-    raw: env.FUNDTRACE_RAW_BUCKET ?? '',
-    state: env.FUNDTRACE_STATE_BUCKET ?? '',
-    publish: env.FUNDTRACE_PUBLISH_BUCKET ?? '',
+    raw: env.FINRAKSHAK_AI_RAW_BUCKET ?? '',
+    state: env.FINRAKSHAK_AI_STATE_BUCKET ?? '',
+    publish: env.FINRAKSHAK_AI_PUBLISH_BUCKET ?? '',
   };
   return {
     kind: 'gcs',
     buckets,
-    ...(env.FUNDTRACE_PROJECT_ID === undefined ? {} : { projectId: env.FUNDTRACE_PROJECT_ID }),
-    ...(env.FUNDTRACE_GCS_ENDPOINT === undefined ? {} : { endpoint: env.FUNDTRACE_GCS_ENDPOINT }),
+    ...(env.FINRAKSHAK_AI_PROJECT_ID === undefined
+      ? {}
+      : { projectId: env.FINRAKSHAK_AI_PROJECT_ID }),
+    ...(env.FINRAKSHAK_AI_GCS_ENDPOINT === undefined
+      ? {}
+      : { endpoint: env.FINRAKSHAK_AI_GCS_ENDPOINT }),
   };
 }
 
@@ -79,16 +83,16 @@ export function getConfig(): IngestConfig {
   if (cached) return cached;
   const env = EnvSchema.parse(process.env);
   cached = {
-    dataDir: env.FUNDTRACE_DATA_DIR ?? path.resolve(here, '../../data'),
+    dataDir: env.FINRAKSHAK_AI_DATA_DIR ?? path.resolve(here, '../../data'),
     storage: storageConfig(env),
     userAgent:
-      'Mozilla/5.0 (compatible; FundTraceResearchBot/0.1; +https://github.com/Sanchit-Datir/fund-tracer)',
-    minDelayMs: env.FUNDTRACE_MIN_DELAY_MS,
-    maxDocsPerSource: env.FUNDTRACE_MAX_DOCS_PER_SOURCE,
+      'Mozilla/5.0 (compatible; FinRakshakAIResearchBot/0.1; +https://github.com/Sanchit-Datir/finrakshak-ai)',
+    minDelayMs: env.FINRAKSHAK_AI_MIN_DELAY_MS,
+    maxDocsPerSource: env.FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE,
     requestTimeoutMs: 90_000,
     maxRetries: 4,
     extractorVersion: 'regex-v1',
-    sebiSample: env.FUNDTRACE_SEBI_SAMPLE,
+    sebiSample: env.FINRAKSHAK_AI_SEBI_SAMPLE,
   };
   return cached;
 }
@@ -96,14 +100,14 @@ export function getConfig(): IngestConfig {
 const SEBI_SAMPLE = 10;
 
 /**
- * Per-source listing cap. SEBI keeps a 10-order sample unless `FUNDTRACE_SEBI_SAMPLE=false`
+ * Per-source listing cap. SEBI keeps a 10-order sample unless `FINRAKSHAK_AI_SEBI_SAMPLE=false`
  * (the cloud lists the full ~24.5k-order index, incrementally after the first run).
  */
 export function sourceItemCap(id: SourceId): number | undefined {
   return id === 'sebi' && getConfig().sebiSample ? SEBI_SAMPLE : undefined;
 }
 
-/** Per-source document cap per run (the sample's own cap; otherwise `FUNDTRACE_MAX_DOCS_PER_SOURCE`). */
+/** Per-source document cap per run (the sample's own cap; otherwise `FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE`). */
 export function sourceDocCap(id: SourceId): number {
   return id === 'sebi' && getConfig().sebiSample ? SEBI_SAMPLE : getConfig().maxDocsPerSource;
 }

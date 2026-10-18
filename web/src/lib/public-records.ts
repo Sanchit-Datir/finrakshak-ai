@@ -1,4 +1,4 @@
-import { recordKindOf, type GraphEdge, type GraphNode } from '@fund-tracker/shared';
+import { recordKindOf, type GraphEdge, type GraphNode } from '@finrakshak-ai/shared';
 import type {
   ApplicationData,
   PrExposure,

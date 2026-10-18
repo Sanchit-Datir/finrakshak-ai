@@ -76,7 +76,7 @@ ensure_bucket() { # <bucket>
 ensure_dataset() { # <dataset> [description]
   bq --project_id "$PROJECT_ID" show --dataset "$PROJECT_ID:$1" >/dev/null 2>&1 ||
     bq --project_id "$PROJECT_ID" --location "$REGION" mk --dataset \
-      --description "${2:-FundTrace public-records dataset (loaded by ingest-build)}" "$PROJECT_ID:$1"
+      --description "${2:-FinRakshak AI public-records dataset (loaded by ingest-build)}" "$PROJECT_ID:$1"
 }
 grant_dataset() { # <dataset> <service-account> <READER|WRITER>
   # `bq add-iam-policy-binding --dataset` needs allowlisting, so edit the dataset ACL instead.
@@ -160,7 +160,7 @@ for d in "$DATASET" "${DATASET}_dryrun"; do
   grant_dataset "$d" "$AGENT_SA" READER
 done
 # Synthetic loans, transactions and their risk scores: only the scorer writes here (B-54).
-ensure_dataset "$SYNTH_DATASET" "FundTrace SYNTHETIC test data and its risk scores (never real, B-54)"
+ensure_dataset "$SYNTH_DATASET" "FinRakshak AI SYNTHETIC test data and its risk scores (never real, B-54)"
 grant_dataset "$SYNTH_DATASET" "$SCORER_SA" WRITER
 
 echo "› Project roles"
@@ -253,7 +253,7 @@ Done. Next:
   2. Watch the first runs (dry run: bundles go to gs://$PUBLISH_BUCKET/dry-run, BigQuery to ${DATASET}_dryrun).
   3. After a clean week, set INGEST_PUBLISH_ENABLED=true and redeploy to publish for the app.
   4. Synthetic scoring (off): load the test data with
-       npm run synth && FUNDTRACE_STORAGE=gcs ... node ingest/dist/risk/synthLoadCli.js
+       npm run synth && FINRAKSHAK_AI_STORAGE=gcs ... node ingest/dist/risk/synthLoadCli.js
      then dry-run the ingest-score job by hand (docs/DEPLOY.md) before setting SCORE_ENABLED=true.
 Manual run:  gcloud workflows run ingest-daily --location $REGION --project $PROJECT_ID --data '{}'
 OUT

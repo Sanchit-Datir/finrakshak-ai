@@ -1,4 +1,4 @@
-import { SynthTransactionSchema, type SynthTransaction } from '@fund-tracker/shared';
+import { SynthTransactionSchema, type SynthTransaction } from '@finrakshak-ai/shared';
 
 /**
  * Builds a transaction list and checks it as a ledger. Accounts that were opened with a balance are

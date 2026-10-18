@@ -5,7 +5,7 @@ import {
   type CandidateStats,
   type PatternDefinition,
   type TimelineEvent,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { SeedCase } from './seedTimelines.js';
 import { percentile, round1 } from './stats.js';
 

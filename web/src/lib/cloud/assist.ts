@@ -1,4 +1,4 @@
-import { AssistResultSchema, type AssistInput, type AssistResult } from '@fund-tracker/shared';
+import { AssistResultSchema, type AssistInput, type AssistResult } from '@finrakshak-ai/shared';
 import { explainCloudError } from './errors.js';
 import type { Cloud } from './firebase.js';
 

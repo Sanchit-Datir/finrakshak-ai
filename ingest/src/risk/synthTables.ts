@@ -5,7 +5,7 @@ import {
   SynthLoanSchema,
   SynthRelationshipSchema,
   SynthTransactionSchema,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { z } from 'zod';
 import type { LoadSpec } from '../cloud/bigquery.js';
 import { bigQuerySchema, type BqField } from '../dataset/bigquery.js';
@@ -56,7 +56,8 @@ export const synthTableSchema = (table: SynthTableName): BqField[] =>
 /** Writes NDJSON once under a dedicated prefix (create-only, question Q1) and returns its `gs://` URI. */
 export async function stageRows(key: string, text: string): Promise<string> {
   const uri = blobs().uri(key);
-  if (uri === null) throw new Error('BigQuery loads need the gcs store (FUNDTRACE_STORAGE=gcs)');
+  if (uri === null)
+    throw new Error('BigQuery loads need the gcs store (FINRAKSHAK_AI_STORAGE=gcs)');
   try {
     await blobs().write(key, text, { condition: ABSENT, contentType: 'application/x-ndjson' });
   } catch (e) {

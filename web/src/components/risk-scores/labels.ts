@@ -1,4 +1,4 @@
-import type { AlertKind, ScoreLayer } from '@fund-tracker/shared';
+import type { AlertKind, ScoreLayer } from '@finrakshak-ai/shared';
 
 /** Wording for the synthetic risk scores page (leads, never verdicts; B-58). */
 export const ALERT_KIND_LABEL: Record<AlertKind, string> = {

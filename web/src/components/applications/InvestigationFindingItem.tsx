@@ -1,4 +1,4 @@
-import type { InvestigationFinding } from '@fund-tracker/shared';
+import type { InvestigationFinding } from '@finrakshak-ai/shared';
 import { BadgeCheck, CircleHelp, ShieldCheck } from 'lucide-react';
 import { AI_FINDING_KIND_LABEL, AI_FINDING_SOURCE_LABEL } from '../../domain/labels.js';
 import type { Application, InvestigationEvidence } from '../../domain/schemas.js';

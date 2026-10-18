@@ -2,7 +2,7 @@ import {
   GetProfileResultSchema,
   type GetProfileResult,
   type UserProfile,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { CloudSession } from '../../state/session.js';
 import type { Cloud } from './firebase.js';
 

@@ -180,7 +180,7 @@ describe('evaluate (AI extraction quality gate, B-52)', () => {
 });
 
 function goldenFile(lines: readonly string[]): string {
-  const file = path.join(mkdtempSync(path.join(tmpdir(), 'fundtrace-golden-')), 'golden.jsonl');
+  const file = path.join(mkdtempSync(path.join(tmpdir(), 'finrakshak-ai-golden-')), 'golden.jsonl');
   writeFileSync(file, `${lines.join('\n')}\n`);
   return file;
 }

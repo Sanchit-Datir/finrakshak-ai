@@ -1,7 +1,7 @@
 import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { runDownloads, runListing } from '../acquire.js';
 import { dataPath } from '../config.js';
@@ -59,7 +59,7 @@ const A = 'https://sfio.gov.in/a.pdf';
 const B = 'https://sfio.gov.in/b.pdf';
 
 beforeAll(() => {
-  process.env['FUNDTRACE_DATA_DIR'] = mkdtempSync(path.join(tmpdir(), 'fundtrace-dl-'));
+  process.env['FINRAKSHAK_AI_DATA_DIR'] = mkdtempSync(path.join(tmpdir(), 'finrakshak-ai-dl-'));
 });
 
 describe('runDownloads with refresh', () => {

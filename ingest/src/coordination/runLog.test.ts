@@ -1,4 +1,4 @@
-import type { BuildRecord, SourceRunRecord } from '@fund-tracker/shared';
+import type { BuildRecord, SourceRunRecord } from '@finrakshak-ai/shared';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { blobs } from '../storage/index.js';
 import { freshFsStore } from '../test/tempData.js';

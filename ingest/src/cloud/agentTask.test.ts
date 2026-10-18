@@ -4,7 +4,7 @@ import {
   type AgentProposal,
   type RunReview,
   type SourceRunRecord,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ToolCall, ToolSession, Usage } from '../ai/toolModel.js';
 import type { HistorySource } from '../agent/history.js';
@@ -43,7 +43,7 @@ vi.mock('../ai/geminiModel.js', () => ({
   },
 }));
 
-useTempDataDir('fundtrace-agent-task-');
+useTempDataDir('finrakshak-ai-agent-task-');
 
 const RUN_ID = 'run_t';
 
@@ -93,9 +93,9 @@ function depsOf(
 
 const envOf = (pass: 1 | 2): CloudEnv =>
   readCloudEnv({
-    FUNDTRACE_RUN_ID: RUN_ID,
-    FUNDTRACE_RUN_AT: RUN_AT,
-    FUNDTRACE_AGENT_PASS: String(pass),
+    FINRAKSHAK_AI_RUN_ID: RUN_ID,
+    FINRAKSHAK_AI_RUN_AT: RUN_AT,
+    FINRAKSHAK_AI_AGENT_PASS: String(pass),
   });
 
 const TRANSIENT: SourceRunRecord = sourceRecord({
@@ -139,8 +139,8 @@ beforeEach(() => {
   gemini.starts = 0;
   gemini.steps = [];
   gemini.fail = null;
-  vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'mock');
-  vi.stubEnv('FUNDTRACE_AGENT_ENABLED', 'true');
+  vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'mock');
+  vi.stubEnv('FINRAKSHAK_AI_AGENT_ENABLED', 'true');
 });
 
 afterEach(() => {
@@ -149,7 +149,7 @@ afterEach(() => {
 
 describe('runAgentTask: healthy and failing runs', () => {
   it('a healthy run gets a templated review and never calls the model (cost guard)', async () => {
-    vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'vertex');
+    vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'vertex');
     await healthy();
     const agent = new FirestoreLikeAgentStore();
     expect(await runAgentTask(envOf(1), depsOf(agent))).toBe(true);
@@ -189,7 +189,7 @@ describe('runAgentTask: healthy and failing runs', () => {
   });
 
   it('merges the model’s explanation into the code’s proposal and keeps its own proposals', async () => {
-    vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'vertex');
+    vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'vertex');
     gemini.steps = [
       [
         call('propose_action', {
@@ -223,7 +223,7 @@ describe('runAgentTask: healthy and failing runs', () => {
   });
 
   it('falls back to the templated review when the model is unavailable', async () => {
-    vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'vertex');
+    vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'vertex');
     gemini.fail = new Error('503 Service Unavailable');
     await failing();
     const agent = new FirestoreLikeAgentStore();
@@ -235,8 +235,8 @@ describe('runAgentTask: healthy and failing runs', () => {
   });
 
   it('the kill switch keeps the model off but code proposals still go through', async () => {
-    vi.stubEnv('FUNDTRACE_AI_PROVIDER', 'vertex');
-    vi.stubEnv('FUNDTRACE_AGENT_ENABLED', 'false');
+    vi.stubEnv('FINRAKSHAK_AI_AI_PROVIDER', 'vertex');
+    vi.stubEnv('FINRAKSHAK_AI_AGENT_ENABLED', 'false');
     await failing();
     const agent = new FirestoreLikeAgentStore();
     await runAgentTask(envOf(1), depsOf(agent));

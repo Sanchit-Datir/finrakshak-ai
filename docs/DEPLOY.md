@@ -54,7 +54,7 @@ the `/graph-lab/` fallback and "Try demo" still work).
 ## One-time setup (already done for `fund-tracer`)
 
 ```bash
-scripts/setup-gcp.sh fund-tracer Sanchit-Datir/fund-tracer
+scripts/setup-gcp.sh fund-tracer Sanchit-Datir/finrakshak-ai
 ```
 
 It is safe to re-run. It creates the two service accounts, the identity pool locked to this repo,
@@ -98,10 +98,10 @@ Firebase console ones (Security → Authentication, Security → App Check). Con
 **A. Firebase console**
 
 1. **Register the web app** (this is where the config values come from). Project settings (gear) →
-   General → Your apps → Add app → Web (`</>`) → nickname `Fund Tracer Web` → leave "Also set up Hosting"
+   General → Your apps → Add app → Web (`</>`) → nickname `FinRakshak AI Web` → leave "Also set up Hosting"
    off → Register app. Note `apiKey`, `authDomain` (`fund-tracer.firebaseapp.com`) and `appId` (starts
    `1:`). Later: Project settings → Your apps → SDK setup and configuration. CLI alternative:
-   `firebase apps:create WEB "Fund Tracer Web" --project fund-tracer` then
+   `firebase apps:create WEB "FinRakshak AI Web" --project fund-tracer` then
    `firebase apps:sdkconfig WEB --project fund-tracer`. These values are public, not secrets.
 2. **Start sign-in:** Security → Authentication → **Get started** → Sign-in method → **Email/Password** →
    enable (leave "Email link" off) → Save. Then the **Users** tab → Add user (email + password) for each
@@ -233,7 +233,7 @@ done
 
 ### Dry run, then publish
 
-New deployments run as a **dry run** (`FUNDTRACE_PUBLISH_ENABLED=false`): bundles go to
+New deployments run as a **dry run** (`FINRAKSHAK_AI_PUBLISH_ENABLED=false`): bundles go to
 `gs://fund-tracer-ingest-publish/dry-run/`, BigQuery to `fundtrace_public_dryrun`. After a clean
 week (see the plan's MVP 1 exit criteria), set **`INGEST_PUBLISH_ENABLED=true`** and redeploy.
 
@@ -251,7 +251,7 @@ week (see the plan's MVP 1 exit criteria), set **`INGEST_PUBLISH_ENABLED=true`**
 - **Run now:** `gcloud workflows run ingest-daily --location asia-south1 --data '{}'`; force a
   rebuild and republish: `--data '{"force_build": "true"}'`.
 - **One source only (debugging):** `gcloud run jobs execute ingest-acquire --region asia-south1
---tasks 1 --update-env-vars FUNDTRACE_SOURCES=nfra`.
+--tasks 1 --update-env-vars FINRAKSHAK_AI_SOURCES=nfra`.
 - **What happened:** Firestore `ingestRuns/<runId>` (per-source status, counts, errors; build
   status, gates, version), or the Workflows execution. Logs are structured JSON (filter
   `jsonPayload.run="<runId>"`).
@@ -301,7 +301,7 @@ the demo, or before the first publish it falls back to the local `/graph-lab/` c
   owner approves merging them. It is **off** until you set `INGEST_AI_EXTRACT_ENABLED=true`
   (cost: about US$5/month at 50 documents/day, `COST_GUIDELINES.md`). Its account
   `ingest-extractor` can read documents and only add new objects.
-- **SEBI**: the cloud lists the full order index (~24.5k orders, `FUNDTRACE_SEBI_SAMPLE=false`);
+- **SEBI**: the cloud lists the full order index (~24.5k orders, `FINRAKSHAK_AI_SEBI_SAMPLE=false`);
   the first run lists everything (about half an hour), later runs page newest-first and stop at
   known orders, with a full relist monthly. Documents are fetched 300 per run (paced backfill).
 - **Layout changes**: when a source page stops parsing, the page is saved to
@@ -320,15 +320,15 @@ retried once by the workflow, and is a no-op until `INGEST_SCORE_ENABLED=true`.
    The next deploy then creates the `ingest-score` job (it is skipped while the account is missing).
 2. **Load the synthetic data** (from Cloud Shell, after `npm ci && npm run synth`):
    ```bash
-   FUNDTRACE_STORAGE=gcs FUNDTRACE_PROJECT_ID=<project> FUNDTRACE_RAW_BUCKET=<project>-ingest-raw \
-   FUNDTRACE_STATE_BUCKET=<project>-ingest-state FUNDTRACE_PUBLISH_BUCKET=<project>-ingest-publish \
+   FINRAKSHAK_AI_STORAGE=gcs FINRAKSHAK_AI_PROJECT_ID=<project> FINRAKSHAK_AI_RAW_BUCKET=<project>-ingest-raw \
+   FINRAKSHAK_AI_STATE_BUCKET=<project>-ingest-state FINRAKSHAK_AI_PUBLISH_BUCKET=<project>-ingest-publish \
      node ingest/dist/risk/synthLoadCli.js --dataset fundtrace_synth
    ```
    The loader refuses any dataset whose name does not end in `_synth`; `truth.jsonl` is never loaded.
 3. **Dry run (W2g)**: run the job once by hand with scoring switched on for that execution only:
    ```bash
    gcloud run jobs execute ingest-score --region asia-south1 --project <project> --wait \
-     --update-env-vars FUNDTRACE_SCORE_ENABLED=true
+     --update-env-vars FINRAKSHAK_AI_SCORE_ENABLED=true
    ```
    Check `risk_scores` has one row per loan for today's IST date
    (`SELECT as_of, COUNT(*) FROM fundtrace_synth.risk_scores GROUP BY as_of`), `synthRiskLatest` has one
@@ -354,7 +354,7 @@ per-run caps.
    `npm run miner -- propose` (mock model; prints what would be proposed and writes nothing). In the cloud:
    ```bash
    gcloud run jobs execute ingest-miner --region asia-south1 --project <project> --wait \
-     --update-env-vars FUNDTRACE_MINER_ENABLED=true
+     --update-env-vars FINRAKSHAK_AI_MINER_ENABLED=true
    ```
    It refuses to run before a build is published (B-50), proposes at most 5 patterns to `patternProposals`,
    and does nothing new on the same input. Decide with the `decidePattern` callable (custom claim
@@ -365,7 +365,7 @@ per-run caps.
    `INGEST_EXPLAIN_ENABLED=false`): dry run (E3) on one day's synthetic alerts:
    ```bash
    gcloud run jobs execute ingest-explain --region asia-south1 --project <project> --wait \
-     --update-env-vars FUNDTRACE_EXPLAIN_ENABLED=true,FUNDTRACE_RUN_ID=<a run id with alerts>
+     --update-env-vars FINRAKSHAK_AI_EXPLAIN_ENABLED=true,FINRAKSHAK_AI_RUN_ID=<a run id with alerts>
    ```
    Read the sentences in `synthRiskExplanations` against their alerts' reasons. Stop rule: if more than about 1
    in 10 reads stronger than the reasons, keep the templates. To switch on, set `INGEST_EXPLAIN_ENABLED=true`.

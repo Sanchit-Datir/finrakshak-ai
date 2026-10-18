@@ -3,7 +3,7 @@ import type {
   SynthLoan,
   SynthRelationship,
   SynthTransaction,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { addDays, addMonths, addMonthsToMonth, istInstant, monthEnd } from './calendar.js';
 import type { Horizon, LoanContext } from './archetypes/types.js';
 import type { TxnFields } from './ledger.js';

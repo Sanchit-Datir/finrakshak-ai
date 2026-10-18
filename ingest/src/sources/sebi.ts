@@ -1,4 +1,4 @@
-import type { ListingItem } from '@fund-tracker/shared';
+import type { ListingItem } from '@finrakshak-ai/shared';
 import * as cheerio from 'cheerio';
 import { assertFirstPageHasRows, shouldStopPaging } from '../delta/policy.js';
 import { log } from '../log.js';

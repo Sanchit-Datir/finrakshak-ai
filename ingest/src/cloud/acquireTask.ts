@@ -1,4 +1,4 @@
-import type { AgentProposal, SourceId, SourceRunRecord } from '@fund-tracker/shared';
+import type { AgentProposal, SourceId, SourceRunRecord } from '@finrakshak-ai/shared';
 import { flagsFromProposals, markApplied } from '../agent/proposals.js';
 import { LeaseHeldError } from '../coordination/lease.js';
 import { reportKey } from '../delta/report.js';

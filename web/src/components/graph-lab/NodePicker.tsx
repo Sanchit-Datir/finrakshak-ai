@@ -1,4 +1,4 @@
-import type { GraphNode } from '@fund-tracker/shared';
+import type { GraphNode } from '@finrakshak-ai/shared';
 import { useState } from 'react';
 import { KIND_LABEL, searchNodes, type LabIndex } from '../../lib/graph-lab.js';
 import { SearchInput } from '../ui/SearchInput.js';

@@ -13,7 +13,7 @@ import {
   type EntityMatchCandidate,
   type Person,
   type Relationship,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { dataKey } from '../config.js';
 import { readJson, readJsonl } from '../store/jsonl.js';

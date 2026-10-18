@@ -4,7 +4,7 @@ import {
   type InvestigationField,
   type InvestigationParty,
   type InvestigationRelated,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import { REL_LABEL } from '../domain/labels.js';
 import type { Application, ApplicationData, Db } from '../domain/schemas.js';
 import { inputsKeyOf } from './application-analysis.js';

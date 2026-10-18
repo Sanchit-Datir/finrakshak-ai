@@ -1,4 +1,4 @@
-import { AGENT_RUNS_COLLECTION, sealLibrary } from '@fund-tracker/shared';
+import { AGENT_RUNS_COLLECTION, sealLibrary } from '@finrakshak-ai/shared';
 import { Timestamp } from '@google-cloud/firestore';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { envelope, FirestoreAgentRunStore, NO_USAGE } from '../ai/agentRuns.js';

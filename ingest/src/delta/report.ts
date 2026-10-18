@@ -1,4 +1,4 @@
-import { SourceIdSchema, SourceRunResultSchema, type SourceId } from '@fund-tracker/shared';
+import { SourceIdSchema, SourceRunResultSchema, type SourceId } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import { dataKey } from '../config.js';
 import { writeJson } from '../store/jsonl.js';
@@ -57,7 +57,7 @@ export async function writeReport(report: DeltaReport): Promise<void> {
   await writeJson(reportKey(report.source_id, report.run_at), report);
 }
 
-export { SourceRunResultSchema, type SourceRunResult } from '@fund-tracker/shared';
+export { SourceRunResultSchema, type SourceRunResult } from '@finrakshak-ai/shared';
 
 export const RunSummarySchema = z.object({
   run_at: z.string().datetime(),

@@ -13,7 +13,7 @@ async function freshConfig(): Promise<typeof ConfigModule> {
 
 describe('ingest config', () => {
   it('defaults to the local disk and the SEBI sample', async () => {
-    vi.stubEnv('FUNDTRACE_STORAGE', '');
+    vi.stubEnv('FINRAKSHAK_AI_STORAGE', '');
     const c = await freshConfig();
     vi.unstubAllEnvs();
     const cfg = c.getConfig();
@@ -26,26 +26,26 @@ describe('ingest config', () => {
   });
 
   it('lists SEBI in full when the sample is switched off', async () => {
-    vi.stubEnv('FUNDTRACE_SEBI_SAMPLE', 'false');
-    vi.stubEnv('FUNDTRACE_MAX_DOCS_PER_SOURCE', '300');
+    vi.stubEnv('FINRAKSHAK_AI_SEBI_SAMPLE', 'false');
+    vi.stubEnv('FINRAKSHAK_AI_MAX_DOCS_PER_SOURCE', '300');
     const c = await freshConfig();
     expect(c.sourceItemCap('sebi')).toBeUndefined();
     expect(c.sourceDocCap('sebi')).toBe(300);
   });
 
   it('requires the three buckets for Cloud Storage', async () => {
-    vi.stubEnv('FUNDTRACE_STORAGE', 'gcs');
-    vi.stubEnv('FUNDTRACE_RAW_BUCKET', 'p-ingest-raw');
+    vi.stubEnv('FINRAKSHAK_AI_STORAGE', 'gcs');
+    vi.stubEnv('FINRAKSHAK_AI_RAW_BUCKET', 'p-ingest-raw');
     const c = await freshConfig();
-    expect(() => c.getConfig()).toThrow(/FUNDTRACE_STATE_BUCKET is required/);
+    expect(() => c.getConfig()).toThrow(/FINRAKSHAK_AI_STATE_BUCKET is required/);
   });
 
   it('accepts a full Cloud Storage configuration', async () => {
-    vi.stubEnv('FUNDTRACE_STORAGE', 'gcs');
-    vi.stubEnv('FUNDTRACE_RAW_BUCKET', 'p-raw');
-    vi.stubEnv('FUNDTRACE_STATE_BUCKET', 'p-state');
-    vi.stubEnv('FUNDTRACE_PUBLISH_BUCKET', 'p-pub');
-    vi.stubEnv('FUNDTRACE_PROJECT_ID', 'p');
+    vi.stubEnv('FINRAKSHAK_AI_STORAGE', 'gcs');
+    vi.stubEnv('FINRAKSHAK_AI_RAW_BUCKET', 'p-raw');
+    vi.stubEnv('FINRAKSHAK_AI_STATE_BUCKET', 'p-state');
+    vi.stubEnv('FINRAKSHAK_AI_PUBLISH_BUCKET', 'p-pub');
+    vi.stubEnv('FINRAKSHAK_AI_PROJECT_ID', 'p');
     const c = await freshConfig();
     expect(c.getConfig().storage).toEqual({
       kind: 'gcs',
@@ -55,7 +55,7 @@ describe('ingest config', () => {
   });
 
   it('rejects out-of-range pacing (polite crawling, B-35)', async () => {
-    vi.stubEnv('FUNDTRACE_MIN_DELAY_MS', '100');
+    vi.stubEnv('FINRAKSHAK_AI_MIN_DELAY_MS', '100');
     const c = await freshConfig();
     expect(() => c.getConfig()).toThrow();
   });

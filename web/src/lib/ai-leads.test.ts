@@ -1,4 +1,4 @@
-import type { AnalyseApplicationResult, InvestigateApplicationResult } from '@fund-tracker/shared';
+import type { AnalyseApplicationResult, InvestigateApplicationResult } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import type { Finding } from './checks.js';
 import {

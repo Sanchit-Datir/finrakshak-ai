@@ -1,4 +1,4 @@
-import { CaseIdSchema, PatternIdSchema, type TimelineEvent } from '@fund-tracker/shared';
+import { CaseIdSchema, PatternIdSchema, type TimelineEvent } from '@finrakshak-ai/shared';
 import { z } from 'zod';
 import type { LoopTool } from '../ai/toolLoop.js';
 import type { Candidate, MineResult } from './candidates.js';

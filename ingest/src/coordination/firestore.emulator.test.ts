@@ -1,6 +1,6 @@
 import { Timestamp, type DocumentReference } from '@google-cloud/firestore';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
-import { SourceIdSchema, type ExtractionRecord } from '@fund-tracker/shared';
+import { SourceIdSchema, type ExtractionRecord } from '@finrakshak-ai/shared';
 import { buildRecord, RUN_AT, sourceRecord } from '../test/fixtures.js';
 import { clearFirestore, emulatorFirestore } from '../test/emulator.js';
 import { FirestoreLeaseManager, LEASE_COLLECTION } from './firestoreLease.js';

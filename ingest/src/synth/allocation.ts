@@ -1,4 +1,4 @@
-import { SYNTH_ARCHETYPES, type SynthArchetype } from '@fund-tracker/shared';
+import { SYNTH_ARCHETYPES, type SynthArchetype } from '@finrakshak-ai/shared';
 
 /** The 200 customers of the plan (docs/plans/SYNTHETIC_TRANSACTIONS_PLAN.md), by scenario. */
 export const PLAN_ALLOCATION: Readonly<Record<SynthArchetype, number>> = {

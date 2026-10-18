@@ -1,4 +1,4 @@
-import type { GraphEdge, GraphLabBundle, GraphNode } from '@fund-tracker/shared';
+import type { GraphEdge, GraphLabBundle, GraphNode } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { indexBundle } from './graph-lab.js';
 import { isDistressed, lookupCompany } from './public-records.js';

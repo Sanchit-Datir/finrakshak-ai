@@ -3,12 +3,12 @@
 > **Evidence-backed early warnings for every rupee a bank lends, from application to repayment.
 > The AI proposes with cited evidence, code verifies, a person decides.**
 
-[![CI](https://github.com/Sanchit-Datir/fund-tracer/actions/workflows/ci.yml/badge.svg)](https://github.com/Sanchit-Datir/fund-tracer/actions/workflows/ci.yml)
+[![CI](https://github.com/Sanchit-Datir/finrakshak-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Sanchit-Datir/finrakshak-ai/actions/workflows/ci.yml)
 ![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![Gemini on Vertex AI](https://img.shields.io/badge/Gen%20AI-Gemini%20on%20Vertex%20AI-4285f4)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
-Repository: `fund-tracer` · Product: **FinRakshak AI** (earlier working name FundTrace AI) · Stack:
+Repository: `finrakshak-ai` · Product: **FinRakshak AI** · Stack:
 TypeScript monorepo on Google Cloud and Firebase.
 
 ---
@@ -19,20 +19,22 @@ TypeScript monorepo on Google Cloud and Firebase.
 2. [Opportunity](#2-opportunity)
 3. [Features](#3-features)
 4. [How Gen AI is used](#4-how-gen-ai-is-used)
-5. [Process flow and use-case diagrams](#5-process-flow-and-use-case-diagrams)
-6. [Wireframes and mock-ups](#6-wireframes-and-mock-ups)
-7. [Architecture](#7-architecture)
-8. [Technologies](#8-technologies)
-9. [Repository structure](#9-repository-structure)
-10. [Prerequisites and installation](#10-prerequisites-and-installation)
-11. [Usage guide](#11-usage-guide)
-12. [Estimated implementation cost](#12-estimated-implementation-cost)
-13. [Prototype performance and benchmarks](#13-prototype-performance-and-benchmarks)
-14. [Security, privacy and responsible AI](#14-security-privacy-and-responsible-ai)
-15. [Scalability and sustainability](#15-scalability-and-sustainability)
-16. [Additional details and future development](#16-additional-details-and-future-development)
-17. [Contribution guidelines](#17-contribution-guidelines)
-18. [License and credits](#18-license-and-credits)
+5. [API calls, datasets and AI](#5-api-calls-datasets-and-ai)
+6. [Agents](#6-agents)
+7. [Process flow and use-case diagrams](#7-process-flow-and-use-case-diagrams)
+8. [Wireframes and mock-ups](#8-wireframes-and-mock-ups)
+9. [Architecture](#9-architecture)
+10. [Technologies](#10-technologies)
+11. [Repository structure](#11-repository-structure)
+12. [Prerequisites and installation](#12-prerequisites-and-installation)
+13. [Usage guide](#13-usage-guide)
+14. [Estimated implementation cost](#14-estimated-implementation-cost)
+15. [Prototype performance and benchmarks](#15-prototype-performance-and-benchmarks)
+16. [Security, privacy and responsible AI](#16-security-privacy-and-responsible-ai)
+17. [Scalability and sustainability](#17-scalability-and-sustainability)
+18. [Additional details and future development](#18-additional-details-and-future-development)
+19. [Contribution guidelines](#19-contribution-guidelines)
+20. [License and credits](#20-license-and-credits)
 
 ---
 
@@ -196,7 +198,136 @@ Details: [`docs/COPILOT.md`](docs/COPILOT.md), [`docs/APPLICATION_AI_ANALYSIS.md
 
 ---
 
-## 5. Process flow and use-case diagrams
+## 5. API calls, datasets and AI
+
+Every call below is a real call made by the deployed system: the browser calls our Cloud Functions,
+the functions call **Gemini on Vertex AI** and read Firestore and Cloud Storage, and the daily
+pipeline downloads **official public records** and loads them into **BigQuery**. Nothing in this
+section is a sample or a placeholder.
+
+### How a request travels
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant B as Browser (web/)
+    participant H as Firebase Hosting
+    participant F as Cloud Functions (asia-south1)
+    participant FS as Firestore
+    participant V as Vertex AI (Gemini)
+    participant G as Cloud Storage (publish bucket)
+    B->>F: httpsCallable("assistRecord", payload) + ID token + App Check token
+    F->>F: request.auth → zod input → ownership → daily AI limit
+    F->>FS: read profile / usage counter
+    F->>V: models.generateContent (ADC, no API key)
+    V-->>F: JSON reply
+    F->>F: zod output + grounding / number check
+    F-->>B: zod-typed result
+    B->>H: GET /data/public-records/** (same origin)
+    H->>F: rewrite → publicData
+    F->>G: read the published public-records bundle
+    G-->>B: JSON (signed-in users only)
+```
+
+### Our APIs (Cloud Functions, `functions/src/`)
+
+The web app calls these with `httpsCallable` from `@firebase/functions` (`web/src/lib/cloud/`).
+Every callable checks `request.auth`, validates input with zod, enforces App Check
+(`enforceAppCheck: true`), authorises the caller and returns a zod-typed result.
+
+| Endpoint                 | Type     | Called by                                                         | What it does                                                                                                            | External calls                               |
+| ------------------------ | -------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| `assistRecord`           | callable | FinRakshak Copilot (Ctrl/⌘ J)                                     | Answers a question about the record on screen from ≤ 60 numbered facts; every sentence must cite a fact                 | Vertex AI Gemini, Firestore                  |
+| `analyseApplication`     | callable | Risk step → _Analyse with Gemini_                                 | Risk summary, facts tied to recorded fields, one note per finding                                                       | Vertex AI Gemini, Firestore                  |
+| `investigateApplication` | callable | Risk step → _Investigate with AI_                                 | Gemini tool loop (≤ 10 turns, ≤ 8 reads) over 8 tools; code verifies every citation, quote and number                   | Vertex AI Gemini (function calling)          |
+| `askGemini`              | callable | `web/src/lib/cloud/gemini.ts`                                     | One short prompt and reply (connection check for the model)                                                             | Vertex AI Gemini                             |
+| `getRiskScores`          | callable | Risk scores page                                                  | Reads the monthly risk scores written by the scoring job                                                                | Firestore                                    |
+| `decideProposal`         | callable | Administrator → ingestion agent proposals                         | Approves or rejects an action the ingestion agent proposed                                                              | Firestore                                    |
+| `decidePattern`          | callable | Administrator → pattern miner proposals                           | Approves or rejects a risk pattern the miner proposed                                                                   | Firestore                                    |
+| `getProfile`             | callable | Sign-in                                                           | Returns the user's role, branch and AI access                                                                           | Firestore                                    |
+| `health`                 | callable | Deploy check                                                      | Liveness                                                                                                                | —                                            |
+| `publicData`             | HTTP     | Public-records check, watch and graph (`/data/public-records/**`) | Serves the latest published public-records bundle to signed-in users, same origin so the CSP stays `connect-src 'self'` | Cloud Storage (`fund-tracer-ingest-publish`) |
+
+### AI: Gemini on Vertex AI
+
+| Setting  | Value                                                                                                                                                  |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| SDK      | `@google/genai` → `new GoogleGenAI({ vertexai: true, project, location })` (`functions/src/services/gemini.ts`)                                        |
+| Model    | `gemini-3.1-flash-lite` (`GEMINI_MODEL`), location `global` (`VERTEX_LOCATION`)                                                                        |
+| Auth     | Application Default Credentials of the function's service account (`roles/aiplatform.user`); **no API key in code or bundle**                          |
+| Call     | `models.generateContent` with JSON output; function calling for the investigator and the pipeline agents                                               |
+| Limits   | 30 s timeout, prompt and output caps, burst rate limit, per-user daily limit (`GEMINI_DAILY_LIMIT`), AI allow-list per user                            |
+| Pipeline | `ingest/src/ai/geminiModel.ts`, same SDK and model; settings `FINRAKSHAK_AI_AI_PROVIDER=vertex`, `FINRAKSHAK_AI_AI_MODEL`, `FINRAKSHAK_AI_AI_LOCATION` |
+
+### Public data sources (fetched by `ingest/src/sources/`)
+
+The pipeline reads only pages that `robots.txt` allows, identifies itself as
+`FinRakshakAIResearchBot`, waits between requests and keeps every original file (named by SHA-256)
+as evidence. Terms and access audit: [`data/registry/sources.json`](data/registry/sources.json).
+
+| Source                           | Endpoint fetched                                                                         | What we take                                     |
+| -------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| IBBI (insolvency)                | `https://ibbi.gov.in/public-announcement`                                                | CIRP and liquidation announcements               |
+| NFRA (audit regulator)           | `https://nfra.gov.in/document-category/orders/`                                          | Orders against auditors and companies            |
+| ED (Enforcement Directorate)     | `https://enforcementdirectorate.gov.in/umbraco/backoffice/api/PressReleaseApi/GetPublic` | Press releases: searches, attachments, arrests   |
+| RBI                              | `https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx`                             | Penalties and enforcement press releases         |
+| SFIO                             | `https://sfio.gov.in/document-category/prosecution/`                                     | Prosecution notices                              |
+| SEBI                             | `https://www.sebi.gov.in/sebiweb/ajax/home/getnewslistinfo.jsp`                          | Enforcement orders                               |
+| MCA company master (data.gov.in) | `https://www.data.gov.in/resource/registrars-companies-roc-wise-company-master-data`     | Company names, CINs, status (Maharashtra master) |
+
+### Datasets
+
+| Dataset                                  | Where                                                         | Contents                                                                                            |
+| ---------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Raw evidence                             | `data/raw/` locally; bucket `fund-tracer-ingest-raw` in cloud | Original PDFs, HTML and API responses, create-only                                                  |
+| Processed public-records dataset         | `data/processed/*.jsonl`; BigQuery dataset `fundtrace_public` | 18,286 entities, 57,382 relationships, 46,907 evidence claims, 19,624 case events, 19,628 documents |
+| Relationship graph                       | `data/graph/`, `web/public/graph-lab/`                        | Nodes, edges, networks and the graph-lab bundle the app loads                                       |
+| Published bundle                         | bucket `fund-tracer-ingest-publish` (versioned, rollback)     | What `publicData` serves to the app after the 5 publish gates pass                                  |
+| Synthetic loans and transactions (SYNTH) | `data/synthetic/`; BigQuery dataset `fundtrace_synth`         | Labelled synthetic loan book used to test risk scoring; never mixed with real data (B-54)           |
+| Firestore                                | collections behind default-deny rules                         | Profiles, AI usage counters, risk scores, agent runs, proposals, patterns, explanations             |
+
+The GCP project ID (`fund-tracer`), its buckets and BigQuery datasets keep their original names:
+Google Cloud project IDs, bucket names and dataset names cannot be renamed in place.
+
+---
+
+## 6. Agents
+
+Four Gemini agents run in FinRakshak AI. Each one gets a **closed list of tools**, sees user and
+public-record content only inside delimited data blocks, and can only **propose**: code verifies
+what it says, and a person approves anything that changes state.
+
+| Agent               | Runs in                                                | Trigger                                                  | Tools the model can call                                                                                                                                | Output and who decides                                                                        |
+| ------------------- | ------------------------------------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **AI investigator** | `investigateApplication` callable                      | Officer clicks _Investigate with AI_                     | `get_section`, `get_ratio`, `get_public_record_candidates`, `get_record`, `get_related_entities`, `submit_finding`, `submit_question`, `submit_summary` | Verified findings and draft questions; the officer approves each question                     |
+| **Ingestion agent** | Cloud Run job `ingest-agent` (`ingest/src/agent/`)     | Daily workflow, after the build; skipped on healthy days | `get_run_summary`, `get_delta`, `get_source_history`, `get_diagnostic_page`, `propose_action`, `submit_review`                                          | Run review + allowlisted action proposals; the owner approves via `decideProposal`            |
+| **Pattern miner**   | Cloud Run job `ingest-miner` (`ingest/src/miner/`)     | On demand (`minerCli` or the job), when switched on      | `get_candidate`, `get_case_timeline`, `propose_pattern`, `reject_candidate`, `submit_summary`                                                           | Back-tested pattern proposals; the owner approves via `decidePattern`                         |
+| **Risk explainer**  | Cloud Run job `ingest-explain` (`ingest/src/explain/`) | After the monthly risk-scoring job                       | None (single structured call over the alert's recorded reasons)                                                                                         | Plain-language explanation stored next to the alert; the number check rejects unknown numbers |
+
+```mermaid
+flowchart LR
+    SCH[Cloud Scheduler<br/>03:05 IST daily] --> WF[Cloud Workflows<br/>ingest-daily]
+    WF --> ACQ[acquire<br/>IBBI · NFRA · ED · RBI · SFIO · SEBI]
+    ACQ --> EXT[extract] --> BLD[build + 5 publish gates]
+    BLD --> PUB[(publish bucket)]
+    BLD --> BQ[(BigQuery fundtrace_public)]
+    BLD --> AG[Ingestion agent<br/>Gemini tool loop]
+    AG -- proposals --> FS[(Firestore)]
+    SCORE[score job] --> EXP[Risk explainer<br/>Gemini]
+    MIN[Pattern miner<br/>Gemini tool loop] -- proposals --> FS
+    FS --> ADM[Administrator approves<br/>decideProposal / decidePattern]
+```
+
+**Shared agent runtime:** `ingest/src/ai/toolLoop.ts` runs the model ↔ tool loop with hard caps on
+turns and tool calls (`FINRAKSHAK_AI_AI_MAX_TOOL_CALLS`, `FINRAKSHAK_AI_MINER_MAX_TOOL_CALLS`), input
+size (`FINRAKSHAK_AI_AI_MAX_INPUT_CHARS`) and output tokens. Each agent is switched on per job
+(`FINRAKSHAK_AI_AGENT_ENABLED`, `FINRAKSHAK_AI_MINER_ENABLED`, `FINRAKSHAK_AI_EXPLAIN_ENABLED`), and
+logs hold counts only. Plans: [`docs/plans/AGENTS_PLAN.md`](docs/plans/AGENTS_PLAN.md),
+[`docs/ingestion-agent-readme.md`](docs/ingestion-agent-readme.md).
+
+---
+
+## 7. Process flow and use-case diagrams
 
 ### Process flow: one loan, end to end
 
@@ -252,10 +383,10 @@ flowchart LR
 
 ---
 
-## 6. Wireframes and mock-ups
+## 8. Wireframes and mock-ups
 
 The screens below are wireframes of the working prototype, with illustrative values (run it with `npm run dev -w web` to see
-them live; the layout follows [`docs/fundtrace-ai-ui-spec.md`](docs/fundtrace-ai-ui-spec.md)).
+them live; the layout follows [`docs/finrakshak-ai-ui-spec.md`](docs/finrakshak-ai-ui-spec.md)).
 
 **Command center (dashboard)**
 
@@ -319,7 +450,7 @@ Playwright `mobile-360` project).
 
 ---
 
-## 7. Architecture
+## 9. Architecture
 
 ```mermaid
 flowchart TB
@@ -379,7 +510,7 @@ More: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/ingestion-agent-rea
 
 ---
 
-## 8. Technologies
+## 10. Technologies
 
 | Layer          | Technology                                                                                                                      | Why                                                                             |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -394,7 +525,7 @@ More: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/ingestion-agent-rea
 
 ---
 
-## 9. Repository structure
+## 11. Repository structure
 
 ```text
 web/                    React + Vite app (Firebase Hosting)
@@ -423,7 +554,7 @@ that must be handled are in [`docs/BOUNDARY_CONDITIONS.md`](docs/BOUNDARY_CONDIT
 
 ---
 
-## 10. Prerequisites and installation
+## 12. Prerequisites and installation
 
 **Prerequisites**
 
@@ -436,8 +567,8 @@ that must be handled are in [`docs/BOUNDARY_CONDITIONS.md`](docs/BOUNDARY_CONDIT
 **Install and verify**
 
 ```bash
-git clone https://github.com/Sanchit-Datir/fund-tracer.git
-cd fund-tracer
+git clone https://github.com/Sanchit-Datir/finrakshak-ai.git
+cd finrakshak-ai
 nvm use                      # Node 22
 npm ci                       # exact versions from the lockfile
 npm run check                # prettier + eslint (0 warnings) + tsc + all unit tests
@@ -448,7 +579,7 @@ npm run test:emulators       # Firestore rules + Firestore code against the emul
 **Public-records data for the app** (needed for the public-records check, the watch and the graph):
 
 ```bash
-npm run build -w @fund-tracker/shared && npm run build -w ingest
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 node ingest/dist/graphCli.js --web   # publishes web/public/graph-lab/ (git-ignored)
 ```
 
@@ -461,7 +592,7 @@ node ingest/dist/graphCli.js --web   # publishes web/public/graph-lab/ (git-igno
 
 ---
 
-## 11. Usage guide
+## 13. Usage guide
 
 ```bash
 npm run dev -w web           # http://localhost:5173 → "Continue with quick sign-in"
@@ -497,7 +628,7 @@ Other commands:
 
 ---
 
-## 12. Estimated implementation cost
+## 14. Estimated implementation cost
 
 **Running cost (prototype volume, per month)** — from [`docs/COST_GUIDELINES.md`](docs/COST_GUIDELINES.md),
 region `asia-south1`; confirm against the first month's bill.
@@ -535,7 +666,7 @@ branches.
 
 ---
 
-## 13. Prototype performance and benchmarks
+## 15. Prototype performance and benchmarks
 
 All numbers below were measured on this repository; nothing here comes from a real bank.
 The full measured report (speed, memory, scaling, web, APIs and limits) is
@@ -605,7 +736,7 @@ ran on.
 
 ---
 
-## 14. Security, privacy and responsible AI
+## 16. Security, privacy and responsible AI
 
 - **Leads, not verdicts:** status wording is fixed (Routine review / Needs attention / Urgent
   review), and verdict words such as "fraud", "scam" or "guilty" are blocked in AI output.
@@ -623,7 +754,7 @@ Full threat table: [`SECURITY.md`](SECURITY.md).
 
 ---
 
-## 15. Scalability and sustainability
+## 17. Scalability and sustainability
 
 - **Serverless everywhere:** functions and Cloud Run jobs scale to zero, with `maxInstances` caps.
   Firestore and BigQuery grow with data, and there are no always-on servers.
@@ -640,7 +771,7 @@ Full threat table: [`SECURITY.md`](SECURITY.md).
 
 ---
 
-## 16. Additional details and future development
+## 18. Additional details and future development
 
 **Next steps**
 
@@ -661,7 +792,7 @@ Full threat table: [`SECURITY.md`](SECURITY.md).
 
 ---
 
-## 17. Contribution guidelines
+## 19. Contribution guidelines
 
 Contributions are welcome. Read [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`CLAUDE.md`](CLAUDE.md)
 first. In short:
@@ -679,7 +810,7 @@ Report security issues privately (see [`SECURITY.md`](SECURITY.md)).
 
 ---
 
-## 18. License and credits
+## 20. License and credits
 
 Released under the [MIT License](LICENSE).
 

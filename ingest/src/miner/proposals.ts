@@ -3,7 +3,7 @@ import {
   PATTERN_SCHEMA_VERSION,
   PatternProposalSchema,
   type PatternProposal,
-} from '@fund-tracker/shared';
+} from '@finrakshak-ai/shared';
 import type { Candidate, MineResult } from './candidates.js';
 import { sha256Hex } from './hash.js';
 import { templatedWording, type PatternWording } from './wording.js';

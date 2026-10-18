@@ -1,4 +1,4 @@
-import type { AssistSubjectKind, AssistTask } from '@fund-tracker/shared';
+import type { AssistSubjectKind, AssistTask } from '@finrakshak-ai/shared';
 import { FileText, ListChecks, Mail, Route, ScanSearch, type LucideIcon } from 'lucide-react';
 
 export const TASK_LABEL: Record<AssistTask, string> = {

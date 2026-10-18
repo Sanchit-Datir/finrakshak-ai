@@ -1,4 +1,4 @@
-import { PatternProposalSchema } from '@fund-tracker/shared';
+import { PatternProposalSchema } from '@finrakshak-ai/shared';
 import { describe, expect, it } from 'vitest';
 import { patternProposalId, planProposals, toPatternProposal } from './proposals.js';
 import { MemoryPatternProposalStore } from './store.js';

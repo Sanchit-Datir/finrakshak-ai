@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { AgentProposal, IngestRun, RunReview, SourceId } from '@fund-tracker/shared';
+import type { AgentProposal, IngestRun, RunReview, SourceId } from '@finrakshak-ai/shared';
 import { envelope, NO_USAGE } from '../ai/agentRuns.js';
 import { readAiConfig, type AiConfig } from '../ai/config.js';
 import { modelFor } from '../ai/models.js';

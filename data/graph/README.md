@@ -103,7 +103,7 @@ Each scenario checks one benign or ambiguous pattern. They are asserted in
 
 ```bash
 npm ci
-npm run build -w @fund-tracker/shared && npm run build -w ingest
+npm run build -w @finrakshak-ai/shared && npm run build -w ingest
 node ingest/dist/graphCli.js          # rewrite data/graph/ only
 node ingest/dist/graphCli.js --web    # ...and publish it to web/public/graph-lab/ (git-ignored)
 npm run dev -w web                    # http://localhost:5173 → demo sign-in → Graph Lab (prototype)

@@ -1,4 +1,4 @@
-import type { Money, SourceId } from '@fund-tracker/shared';
+import type { Money, SourceId } from '@finrakshak-ai/shared';
 import { excerptAround, findAmounts, findCins, findCompanyNames } from '../extract/patterns.js';
 
 export interface TypedAmount {
