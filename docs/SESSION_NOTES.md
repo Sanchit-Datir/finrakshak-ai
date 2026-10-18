@@ -34,10 +34,17 @@ prefix `FINRAKSHAK_AI_` (was `FUNDTRACE_`), skill `.claude/skills/finrakshak-ai-
 sessions start fresh), emulator project `demo-finrakshak-ai`, repo URLs and display names. **Kept on
 purpose** (Google Cloud cannot rename them in place): project ID `fund-tracer` and everything derived
 from it (Hosting site, `*.web.app`, functions URL, service accounts, buckets `fund-tracer-ingest-*`)
-and the BigQuery datasets `fundtrace`, `fundtrace_public(_dryrun)`, `fundtrace_synth`. **Owner step:**
-redeploy the ingest jobs and workflow together (`scripts/deploy-ingest.sh`, which uses
-`--set-env-vars`) so the jobs get the new env-var names. README gained sections 5 (API calls,
-datasets and AI) and 6 (Agents).
+and the BigQuery datasets `fundtrace`, `fundtrace_public(_dryrun)`, `fundtrace_synth`. The ingest jobs pick up
+the new env-var names on the next deploy from `main` (`INGEST_ENABLED=true`: `scripts/deploy-ingest.sh`
+sets every variable with `--set-env-vars` and redeploys the workflow in the same step). README gained
+sections 5 (API calls, datasets and AI) and 6 (Agents).
+
+**Deploys blocked since the GitHub repo rename (18 Oct 2026, owner step):** the Workload Identity
+provider only accepts `assertion.repository == 'Sanchit-Datir/fund-tracer'`, so every GitHub Actions
+login to GCP now fails ("rejected by the attribute condition"): previews, live deploys and the
+emergency-stop button. The site keeps serving the last deploy. Fix: run
+`scripts/setup-gcp.sh fund-tracer` from this branch in Cloud Shell (it now resets the condition and
+adds the preview and stop bindings for `Sanchit-Datir/finrakshak-ai`), then re-run the failed Deploy.
 
 ## What exists
 

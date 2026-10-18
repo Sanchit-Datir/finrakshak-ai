@@ -128,10 +128,12 @@ gcloud iam workload-identity-pools providers describe "$PROVIDER" --location glo
     --issuer-uri "https://token.actions.githubusercontent.com" \
     --attribute-mapping "$ATTRIBUTE_MAPPING" \
     --attribute-condition "assertion.repository == '$REPO'"
-# Providers created by an older version of this script lack the workflow claim: add it (safe to repeat).
+# Providers created by an older version of this script lack the workflow claim: add it. The condition is
+# reset too, so a renamed GitHub repo (fund-tracer → finrakshak-ai) is accepted again (safe to repeat).
 gcloud iam workload-identity-pools providers update-oidc "$PROVIDER" --location global \
   --workload-identity-pool "$POOL" --project "$PROJECT_ID" \
-  --attribute-mapping "$ATTRIBUTE_MAPPING" >/dev/null
+  --attribute-mapping "$ATTRIBUTE_MAPPING" \
+  --attribute-condition "assertion.repository == '$REPO'" >/dev/null
 
 # Previews: any run from this repo. Deploys: only runs on main (the provider already pins the repo).
 gcloud iam service-accounts add-iam-policy-binding "$PREVIEW_SA" --project "$PROJECT_ID" \
