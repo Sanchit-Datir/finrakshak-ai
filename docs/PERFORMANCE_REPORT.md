@@ -111,19 +111,19 @@ Jai Corp (1 alert, ED attachment) all pass, as do the risk-scores page and 2 sec
 
 ## 5. Speed, memory and scalability
 
-| Step                                                               | Time                                              | Peak memory |
-| ------------------------------------------------------------------ | ------------------------------------------------- | ----------- |
-| `npm ci` (1,058 packages)                                          | 24.6 s                                            | –           |
-| `npm run build` (5 workspaces)                                     | 39.9 s                                            | 940 MB      |
-| `npm run check` (format, lint, types, tests)                       | 189.8 s                                           | 2.5 GB      |
-| Unit tests only: shared / functions / ingest / web                 | 3.2 s / 5.0 s / 22.2 s / 5.8 s (web now 294 tests after the latest `main`)                    | –           |
-| `npm run e2e` (build, preview, 6 scenarios)                        | 55.4 s                                            | 977 MB      |
-| Graph build (`graphCli --web`)                                     | 9.2 s                                             | 419 MB      |
-| Synthetic data, 200 loans (18,071 transactions)                    | 1.0 s                                             | 118 MB      |
-| Synthetic data, 1,000 loans (91,532 transactions)                  | 3.7 s                                             | 228 MB      |
-| **Risk-scoring replay, 200 loans × 24 months** (3,690 loan-months) | **30.6 s** (≈ 120 loan-months/s)                  | 155 MB      |
-| Risk-scoring replay, 1,000 loans × 24 months (18,450 loan-months)  | **761 s** (≈ 24 loan-months/s)                    | 390 MB      |
-| Risk-scoring replay, 5,000 loans                                   | stopped after 10 minutes; projected several hours | –           |
+| Step                                                               | Time                                                                       | Peak memory |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------- | ----------- |
+| `npm ci` (1,058 packages)                                          | 24.6 s                                                                     | –           |
+| `npm run build` (5 workspaces)                                     | 39.9 s                                                                     | 940 MB      |
+| `npm run check` (format, lint, types, tests)                       | 189.8 s                                                                    | 2.5 GB      |
+| Unit tests only: shared / functions / ingest / web                 | 3.2 s / 5.0 s / 22.2 s / 5.8 s (web now 294 tests after the latest `main`) | –           |
+| `npm run e2e` (build, preview, 6 scenarios)                        | 55.4 s                                                                     | 977 MB      |
+| Graph build (`graphCli --web`)                                     | 9.2 s                                                                      | 419 MB      |
+| Synthetic data, 200 loans (18,071 transactions)                    | 1.0 s                                                                      | 118 MB      |
+| Synthetic data, 1,000 loans (91,532 transactions)                  | 3.7 s                                                                      | 228 MB      |
+| **Risk-scoring replay, 200 loans × 24 months** (3,690 loan-months) | **30.6 s** (≈ 120 loan-months/s)                                           | 155 MB      |
+| Risk-scoring replay, 1,000 loans × 24 months (18,450 loan-months)  | **761 s** (≈ 24 loan-months/s)                                             | 390 MB      |
+| Risk-scoring replay, 5,000 loans                                   | stopped after 10 minutes; projected several hours                          | –           |
 
 **Finding: the scoring replay grows with loans × transactions.** For every loan in every replayed month,
 `byAccount` in `packages/shared/src/risk/scoring/run.ts` filters the whole transaction list. Five times
