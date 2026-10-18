@@ -538,6 +538,8 @@ branches.
 ## 13. Prototype performance and benchmarks
 
 All numbers below were measured on this repository; nothing here comes from a real bank.
+The full measured report (speed, memory, scaling, web, APIs and limits) is
+[`docs/PERFORMANCE_REPORT.md`](docs/PERFORMANCE_REPORT.md).
 
 **Quality gate (every commit, enforced in CI)**
 

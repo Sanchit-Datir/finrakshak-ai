@@ -170,6 +170,10 @@ the scripts are being added; remove that note once `bench/` exists. Owner approv
 (under US$1) and a live run. Open for the owner: the `roles/aiplatform.user` grant, credentials, TEST
 users, an App Check debug token, and how to fit ~100 model calls under the daily limit of 30 (B-15).
 
+**Report measured (18 Oct 2026):** `docs/PERFORMANCE_REPORT.md` (offline parts; live API and Gemini
+blocked by App Check). Finding for the owner: the scoring replay grows with loans × transactions
+(`byAccount` in `packages/shared/src/risk/scoring/run.ts`): 200 loans 31 s, 1,000 loans 761 s. Not fixed.
+
 ## Open decisions and next ideas
 
 - **New loan opens the form directly (18 Oct 2026, branch `ui/loan-page-layout`):** the form path is
