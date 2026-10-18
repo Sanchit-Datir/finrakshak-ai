@@ -36,13 +36,11 @@ describe('application checks on demo data', () => {
     expect(reviewPriority(app('A-1001'), db)).toBe('routine');
     expect(rules('A-1001')).toEqual(['duplicate_survey']);
   });
-  it('A-1002 surfaces DOB, land-area and encumbrance conflicts', () => {
+  it('A-1002 surfaces the DOB conflict and incomplete-document findings', () => {
     const r = rules('A-1002');
     expect(r).toEqual(
       expect.arrayContaining([
         'dob_conflict',
-        'land_area',
-        'encumbrance',
         'missing_documents',
         'unreviewed_fields',
         'unclear_fields',

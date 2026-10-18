@@ -456,8 +456,8 @@ it, so the same data always gives the same score. Methodology:
   urgent: applicant in public records 70; relationships to open
   investigations 50; customer in public records, survey number or
   warehouse receipt reuse 45; declared income vs bank credits 30; name,
-  date of birth, existing charges on the 7/12, public-records check out
-  of date or not run 25; land area vs 7/12 20; unclear fields, missing
+  date of birth, public-records check out
+  of date or not run 25; unclear fields, missing
   documents 8; required fields, loan purpose, failed documents,
   unreviewed fields or sections 5; any check not listed 30.
 - A milder finding of the same check adds less: Needs attention 60%,

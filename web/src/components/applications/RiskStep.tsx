@@ -1,8 +1,14 @@
-import { ArrowLeft, CircleCheck, ClipboardCheck, Play, Send } from 'lucide-react';
+import { ArrowLeft, CircleCheck, CircleDashed, ClipboardCheck, Play, Send } from 'lucide-react';
 import { useState } from 'react';
 import { PRIORITY_HELP } from '../../domain/labels.js';
 import type { Application, Db } from '../../domain/schemas.js';
-import { CHECK_NAMES, reviewPriority, runChecks } from '../../lib/checks.js';
+import {
+  CHECK_NAMES,
+  checkCoverage,
+  applicationDocs,
+  reviewPriority,
+  runChecks,
+} from '../../lib/checks.js';
 import { checkPublicRecords, loadPublicRecords } from '../../lib/public-records.js';
 import { publicRecordsInputsKey } from '../../lib/public-records-findings.js';
 import { recordChecksRun, recordPublicRecordsCheck } from '../../state/actions.js';
@@ -33,6 +39,7 @@ export function RiskStep({
   const [ran, setRan] = useState(app.checksRunAt !== null);
   const findings = runChecks(app, db);
   const priority = reviewPriority(app, db);
+  const coverage = checkCoverage({ app, docs: applicationDocs(app, db), db });
   const [running, setRunning] = useState(false);
   // Business applicants: Run checks also runs the public-records check when missing or stale.
   const needsPublicRecords =
@@ -61,13 +68,18 @@ export function RiskStep({
       return false;
     }
   };
+  const withInput = (recordsRan: boolean): number =>
+    coverage.filter((c) => c.status === 'ran').length +
+    (recordsRan && coverage.some((c) => c.name.startsWith('Public records') && c.status !== 'ran')
+      ? 1
+      : 0);
   const run = async (): Promise<void> => {
     setRunning(true);
     const withRecords = needsPublicRecords && (await runPublicRecords());
     recordChecksRun(
       app.id,
       actor,
-      `${CHECK_NAMES.length} deterministic checks${withRecords ? ' incl. public-records check' : ''}`,
+      `${CHECK_NAMES.length} deterministic checks, ${withInput(withRecords)} with input${withRecords ? ' incl. public-records check' : ''}`,
     );
     setRan(true);
     setRunning(false);
@@ -90,11 +102,25 @@ export function RiskStep({
             subtitle="Deterministic rules that run in your browser on this application’s saved data and reviewed document fields."
           />
           <ul className="grid grid-cols-1 gap-1 px-5 pb-4 text-sm sm:grid-cols-2">
-            {CHECK_NAMES.map((n) => (
-              <li key={n} className="flex items-center gap-2">
-                <CircleCheck className={ran ? 'text-ok size-4' : 'text-line size-4'} aria-hidden />
-                {n}
-                <span className="sr-only">{ran ? '(ran)' : '(not run)'}</span>
+            {coverage.map((c) => (
+              <li key={c.name} className="flex items-start gap-2">
+                {ran && c.status === 'ran' ? (
+                  <CircleCheck className="text-ok mt-0.5 size-4 shrink-0" aria-hidden />
+                ) : (
+                  <CircleDashed className="text-muted mt-0.5 size-4 shrink-0" aria-hidden />
+                )}
+                <span>
+                  {c.name}
+                  {ran && c.status === 'no_input' && (
+                    <span className="text-muted block text-xs">
+                      Nothing to compare: {c.reason.charAt(0).toLowerCase()}
+                      {c.reason.slice(1)}
+                    </span>
+                  )}
+                  <span className="sr-only">
+                    {!ran ? '(not run)' : c.status === 'ran' ? '(ran)' : '(no input, not run)'}
+                  </span>
+                </span>
               </li>
             ))}
           </ul>
