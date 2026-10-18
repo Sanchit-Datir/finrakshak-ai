@@ -32,6 +32,7 @@
     "demo:1": "npm run demo:1 -w e2e --",
     "demo:2": "npm run demo:2 -w e2e --",
     "demo:3": "npm run demo:3 -w e2e --",
+    "demo:all": "npm run demo:1 && npm run demo:2 && npm run demo:3",
     "audit:prod": "npm audit --omit=dev --audit-level=low",
     "audit:all": "npm audit --audit-level=critical",
     "test:e2e": "npm run test:e2e -w web"

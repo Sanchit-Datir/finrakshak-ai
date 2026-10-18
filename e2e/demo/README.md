@@ -4,6 +4,31 @@ Playwright scripts that play the three showcase scenarios in a visible browser, 
 you can screen-record a demo of the prototype. Each scenario is its own script and starts from the
 sign-in page in a fresh browser. A small local launcher page starts them with one click.
 
+**Where things run:** the app is the hosted site, **https://finrakshak-ai.web.app** (`DEMO_BASE_URL`);
+nothing of the app is built or served on your computer. Playwright only opens a browser window on
+your computer, goes to that URL and clicks through it, so your screen recorder can capture it.
+
+## Quick start
+
+Mac or Linux:
+
+```bash
+scripts/run-demo.sh        # launcher page with a Start button per scenario
+scripts/run-demo.sh 1      # or 2, 3: play one scenario
+scripts/run-demo.sh all    # play 1, 2 and 3 one after another
+```
+
+Windows (PowerShell):
+
+```powershell
+.\scripts\run-demo.ps1        # launcher
+.\scripts\run-demo.ps1 2      # one scenario; "all" plays the three
+```
+
+The first run installs the dependencies and Playwright's Chromium, then asks for the demo account's
+password (saved only in the git-ignored `e2e/demo/.env`; press Enter to use quick sign-in instead).
+Needs Node.js 22.6 or later and Git.
+
 While a scenario plays, the page shows:
 
 - a **title card** at the start and a **summary card** at the end;
@@ -14,66 +39,53 @@ While a scenario plays, the page shows:
 The overlay never takes clicks and is not part of the app: it exists only in the browser that the
 script drives.
 
-| #   | Script                                                               | Story                                                                                                                                                                                                                |
-| --- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `scenarios/scenario-1-new-loan-trade-credit-chain.demo.ts`           | Pre-sanction. New application for Maheep Marketing; the public-records check finds the chain Deep Star → Navmi → Maruti Strips → Yatin Steels (liquidation) and 36% of receivables at risk. Then Gemini and Copilot. |
-| 2   | `scenarios/scenario-2-advantage-overseas-after-disbursement.demo.ts` | Post-disbursement. TEST loan L-2023-0601: six records after disbursement (CIRP, liquidation, ED search, three ED attachments) raised automatically after sign-in; MCA still says Active.                             |
-| 3   | `scenarios/scenario-3-jai-corp-sudden-enforcement.demo.ts`           | Post-disbursement. TEST loan L-2024-0401: clean at onboarding, then an ED attachment of ₹230 crore (6 Oct 2026) raises one Urgent review alert.                                                                      |
+| #   | Script                                                               | Story                                                                                                                                                                                                                                                                   |
+| --- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `scenarios/scenario-1-new-loan-trade-credit-chain.demo.ts`           | Pre-sanction. New application for Maheep Marketing; the public-records check finds the chain Deep Star → Navmi → Maruti Strips → Yatin Steels (liquidation) and 36% of receivables at risk. Then the AI investigator, the attention score, Gemini analysis and Copilot. |
+| 2   | `scenarios/scenario-2-advantage-overseas-after-disbursement.demo.ts` | Post-disbursement. TEST loan L-2023-0601: six records after disbursement (CIRP, liquidation, ED search, three ED attachments) raised automatically after sign-in; MCA still says Active.                                                                                |
+| 3   | `scenarios/scenario-3-jai-corp-sudden-enforcement.demo.ts`           | Post-disbursement. TEST loan L-2024-0401: clean at onboarding, then an ED attachment of ₹230 crore (6 Oct 2026) raises one Urgent review alert.                                                                                                                         |
 
 Inputs and expectations come from the e2e scenarios (`e2e/scenarios/<id>/scenario.ts`), so the
 demo and the tests stay in step. Counts are checked softly: if a newer public-records dataset
 changes a number, the video still plays to the end and the run reports the difference.
 
-## One-time setup
+## Run without the script
 
 ```bash
 npm ci
-npx playwright install chromium        # the browser the scripts drive (skip if already installed)
-cp e2e/demo/.env.example e2e/demo/.env # then put the password in DEMO_PASSWORD
+npm exec -w e2e -- playwright install chromium   # the browser the scripts drive
+cp e2e/demo/.env.example e2e/demo/.env           # then put the password in DEMO_PASSWORD
+npm run demo                                     # launcher, http://localhost:4400
+npm run demo:1                                   # or demo:2, demo:3, demo:all
+DEMO_PACE=slow DEMO_SIGN_IN=quick npm run demo:2 # any setting can be given like this
 ```
 
-`e2e/demo/.env` is git-ignored. Never commit the password. Node 22.6 or later is needed for the
-launcher.
+In the launcher, pick the settings on the right, start your screen recorder, then click **Start
+scenario N**. The browser opens maximised and plays the scenario; the launcher shows each step live
+and has a **Stop** button. Leave the mouse and keyboard alone while it plays.
 
-## Run
-
-**Launcher (recommended):**
-
-```bash
-npm run demo        # opens http://localhost:4400
-```
-
-Pick the settings on the right, start your screen recorder, then click **Start scenario N**. The
-browser opens maximised and plays the scenario; the launcher shows each step live and has a
-**Stop** button. Leave the mouse and keyboard alone while it plays.
-
-**Terminal:**
-
-```bash
-npm run demo:1      # or demo:2, demo:3
-DEMO_PACE=slow DEMO_SIGN_IN=quick npm run demo:2
-```
+`e2e/demo/.env` is git-ignored. Never commit the password.
 
 ## Settings
 
 Set them in the launcher, in `e2e/demo/.env`, or on the command line (that order wins over `.env`).
 
-| Variable                    | Default                       | Meaning                                                                                              |
-| --------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `DEMO_BASE_URL`             | `https://fund-tracer.web.app` | The app to drive. Change it here when the URL changes.                                               |
-| `DEMO_SIGN_IN`              | `account`                     | `account`: email and password. `quick`: the prototype's quick sign-in (synthetic data, no AI model). |
-| `DEMO_EMAIL`                | `manager@gmail.com`           | Account email.                                                                                       |
-| `DEMO_PASSWORD`             | (none)                        | Account password. Only in `.env` or the launcher.                                                    |
-| `DEMO_APPCHECK_DEBUG_TOKEN` | (none)                        | See "Sign-in is refused" below.                                                                      |
-| `DEMO_PACE`                 | `normal`                      | `slow` leaves room for a voice-over; `fast` is a dry run.                                            |
-| `DEMO_CAPTIONS`             | `on`                          | Captions and title cards. The cursor and ring always show.                                           |
-| `DEMO_AI`                   | `on`                          | The Gemini and FinRakshak Copilot steps.                                                             |
-| `DEMO_VIEWPORT`             | `auto`                        | `auto` fills the maximised window; or a fixed page size such as `1920x1080`.                         |
-| `DEMO_BROWSER`              | `chromium`                    | `chrome` or `msedge` use the browser installed on this computer.                                     |
-| `DEMO_RECORD`               | `off`                         | `on` also saves a Playwright video (1920×1080 unless `DEMO_VIEWPORT` is set).                        |
-| `DEMO_HOLD_SECONDS`         | `15`                          | How long the summary card stays before the browser closes.                                           |
-| `DEMO_HEADLESS`             | `off`                         | `on` runs without a window (checks only; not for recording).                                         |
-| `DEMO_LAUNCHER_PORT`        | `4400`                        | The launcher's port.                                                                                 |
+| Variable                    | Default                         | Meaning                                                                                              |
+| --------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `DEMO_BASE_URL`             | `https://finrakshak-ai.web.app` | The app to drive. Change it here when the URL changes.                                               |
+| `DEMO_SIGN_IN`              | `account`                       | `account`: email and password. `quick`: the prototype's quick sign-in (synthetic data, no AI model). |
+| `DEMO_EMAIL`                | `manager@gmail.com`             | Account email.                                                                                       |
+| `DEMO_PASSWORD`             | (none)                          | Account password. Only in `.env` or the launcher.                                                    |
+| `DEMO_APPCHECK_DEBUG_TOKEN` | (none)                          | See "Sign-in is refused" below.                                                                      |
+| `DEMO_PACE`                 | `normal`                        | `slow` leaves room for a voice-over; `fast` is a dry run.                                            |
+| `DEMO_CAPTIONS`             | `on`                            | Captions and title cards. The cursor and ring always show.                                           |
+| `DEMO_AI`                   | `on`                            | The Gemini and FinRakshak Copilot steps.                                                             |
+| `DEMO_VIEWPORT`             | `auto`                          | `auto` fills the maximised window; or a fixed page size such as `1920x1080`.                         |
+| `DEMO_BROWSER`              | `chromium`                      | `chrome` or `msedge` use the browser installed on this computer.                                     |
+| `DEMO_RECORD`               | `off`                           | `on` also saves a Playwright video (1920×1080 unless `DEMO_VIEWPORT` is set).                        |
+| `DEMO_HOLD_SECONDS`         | `15`                            | How long the summary card stays before the browser closes.                                           |
+| `DEMO_HEADLESS`             | `off`                           | `on` runs without a window (checks only; not for recording).                                         |
+| `DEMO_LAUNCHER_PORT`        | `4400`                          | The launcher's port.                                                                                 |
 
 Videos saved with `DEMO_RECORD=on` go to `e2e/demo/recordings/<time>/<test>/video.webm`
 (git-ignored). A screen recorder (OBS, the Xbox Game Bar, QuickTime, Loom) gives sharper video;
@@ -96,7 +108,7 @@ refuse a browser driven by automation. The script stops with the app's message a
 2. Use an **App Check debug token**: Firebase console → App Check → Apps → your web app → ⋮ →
    Manage debug tokens → Add debug token. Copy the token into `DEMO_APPCHECK_DEBUG_TOKEN` (or the
    launcher's Advanced section). It lets that browser pass App Check, so treat it like a password
-   and delete it after recording (B-67).
+   and delete it after recording (B-68).
 3. Record with **quick sign-in** (`DEMO_SIGN_IN=quick`). Everything works on the same demo data;
    the AI steps then show the app's labelled simulated output instead of calling Gemini.
 

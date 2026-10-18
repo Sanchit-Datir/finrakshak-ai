@@ -21,7 +21,7 @@ export const DEMO_SCENARIOS: readonly DemoScenario[] = [
       'Fills the application form (TEST values, no documents)',
       'Chain Deep Star → Navmi → Maruti Strips → Yatin Steels, with IBBI links',
       '₹18,00,000 of ₹50,00,000 receivables (36%) at risk: Urgent review',
-      'Gemini analysis and FinRakshak Copilot',
+      'AI investigator, attention score, Gemini analysis and FinRakshak Copilot',
     ],
     minutes: '4–5',
   },

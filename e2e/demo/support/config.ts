@@ -16,7 +16,7 @@ const DemoEnvSchema = z.object({
   DEMO_BASE_URL: z
     .string()
     .url()
-    .default('https://fund-tracer.web.app')
+    .default('https://finrakshak-ai.web.app')
     .transform((u) => u.replace(/\/+$/, '')),
   /** "account": email + password (the deployed app). "quick": the prototype's quick sign-in. */
   DEMO_SIGN_IN: z.enum(['account', 'quick']).default('account'),

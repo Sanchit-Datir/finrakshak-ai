@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { maheepTradeCreditChain as s } from '../../scenarios/maheep-trade-credit-chain/scenario.js';
 import { readDemoConfig } from '../support/config.js';
+import { runAnalysis, runInvestigator } from '../support/application-ai.js';
 import { createDirector, type Director } from '../support/director.js';
 import { askCopilot } from '../support/post-disbursement.js';
 import { signIn } from '../support/sign-in.js';
-import { firstVisible } from '../support/wait.js';
 
 /**
  * Demo video, scenario 1 (pre-sanction): Maheep Marketing applies for working capital against
@@ -78,43 +78,13 @@ async function showPriorityAndFinding(d: Director): Promise<void> {
   await d.pause(500);
 }
 
-/** Gemini on the recorded fields and findings; needs the cloud sign-in (else "Not connected"). */
-async function runGeminiAnalysis(d: Director): Promise<void> {
-  const { page } = d;
-  const button = page.getByRole('button', {
-    name: /^(Analyse with Gemini|Re-run analysis|Try again)$/,
-  });
-  const notConnected = page.getByText('Not connected — no AI analysis ran');
-  if ((await button.count()) === 0) {
-    await d.say('Quick sign-in has no cloud account, so no AI model is called here.');
-    await d.point(notConnected, 3000);
-    return;
-  }
-  await d.click(button);
-  const outcome = await firstVisible(
-    [
-      ['ready', page.locator('#ai-summary')],
-      ['failed', page.getByText('The AI analysis did not run')],
-    ],
-    120_000,
-  );
-  if (outcome !== 'ready') {
-    await d.say('The AI analysis did not finish this time; the checks above are unaffected.');
-    await d.pause(2500);
-    return;
-  }
-  await d.dismissToasts();
-  await d.point(page.locator('section[aria-labelledby="ai-summary"]'), 5000);
-  await d.point(page.locator('section[aria-labelledby="ai-notes"]'), 4000);
-}
-
 test('Scenario 1 · New loan: customer in liquidation at the end of a chain of unpaid dues', async ({
   page,
 }) => {
   const config = readDemoConfig();
   const d = await createDirector(page, config, {
     label: 'Scenario 1',
-    scenes: config.DEMO_AI ? 9 : 7,
+    scenes: config.DEMO_AI ? 10 : 7,
   });
   await d.goto('/login');
   await d.titleCard(
@@ -183,9 +153,14 @@ test('Scenario 1 · New loan: customer in liquidation at the end of a chain of u
 
   if (config.DEMO_AI) {
     await d.scene(
-      'AI-assisted analysis (Gemini)',
-      'Gemini summarises the recorded facts and findings. Nothing is decided by the AI.',
-      () => runGeminiAnalysis(d),
+      'AI investigator (Gemini)',
+      'Gemini reads the application, ratios and public-records shortlist through tools and proposes leads.',
+      () => runInvestigator(d),
+    );
+    await d.scene(
+      'Attention score and AI analysis',
+      'A code-computed attention score, then Gemini’s summary. Nothing is decided by the AI.',
+      () => runAnalysis(d),
     );
     await d.scene(
       'Submit, then ask FinRakshak Copilot',
