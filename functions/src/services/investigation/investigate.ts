@@ -4,7 +4,7 @@ import type {
 } from '@fund-tracker/shared';
 import { mockToolModel, type ToolCall, type ToolModel } from '../tool-model.js';
 import { LIMITS, SECTIONS } from './input.js';
-import { runToolLoop } from './loop.js';
+import { runToolLoop, type LoopStats } from './loop.js';
 import { investigatorTools, newCollector, type Collector } from './tools.js';
 import { indexBundle } from './verify.js';
 
@@ -66,7 +66,7 @@ export type InvestigationBody = Omit<
   'mock' | 'model' | 'investigatedAt' | 'remainingToday'
 >;
 
-function resultOf(c: Collector, toolCalls: number): InvestigationBody {
+function resultOf(c: Collector, stats: LoopStats): InvestigationBody {
   const rejected = [...c.rejections.values()].reduce((a, b) => a + b, 0);
   return {
     summary: c.summary ?? '',
@@ -77,14 +77,22 @@ function resultOf(c: Collector, toolCalls: number): InvestigationBody {
     rejections: [...c.rejections.entries()]
       .map(([reason, count]) => ({ reason, count }))
       .sort((a, b) => b.count - a.count || a.reason.localeCompare(b.reason)),
-    toolCalls,
+    toolCalls: stats.toolCalls,
+    modelCalls: stats.turns,
+    stoppedAtDailyLimit: stats.stoppedEarly,
   };
+}
+
+export interface InvestigateOptions {
+  readonly now?: () => number;
+  /** Counts the next model call against the daily limit; false stops the run (loop.ts). */
+  readonly beforeNextTurn?: () => Promise<boolean>;
 }
 
 export async function investigate(
   input: InvestigateApplicationInput,
   model: ToolModel,
-  now: () => number = Date.now,
+  opts: InvestigateOptions = {},
 ): Promise<InvestigationBody & { readonly summaryWithheld: boolean }> {
   checkSize(input);
   const c = newCollector(indexBundle(input));
@@ -94,9 +102,10 @@ export async function investigate(
     tools: investigatorTools(c),
     limits: { maxTurns: LIMITS.maxTurns, maxReadCalls: LIMITS.maxReadCalls, ...RUN_LIMITS },
     finished: () => c.summary !== null,
-    now,
+    now: opts.now ?? Date.now,
+    ...(opts.beforeNextTurn === undefined ? {} : { beforeNextTurn: opts.beforeNextTurn }),
   });
-  return { ...resultOf(c, stats.toolCalls), summaryWithheld: c.summaryWithheld };
+  return { ...resultOf(c, stats), summaryWithheld: c.summaryWithheld };
 }
 
 const call = (name: string, args: Record<string, unknown>): ToolCall => ({

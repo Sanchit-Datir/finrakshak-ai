@@ -18,7 +18,8 @@ import {
 import { defaultProfileStore } from '../services/profiles.js';
 import { createRateLimiter, type RateLimiter } from '../services/rate-limit.js';
 import type { ToolModel } from '../services/tool-model.js';
-import { firestoreUsageStore } from '../services/usage-limit.js';
+import { describeError } from '../services/log.js';
+import { consumeDailyQuota, firestoreUsageStore } from '../services/usage-limit.js';
 
 export interface InvestigateApplicationDeps extends BilledGateDeps {
   readonly limiter: RateLimiter;
@@ -49,6 +50,30 @@ function sizeChecked(data: unknown): ReturnType<typeof InputSchema.parse> {
 }
 
 /**
+ * Counts one more model call against today's limit (owner, 18 Oct 2026: every call counts and the
+ * limit is never crossed). Returns the calls left, or null when none is left or the lookup failed
+ * (fail closed: the run stops and keeps what was already verified).
+ */
+async function countNextCall(
+  deps: BilledGateDeps,
+  uid: string,
+  limit: number,
+  now: Date,
+): Promise<number | null> {
+  try {
+    const quota = await consumeDailyQuota(deps.usage, uid, limit, now);
+    if (!quota.allowed) logger.warn('investigateApplication: stopped at the daily limit', { uid });
+    return quota.allowed ? quota.remaining : null;
+  } catch (error) {
+    logger.error('investigateApplication: usage lookup failed mid-run', {
+      uid,
+      ...describeError(error),
+    });
+    return null;
+  }
+}
+
+/**
  * The bundle comes from the caller's own workspace (applications are not stored on the server), so
  * there is no stored resource to authorise beyond the signed-in, AI-enabled account (as
  * analyseApplication). Gates in order: sign-in, rate limit, input, size, allow-list + daily limit.
@@ -75,12 +100,22 @@ export async function investigateApplicationHandler(
   const input = sizeChecked(request.data);
   const env = getEnv();
   const mock = env.GEMINI_PROVIDER === 'mock';
-  const remainingToday = mock
+  // The first model call is counted here (allow-list + daily limit); every further one in the loop.
+  let remainingToday = mock
     ? null
     : await gateBilledCall(deps, uid, env.GEMINI_DAILY_LIMIT, 'investigateApplication');
+  const nextCall = async (): Promise<boolean> => {
+    const used = await countNextCall(deps, uid, env.GEMINI_DAILY_LIMIT, deps.now());
+    if (used !== null) remainingToday = used;
+    return used !== null;
+  };
   try {
     const model = mock ? mockModel(input) : (deps.model ?? geminiToolModel)();
-    const { summaryWithheld, ...result } = await investigate(input, model);
+    const { summaryWithheld, ...result } = await investigate(
+      input,
+      model,
+      mock ? {} : { beforeNextTurn: nextCall },
+    );
     // Counts only: never field values, names, claims or the model's text (B-16).
     logger.info('investigateApplication', {
       uid,
@@ -88,6 +123,8 @@ export async function investigateApplicationHandler(
       parties: input.parties.length,
       ratios: input.ratios.length,
       toolCalls: result.toolCalls,
+      modelCalls: result.modelCalls,
+      stoppedAtDailyLimit: result.stoppedAtDailyLimit,
       claims: result.claims,
       summaryWithheld,
       remainingToday,

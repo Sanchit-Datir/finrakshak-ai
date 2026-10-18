@@ -17,7 +17,7 @@ const read = call('get_section', { section: 'loan' });
 
 async function failure(model: ToolModel, now?: () => number): Promise<string> {
   try {
-    await investigate(BUNDLE, model, now);
+    await investigate(BUNDLE, model, now === undefined ? {} : { now });
     return 'ok';
   } catch (e) {
     if (e instanceof GeminiError) return e.message;
@@ -67,6 +67,16 @@ describe('investigate', () => {
     const model = scripted(Array.from({ length: LIMITS.maxTurns + 5 }, () => [read]));
     await investigate(BUNDLE, model);
     expect(model.seen).toBe(LIMITS.maxTurns);
+  });
+
+  it('asks before every model call after the first and stops when refused', async () => {
+    const model = scripted([[read], [read], [read]]);
+    let asked = 0;
+    const r = await investigate(BUNDLE, model, {
+      beforeNextTurn: () => Promise.resolve(++asked < 2),
+    });
+    expect(model.seen).toBe(2);
+    expect(r).toMatchObject({ modelCalls: 2, stoppedAtDailyLimit: true });
   });
 
   it('retries a malformed reply once, then fails', async () => {

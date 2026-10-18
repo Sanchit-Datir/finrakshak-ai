@@ -38,10 +38,17 @@ export interface LoopOptions {
   /** True once the model has submitted its summary. */
   finished(): boolean;
   now(): number;
+  /**
+   * Called before every model call after the first (which the caller already counted); false stops
+   * the run there and keeps what was accepted. Used to count each call against the daily limit.
+   */
+  beforeNextTurn?: () => Promise<boolean>;
 }
 
 export interface LoopStats {
   readonly turns: number;
+  /** True when beforeNextTurn refused another model call. */
+  readonly stoppedEarly: boolean;
   readonly toolCalls: number;
   readonly reads: number;
 }
@@ -101,9 +108,14 @@ export async function runToolLoop(model: ToolModel, opts: LoopOptions): Promise<
     opts.tools.map((t) => t.spec),
   );
   let results: ToolResult[] = [];
+  let stoppedEarly = false;
   while (!opts.finished() && s.turns < opts.limits.maxTurns) {
     if (opts.now() - start > opts.limits.deadlineMs)
       throw new GeminiError('The investigation took too long');
+    if (s.turns > 0 && opts.beforeNextTurn !== undefined && !(await opts.beforeNextTurn())) {
+      stoppedEarly = true;
+      break;
+    }
     const calls = await session.step(results);
     s.turns++;
     if (calls.length === 0) break;
@@ -113,5 +125,5 @@ export async function runToolLoop(model: ToolModel, opts: LoopOptions): Promise<
     if (handled.some((h) => h.malformed) && ++s.malformedReplies > 1)
       throw new GeminiError('Model replies were not in the expected shape twice');
   }
-  return { turns: s.turns, toolCalls: s.toolCalls, reads: s.reads };
+  return { turns: s.turns, stoppedEarly, toolCalls: s.toolCalls, reads: s.reads };
 }

@@ -32,6 +32,8 @@ const result = {
   claims: { made: 0, verified: 0, rejected: 0 },
   rejections: [],
   toolCalls: 0,
+  modelCalls: 0,
+  stoppedAtDailyLimit: false,
   remainingToday: null,
 };
 

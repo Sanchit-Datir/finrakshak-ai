@@ -52,7 +52,20 @@ export function InvestigationResult({
           <span className="text-muted text-xs">AI-proposed by {r.model}, checked by code</span>
         )}
         <span className="text-muted text-xs">{f.dateTime(r.investigatedAt)}</span>
+        {!r.mock && (
+          <span className="text-muted tabular text-xs">
+            {r.modelCalls} model call{r.modelCalls === 1 ? '' : 's'} counted against your daily AI
+            limit
+            {r.remainingToday === null ? '' : ` (${String(r.remainingToday)} left today)`}
+          </span>
+        )}
       </div>
+      {r.stoppedAtDailyLimit && (
+        <Notice tone="warn" title="Stopped at your daily AI limit">
+          The investigation stopped before it finished, so the limit was not crossed. The findings
+          below were verified before it stopped; run it again tomorrow for a complete result.
+        </Notice>
+      )}
       {stale && (
         <Notice tone="warn" title="Out of date">
           The application or its findings changed after this investigation. Its findings no longer

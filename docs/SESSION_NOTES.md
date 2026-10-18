@@ -104,7 +104,7 @@ facts from the recorded fields, a note per finding, a short summary; matched pat
 disbursement. Gemini on Vertex AI (owner switched from the AI Studio key on 18 Oct 2026; runtime account needs
 roles/aiplatform.user); mock
 locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:** budget limit first
-(B-15), whether names are masked too (B-64). Attention score 0–100 added (code-computed, top of the card), with a weight per kind of finding scaled by priority (owner, 18 Oct 2026; table in the doc). Not tuned on outcomes.
+(B-15). Names are not masked (owner, 18 Oct 2026). Attention score 0–100 added (code-computed, top of the card), with a weight per kind of finding scaled by priority (owner, 18 Oct 2026; table in the doc). Not tuned on outcomes.
 
 ## AI investigator (18 Oct 2026, branch `claude/ai-investigator-e63431` from `feat/application-ai-analysis`)
 
@@ -114,9 +114,11 @@ entities all made by code); Gemini reads it through 8 tools and proposes finding
 verifies every citation, quote and number and counts rejections. Verified findings add to the attention
 score as their own kinds (45/40/25/15, scaled by priority); mock and out-of-date ones do not. See
 `docs/AI_INVESTIGATOR.md` and **B-66** (B-65 is taken on another branch). Checked in the browser against the
-auth + functions emulators with the mock. **Open for the owner:** whether one investigation (up to 10
-model calls) should count as more than one use of the daily limit; whether names are masked (as B-64).
-Not committed yet.
+auth + functions emulators with the mock. **Owner decided (18 Oct 2026):** every model call counts
+against the daily limit and the limit is never crossed (the run stops and keeps what was verified); names
+are not masked (applies to B-64 too). **Open for the owner:** grant `roles/aiplatform.user` to the
+functions runtime account `728958349363-compute@developer.gserviceaccount.com` (it does not have it yet;
+the grant was not run from the session). Committed on the branch, not pushed.
 
 ## Open decisions and next ideas
 

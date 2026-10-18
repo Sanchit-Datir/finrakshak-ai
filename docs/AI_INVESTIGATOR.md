@@ -74,8 +74,12 @@ with verdict words, a score or an unknown number is withheld.
 - A reply whose arguments do not parse is reported back **once**; a second one fails the run. A cut-off
   reply (`MAX_TOKENS`), a model error, or the 100-second deadline fails the run: nothing partial is kept,
   and the card says "The AI service could not answer. Try again."
-- One investigation counts as **one** use of the daily AI limit, although it makes up to 10 model calls
-  (open for the owner, see B-66).
+- **Every model call counts** against the daily AI limit, and the limit is never crossed (owner, 18 Oct
+  2026). The first call is checked with the allow-list; before each further call one more use is taken.
+  When none is left (or the usage lookup fails) the run stops there, keeps what was already verified and
+  is marked "Stopped at your daily AI limit". The card shows the model calls counted and the uses left.
+- Names are sent unmasked (owner, 18 Oct 2026: no need to mask them); PAN, GSTIN and Udyam numbers stay
+  masked and date of birth, mobile and street address stay out (B-16).
 - Logs hold counts only (parties, ratios, tool calls, claims); never names, values or model text (B-16).
 
 ## Attention score
@@ -89,8 +93,12 @@ verified)". The AI never sets the number. Table: `docs/APPLICATION_AI_ANALYSIS.m
 
 - Locally, in tests and in the emulator the provider is `mock`: code scripts the tool calls from the
   bundle (`mockScript` in `investigate.ts`) and they run through the same loop and checks; nothing is sent.
-- Deployed: same steps as the analysis card (`docs/APPLICATION_AI_ANALYSIS.md` → Switching it on). The
-  runtime account needs `roles/aiplatform.user` (owner step, `scripts/setup-gcp.sh`).
+- Deployed: same steps as the analysis card (`docs/APPLICATION_AI_ANALYSIS.md` → Switching it on). All
+  functions run as `728958349363-compute@developer.gserviceaccount.com` (checked 18 Oct 2026), which then
+  had only `roles/cloudbuild.builds.builder` and `roles/datastore.user`. It needs the predefined
+  `roles/aiplatform.user` (call Vertex AI models; no new account or custom role is needed). Granting it is
+  the owner's step (`scripts/setup-gcp.sh`, or the one `gcloud projects add-iam-policy-binding` command in
+  `docs/APPLICATION_AI_ANALYSIS.md`).
 - Browser check done on 18 Oct 2026 against the auth + functions emulators (project `demo-fund-tracer`,
   mock provider): demo session shows Not connected; a run produces a verified possible/strong match with
   its evidence, a draft question that can be approved, out-of-date marking, no horizontal scroll at 360 px.

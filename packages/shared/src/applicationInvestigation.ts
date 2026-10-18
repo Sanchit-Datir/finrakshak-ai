@@ -217,6 +217,10 @@ export const InvestigateApplicationResultSchema = z.object({
     .array(z.object({ reason: z.enum(REJECTION_REASONS), count: z.number().int().positive() }))
     .max(REJECTION_REASONS.length),
   toolCalls: z.number().int().nonnegative(),
+  /** Model calls made; each billed one counts against the daily AI limit (owner, 18 Oct 2026). */
+  modelCalls: z.number().int().nonnegative(),
+  /** The run stopped early because the daily AI limit was reached; what was verified is kept. */
+  stoppedAtDailyLimit: z.boolean(),
   /** Billed calls left today; null when the mock answered. */
   remainingToday: z.number().int().nonnegative().nullable(),
 });

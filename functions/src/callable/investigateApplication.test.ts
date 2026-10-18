@@ -35,13 +35,16 @@ const goodModel = (): ToolModel =>
   ]);
 
 function deps(
-  opts: { allowed?: boolean; limit?: number; model?: () => ToolModel } = {},
+  opts: { allowed?: boolean; limit?: number; model?: () => ToolModel; usedToday?: number } = {},
 ): InvestigateApplicationDeps & { used: () => number; models: () => number } {
-  let calls = 0;
+  let calls = opts.usedToday ?? 0;
   let models = 0;
   const make = opts.model ?? goodModel;
   return {
-    usage: { tryIncrement: () => Promise.resolve(++calls) },
+    // Like the Firestore store: refuses at the limit, never counts past it.
+    usage: {
+      tryIncrement: (_uid, _day, limit) => Promise.resolve(calls >= limit ? undefined : ++calls),
+    },
     access: { isAllowed: () => Promise.resolve(opts.allowed ?? true) },
     limiter: createRateLimiter({ limit: opts.limit ?? 1_000, windowMs: 60_000 }),
     now: () => NOW,
@@ -114,6 +117,40 @@ describe('investigateApplication', () => {
       const logged = JSON.stringify(log.info.mock.calls);
       expect(logged).not.toContain('16,66,667');
       expect(logged).not.toContain('SYNTH');
+    });
+
+    it('counts every model call and stops at the daily limit without crossing it', async () => {
+      const finding = call('submit_finding', {
+        kind: 'implausible_numbers',
+        priority: 'routine',
+        statement: 'Loan per acre looks high.',
+        citations: [{ type: 'ratio', ref: 'loan_per_acre' }],
+      });
+      const read = call('get_section', { section: 'loan' });
+      const threeTurns = (): ToolModel => scripted([[finding], [read], [read]]);
+      const d = deps({ model: threeTurns, usedToday: 28 });
+      const r = await investigateApplicationHandler(req(BUNDLE), d);
+      expect(d.used()).toBe(30);
+      expect(r).toMatchObject({ modelCalls: 2, stoppedAtDailyLimit: true, remainingToday: 0 });
+      expect(r.findings).toHaveLength(1);
+    });
+
+    it('counts each call of a full run', async () => {
+      const read = call('get_section', { section: 'loan' });
+      const model = (): ToolModel =>
+        scripted([[read], [read], [call('submit_summary', { summary: 'Nothing.' })]]);
+      const d = deps({ model });
+      const r = await investigateApplicationHandler(req(BUNDLE), d);
+      expect(d.used()).toBe(3);
+      expect(r).toMatchObject({ modelCalls: 3, stoppedAtDailyLimit: false, remainingToday: 27 });
+    });
+
+    it('refuses a run when the daily limit is already used up', async () => {
+      const d = deps({ usedToday: 30 });
+      expect(await codeOf(investigateApplicationHandler(req(BUNDLE), d))).toBe(
+        'resource-exhausted',
+      );
+      expect(d.models()).toBe(0);
     });
 
     it('refuses an account without AI access before any model call', async () => {

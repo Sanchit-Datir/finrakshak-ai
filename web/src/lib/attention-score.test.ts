@@ -147,6 +147,8 @@ describe('verified AI findings in the score', () => {
     claims: { made: findings.length, verified: findings.length, rejected: 0 },
     rejections: [],
     toolCalls: 3,
+    modelCalls: 2,
+    stoppedAtDailyLimit: false,
     remainingToday: null,
   });
   const snap = (findings: InvestigationFinding[], mock = false): AiInvestigationSnapshot => ({
