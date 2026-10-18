@@ -29,6 +29,7 @@ import { Checkbox, SelectField, TextArea, TextField } from '../ui/Field.js';
 import { Notice } from '../ui/States.js';
 import { cn } from '../ui/cn.js';
 import { ReceivablesSection } from './ReceivablesSection.js';
+import { UploadInsteadCard } from './UploadInsteadCard.js';
 
 interface Money {
   amount: string;
@@ -95,16 +96,23 @@ export function ReviewStep({
   docs,
   db,
   actor,
+  ensureApp,
+  requireCoreFields,
   onBack,
   onContinue,
   onAttach,
 }: {
+  /** The application, or an unsaved blank one (id '') until the first save. */
   app: Application;
   docs: FtDocument[];
   db: Db;
   actor: string;
-  onBack: () => void;
-  onContinue: () => void;
+  /** Returns the stored application's id, creating the draft on first use. */
+  ensureApp: () => string;
+  /** Name, amount and purpose are required on the form path; the upload path needs nothing. */
+  requireCoreFields: boolean;
+  onBack?: () => void;
+  onContinue: (appId: string) => void;
   onAttach: () => void;
 }): React.JSX.Element {
   const toast = useToast();
@@ -133,7 +141,7 @@ export function ReviewStep({
   };
   const unv = (s: ApplicationSection): boolean => app.unverifiedSections.includes(s);
   const toggle = (s: ApplicationSection) => (): void => {
-    toggleUnverified(app.id, actor, s);
+    toggleUnverified(ensureApp(), actor, s);
   };
   const unreviewed = docs.reduce(
     (n, d) => n + d.fields.filter((f) => f.state === 'unreviewed').length,
@@ -151,12 +159,13 @@ export function ReviewStep({
       if (v === null) e[key] = 'Enter rupees using digits only, e.g. 150000 or 1,50,000.50';
       return v;
     };
-    const amount = parse(money.amount, 'amount', strict);
+    const amount = parse(money.amount, 'amount', strict && requireCoreFields);
     const income = parse(money.income, 'income', false);
     const liabilities = parse(money.liabilities, 'liabilities', false);
     const collateral = parse(money.collateral, 'collateral', false);
-    if (strict && data.applicant.fullName.trim() === '') e.fullName = 'Enter the applicant name.';
-    if (strict && data.loan.purpose.trim() === '') e.purpose = 'Enter the declared loan purpose.';
+    const core = strict && requireCoreFields;
+    if (core && data.applicant.fullName.trim() === '') e.fullName = 'Enter the applicant name.';
+    if (core && data.loan.purpose.trim() === '') e.purpose = 'Enter the declared loan purpose.';
     if (data.business.pan !== '' && !PAN_PATTERN.test(data.business.pan))
       e.pan = 'Enter a 10-character PAN, e.g. ABCDE1234F, or leave it blank.';
     const parsed = parseCustomerRows(customerRows);
@@ -187,19 +196,39 @@ export function ReviewStep({
       });
       return;
     }
+    const id = ensureApp();
     saveApplication(
-      app.id,
+      id,
       actor,
       { data: built, borrowerType, branchId, step: next === 'continue' ? 4 : 3 },
       next === 'continue' ? 'Application reviewed; continuing to risk analysis' : 'Draft saved',
     );
-    if (next === 'continue') onContinue();
+    if (next === 'continue') onContinue(id);
     else
       toast.push({
         tone: 'success',
         title: 'Draft saved',
-        detail: `${app.id} — you can return to it from Loan applications.`,
+        detail: `${id} — you can return to it from Loan applications.`,
       });
+  };
+
+  /** Keeps what was typed (as a draft) before switching to the document upload. */
+  const attach = (): void => {
+    const built = build(false);
+    if (built === null) {
+      toast.push({
+        tone: 'error',
+        title: 'Please fix the highlighted fields',
+        detail: 'Your entries have not been lost.',
+      });
+      return;
+    }
+    const changed =
+      JSON.stringify(built) !== JSON.stringify(app.data) ||
+      borrowerType !== app.borrowerType ||
+      branchId !== app.branchId;
+    if (changed) saveApplication(ensureApp(), actor, { data: built, borrowerType, branchId });
+    onAttach();
   };
 
   const refill = (): void => {
@@ -233,10 +262,13 @@ export function ReviewStep({
           </ul>
         </Notice>
       )}
+      {requireCoreFields && <UploadInsteadCard onUpload={attach} />}
       <div className="flex flex-wrap items-center gap-2">
-        <Button size="sm" icon={RefreshCw} onClick={refill}>
-          Fill empty fields from reviewed documents
-        </Button>
+        {docs.length > 0 && (
+          <Button size="sm" icon={RefreshCw} onClick={refill}>
+            Fill empty fields from reviewed documents
+          </Button>
+        )}
         <Button
           size="sm"
           icon={MessageSquarePlus}
@@ -246,9 +278,11 @@ export function ReviewStep({
         >
           Add a note
         </Button>
-        <Button size="sm" icon={FileText} onClick={onAttach}>
-          Replace / attach a document
-        </Button>
+        {!requireCoreFields && (
+          <Button size="sm" icon={FileText} onClick={attach}>
+            Replace / attach a document
+          </Button>
+        )}
       </div>
       {prefillNote.length > 0 && (
         <Notice title={`${prefillNote.length} field(s) were filled from reviewed document fields`}>
@@ -322,7 +356,7 @@ export function ReviewStep({
       >
         <TextField
           label="Full name (English / transliterated)"
-          required
+          required={requireCoreFields}
           value={data.applicant.fullName}
           error={errors.fullName ?? null}
           onChange={(e) => {
@@ -363,7 +397,7 @@ export function ReviewStep({
       >
         <TextField
           label="Requested amount (₹)"
-          required
+          required={requireCoreFields}
           inputMode="decimal"
           value={money.amount}
           error={errors.amount ?? null}
@@ -629,7 +663,7 @@ export function ReviewStep({
       >
         <TextArea
           label="Declared loan purpose"
-          required
+          required={requireCoreFields}
           className="sm:col-span-2"
           value={data.loan.purpose}
           error={errors.purpose ?? null}
@@ -656,9 +690,11 @@ export function ReviewStep({
       </Section>
 
       <div className="border-line bg-surface/95 fixed inset-x-0 bottom-0 z-20 flex gap-2 border-t p-3 backdrop-blur lg:static lg:border-0 lg:bg-transparent lg:p-0">
-        <Button icon={ArrowLeft} onClick={onBack}>
-          Previous step
-        </Button>
+        {onBack !== undefined && (
+          <Button icon={ArrowLeft} onClick={onBack}>
+            Previous step
+          </Button>
+        )}
         <Button
           icon={Save}
           onClick={() => {
@@ -697,7 +733,7 @@ export function ReviewStep({
               variant="primary"
               disabled={note.trim() === ''}
               onClick={() => {
-                addApplicationNote(app.id, actor, note.trim());
+                addApplicationNote(ensureApp(), actor, note.trim());
                 setNote('');
                 setNoteOpen(false);
                 toast.push({ tone: 'success', title: 'Note added' });
