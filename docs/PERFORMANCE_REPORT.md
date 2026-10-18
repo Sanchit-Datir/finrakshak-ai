@@ -10,7 +10,7 @@ here comes from a real bank. Items marked **not measured** need the live project
 
 | Measure                                 | Result                                                                                   |
 | --------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Unit tests                              | **1,594 tests in 170 files, all passing** (shared, functions, ingest, web)               |
+| Unit tests                              | **1,596 tests in 170 files, all passing** (shared, functions, ingest, web)               |
 | Browser scenarios (Playwright)          | **6 of 6 passing** in 54 s, including 3 real public-record cases                         |
 | Full quality gate (`npm run check`)     | Passes in 190 s: Prettier, ESLint (0 warnings), `tsc` strict, tests                      |
 | Defaulters caught (settings v2, SYNTH)  | **85 of 105**, all on time; **0** of 85 controls and look-alikes alerted                 |
@@ -22,7 +22,7 @@ here comes from a real bank. Items marked **not measured** need the live project
 
 ## 1a. Slide summary
 
-1. **Quality:** 1,594 unit tests and 6 browser scenarios passing; strict lint and types; 0 known
+1. **Quality:** 1,596 unit tests and 6 browser scenarios passing; strict lint and types; 0 known
    production vulnerabilities.
 2. **Detection (SYNTH loans):** 85 of 105 defaulters caught on time with **0 false alarms**; the same on
    a second seed and at 1,000 loans (424 of 525, 0 false alarms); every expected monitoring rule fired.
@@ -116,7 +116,7 @@ Jai Corp (1 alert, ED attachment) all pass, as do the risk-scores page and 2 sec
 | `npm ci` (1,058 packages)                                          | 24.6 s                                            | –           |
 | `npm run build` (5 workspaces)                                     | 39.9 s                                            | 940 MB      |
 | `npm run check` (format, lint, types, tests)                       | 189.8 s                                           | 2.5 GB      |
-| Unit tests only: shared / functions / ingest / web                 | 3.2 s / 5.0 s / 22.2 s / 5.8 s                    | –           |
+| Unit tests only: shared / functions / ingest / web                 | 3.2 s / 5.0 s / 22.2 s / 5.8 s (web now 294 tests after the latest `main`)                    | –           |
 | `npm run e2e` (build, preview, 6 scenarios)                        | 55.4 s                                            | 977 MB      |
 | Graph build (`graphCli --web`)                                     | 9.2 s                                             | 419 MB      |
 | Synthetic data, 200 loans (18,071 transactions)                    | 1.0 s                                             | 118 MB      |
