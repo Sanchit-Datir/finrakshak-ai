@@ -65,8 +65,12 @@ jobs:
       # Both sites serve the same build and config (firebase.json), so one preview is enough.
       - name: Deploy preview channel
         run: |
-          npx firebase hosting:channel:deploy "pr-${{ github.event.number }}" --only fund-tracer \
-            --project "$FIREBASE_PROJECT_ID" --expires 7d --json > channel.json
+          # With --json, Firebase writes its error to channel.json, so print it or the log shows nothing.
+          if ! npx firebase hosting:channel:deploy "pr-${{ github.event.number }}" --only fund-tracer \
+            --project "$FIREBASE_PROJECT_ID" --expires 7d --json > channel.json; then
+            cat channel.json
+            exit 1
+          fi
           url=$(jq -r '.result[]?.url // empty' channel.json | head -1)
           echo "### Preview: ${url:-see deploy log}" >> "$GITHUB_STEP_SUMMARY"
 
