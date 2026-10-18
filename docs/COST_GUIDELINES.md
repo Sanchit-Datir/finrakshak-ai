@@ -7,7 +7,8 @@ checked against this page, and this page updated when it changes.
 
 - `GEMINI_PROVIDER` is `mock | apikey | vertex`. Only `apikey` and `vertex` cost money.
 - It defaults to **`mock`** under Vitest, in CI, and in the Firebase emulator (`config/env.ts`).
-  It defaults to `apikey` only for a deployed function.
+  It defaults to `vertex` only for a deployed function (owner, 18 Oct 2026); `apikey` must be set
+  explicitly.
 - `mock` returns a fixed reply, never creates a client and never touches the network, even when a
   real key is present on the machine. Unit tests prove this (`gemini.test.ts`, `env.test.ts`).
 - To test against the real model on purpose, run `npm run serve:live -w functions`, keep the prompt

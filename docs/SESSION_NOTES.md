@@ -101,9 +101,24 @@ proposals with `model: null`; model-rejected candidates are not proposed and onl
 
 The Risk step's "AI-assisted document analysis" card now runs `analyseApplication` on a click: grounded
 facts from the recorded fields, a note per finding, a short summary; matched patterns do not apply before
-disbursement. Gemini through the AI Studio key in Secret Manager (owner: not Vertex for this); mock
+disbursement. Gemini on Vertex AI (owner switched from the AI Studio key on 18 Oct 2026; runtime account needs
+roles/aiplatform.user); mock
 locally. See `docs/APPLICATION_AI_ANALYSIS.md` and B-64. **Open for the owner:** budget limit first
-(B-15), whether names are masked too (B-64). Committed on this branch, not pushed.
+(B-15). Names are not masked (owner, 18 Oct 2026). Attention score 0–100 added (code-computed, top of the card), with a weight per kind of finding scaled by priority (owner, 18 Oct 2026; table in the doc). Not tuned on outcomes.
+
+## AI investigator (18 Oct 2026, branch `claude/ai-investigator-e63431` from `feat/application-ai-analysis`)
+
+"Investigate with AI" on the Risk step (`investigateApplication` callable, Vertex AI, mock locally): the
+browser sends a bundle (typed-in data, identifiers masked; ratios, public-records shortlist and related
+entities all made by code); Gemini reads it through 8 tools and proposes findings and draft questions; code
+verifies every citation, quote and number and counts rejections. Verified findings add to the attention
+score as their own kinds (45/40/25/15, scaled by priority); mock and out-of-date ones do not. See
+`docs/AI_INVESTIGATOR.md` and **B-67** (B-65 and B-66 are the branch scope and the copilot). Checked in the browser against the
+auth + functions emulators with the mock. **Owner decided (18 Oct 2026):** every model call counts
+against the daily limit and the limit is never crossed (the run stops and keeps what was verified); names
+are not masked (applies to B-64 too). **Open for the owner:** grant `roles/aiplatform.user` to the
+functions runtime account `728958349363-compute@developer.gserviceaccount.com` (it does not have it yet;
+the grant was not run from the session). PR opened against `main` at the owner's request.
 
 ## Showcase UI and Copilot (18 Oct 2026, branch `remaining-ui-changes-2`, not committed)
 
@@ -157,8 +172,8 @@ sign-in (B-67, new). The password is never committed (`e2e/demo/.env`, git-ignor
   days, partial below 90%); monitoring rules feed the pattern layer only; direct layer 10 for 2+
   proceedings, 15 for 3+ sources, counterparties left out, status weights 100% in v1; a missing seed
   review means support 0.6 everywhere; months scored on their last IST day.
-- **Budget alert (parked):** not created on purpose. When ready, rerun
-  `BILLING_ACCOUNT=… BUDGET_USD=… scripts/setup-ingest-gcp.sh fund-tracer` (plan D7, B-15).
+- **Budget alert (done, checkpoint 3 / B-15):** **Budget alerts exist** (checked 18 Oct 2026 on billing account `My Billing Account`, project `fund-tracer`): `fund-tracer monthly budget` ₹450/month on all services and `fund-tracer Vertex AI (agents)` ₹200/month on the AI services, each alerting at 50%, 90% and 100%. Budgets warn, they do not cap spend; the
+  per-user daily limits and per-run caps still apply.
 - **Urgent threshold:** confirm `URGENT_RECEIVABLE_SHARE_PERCENT = 20`
   (`web/src/lib/public-records-findings.ts`).
 - **Alert levels:** confirm every insolvency, liquidation or ED record after disbursement is

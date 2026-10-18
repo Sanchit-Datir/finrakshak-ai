@@ -1,6 +1,8 @@
 import {
   AnalyseApplicationResultSchema,
+  InvestigateApplicationResultSchema,
   type AnalyseApplicationResult,
+  type InvestigateApplicationResult,
 } from '@fund-tracker/shared';
 import { z } from 'zod';
 
@@ -296,6 +298,29 @@ export const AiAnalysisSnapshotSchema = z.object({
 });
 export type AiAnalysisSnapshot = z.infer<typeof AiAnalysisSnapshotSchema>;
 
+/** A draft question an officer approved (possibly edited) for a request for information. */
+export const ApprovedQuestionSchema = z.object({ text: z.string(), by: z.string(), at: isoDate });
+export type ApprovedQuestion = z.infer<typeof ApprovedQuestionSchema>;
+
+/** What one citation pointed at when the investigation ran. */
+export const InvestigationEvidenceSchema = z.object({ label: z.string(), detail: z.string() });
+export type InvestigationEvidence = z.infer<typeof InvestigationEvidenceSchema>;
+
+export const AiInvestigationSnapshotSchema = z.object({
+  inputsKey: z.string(),
+  /** Display text of every cited item, by citation key (lib/investigation-evidence.ts). */
+  evidence: z.record(z.string(), InvestigationEvidenceSchema),
+  /** False when the public-records index could not be loaded: the shortlists were empty. */
+  publicRecordsLoaded: z.boolean(),
+  /** Checked with the shared (zod 3) schema; the web app's zod 4 cannot nest it directly. */
+  result: z.custom<InvestigateApplicationResult>(
+    (v) => InvestigateApplicationResultSchema.safeParse(v).success,
+  ),
+  /** Approved draft questions by question id. */
+  approved: z.record(z.string(), ApprovedQuestionSchema).default({}),
+});
+export type AiInvestigationSnapshot = z.infer<typeof AiInvestigationSnapshotSchema>;
+
 export const ApplicationSchema = z.object({
   id,
   borrowerId: id.nullable(),
@@ -317,6 +342,8 @@ export const ApplicationSchema = z.object({
   publicRecords: PublicRecordsSnapshotSchema.nullable(),
   /** The last AI analysis (analyseApplication) and the inputs it was made from; null until run. */
   aiAnalysis: AiAnalysisSnapshotSchema.nullable().default(null),
+  /** The last AI investigation (investigateApplication); null until run. */
+  aiInvestigation: AiInvestigationSnapshotSchema.nullable().default(null),
 });
 export type Application = z.infer<typeof ApplicationSchema>;
 

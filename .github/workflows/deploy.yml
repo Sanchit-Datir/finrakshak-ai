@@ -1,6 +1,7 @@
 # Keyless deploys to Firebase / Google Cloud (Workload Identity Federation, no stored keys).
-#   pull_request  → Hosting preview channel only (service account: github-preview)
-#   push to main  → Hosting + Functions + Firestore rules/indexes (service account: github-deployer,
+#   pull_request  → Hosting preview channel only, on the fund-tracer site (service account: github-preview)
+#   push to main  → Hosting (both sites: fund-tracer.web.app and finrakshak-ai.web.app, the same build)
+#                   + Functions + Firestore rules/indexes (service account: github-deployer,
 #                   which Google only lets runs on refs/heads/main use)
 #                   then, once INGEST_ENABLED=true, the cloud ingestion image, jobs and workflow
 # One-time GCP setup: scripts/setup-gcp.sh (+ scripts/setup-ingest-gcp.sh). The defaults below match; override them with
@@ -8,6 +9,8 @@
 #   FIREBASE_PROJECT_ID, WIF_PROVIDER, PREVIEW_SA, DEPLOY_SA,
 #   VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_APP_ID, VITE_RECAPTCHA_SITE_KEY
 #   (public web config; the reCAPTCHA key ID is what App Check needs)
+# Hosting sites are Hosting targets in .firebaserc, recorded for the project fund-tracer only: a
+# different FIREBASE_PROJECT_ID needs its own `firebase target:apply hosting …` entries (docs/DEPLOY.md).
 # Cost: docs-only changes skip deploys, and a newer push cancels a superseded preview run.
 name: Deploy
 on:
@@ -59,9 +62,10 @@ jobs:
         with:
           workload_identity_provider: ${{ env.WIF_PROVIDER }}
           service_account: ${{ vars.PREVIEW_SA || format('github-preview@{0}.iam.gserviceaccount.com', env.FIREBASE_PROJECT_ID) }}
+      # Both sites serve the same build and config (firebase.json), so one preview is enough.
       - name: Deploy preview channel
         run: |
-          npx firebase hosting:channel:deploy "pr-${{ github.event.number }}" \
+          npx firebase hosting:channel:deploy "pr-${{ github.event.number }}" --only fund-tracer \
             --project "$FIREBASE_PROJECT_ID" --expires 7d --json > channel.json
           url=$(jq -r '.result[]?.url // empty' channel.json | head -1)
           echo "### Preview: ${url:-see deploy log}" >> "$GITHUB_STEP_SUMMARY"
@@ -92,8 +96,12 @@ jobs:
           workload_identity_provider: ${{ env.WIF_PROVIDER }}
           service_account: ${{ vars.DEPLOY_SA || format('github-deployer@{0}.iam.gserviceaccount.com', env.FIREBASE_PROJECT_ID) }}
       # No --force: a function removed from the code is reported, never silently deleted.
+      # `hosting` deploys every Hosting target in firebase.json: fund-tracer and finrakshak-ai.
       - name: Deploy Hosting, Functions and Firestore
         run: npx firebase deploy --only hosting,functions,firestore --project "$FIREBASE_PROJECT_ID" --non-interactive
+      - name: Summary
+        run: |
+          echo "### Live: https://fund-tracer.web.app and https://finrakshak-ai.web.app" >> "$GITHUB_STEP_SUMMARY"
 
   ingest:
     # Cloud ingestion jobs + workflow (docs/DEPLOY.md → "Cloud ingestion"). Off until the one-time

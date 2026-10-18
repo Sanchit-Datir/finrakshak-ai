@@ -7,10 +7,49 @@ proves its identity to Google through Workload Identity Federation.
 | ------------------------- | --------------------------------------------------- | ----------------- |
 | Pull request (same repo)  | Builds the web app, publishes a 7-day preview URL   | `github-preview`  |
 | Push / merge to `main`    | Checks, builds, deploys Hosting + Functions + rules | `github-deployer` |
+|                           | (Hosting = both sites, see below)                   |                   |
 | Docs-only change (`*.md`) | Nothing is deployed                                 | -                 |
 
 `github-preview` can only manage Hosting. `github-deployer` can only be used by runs on
 `refs/heads/main`, so a pull-request branch can never deploy Functions or change Firestore rules.
+
+## Two Hosting sites: `fund-tracer` and `finrakshak-ai`
+
+The app was renamed FinRakshak AI. The Firebase project ID `fund-tracer` cannot change, so the project
+has a second Hosting site, `finrakshak-ai`, and every deploy publishes **the same build** to both:
+
+| Site (Hosting target) | Addresses                                                        |
+| --------------------- | ---------------------------------------------------------------- |
+| `fund-tracer`         | <https://fund-tracer.web.app>, `fund-tracer.firebaseapp.com`     |
+| `finrakshak-ai`       | <https://finrakshak-ai.web.app>, `finrakshak-ai.firebaseapp.com` |
+
+- `.firebaserc` maps each target to its site (`firebase target:apply hosting <target> <site>`; the
+  mapping is per project, so a different `FIREBASE_PROJECT_ID` needs its own entries).
+- `firebase.json` `hosting` is a list with one entry per target. The entries must stay identical apart
+  from `target` (public dir, `/data/**` → `publicData` rewrite, security headers, cache headers);
+  `web/src/lib/security-headers.test.ts` fails if they drift.
+- `firebase deploy --only hosting` deploys both. One site only: `--only hosting:finrakshak-ai`.
+- Pull-request previews go to the `fund-tracer` site only (`--only fund-tracer`); the config is the same.
+- `/graph-lab/` (B-46) ships with both sites. The local Hosting emulator serves the second site on port 5005.
+- Rollback is per site (Hosting → the site → Release history).
+
+**One-time steps for the new site (Owner, console only; nothing in the repo can do them).** Until they are
+done `finrakshak-ai.web.app` loads, but sign-in and App Check fail there (closed: no cloud data, no AI;
+the `/graph-lab/` fallback and "Try demo" still work).
+
+1. **Auth authorized domains:** Security → Authentication → Settings → Authorized domains → check that
+   `finrakshak-ai.web.app` and `finrakshak-ai.firebaseapp.com` are listed; add them if not.
+2. **reCAPTCHA (App Check):** Google Cloud Console → Security → reCAPTCHA → the website key the app uses
+   (`VITE_RECAPTCHA_SITE_KEY`) → Edit → add the domains `finrakshak-ai.web.app` and
+   `finrakshak-ai.firebaseapp.com` → Save. Without this App Check rejects every visit from the new site.
+3. **Browser API key restrictions (only if set):** Google Cloud Console → APIs & Services → Credentials →
+   the browser key (`VITE_FIREBASE_API_KEY`). If it has "Website restrictions", add
+   `https://finrakshak-ai.web.app/*` and `https://finrakshak-ai.firebaseapp.com/*`.
+4. **Release storage (cost):** each deploy now stores two Hosting versions. Hosting → each site → Release
+   history → ⋮ → Release storage settings → keep e.g. the last 10 releases, so old versions do not
+   accumulate past the free storage allowance.
+5. After the first deploy to `main`, open <https://finrakshak-ai.web.app>, sign in, and check that the Cloud
+   features and `/graph-lab/` load (DevTools → Network: no App Check 403s).
 
 ## One-time setup (already done for `fund-tracer`)
 
@@ -30,8 +69,11 @@ possible; anything that changes production belongs to `github-deployer`.
 
 ## Functions that use a secret
 
-A function reads a Secret Manager secret as its **runtime account** (the App Engine default account,
-`<project>@appspot.gserviceaccount.com`, with the current firebase-tools). That account needs
+A function reads a Secret Manager secret, and calls Vertex AI, as its **runtime account** (on
+`fund-tracer` today the Compute default account `728958349363-compute@developer.gserviceaccount.com`;
+firebase-tools has used the App Engine default account `<project>@appspot.gserviceaccount.com` before, so
+`scripts/setup-gcp.sh` grants both). For Vertex AI (the default provider since 18 Oct 2026) it needs
+`roles/aiplatform.user`, which `scripts/setup-gcp.sh` grants. For the optional API-key provider it needs
 `roles/secretmanager.secretAccessor` on the secret. `github-deployer` only has `secretmanager.viewer`
 on purpose, so it cannot grant this itself. Grant it once, by hand, when you add a secret:
 
@@ -170,7 +212,7 @@ Design: [`docs/plans/GCP_INGESTION_AGENT_PLAN.md`](plans/GCP_INGESTION_AGENT_PLA
 
 ```bash
 SEED=1 scripts/setup-ingest-gcp.sh fund-tracer            # buckets, datasets, accounts, scheduler, alerts
-# budget alert: PARKED (owner decision). Later: BILLING_ACCOUNT=XXXXXX-XXXXXX-XXXXXX BUDGET_USD=<figure> scripts/setup-ingest-gcp.sh fund-tracer
+# budget alerts: DONE (created in the console, 18 Oct 2026: INR 450/month all services, INR 200/month AI services)
 ```
 
 `SEED=1` copies the five MCA master parts and `data/registry/sources.json` into the state bucket.
@@ -302,8 +344,8 @@ Until a public build is published, every score is marked `stale_inputs` (B-50, B
 
 Both follow `docs/plans/AGENTS_PLAN.md`: code computes the facts, the model only words them, a person decides.
 Each execution writes one `agentRuns/<agent>_<runId>` record (counts, versions and tokens, never a prompt or a
-response; removed after about 400 days by a TTL policy). Create the budget alert (B-15) before switching either
-on with a billed model.
+response; removed after about 400 days by a TTL policy). The budget alerts exist (B-15, checked 18 Oct 2026); they warn but do not stop spend, so keep the
+per-run caps.
 
 1. **Setup** (once, Owner): re-run `scripts/setup-ingest-gcp.sh <project>`. It creates `ingest-miner` (reads
    the state and publish buckets, Firestore, Vertex AI) and `ingest-explainer` (Firestore and Vertex AI only)

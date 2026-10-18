@@ -8,6 +8,11 @@ Everything here runs locally on **synthetic data only** (B-54). Nothing is writt
 Firestore yet (that is step 11), no model is called anywhere (B-15), and a score is a lead for a
 reviewer, never a verdict (B-58).
 
+_Not to be confused with the **attention score** on a loan application's Risk step: that is a separate
+0–100 number computed in the browser from weighted check findings before disbursement (methodology in
+`docs/APPLICATION_AI_ANALYSIS.md` and the UI spec, section 7 Step 4). This page is about disbursed
+loans._
+
 ## Run it
 
 ```bash
