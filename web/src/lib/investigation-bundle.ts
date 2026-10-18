@@ -41,8 +41,16 @@ function sectionsOf(d: ApplicationData): InvestigateApplicationInput['sections']
       f('address.district', 'District', ad.district),
       f('address.pincode', 'Pincode', ad.pincode),
       f('financial.occupation', 'Occupation', fi.occupation),
-      f('financial.declaredAnnualIncome', 'Declared annual income', money(fi.declaredAnnualIncomeMinor)),
-      f('financial.existingLiabilities', 'Existing liabilities', money(fi.existingLiabilitiesMinor)),
+      f(
+        'financial.declaredAnnualIncome',
+        'Declared annual income',
+        money(fi.declaredAnnualIncomeMinor),
+      ),
+      f(
+        'financial.existingLiabilities',
+        'Existing liabilities',
+        money(fi.existingLiabilitiesMinor),
+      ),
       f('guarantor.relation', 'Guarantor relation', d.guarantor.relation),
     ],
     business: [
@@ -55,9 +63,17 @@ function sectionsOf(d: ApplicationData): InvestigateApplicationInput['sections']
     loan: [
       f('loan.product', 'Loan product', loan.product),
       f('loan.amount', 'Loan amount', money(loan.amountMinor)),
-      f('loan.tenureMonths', 'Tenure (months)', loan.tenureMonths === null ? '' : String(loan.tenureMonths)),
+      f(
+        'loan.tenureMonths',
+        'Tenure (months)',
+        loan.tenureMonths === null ? '' : String(loan.tenureMonths),
+      ),
       f('loan.purpose', 'Purpose', loan.purpose),
-      f('declaration.purposeDeclared', 'Purpose declaration signed', d.declaration.purposeDeclared ? 'Yes' : 'No'),
+      f(
+        'declaration.purposeDeclared',
+        'Purpose declaration signed',
+        d.declaration.purposeDeclared ? 'Yes' : 'No',
+      ),
       f('declaration.remarks', 'Remarks', d.declaration.remarks),
     ],
     collateral: [
@@ -85,18 +101,36 @@ function partiesOf(app: Application): PartyBase[] {
   const d = app.data;
   const out: PartyBase[] = [];
   if (d.applicant.fullName.trim() !== '')
-    out.push({ partyId: 'applicant', role: 'applicant', name: clip(d.applicant.fullName), cin: '' });
+    out.push({
+      partyId: 'applicant',
+      role: 'applicant',
+      name: clip(d.applicant.fullName),
+      cin: '',
+    });
   if (d.business.businessName.trim() !== '')
-    out.push({ partyId: 'business', role: 'business', name: clip(d.business.businessName), cin: clip(d.business.registrationNo, 30) });
+    out.push({
+      partyId: 'business',
+      role: 'business',
+      name: clip(d.business.businessName),
+      cin: clip(d.business.registrationNo, 30),
+    });
   d.receivables.customers.forEach((c, i) => {
     if (c.name.trim() !== '')
-      out.push({ partyId: `customer:${String(i)}`, role: 'customer', name: clip(c.name), cin: clip(c.cin, 30) });
+      out.push({
+        partyId: `customer:${String(i)}`,
+        role: 'customer',
+        name: clip(c.name),
+        cin: clip(c.cin, 30),
+      });
   });
   return out.slice(0, L.maxParties);
 }
 
 /** The application's own data: what the stored result is keyed on (no public-records data). */
-export function investigationCore(app: Application, findings: readonly Finding[]): Omit<InvestigateApplicationInput, 'parties'> & { parties: PartyBase[] } {
+export function investigationCore(
+  app: Application,
+  findings: readonly Finding[],
+): Omit<InvestigateApplicationInput, 'parties'> & { parties: PartyBase[] } {
   return {
     borrowerType: app.borrowerType,
     sections: sectionsOf(app.data),
@@ -124,7 +158,9 @@ function workspaceRelated(app: Application, db: Db): InvestigationRelated[] {
   const names = new Map(db.entities.map((e) => [e.id, e.name]));
   const open = db.cases.filter((c) => !['resolved', 'closed'].includes(c.status));
   return db.relationships
-    .filter((r) => r.type !== 'borrower_for' && r.type !== 'account_of' && (r.from === me || r.to === me))
+    .filter(
+      (r) => r.type !== 'borrower_for' && r.type !== 'account_of' && (r.from === me || r.to === me),
+    )
     .map((r) => {
       const other = r.from === me ? r.to : r.from;
       const c = open.find((x) => x.entityIds.includes(other) && !x.entityIds.includes(me));
@@ -139,15 +175,30 @@ function workspaceRelated(app: Application, db: Db): InvestigationRelated[] {
 }
 
 /** The full bundle. Without the public-records index the shortlists are empty (and the UI says so). */
-export function buildInvestigationBundle(app: Application, db: Db, findings: readonly Finding[], ix: LabIndex | null): InvestigateApplicationInput {
+export function buildInvestigationBundle(
+  app: Application,
+  db: Db,
+  findings: readonly Finding[],
+  ix: LabIndex | null,
+): InvestigateApplicationInput {
   const core = investigationCore(app, findings);
-  const pincode = /^\d{6}$/.test(app.data.address.pincode.trim()) ? app.data.address.pincode.trim() : null;
+  const pincode = /^\d{6}$/.test(app.data.address.pincode.trim())
+    ? app.data.address.pincode.trim()
+    : null;
   const workspace = workspaceRelated(app, db);
   const owner = core.parties.some((p) => p.partyId === 'business') ? 'business' : 'applicant';
   const parties = core.parties.map((p): InvestigationParty => {
-    const query = { name: p.name, cin: p.cin, pincode: p.role === 'customer' ? null : pincode, people: p.role === 'applicant' };
+    const query = {
+      name: p.name,
+      cin: p.cin,
+      pincode: p.role === 'customer' ? null : pincode,
+      people: p.role === 'applicant',
+    };
     const candidates = ix === null ? [] : shortlist(ix, query);
-    const related = [...(p.partyId === owner ? workspace : []), ...(ix === null ? [] : publicRelated(ix, candidates))];
+    const related = [
+      ...(p.partyId === owner ? workspace : []),
+      ...(ix === null ? [] : publicRelated(ix, candidates)),
+    ];
     const ranked = related.sort((a, b) => Number(b.concern !== null) - Number(a.concern !== null));
     return { ...p, candidates, related: ranked.slice(0, L.maxRelatedPerParty) };
   });

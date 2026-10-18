@@ -81,7 +81,10 @@ export interface ExplainedAlert {
 export function latestExplained(data: RiskScores, loanId: string): ExplainedAlert | null {
   const latest = data.alerts
     .filter((a) => a.loan_id === loanId)
-    .reduce<RiskAlertDoc | null>((best, a) => (best === null || a.created_at > best.created_at ? a : best), null);
+    .reduce<RiskAlertDoc | null>(
+      (best, a) => (best === null || a.created_at > best.created_at ? a : best),
+      null,
+    );
   if (latest === null) return null;
   const explanation = data.explanations.find((e) => e.alert_id === latest.alert_id);
   return explanation === undefined ? null : { alert: latest, explanation };

@@ -81,7 +81,10 @@ export function formatDate(iso: string | null, opts: DateOptions = DEFAULT_DATE_
   }
 }
 
-export function formatDateTime(iso: string | null, opts: DateOptions = DEFAULT_DATE_OPTIONS): string {
+export function formatDateTime(
+  iso: string | null,
+  opts: DateOptions = DEFAULT_DATE_OPTIONS,
+): string {
   if (iso === null || iso === '') return '—';
   if (Number.isNaN(new Date(iso).getTime())) return iso;
   const p = parts(iso, opts.timezone);
@@ -108,7 +111,10 @@ export function maskIdentifier(value: string, visible = 4): string {
 }
 
 export function initials(name: string): string {
-  const words = name.trim().split(/\s+/).filter((w) => w.length > 0);
+  const words = name
+    .trim()
+    .split(/\s+/)
+    .filter((w) => w.length > 0);
   const first = words[0]?.[0] ?? '';
   const last = words.length > 1 ? (words[words.length - 1]?.[0] ?? '') : '';
   return (first + last).toUpperCase();

@@ -43,18 +43,36 @@ export function resolvePeriod(p: PeriodValue, now: Date = new Date()): Range {
     case 'today':
       return { start: today, end: endOfToday, label: 'Today' };
     case '7d':
-      return { start: new Date(today.getTime() - 6 * 86_400_000), end: endOfToday, label: 'Last 7 days' };
+      return {
+        start: new Date(today.getTime() - 6 * 86_400_000),
+        end: endOfToday,
+        label: 'Last 7 days',
+      };
     case '30d':
-      return { start: new Date(today.getTime() - 29 * 86_400_000), end: endOfToday, label: 'Last 30 days' };
+      return {
+        start: new Date(today.getTime() - 29 * 86_400_000),
+        end: endOfToday,
+        label: 'Last 30 days',
+      };
     case 'month':
-      return { start: new Date(now.getFullYear(), now.getMonth(), 1), end: endOfToday, label: 'This month' };
+      return {
+        start: new Date(now.getFullYear(), now.getMonth(), 1),
+        end: endOfToday,
+        label: 'This month',
+      };
     case 'last_month':
-      return { start: new Date(now.getFullYear(), now.getMonth() - 1, 1), end: new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, -1), label: 'Last month' };
+      return {
+        start: new Date(now.getFullYear(), now.getMonth() - 1, 1),
+        end: new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, -1),
+        label: 'Last month',
+      };
     case 'custom': {
       const s = new Date(`${p.from}T00:00:00`);
       const e = new Date(`${p.to}T23:59:59.999`);
       const valid = !Number.isNaN(s.getTime()) && !Number.isNaN(e.getTime()) && s <= e;
-      return valid ? { start: s, end: e, label: `${p.from} to ${p.to}` } : { start: today, end: endOfToday, label: 'Invalid range — showing today' };
+      return valid
+        ? { start: s, end: e, label: `${p.from} to ${p.to}` }
+        : { start: today, end: endOfToday, label: 'Invalid range — showing today' };
     }
   }
 }
@@ -78,7 +96,11 @@ export function buckets(r: Range): BucketDef[] {
   const out: BucketDef[] = [];
   const fmt = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short' });
   for (let t = r.start.getTime(); t <= r.end.getTime(); t += size * 86_400_000) {
-    out.push({ label: fmt.format(new Date(t)), start: t, end: Math.min(t + size * 86_400_000 - 1, r.end.getTime()) });
+    out.push({
+      label: fmt.format(new Date(t)),
+      start: t,
+      end: Math.min(t + size * 86_400_000 - 1, r.end.getTime()),
+    });
   }
   return out;
 }

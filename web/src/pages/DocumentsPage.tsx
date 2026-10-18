@@ -14,10 +14,10 @@ import { Link } from 'react-router';
 import { DocThumb } from '../components/documents/DocThumb.js';
 import { DocumentViewer } from '../components/documents/DocumentViewer.js';
 import { ExtractedFieldsPanel } from '../components/documents/ExtractedFieldsPanel.js';
-import { Button, IconButton } from '../components/ui/Button.js';
+import { IconButton } from '../components/ui/Button.js';
 import { Card } from '../components/ui/Card.js';
 import { ConfirmDialog, Dialog } from '../components/ui/Dialog.js';
-import { FilterSelect, SelectField } from '../components/ui/Field.js';
+import { FilterSelect } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
 import { EmptyState, Notice } from '../components/ui/States.js';
@@ -25,7 +25,8 @@ import { ProcessingBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { cn } from '../components/ui/cn.js';
 import { LANGUAGE_LABEL, PROCESSING_LABEL } from '../domain/labels.js';
-import { LanguageSchema, ProcessingStateSchema, type FtDocument } from '../domain/schemas.js';
+import { LanguageSchema, ProcessingStateSchema } from '../domain/schemas.js';
+import type { FtDocument } from '../domain/schemas.js';
 import { DOC_GROUPS, docTypeLabel } from '../lib/doc-catalog.js';
 import { formatBytes } from '../lib/format.js';
 import { ACCEPT_ATTR, processDocumentFile } from '../lib/processing.js';
@@ -41,6 +42,7 @@ import { useActor, useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
+import { LinkDialog } from '../components/documents/LinkDialog.js';
 
 type Verification = 'all' | 'unreviewed' | 'reviewed' | 'unclear';
 
@@ -458,59 +460,5 @@ export function DocumentsPage(): React.JSX.Element {
         }}
       />
     </>
-  );
-}
-
-function LinkDialog({
-  doc,
-  onClose,
-  onLink,
-}: {
-  doc: FtDocument | null;
-  onClose: () => void;
-  onLink: (appId: string) => void;
-}): React.JSX.Element {
-  const db = useDb();
-  const [appId, setAppId] = useState('');
-  const choice = appId === '' ? (db.applications[0]?.id ?? '') : appId;
-  return (
-    <Dialog
-      open={doc !== null}
-      onClose={onClose}
-      title="Link to application"
-      footer={
-        <>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button
-            variant="primary"
-            disabled={choice === ''}
-            onClick={() => {
-              onLink(choice);
-            }}
-          >
-            Link document
-          </Button>
-        </>
-      }
-    >
-      <SelectField
-        label="Application"
-        value={choice}
-        onChange={(e) => {
-          setAppId(e.target.value);
-        }}
-      >
-        {db.applications.map((a) => (
-          <option key={a.id} value={a.id}>
-            {a.id} — {a.data.business.businessName || a.data.applicant.fullName || 'Untitled'}
-          </option>
-        ))}
-      </SelectField>
-      {(doc?.applicationId ?? null) !== null && (
-        <p className="text-muted mt-2 text-xs">
-          Currently linked to {doc?.applicationId}; linking moves it.
-        </p>
-      )}
-    </Dialog>
   );
 }

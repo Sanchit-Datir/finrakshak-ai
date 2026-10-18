@@ -14,7 +14,6 @@ import { AlertDrawer, entityLabel } from '../components/monitoring/AlertDrawer.j
 import { Button, LinkButton } from '../components/ui/Button.js';
 import { Card, CardHeader } from '../components/ui/Card.js';
 import { Dialog } from '../components/ui/Dialog.js';
-import { Checkbox, SelectField, TextArea, TextField } from '../components/ui/Field.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { EmptyState, Notice } from '../components/ui/States.js';
 import {
@@ -33,33 +32,24 @@ import {
   PRIORITY_LABEL,
   TXN_TYPE_LABEL,
 } from '../domain/labels.js';
-import {
-  CaseStatusSchema,
-  EvidenceSchema,
-  type Case,
-  type CaseStatus,
-  type Evidence,
-} from '../domain/schemas.js';
 import { allAlerts } from '../lib/alerts.js';
 import { CATEGORY_LABEL, runChecks } from '../lib/checks.js';
 import { downloadFile, exportHeader } from '../lib/export.js';
 import { formatMoney } from '../lib/format.js';
-import {
-  addCaseEvidence,
-  addCaseNote,
-  addCaseTask,
-  assignCase,
-  setCaseStatus,
-  toggleCaseTask,
-} from '../state/actions.js';
+import { addCaseEvidence, addCaseNote, assignCase, setCaseStatus } from '../state/actions.js';
 import { useActor, useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
 import { useCopilotTarget } from '../state/copilot.js';
 import { NoteForm } from './ApplicationDetailPage.js';
+import { Checklist } from '../components/investigations/Checklist.js';
+import { StatusDialog } from '../components/investigations/StatusDialog.js';
+import { AssignDialog } from '../components/investigations/AssignDialog.js';
+import { EvidenceDialog } from '../components/investigations/EvidenceDialog.js';
 
 type Tab = 'overview' | 'evidence' | 'network' | 'timeline' | 'findings' | 'notes' | 'audit';
+
 const DAY = 86_400_000;
 
 export function CaseDetailPage(): React.JSX.Element {
@@ -562,272 +552,5 @@ export function CaseDetailPage(): React.JSX.Element {
         }}
       />
     </>
-  );
-}
-
-function Checklist({ c, actor }: { c: Case; actor: string }): React.JSX.Element {
-  const [text, setText] = useState('');
-  return (
-    <div className="space-y-2">
-      {c.checklist.length === 0 && <p className="text-muted text-sm">No tasks yet.</p>}
-      {c.checklist.map((t) => (
-        <Checkbox
-          key={t.id}
-          label={<span className={t.done ? 'text-muted line-through' : ''}>{t.text}</span>}
-          checked={t.done}
-          onChange={() => {
-            toggleCaseTask(c.id, t.id, actor);
-          }}
-        />
-      ))}
-      <form
-        className="flex gap-2 pt-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (text.trim() !== '') {
-            addCaseTask(c.id, actor, text.trim());
-            setText('');
-          }
-        }}
-      >
-        <TextField
-          label="New task"
-          className="flex-1"
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-        />
-        <Button type="submit" size="sm" className="self-end" disabled={text.trim() === ''}>
-          Add
-        </Button>
-      </form>
-    </div>
-  );
-}
-
-function StatusDialog({
-  open,
-  c,
-  onClose,
-  onSave,
-}: {
-  open: boolean;
-  c: Case;
-  onClose: () => void;
-  onSave: (s: CaseStatus, reason: string, outcome?: string) => void;
-}): React.JSX.Element {
-  const [status, setStatus] = useState<CaseStatus>(c.status);
-  const [reason, setReason] = useState('');
-  const [outcome, setOutcome] = useState(c.outcome ?? '');
-  const closing = status === 'resolved' || status === 'closed';
-  const invalid = status === c.status || reason.trim() === '' || (closing && outcome.trim() === '');
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      title="Change case status"
-      description="Every status change records who, when and why."
-      footer={
-        <>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button
-            variant="primary"
-            disabled={invalid}
-            onClick={() => {
-              onSave(status, reason.trim(), closing ? outcome.trim() : undefined);
-              setReason('');
-            }}
-          >
-            Save status
-          </Button>
-        </>
-      }
-    >
-      <div className="space-y-3">
-        <SelectField
-          label="New status"
-          value={status}
-          onChange={(e) => {
-            setStatus(CaseStatusSchema.parse(e.target.value));
-          }}
-        >
-          {CaseStatusSchema.options.map((s) => (
-            <option key={s} value={s}>
-              {CASE_STATUS_LABEL[s]}
-            </option>
-          ))}
-        </SelectField>
-        <TextArea
-          label="Reason for change"
-          required
-          value={reason}
-          onChange={(e) => {
-            setReason(e.target.value);
-          }}
-        />
-        {closing && (
-          <TextArea
-            label="Outcome (required)"
-            required
-            value={outcome}
-            hint="Describe what verified evidence showed. Do not state guilt; use 'concern confirmed by …' or 'no concern found'."
-            onChange={(e) => {
-              setOutcome(e.target.value);
-            }}
-          />
-        )}
-      </div>
-    </Dialog>
-  );
-}
-
-function AssignDialog({
-  open,
-  owner,
-  onClose,
-  onSave,
-}: {
-  open: boolean;
-  owner: string;
-  onClose: () => void;
-  onSave: (o: string) => void;
-}): React.JSX.Element {
-  const [o, setO] = useState(owner);
-  const people = ['Farhan Shaikh', 'Neha Joshi', 'Anjali Patil', 'Rahul Kulkarni', 'Deepak Rao'];
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      title="Assign case"
-      footer={
-        <>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button
-            variant="primary"
-            disabled={o === owner}
-            onClick={() => {
-              onSave(o);
-            }}
-          >
-            Assign
-          </Button>
-        </>
-      }
-    >
-      <SelectField
-        label="Assign to"
-        value={o}
-        onChange={(e) => {
-          setO(e.target.value);
-        }}
-      >
-        {people.map((p) => (
-          <option key={p} value={p}>
-            {p}
-          </option>
-        ))}
-      </SelectField>
-    </Dialog>
-  );
-}
-
-function EvidenceDialog({
-  open,
-  onClose,
-  onSave,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onSave: (e: Omit<Evidence, 'id' | 'collectedAt'>) => void;
-}): React.JSX.Element {
-  const [ev, setEv] = useState<Omit<Evidence, 'id' | 'collectedAt'>>({
-    sourceName: '',
-    sourceType: 'internal_record',
-    reference: '',
-    excerpt: '',
-    status: 'user_provided',
-    link: null,
-  });
-  const invalid =
-    ev.sourceName.trim() === '' || ev.excerpt.trim() === '' || ev.reference.trim() === '';
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      title="Add evidence"
-      footer={
-        <>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button
-            variant="primary"
-            disabled={invalid}
-            onClick={() => {
-              onSave(ev);
-              setEv({ ...ev, sourceName: '', reference: '', excerpt: '' });
-            }}
-          >
-            Add evidence
-          </Button>
-        </>
-      }
-    >
-      <div className="space-y-3">
-        <TextField
-          label="Source name"
-          required
-          value={ev.sourceName}
-          onChange={(e) => {
-            setEv({ ...ev, sourceName: e.target.value });
-          }}
-        />
-        <SelectField
-          label="Source type"
-          value={ev.sourceType}
-          onChange={(e) => {
-            setEv({ ...ev, sourceType: EvidenceSchema.shape.sourceType.parse(e.target.value) });
-          }}
-        >
-          {EvidenceSchema.shape.sourceType.options.map((t) => (
-            <option key={t} value={t}>
-              {EVIDENCE_TYPE_LABEL[t]}
-            </option>
-          ))}
-        </SelectField>
-        <TextField
-          label="Reference (page / paragraph / transaction ID)"
-          required
-          value={ev.reference}
-          onChange={(e) => {
-            setEv({ ...ev, reference: e.target.value });
-          }}
-        />
-        <TextArea
-          label="Exact excerpt or field"
-          required
-          value={ev.excerpt}
-          onChange={(e) => {
-            setEv({ ...ev, excerpt: e.target.value });
-          }}
-        />
-        <SelectField
-          label="Evidence status"
-          value={ev.status}
-          onChange={(e) => {
-            setEv({ ...ev, status: EvidenceSchema.shape.status.parse(e.target.value) });
-          }}
-        >
-          {EvidenceSchema.shape.status.options.map((s) => (
-            <option key={s} value={s}>
-              {EVIDENCE_STATUS_LABEL[s]}
-            </option>
-          ))}
-        </SelectField>
-        <p className="text-muted text-xs">
-          Mark public-source material “Verified source” only after checking the original. No
-          external lookups are performed by this prototype.
-        </p>
-      </div>
-    </Dialog>
   );
 }

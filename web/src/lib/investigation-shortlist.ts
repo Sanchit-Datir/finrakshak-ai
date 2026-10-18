@@ -69,7 +69,10 @@ function entriesOf(ix: LabIndex): { orgs: Entry[]; people: Entry[] } {
 /** Same word, or a small spelling difference (cheap length and first-letter test first). */
 const tokenMatch = (a: string, b: string): boolean =>
   a === b ||
-  (b.startsWith(a.slice(0, 1)) && Math.abs(a.length - b.length) <= 2 && a.length > 3 && nameSimilarity(a, b) >= 0.8);
+  (b.startsWith(a.slice(0, 1)) &&
+    Math.abs(a.length - b.length) <= 2 &&
+    a.length > 3 &&
+    nameSimilarity(a, b) >= 0.8);
 
 /** Dice similarity of the distinctive words, tolerant of small spelling differences; 0–100. */
 export function nameScore(a: readonly string[], b: readonly string[]): number {
@@ -106,7 +109,12 @@ export interface PartyQuery {
   readonly people: boolean;
 }
 
-function candidateOf(ix: LabIndex, q: PartyQuery, node: GraphNode, score: number): InvestigationCandidate {
+function candidateOf(
+  ix: LabIndex,
+  q: PartyQuery,
+  node: GraphNode,
+  score: number,
+): InvestigationCandidate {
   const cin = cinOf(node);
   const address = addressOf(ix, node.id)?.label ?? null;
   const theirPin = address === null ? null : pincodeOf(address);
@@ -140,16 +148,27 @@ export function shortlist(ix: LabIndex, q: PartyQuery): InvestigationCandidate[]
     .map((e) => {
       const cin = cinOf(e.node);
       const sameCin = inputCin !== '' && cin === inputCin;
-      return { e, score: nameScore(mine, e.tokens), sameCin, otherCin: inputCin !== '' && cin !== null && !sameCin };
+      return {
+        e,
+        score: nameScore(mine, e.tokens),
+        sameCin,
+        otherCin: inputCin !== '' && cin !== null && !sameCin,
+      };
     })
     .filter((s) => !s.otherCin && (s.sameCin || s.score >= MIN_NAME_SCORE))
-    .sort((a, b) => Number(b.sameCin) - Number(a.sameCin) || b.score - a.score || b.e.node.degree - a.e.node.degree);
+    .sort(
+      (a, b) =>
+        Number(b.sameCin) - Number(a.sameCin) ||
+        b.score - a.score ||
+        b.e.node.degree - a.e.node.degree,
+    );
   return scored.slice(0, L.maxCandidatesPerParty).map((s) => candidateOf(ix, q, s.e.node, s.score));
 }
 
 const concernOf = (ix: LabIndex, node: GraphNode): string | null => {
   const latest = namedRecords(ix, node.id)[0];
-  if (latest !== undefined) return `Named in a ${latest.record.kind} record`.slice(0, L.maxValueChars);
+  if (latest !== undefined)
+    return `Named in a ${latest.record.kind} record`.slice(0, L.maxValueChars);
   const status = mcaStatusOf(node);
   return status !== null && NOT_GOING_CONCERN.test(status) ? `MCA status: ${status}` : null;
 };
@@ -158,7 +177,10 @@ const concernOf = (ix: LabIndex, node: GraphNode): string | null => {
  * Companies registered at the same address as a confident candidate (exact CIN or full name score),
  * troubled ones first. Hub addresses (shared by very many companies) are skipped.
  */
-export function publicRelated(ix: LabIndex, candidates: readonly InvestigationCandidate[]): InvestigationRelated[] {
+export function publicRelated(
+  ix: LabIndex,
+  candidates: readonly InvestigationCandidate[],
+): InvestigationRelated[] {
   const out: InvestigationRelated[] = [];
   for (const c of candidates.filter((x) => x.cinAgrees === true || x.nameScore === 100)) {
     const adr = addressOf(ix, c.candidateId);

@@ -51,12 +51,18 @@ describe('explainCloudError', () => {
   });
 
   it('tells the burst limit apart from the daily limit, using the server detail', () => {
-    const burst = { code: 'functions/resource-exhausted', details: { reason: 'rate_limit', retryAfterSeconds: 42 } };
+    const burst = {
+      code: 'functions/resource-exhausted',
+      details: { reason: 'rate_limit', retryAfterSeconds: 42 },
+    };
     expect(explainCloudError(burst)).toBe(
       'You are sending requests too quickly. Wait 42 seconds and try again.',
     );
     expect(
-      explainCloudError({ code: 'functions/resource-exhausted', details: { reason: 'rate_limit' } }),
+      explainCloudError({
+        code: 'functions/resource-exhausted',
+        details: { reason: 'rate_limit' },
+      }),
     ).toBe('You are sending requests too quickly. Wait a moment and try again.');
     const daily = { code: 'functions/resource-exhausted', details: { reason: 'daily_limit' } };
     expect(explainCloudError(daily)).toMatch(/allowance/);
@@ -66,7 +72,9 @@ describe('explainCloudError', () => {
 
   it('ignores malformed details instead of failing', () => {
     for (const details of [null, 'text', 42, { reason: 7 }, { retryAfterSeconds: 'soon' }]) {
-      expect(() => explainCloudError({ code: 'functions/resource-exhausted', details })).not.toThrow();
+      expect(() =>
+        explainCloudError({ code: 'functions/resource-exhausted', details }),
+      ).not.toThrow();
     }
   });
 
@@ -87,9 +95,15 @@ describe('server failures the person can act on', () => {
 
   it('explains an access check that failed, and a generic server fault, without raw text', () => {
     expect(
-      explainCloudError({ code: 'functions/internal', details: { reason: 'access_lookup_failed' } }),
+      explainCloudError({
+        code: 'functions/internal',
+        details: { reason: 'access_lookup_failed' },
+      }),
     ).toMatch(/check your access/);
-    const generic = explainCloudError({ code: 'functions/internal', message: 'stack trace /srv/x' });
+    const generic = explainCloudError({
+      code: 'functions/internal',
+      message: 'stack trace /srv/x',
+    });
     expect(generic).toMatch(/Something went wrong on our side/);
     expect(generic).not.toContain('/srv/x');
   });

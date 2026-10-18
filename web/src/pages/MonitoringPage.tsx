@@ -8,45 +8,40 @@ import {
   Play,
   SearchCheck,
 } from 'lucide-react';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { AlertDrawer, entityLabel } from '../components/monitoring/AlertDrawer.js';
 import { TransactionFlow } from '../components/monitoring/TransactionFlow.js';
 import { Badge } from '../components/ui/Badge.js';
 import { Button, LinkButton } from '../components/ui/Button.js';
 import { Card, CardHeader } from '../components/ui/Card.js';
-import { Dialog } from '../components/ui/Dialog.js';
 import { FilterSelect, TextField } from '../components/ui/Field.js';
 import { LoanPublicRecordsBanner } from '../components/monitoring/LoanPublicRecordsBanner.js';
 import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { SearchInput } from '../components/ui/SearchInput.js';
-import { EmptyState, Notice } from '../components/ui/States.js';
+import { EmptyState } from '../components/ui/States.js';
 import { AlertStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
 import { DataTable } from '../components/ui/Table.js';
 import { PinButton } from '../components/ui/PinButton.js';
 import { ALERT_STATUS_LABEL, PRODUCT_LABEL, TXN_TYPE_LABEL } from '../domain/labels.js';
-import {
-  AlertStatusSchema,
-  TransactionTypeSchema,
-  type Db,
-  type Loan,
-  type Transaction,
-} from '../domain/schemas.js';
-import { allAlerts, isOpen, type UnifiedAlert } from '../lib/alerts.js';
-import { CSV_TEMPLATE, importCsv, type ImportResult } from '../lib/csv-import.js';
+import { AlertStatusSchema, TransactionTypeSchema } from '../domain/schemas.js';
+import type { Db, Loan, Transaction } from '../domain/schemas.js';
+import { allAlerts, isOpen } from '../lib/alerts.js';
+import type { UnifiedAlert } from '../lib/alerts.js';
 import { downloadFile, exportHeader, toCsv } from '../lib/export.js';
 import { formatMoney, parseRupeesToMinor } from '../lib/format.js';
 import { RULES } from '../lib/monitoring.js';
-import { inRange, resolvePeriod, type PeriodValue } from '../lib/period.js';
+import { inRange, resolvePeriod } from '../lib/period.js';
+import type { PeriodValue } from '../lib/period.js';
 import { matchesQuery } from '../lib/text.js';
-import { importTransactions } from '../state/actions.js';
 import { useFormat } from '../state/hooks.js';
 import { useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useUrlState } from '../state/url.js';
 import { useBranchScope } from '../state/scope.js';
 import { useCopilotTarget } from '../state/copilot.js';
+import { ImportDialog } from '../components/monitoring/ImportDialog.js';
 
 const DAY = 86_400_000;
 
@@ -598,123 +593,5 @@ export function MonitoringPage(): React.JSX.Element {
         }}
       />
     </>
-  );
-}
-
-function ImportDialog({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}): React.JSX.Element {
-  const db = useDb();
-  const toast = useToast();
-  const ref = useRef<HTMLInputElement>(null);
-  const [result, setResult] = useState<(ImportResult & { filename: string }) | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const close = (): void => {
-    setResult(null);
-    setError(null);
-    onClose();
-  };
-  const read = async (file: File): Promise<void> => {
-    setError(null);
-    if (file.size > 5 * 1024 * 1024) {
-      setError('File is larger than 5 MB. Split it and import in parts.');
-      return;
-    }
-    try {
-      setResult({ ...importCsv(await file.text(), db), filename: file.name });
-    } catch {
-      setError('The file could not be read. Check it is a UTF-8 CSV file.');
-    }
-  };
-  return (
-    <Dialog
-      open={open}
-      onClose={close}
-      wide
-      title="Import transaction file"
-      description="CSV extract of authorised transaction records. Parsed and validated in your browser."
-      footer={
-        <>
-          <Button
-            onClick={() => {
-              downloadFile('transactions-template.csv', CSV_TEMPLATE, 'text/csv');
-            }}
-            icon={Download}
-          >
-            Download template
-          </Button>
-          <Button onClick={close}>Cancel</Button>
-          <Button
-            variant="primary"
-            disabled={result === null || result.rows.length === 0}
-            onClick={() => {
-              if (result === null) return;
-              const n = importTransactions(result.rows, result.newEntities, result.filename);
-              toast.push({
-                tone: 'success',
-                title: `${n} transaction(s) imported`,
-                detail: 'Monitoring rules re-evaluated automatically.',
-              });
-              close();
-            }}
-          >
-            Import {result?.rows.length ?? 0} valid row(s)
-          </Button>
-        </>
-      }
-    >
-      <div className="space-y-3 text-sm">
-        <p>
-          Required columns:{' '}
-          <code className="text-xs">
-            transaction_id, loan_id, datetime, from_account, to_account, amount_inr, type, reference
-          </code>
-          . Accounts may be existing IDs (e.g. <code className="text-xs">a-dnyaneshwar</code>) or
-          counterparty names — unknown names are added as unverified counterparties.
-        </p>
-        <Notice tone="warn">
-          Only import records you are authorised to use. Use synthetic data in this prototype.
-        </Notice>
-        <Button icon={FileUp} onClick={() => ref.current?.click()}>
-          Choose CSV file
-        </Button>
-        <input
-          ref={ref}
-          type="file"
-          accept=".csv,text/csv"
-          className="hidden"
-          aria-hidden
-          tabIndex={-1}
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            e.target.value = '';
-            if (f !== undefined) void read(f);
-          }}
-        />
-        {error !== null && <Notice tone="danger">{error}</Notice>}
-        {result !== null && (
-          <div role="status" className="space-y-2">
-            <p>
-              <strong>{result.filename}</strong>: {result.rows.length} valid, {result.errors.length}{' '}
-              with errors, {result.duplicates} duplicate(s) skipped, {result.newEntities.length} new
-              counterparty(ies).
-            </p>
-            {result.errors.length > 0 && (
-              <ul className="bg-danger-soft max-h-40 overflow-y-auto rounded-lg p-2 text-xs">
-                {result.errors.map((er) => (
-                  <li key={er.line}>
-                    Line {er.line}: {er.message}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
-      </div>
-    </Dialog>
   );
 }

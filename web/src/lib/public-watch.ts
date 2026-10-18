@@ -16,7 +16,8 @@ function hash(s: string): string {
   return (h >>> 0).toString(36);
 }
 
-export const recordKey = (r: PrRecord): string => `${r.caseType}-${r.date ?? 'nodate'}-${hash(r.title)}`;
+export const recordKey = (r: PrRecord): string =>
+  `${r.caseType}-${r.date ?? 'nodate'}-${hash(r.title)}`;
 
 export interface WatchCheckResult {
   readonly asOf: string;
@@ -24,7 +25,12 @@ export interface WatchCheckResult {
   readonly newEvents: WatchEvent[];
 }
 
-export function checkWatch(ix: LabIndex, watch: PublicWatch, asOf: string, now: string): WatchCheckResult {
+export function checkWatch(
+  ix: LabIndex,
+  watch: PublicWatch,
+  asOf: string,
+  now: string,
+): WatchCheckResult {
   const subject = lookupCompany(ix, watch.borrowerName, watch.cin);
   const seen = new Set(watch.events.map((e) => e.key));
   const newEvents = subject.records

@@ -30,7 +30,8 @@ describe('navCounts', () => {
 
   it('splits the loan book by priority without losing a loan', () => {
     const { pulse } = navCounts(db, me, 'all');
-    const sum = pulse.byPriority.routine + pulse.byPriority.needs_attention + pulse.byPriority.urgent;
+    const sum =
+      pulse.byPriority.routine + pulse.byPriority.needs_attention + pulse.byPriority.urgent;
     expect(sum).toBe(pulse.total);
     expect(pulse.total).toBe(db.loans.length);
   });

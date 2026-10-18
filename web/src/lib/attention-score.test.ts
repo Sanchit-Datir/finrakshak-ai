@@ -136,7 +136,10 @@ describe('verified AI findings in the score', () => {
     match: null,
     citations: [{ type: 'ratio', name: 'loan_per_acre' }],
   });
-  const result = (findings: InvestigationFinding[], mock = false): InvestigateApplicationResult => ({
+  const result = (
+    findings: InvestigationFinding[],
+    mock = false,
+  ): InvestigateApplicationResult => ({
     mock,
     model: mock ? null : 'gemini-3.1-flash-lite',
     investigatedAt: '2026-10-18T06:00:00.000Z',
@@ -167,7 +170,9 @@ describe('verified AI findings in the score', () => {
       section_mismatch: 15,
     });
     const scale = (kind: InvestigationFinding['kind']): number[] =>
-      (['urgent', 'needs_attention', 'routine'] as const).map((p) => aiPointsOf({ kind, priority: p }));
+      (['urgent', 'needs_attention', 'routine'] as const).map((p) =>
+        aiPointsOf({ kind, priority: p }),
+      );
     expect(scale('public_record_match')).toEqual([45, 27, 14]);
     expect(scale('related_entity_link')).toEqual([40, 24, 12]);
     expect(scale('implausible_numbers')).toEqual([25, 15, 8]);
@@ -178,7 +183,11 @@ describe('verified AI findings in the score', () => {
     const fs = aiFindingsForScore(snap([ai('ai:1', 'public_record_match')]), 'K');
     const r = attentionScore(app, [finding('R1', 'routine')], fs);
     expect(r.score).toBe(45 + 9);
-    expect(r.drivers[0]).toMatchObject({ source: 'ai', title: 'Possible public-record match', points: 45 });
+    expect(r.drivers[0]).toMatchObject({
+      source: 'ai',
+      title: 'Possible public-record match',
+      points: 45,
+    });
     expect(r.drivers[1]?.source).toBe('rule');
   });
 
@@ -188,7 +197,10 @@ describe('verified AI findings in the score', () => {
     expect(aiFindingsForScore(null, 'K')).toEqual([]);
     const [f] = aiFindingsForScore(snap([ai('ai:1', 'section_mismatch')]), 'K');
     if (f === undefined) throw new Error('expected a finding');
-    const dismissed = { ...app, findingStates: { [f.id]: { status: 'not_an_issue' as const, comments: [] } } };
+    const dismissed = {
+      ...app,
+      findingStates: { [f.id]: { status: 'not_an_issue' as const, comments: [] } },
+    };
     expect(attentionScore(dismissed, [], [f]).score).toBe(0);
   });
 });

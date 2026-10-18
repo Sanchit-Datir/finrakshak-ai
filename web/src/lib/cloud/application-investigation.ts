@@ -16,9 +16,13 @@ export async function investigateApplication(
   input: InvestigateApplicationInput,
 ): Promise<InvestigateApplicationResult> {
   const { httpsCallable } = await import('@firebase/functions');
-  const call = httpsCallable<InvestigateApplicationInput>(cloud.functions, 'investigateApplication', {
-    timeout: 130_000,
-  });
+  const call = httpsCallable<InvestigateApplicationInput>(
+    cloud.functions,
+    'investigateApplication',
+    {
+      timeout: 130_000,
+    },
+  );
   const response = await call(input);
   return InvestigateApplicationResultSchema.parse(response.data);
 }

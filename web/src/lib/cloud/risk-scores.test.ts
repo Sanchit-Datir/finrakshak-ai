@@ -57,7 +57,10 @@ describe('parseRiskScores', () => {
     expect(latestExplained(out, loanId)?.alert.alert_id).toBe(latest.alert_id);
     const older = alerts.find((a) => a.alert_id !== latest.alert_id);
     if (older !== undefined) {
-      const stale = parseRiskScores({ ...sample, explanations: [explanation(older.alert_id)] }, 'cloud');
+      const stale = parseRiskScores(
+        { ...sample, explanations: [explanation(older.alert_id)] },
+        'cloud',
+      );
       expect(latestExplained(stale, loanId)).toBeNull();
     }
     expect(latestExplained(out, 'L-none')).toBeNull();

@@ -1,19 +1,7 @@
-import {
-  Activity,
-  Bell,
-  CircleCheck,
-  CircleDashed,
-  FileClock,
-  FilePlus2,
-  Plus,
-  SearchCheck,
-  ShieldAlert,
-  TriangleAlert,
-} from 'lucide-react';
+import { Activity, Bell, FileClock, FilePlus2, Plus, SearchCheck, ShieldAlert } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { ApplicationsTable } from '../components/applications/ApplicationsTable.js';
-import { DonutChart } from '../components/charts/DonutChart.js';
 import { HeroBanner } from '../components/dashboard/HeroBanner.js';
 import { KpiCard } from '../components/dashboard/KpiCard.js';
 import { LifecycleFunnel } from '../components/dashboard/LifecycleFunnel.js';
@@ -26,19 +14,19 @@ import { PageHeader } from '../components/ui/PageHeader.js';
 import { PeriodPicker } from '../components/ui/PeriodPicker.js';
 import { EmptyState } from '../components/ui/States.js';
 import { AlertStatusBadge, PriorityBadge } from '../components/ui/StatusBadges.js';
-import { PRIORITY_HELP } from '../domain/labels.js';
-import type { Application, Db } from '../domain/schemas.js';
 import { allAlerts, isOpen } from '../lib/alerts.js';
-import { reviewPriority } from '../lib/checks.js';
 import { greeting } from '../lib/format.js';
-import { buckets, defaultPeriod, inRange, resolvePeriod, type PeriodValue } from '../lib/period.js';
+import { buckets, defaultPeriod, inRange, resolvePeriod } from '../lib/period.js';
+import type { PeriodValue } from '../lib/period.js';
 import { useDocumentTitle, useFormat } from '../state/hooks.js';
 import { useSession } from '../state/session.js';
 import { resetToDemo, useDb } from '../state/store.js';
 import { useToast } from '../state/toast.js';
 import { useBranchScope } from '../state/scope.js';
+import { RiskDonut } from '../components/dashboard/RiskDonut.js';
 
 const RECENT_LIMIT = 20;
+
 const AWAITING = new Set(['documents_needed', 'processing', 'needs_review', 'ready_for_decision']);
 
 /** Small fixed-height list that scrolls; its rows hold links, so keyboard focus scrolls it too. */
@@ -334,56 +322,5 @@ export function DashboardPage(): React.JSX.Element {
         </Card>
       </div>
     </>
-  );
-}
-
-function RiskDonut({ apps, db }: { apps: Application[]; db: Db }): React.JSX.Element {
-  const counts = { routine: 0, needs_attention: 0, urgent: 0, none: 0 };
-  for (const a of apps) {
-    const p = reviewPriority(a, db);
-    counts[p ?? 'none'] += 1;
-  }
-  return (
-    <DonutChart
-      title="Applications in progress by review priority"
-      centerLabel="in progress"
-      slices={[
-        {
-          key: 'urgent',
-          label: 'Urgent review',
-          value: counts.urgent,
-          color: 'var(--color-danger)',
-          icon: ShieldAlert,
-          help: PRIORITY_HELP.urgent,
-          href: '/applications?priority=urgent',
-        },
-        {
-          key: 'needs_attention',
-          label: 'Needs attention',
-          value: counts.needs_attention,
-          color: 'var(--color-warn)',
-          icon: TriangleAlert,
-          help: PRIORITY_HELP.needs_attention,
-          href: '/applications?priority=needs_attention',
-        },
-        {
-          key: 'routine',
-          label: 'Routine review',
-          value: counts.routine,
-          color: 'var(--color-teal)',
-          icon: CircleCheck,
-          help: PRIORITY_HELP.routine,
-          href: '/applications?priority=routine',
-        },
-        {
-          key: 'none',
-          label: 'Checks not run',
-          value: counts.none,
-          color: 'var(--color-muted)',
-          icon: CircleDashed,
-          href: '/applications?priority=none',
-        },
-      ]}
-    />
   );
 }

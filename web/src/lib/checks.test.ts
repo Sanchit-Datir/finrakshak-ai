@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { createDemoDb } from '../demo/seed.js';
+import type { Application } from '../domain/schemas.js';
 import { compareNames, crossChecks, normalizeDate, reviewPriority, runChecks } from './checks.js';
 
 const db = createDemoDb(new Date('2026-10-15T06:00:00Z'));
-const app = (id: string) => {
+const app = (id: string): Application => {
   const a = db.applications.find((x) => x.id === id);
   if (a === undefined) throw new Error(`missing ${id}`);
   return a;
 };
-const rules = (id: string) => runChecks(app(id), db).map((f) => f.ruleId);
+const rules = (id: string): string[] => runChecks(app(id), db).map((f) => f.ruleId);
 
 describe('compareNames', () => {
   it('treats initials as a variation, not a mismatch', () => {
@@ -37,7 +38,16 @@ describe('application checks on demo data', () => {
   });
   it('A-1002 surfaces DOB, land-area and encumbrance conflicts', () => {
     const r = rules('A-1002');
-    expect(r).toEqual(expect.arrayContaining(['dob_conflict', 'land_area', 'encumbrance', 'missing_documents', 'unreviewed_fields', 'unclear_fields']));
+    expect(r).toEqual(
+      expect.arrayContaining([
+        'dob_conflict',
+        'land_area',
+        'encumbrance',
+        'missing_documents',
+        'unreviewed_fields',
+        'unclear_fields',
+      ]),
+    );
     expect(reviewPriority(app('A-1002'), db)).toBe('needs_attention');
   });
   it('A-1003 duplicate warehouse receipt across borrowers is urgent', () => {
@@ -46,7 +56,9 @@ describe('application checks on demo data', () => {
     expect(f?.evidence.some((e) => e.appId === 'A-1009')).toBe(true);
   });
   it('A-1013 flags income mismatch and relationship to an open case', () => {
-    expect(rules('A-1013')).toEqual(expect.arrayContaining(['income_mismatch', 'relationship_review']));
+    expect(rules('A-1013')).toEqual(
+      expect.arrayContaining(['income_mismatch', 'relationship_review']),
+    );
   });
   it('does not flag the subject of the case itself for relationship review', () => {
     expect(rules('A-1010')).not.toContain('relationship_review');

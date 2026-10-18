@@ -10,7 +10,8 @@ function detailsOf(error: unknown): { reason: string; retryAfterSeconds: number 
     return { reason: '', retryAfterSeconds: null };
   }
   const details = error.details;
-  if (typeof details !== 'object' || details === null) return { reason: '', retryAfterSeconds: null };
+  if (typeof details !== 'object' || details === null)
+    return { reason: '', retryAfterSeconds: null };
   const reason = 'reason' in details && typeof details.reason === 'string' ? details.reason : '';
   const wait =
     'retryAfterSeconds' in details && typeof details.retryAfterSeconds === 'number'

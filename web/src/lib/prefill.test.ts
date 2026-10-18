@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { createDemoDb, newApplicationData } from '../demo/seed.js';
+import type { FtDocument } from '../domain/schemas.js';
 import { prefillFromDocuments } from './prefill.js';
 
 const db = createDemoDb(new Date('2026-10-15T06:00:00Z'));
-const docsOf = (appId: string) => db.documents.filter((d) => d.applicationId === appId);
+const docsOf = (appId: string): FtDocument[] =>
+  db.documents.filter((d) => d.applicationId === appId);
 
 describe('prefillFromDocuments', () => {
   it('fills empty fields from confirmed values, normalising dates and 7/12 area', () => {
@@ -15,7 +17,10 @@ describe('prefillFromDocuments', () => {
     expect(changes.length).toBeGreaterThan(5);
   });
   it('never uses unreviewed machine output', () => {
-    const { data } = prefillFromDocuments(newApplicationData(), docsOf('A-1002').filter((d) => d.sampleId === 'form-pawar'));
+    const { data } = prefillFromDocuments(
+      newApplicationData(),
+      docsOf('A-1002').filter((d) => d.sampleId === 'form-pawar'),
+    );
     expect(data.applicant.fullName).toBe('');
     expect(data.loan.amountMinor).toBeNull();
   });
