@@ -1,10 +1,9 @@
-/** Consistency rules across documents: name, date of birth, land area, charges and income. */
+/** Consistency rules across documents: name, date of birth and income. */
 
 import { formatMoney } from '../format.js';
-import { parseAreaToHectares } from '../land.js';
 import type { Check } from './types.js';
 import { PERSON_DOCS, certaintyFor, fieldsOf, formRef, ref } from './evidence.js';
-import { NIL, compareNames, normalizeDate, parseNumber } from './normalize.js';
+import { compareNames, normalizeDate, parseNumber } from './normalize.js';
 
 export const nameConsistency: Check = ({ app, docs }) => {
   const formName = app.data.applicant.fullName;
@@ -72,67 +71,6 @@ export const dobConflict: Check = ({ app, docs }) => {
         'Check the original documents.',
         'Correct the field and record which source was used.',
       ],
-    },
-  ];
-};
-
-export const landArea: Check = ({ app, docs, db }) => {
-  const c = app.data.collateral;
-  if (c.landArea.trim() === '') return [];
-  const formHa = parseAreaToHectares(c.landArea, c.landUnit);
-  const records = fieldsOf(docs, 'land_area').filter((d) => d.doc.docType === 'satbara');
-  const tol = db.settings.monitoring.landAreaTolerancePercent / 100;
-  const conflicts = records.filter((d) => {
-    const ha = parseAreaToHectares(d.field.value, 'hectare');
-    return formHa !== null && ha !== null && Math.abs(ha - formHa) > Math.max(ha, formHa) * tol;
-  });
-  if (conflicts.length === 0) return [];
-  return [
-    {
-      id: `${app.id}:land_area`,
-      ruleId: 'land_area',
-      title: 'Land area on form differs from 7/12 extract',
-      category: 'collateral_conflict',
-      priority: 'needs_attention',
-      certainty: `${certaintyFor(conflicts)} Unit conversion: 1 hectare = 100 are; the 7/12 "हे-आर" notation is read as hectares and ares.`,
-      observed: `Form: ${c.landArea} ${c.landUnit} (${formHa?.toFixed(2) ?? '?'} ha). 7/12: ${conflicts.map((d) => `${d.field.value} (${parseAreaToHectares(d.field.value, 'hectare')?.toFixed(2) ?? '?'} ha)`).join(', ')}.`,
-      whyItMatters: 'Loan eligibility and collateral value depend on the land actually held.',
-      evidence: [
-        formRef(app.id, 'Land area', `${c.landArea} ${c.landUnit}`),
-        ...conflicts.map(ref),
-      ],
-      known: ['The two values differ by more than the configured tolerance.'],
-      unknown: ['Whether the applicant cultivates additional leased or family land.'],
-      benign: [
-        'The applicant may hold land under more than one survey number.',
-        'Units may have been written differently (acre vs hectare).',
-      ],
-      steps: [
-        'Ask for 7/12 extracts for all land declared.',
-        'Correct the form value if it was misread.',
-      ],
-    },
-  ];
-};
-
-export const encumbrance: Check = ({ app, docs }) => {
-  const notes = fieldsOf(docs, 'encumbrance_note').filter((d) => !NIL.test(d.field.value));
-  if (notes.length === 0) return [];
-  return [
-    {
-      id: `${app.id}:encumbrance`,
-      ruleId: 'encumbrance',
-      title: 'Existing charge recorded on 7/12 extract',
-      category: 'collateral_conflict',
-      priority: 'needs_attention',
-      certainty: certaintyFor(notes),
-      observed: `"Other rights" column reads: ${notes.map((n) => `"${n.field.value}"`).join(', ')}.`,
-      whyItMatters: 'An existing lien may limit the collateral available for this loan.',
-      evidence: notes.map(ref),
-      known: ['An entry appears in the other-rights (इतर हक्क) column.'],
-      unknown: ['Whether the earlier loan has been repaid and the entry not yet removed.'],
-      benign: ['Society crop loans are commonly recorded and may already be closed.'],
-      steps: ['Obtain a no-dues certificate or current outstanding from the lender named.'],
     },
   ];
 };

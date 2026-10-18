@@ -5,13 +5,7 @@ import type { Application, Db, FtDocument, Priority } from '../../domain/schemas
 import { runMonitoring } from '../monitoring.js';
 import type { Check, Finding } from './types.js';
 import { missingDocuments, requiredFields, reviewState } from './completeness.js';
-import {
-  dobConflict,
-  encumbrance,
-  incomeMismatch,
-  landArea,
-  nameConsistency,
-} from './consistency.js';
+import { dobConflict, incomeMismatch, nameConsistency } from './consistency.js';
 import { duplicateReceipt, duplicateSurvey } from './duplicates.js';
 import { publicRecords, relationshipReview } from './relationships.js';
 
@@ -20,8 +14,6 @@ const CHECKS: Check[] = [
   missingDocuments,
   nameConsistency,
   dobConflict,
-  landArea,
-  encumbrance,
   duplicateSurvey,
   duplicateReceipt,
   incomeMismatch,
@@ -30,20 +22,7 @@ const CHECKS: Check[] = [
   publicRecords,
 ];
 
-export const CHECK_NAMES = [
-  'Required fields present',
-  'Document checklist for loan product',
-  'Name consistency across documents',
-  'Date-of-birth consistency',
-  'Land area vs 7/12 extract',
-  'Existing charges on 7/12',
-  'Survey number reuse',
-  'Warehouse receipt reuse',
-  'Declared income vs bank credits',
-  'Relationships to open investigations',
-  'Field review status',
-  'Public records: applicant and customers',
-] as const;
+export { CHECK_NAMES } from './coverage.js';
 
 export function applicationDocs(app: Application, db: Db): FtDocument[] {
   return db.documents.filter((d) => app.documentIds.includes(d.id));

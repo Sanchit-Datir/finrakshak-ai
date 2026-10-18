@@ -21,9 +21,8 @@ the score and its drivers and explains them; a summary or note that states any o
 | Customer in public records (`public_records`, customer)      |          45 |              27 |      14 |
 | Survey number / warehouse receipt reuse                      |          45 |              27 |      14 |
 | Declared income vs bank credits (`income_mismatch`)          |          30 |              18 |       9 |
-| Name mismatch, date-of-birth conflict, existing charges      |          25 |              15 |       8 |
+| Name mismatch, date-of-birth conflict                        |          25 |              15 |       8 |
 | Public-records check out of date / not run                   |          25 |              15 |       8 |
-| Land area vs 7/12 (`land_area`)                              |          20 |              12 |       6 |
 | Unclear fields, missing documents                            |           8 |               5 |       2 |
 | Required fields, purpose, failed documents, unreviewed items |           5 |               3 |       2 |
 | Any check not listed (a new rule)                            |          30 |              18 |       9 |

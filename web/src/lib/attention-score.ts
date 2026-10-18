@@ -22,8 +22,6 @@ export const RULE_POINTS: Readonly<Record<string, number>> = {
   income_mismatch: 30,
   name_mismatch: 25,
   dob_conflict: 25,
-  encumbrance: 25,
-  land_area: 20,
   unclear_fields: 8,
   missing_documents: 8,
   required_fields: 5,
