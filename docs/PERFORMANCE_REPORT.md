@@ -20,6 +20,34 @@ here comes from a real bank. Items marked **not measured** need the live project
 | Web first load (deployed)               | **≈ 192 kB** transferred (compressed); static files in 120–200 ms                        |
 | Risk-scoring replay, 24 months          | 200 loans: 31 s; 1,000 loans: 761 s. **Grows with loans × transactions** (section 5)     |
 
+## 1a. Slide summary
+
+1. **Quality:** 1,594 unit tests and 6 browser scenarios passing; strict lint and types; 0 known
+   production vulnerabilities.
+2. **Detection (SYNTH loans):** 85 of 105 defaulters caught on time with **0 false alarms**; the same on
+   a second seed and at 1,000 loans (424 of 525, 0 false alarms); every expected monitoring rule fired.
+3. **Speed:** graph of 43,405 nodes built in 9.2 s; full build 40 s; web first load ≈ 192 kB.
+4. **Scale:** serverless, scales to zero; scoring replay 31 s for 200 loans × 24 months; a found
+   bottleneck (loans × transactions) is identified with a small fix.
+5. **Cost control:** sign-in + App Check on every call, AI allow-list, 30 AI calls per person a day,
+   burst limits, max 2–5 instances, budget alerts, one-click emergency stop.
+6. **Gen AI safety:** every AI claim is checked by code (grounding, citations, numbers); leads, not
+   verdicts; no personal data in logs.
+
+## 1b. Cost protection for the demo account
+
+The shared demo account cannot run up the bill:
+
+- **Per person:** at most 30 AI calls a day (Firestore transaction, never crossed) and a burst limit of
+  2–6 calls a minute per AI feature. With every AI call at its upper-bound cost (investigator ≤ US$0.04
+  per run, 10 model calls each), one account costs **at most about US$0.12 a day**.
+- **Who can call:** only signed-in accounts with `aiEnabled: true`, and only from the app (App Check).
+  New sign-ups get no AI. Remove `aiEnabled` or disable the account in Firebase Auth to stop it at once.
+- **Whole project:** functions capped at 2–5 instances; budget alerts at ₹450 a month (project) and ₹200
+  (AI); the emergency-stop workflow switches Vertex AI off in one click (`docs/EMERGENCY_STOP.md`).
+- **Owner steps:** change the demo account's password after judging, and delete the App Check debug token
+  when the live benchmark is done (a debug token lets scripts pass App Check).
+
 ## 2. Test setup
 
 | Item        | Value                                                                         |
