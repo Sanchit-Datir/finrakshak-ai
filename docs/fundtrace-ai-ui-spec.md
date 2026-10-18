@@ -445,6 +445,37 @@ Prefer labels such as Routine review / Needs attention / Urgent review
 over an unexplained numeric score. If a score is added later, explain
 its methodology.
 
+**Attention score (added 18 Oct 2026).** Once the checks have run, the
+top of the AI-assisted document analysis card shows an attention score
+from 0 to 100, its band and the three findings that add most. It is
+computed by code in the browser from the unresolved findings (resolved
+and "not an issue" findings do not count); no AI model sets or changes
+it, so the same data always gives the same score. Methodology:
+
+- Each kind of finding has a weight, the points it adds when it is
+  urgent: applicant in public records 70; relationships to open
+  investigations 50; customer in public records, survey number or
+  warehouse receipt reuse 45; declared income vs bank credits 30; name,
+  date of birth, existing charges on the 7/12, public-records check out
+  of date or not run 25; land area vs 7/12 20; unclear fields, missing
+  documents 8; required fields, loan purpose, failed documents,
+  unreviewed fields or sections 5; any check not listed 30.
+- A milder finding of the same check adds less: Needs attention 60%,
+  Routine 30% of the weight (rounded).
+- Points add up, capped at 100. Bands: 0--29 Routine review, 30--59
+  Needs attention, 60--100 Urgent review.
+- The card states that it is calculated by code, lists the drivers with
+  their points, and says it is a guide to how much attention the case
+  needs, not a probability or a decision.
+- The band can differ from Review priority: lower for an urgent but
+  low-weight finding (missing documents), higher when several findings
+  add up.
+- The AI summary may explain the score but never give another one; a
+  summary or note that states a different score is withheld.
+- The weights are a starting point, not tuned on outcomes. Code:
+  `web/src/lib/attention-score.ts`; details:
+  `docs/APPLICATION_AI_ANALYSIS.md`.
+
 ## 8. Application detail and risk review
 
 ### Header
@@ -742,6 +773,15 @@ security.
 If using Low / Medium / High, explain the meaning. Never call a
 heuristic/model output a calibrated probability unless it has been
 calibrated and validated.
+
+### Attention score
+
+A 0--100 number on the application's Risk step, computed by code from
+weighted findings (methodology in section 7, Step 4). Its bands use the
+three labels above (0--29, 30--59, 60--100). Always show it with its
+band (icon and text), its drivers and the line "not a probability or a
+decision". It is not the synthetic loan risk score on the Risk scores
+page, which is a separate four-layer score (`docs/RISK_SCORING.md`).
 
 ### Evidence status
 
