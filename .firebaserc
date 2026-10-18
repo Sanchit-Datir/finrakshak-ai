@@ -1,1 +1,17 @@
-{ "projects": { "default": "fund-tracer" } }
+{
+  "projects": {
+    "default": "fund-tracer"
+  },
+  "targets": {
+    "fund-tracer": {
+      "hosting": {
+        "fund-tracer": [
+          "fund-tracer"
+        ],
+        "finrakshak-ai": [
+          "finrakshak-ai"
+        ]
+      }
+    }
+  }
+}

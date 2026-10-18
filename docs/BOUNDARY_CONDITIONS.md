@@ -54,6 +54,7 @@ Claude (and humans) must flag any of these to the project owner when touched. Fo
 - **B-32 Firebase plan** → Functions + Vertex require the Blaze (pay-as-you-go) plan; confirm before deploy.
 - **B-33 Security-rule regressions** → every rules change needs emulator tests; default-deny must remain.
 - **B-34 Deployment region** → keep Functions, Firestore, and Vertex in compatible regions (latency, data residency).
+- **B-67 Two Hosting sites, one build** → every deploy publishes the same build and config to `fund-tracer` and `finrakshak-ai` (Hosting targets in `.firebaserc`, one `firebase.json` entry each). The entries must stay identical apart from `target`; `web/src/lib/security-headers.test.ts` fails on drift. A new site's domain must be added to Auth authorized domains and the reCAPTCHA key (and any API-key website restrictions) by hand; until then sign-in and App Check fail closed there. Each deploy stores a version per site, so set release retention on both (cost). The `/graph-lab/` bundle (B-46) is public on both. See docs/DEPLOY.md.
 
 ## Public-data ingestion (`ingest/`)
 
