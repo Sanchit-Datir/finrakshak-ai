@@ -28,4 +28,7 @@ export {
   runChecks,
 } from './checks/run.js';
 
+export { checkCoverage } from './checks/coverage.js';
+export type { CheckCoverage } from './checks/coverage.js';
+
 export { crossChecks } from './checks/cross-checks.js';
