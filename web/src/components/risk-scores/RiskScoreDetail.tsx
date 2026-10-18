@@ -128,7 +128,7 @@ function DetailBody({
       </section>
       <LinkButton
         icon={Bell}
-        to={`/alerts?source=risk_score&q=${encodeURIComponent(score.loan_id)}`}
+        to={`/alerts?source=risk_score&branch=all&q=${encodeURIComponent(score.loan_id)}`}
       >
         See this loan&apos;s risk score alerts
       </LinkButton>
