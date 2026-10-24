@@ -12,7 +12,7 @@
     "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
-    "@firebase/app": "^0.16.3",
+    "@firebase/app": "^0.16.4",
     "@firebase/app-check": "^0.13.1",
     "@firebase/auth": "^1.13.7",
     "@firebase/functions": "^0.14.0",
